@@ -1,0 +1,12 @@
+RewriteEngine on
+RewriteBase /
+
+Rewriterule ^categoria/(.*)$ categoria-seg-271.php?cat=$1 [PT,L]
+Rewriterule ^articulo/(.*)$ art-seg-234.php?art=$1 [PT,L]
+Rewriterule ^rss(.*)$ rss-seg-547813.php [PT,L]
+Rewriterule ^art-enviando/ agr-seg-174.php [PT,L]
+Rewriterule ^agregar(.*)$ templ-agregar-seg-174.php [PT,L]
+Rewriterule ^art-editando/ editar-seg-174.php [PT,L]
+Rewriterule ^editar/(.+)$ templ-editar-seg-174.php?art=$1 [PT,L]
+Rewriterule ^eliminar/(.+)$ eliminar-seg-174.php?id=$1 [PT,L]
+Rewriterule ^buscar(.+) index.php?runsearch=start [PT,L]

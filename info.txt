@@ -1,0 +1,12 @@
+url: http://www.casitaweb.net/
+site_owner: http://www.casitaweb.net/
+address1: Argentina
+address2: Buenos Aires
+city: 
+state: Buenos Aires
+country: Argentina
+postal_code: 0000
+phone_number: 
+display_email: soporte@casitaweb.net
+site_name: CasitaWeb!
+site_description: CasitaWeb! es una comunidad virtual, Donde los usuarios pueden compartir todo tipo de información por medio de posts (mensajes), Se puede encontrar todo tipo de cosas como: Información, Noticias, Música, Peliculas, Series, Libros, etc; y todo eso GRATIS. CasitaWeb! tiene una funcionalidad del tipo colaborativo.-
