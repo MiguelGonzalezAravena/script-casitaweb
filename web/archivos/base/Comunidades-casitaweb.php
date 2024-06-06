@@ -27,7 +27,7 @@ INNER JOIN {$db_prefix}comunidades_categorias AS b ON c.categoria=b.url AND c.ac
 ORDER BY a.id DESC
 LIMIT $RegistrosAEmpezar, $RegistrosAMostrar",__FILE__, __LINE__);
 $context['posts']=array();
-while ($row=mysql_fetch_assoc($rs)){
+while ($row=mysqli_fetch_assoc($rs)){
     $context['posts'][]=array(
     'titulo' => $row['titulo'],
     'nombre' => $row['nombre'],
@@ -36,7 +36,7 @@ while ($row=mysql_fetch_assoc($rs)){
     'url' => $row['url'],
     'nomb2' => $row['nomb2'],
     'realName' => $row['realName']);}
-mysql_free_result($rs);
+mysqli_free_result($rs);
 
 foreach ($context['posts'] as $posts){
 $tit=nohtml(nohtml2($posts['titulo']));
@@ -47,7 +47,7 @@ echo'<div class="comunidad_tema"><div>
 <div style="float:left;margin-right:5px;"><img src="'.$tranfer1.'/comunidades/categorias/'.$posts['url'].'.png" alt="" title="'.$posts['nomb2'].'" class="png" /></div><div><a style="color:#D35F2C;font-weight:bold;font-size:13px;" href="/comunidades/'.$posts['url2'].'/'.$posts['id'].'/'.urls($tit2).'.html" target="_self" title="'.$tit.'">'.$tit3.'</a></div></div>
 <div class="size10">En <a href="/comunidades/'.$posts['url2'].'/" target="_self" title="'.$posts['nombre'].'">'.$posts['nombre'].'</a> por <a href="/perfil/'.$posts['realName'].'" target="_self" title="'.$posts['realName'].'">'.$posts['realName'].'</a></div></div><div class="hrs"></div>';}
 
-$NroRegistros=mysql_num_rows(db_query("SELECT a.id FROM ({$db_prefix}comunidades AS c, {$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades_categorias AS b) WHERE a.id_com=c.id AND c.acceso <> 4 AND a.eliminado=0 AND c.bloquear=0 AND c.categoria=b.url".(empty($cat) ? '' : " AND b.url='$cat'")."",__FILE__, __LINE__));
+$NroRegistros=mysqli_num_rows(db_query("SELECT a.id FROM ({$db_prefix}comunidades AS c, {$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades_categorias AS b) WHERE a.id_com=c.id AND c.acceso <> 4 AND a.eliminado=0 AND c.bloquear=0 AND c.categoria=b.url".(empty($cat) ? '' : " AND b.url='$cat'")."",__FILE__, __LINE__));
 
 
 $PagAnt=$PagAct-1;
@@ -74,13 +74,13 @@ FROM ({$db_prefix}comunidades AS c,{$db_prefix}comunidades_categorias AS ca, {$d
 WHERE c.id_user=m.ID_MEMBER AND c.categoria=ca.url AND c.bloquear=0
 ORDER BY c.id DESC
 LIMIT 5",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs2)){
+while ($row=mysqli_fetch_assoc($rs2)){
 $row['nombre']=nohtml(nohtml2($row['nombre']));
 echo'
 <div class="comunidad_tema"><div><div style="float:left;margin-right:5px;"><img src="'.$tranfer1.'/comunidades/categorias/'.$row['categoria'].'.png" alt="" title="'.$row['nombre2'].'" /></div><div><a style="color:#D35F2C;font-weight:bold;font-size:13px;" href="/comunidades/'.$row['url'].'/" target="_self" title="'.$row['nombre'].'">'.$row['nombre'].'</a></div></div>
 <div class="size10">Comunidad creada por <a href="/perfil/'.$row['realName'].'" target="_self" title="'.$row['realName'].'">'.$row['realName'].'</a> | '.timeformat($row['fecha_inicio']).'</a></div></div>
 <div class="hrs"></div>';}
-mysql_free_result($rs2);
+mysqli_free_result($rs2);
 echo'</div></div>';
 
 
@@ -91,11 +91,11 @@ FROM ({$db_prefix}comunidades_comentarios AS c, {$db_prefix}members AS m, {$db_p
 WHERE c.id_user=m.ID_MEMBER AND c.id_tema=t.id AND t.id_com=co.id AND co.bloquear=0 AND t.eliminado=0 AND co.acceso <> 4
 ORDER BY c.id DESC
 LIMIT 10",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs2)){
+while ($row=mysqli_fetch_assoc($rs2)){
 $ddddsxx=nohtml(nohtml2($row['titulo']));
 $ddaa=$row['titulo'];
 echo'<font class="size11"><b><a href="/perfil/'.$row['realName'].'" target="_self" title="'.$row['realName'].'">'.$row['realName'].'</a></b> - <a href="/comunidades/'.$row['url'].'/'.$row['id'].'/'.urls($ddaa).'.html" target="_self" title="'.$ddddsxx.'">'.$ddddsxx.'</a></font><br style="margin: 0px; padding: 0px;">';}
-mysql_free_result($rs2);
+mysqli_free_result($rs2);
 echo'</span></div></div>';
 
 
@@ -110,14 +110,14 @@ FROM ({$db_prefix}comunidades AS c)
 WHERE c.credito=100 AND c.bloquear=0
 ORDER BY RAND()
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs)){
+while ($row=mysqli_fetch_assoc($rs)){
 $img_Destacao=nohtml(nohtml2($row['imagen']));
 $url_Destacao=$row['url'];
 $nombre_Destacao=nohtml(nohtml2($row['nombre']));
 $id_Destacao=$row['id'];
 $fecha_Destacao=$row['cred_fecha']+86400;
 if(time() > $fecha_Destacao){db_query("UPDATE {$db_prefix}comunidades SET credito=0 WHERE id='$id_Destacao' LIMIT 1", __FILE__, __LINE__);}}
-mysql_free_result($rs);
+mysqli_free_result($rs);
 $img_Destacao=isset($img_Destacao) ? $img_Destacao : ''; 
 $id_Destacao=isset($id_Destacao) ? $id_Destacao : ''; 
 if($img_Destacao){$img2=$img_Destacao;}else{$img2=$no_avatar;}
@@ -172,7 +172,7 @@ $rs=db_query("
 SELECT a.titulo,m.realName,c.url,a.id
 FROM ({$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades AS c, {$db_prefix}members AS m)
 WHERE c.url='{$context['url2222']}' AND c.id=a.id_com AND a.stiky=1 AND m.ID_MEMBER=a.id_user AND a.eliminado=0",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs)){
+while ($row=mysqli_fetch_assoc($rs)){
 $titulo=nohtml(nohtml2($row['titulo']));
 $titulo2=$titulo;
 $ids=$row['id'];
@@ -193,14 +193,14 @@ $_GET['st']=isset($_GET['st']) ? $_GET['st'] : '';
 if($_GET['st']<1){$das='0';}else{$das=$_GET['st'];}
 if(isset($das)){$st=(int)$das;}else{$st=0;}
 $pp=10;
-$total=mysql_num_rows(db_query("SELECT a.titulo FROM ({$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades AS c, {$db_prefix}members AS m) WHERE c.url='{$context['url2222']}' AND c.id=a.id_com AND m.ID_MEMBER=a.id_user AND a.eliminado=0",__FILE__, __LINE__));
+$total=mysqli_num_rows(db_query("SELECT a.titulo FROM ({$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades AS c, {$db_prefix}members AS m) WHERE c.url='{$context['url2222']}' AND c.id=a.id_com AND m.ID_MEMBER=a.id_user AND a.eliminado=0",__FILE__, __LINE__));
 $rs44=db_query("
 SELECT a.titulo,a.id,c.url,m.realName
 FROM ({$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades AS c, {$db_prefix}members AS m)
 WHERE c.url='{$context['url2222']}' AND c.id=a.id_com AND m.ID_MEMBER=a.id_user AND a.eliminado=0
 ORDER BY a.id DESC
 LIMIT $st,$pp",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs44)){
+while ($row=mysqli_fetch_assoc($rs44)){
 $titulo=nohtml(nohtml2($row['titulo']));
 $titulo2=$row['titulo'];
 $ids=$row['id'];
@@ -294,7 +294,7 @@ FROM ({$db_prefix}members AS m,{$db_prefix}comunidades_comentarios as c,{$db_pre
 WHERE c.id_com='{$context['ddddsaaat']}' AND a.id=c.id_tema AND c.id_user=m.ID_MEMBER AND c.id_com=co.id AND a.eliminado=0
 ORDER BY c.id DESC
 LIMIT 10",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs44)){
+while ($row=mysqli_fetch_assoc($rs44)){
 $realnames=$row['realName'];
 $titledsd2=$row['titulo'];
 if(strlen($titledsd2)>20){$valor=substr($titledsd2,0,17)."...";}
@@ -311,7 +311,7 @@ FROM ({$db_prefix}members AS m, {$db_prefix}comunidades_miembros as c)
 WHERE c.id_com='{$context['ddddsaaat']}' AND c.id_user=m.ID_MEMBER AND c.aprobado=1
 ORDER BY c.id DESC
 LIMIT 10",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs44)){
+while ($row=mysqli_fetch_assoc($rs44)){
 $realnames=$row['realName'];
 $fechav=hace($row['fecha']);
 echo'<font class="size11"><b><a href="/perfil/'.$realnames.'" title="'.$realnames.'">'.$realnames.'</a></b> - '.$fechav.' </font><br style="margin: 0px; padding: 0px;">';}
@@ -323,14 +323,14 @@ FROM ({$db_prefix}comunidades AS c)
 WHERE c.credito=100 AND c.bloquear=0
 ORDER BY RAND()
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs)){
+while ($row=mysqli_fetch_assoc($rs)){
 $img_Destacao=nohtml(nohtml2($row['imagen']));
 $url_Destacao=$row['url'];
 $nombre_Destacao=nohtml(nohtml2($row['nombre']));
 $id_Destacao=$row['id'];
 $fecha_Destacao=$row['cred_fecha']+86400;
 if(time() > $fecha_Destacao){db_query("UPDATE {$db_prefix}comunidades SET credito=0 WHERE id='$id_Destacao' LIMIT 1", __FILE__, __LINE__);}}
-mysql_free_result($rs);
+mysqli_free_result($rs);
 $img_Destacao=isset($img_Destacao) ? $img_Destacao : ''; 
 $id_Destacao=isset($id_Destacao) ? $id_Destacao : ''; 
 if ($img_Destacao){$img2=$img_Destacao;}else{$img2=$no_avatar;}
@@ -380,7 +380,7 @@ SELECT rango
 FROM ({$db_prefix}comunidades_miembros)
 WHERE id_user='{$context['coMvbvbvki']}' AND id_com='{$context['coMdasdasd']}'
 LIMIT 1",__FILE__, __LINE__);
-while ($row3=mysql_fetch_assoc($rs444)){$context['rangoos']=$row3['rango'];}
+while ($row3=mysqli_fetch_assoc($rs444)){$context['rangoos']=$row3['rango'];}
 $rango=ranguear($context['rangoos'],$context['coMdasdasd']);
 $rangoIMG=ranguearIMG($context['rangoos'],$context['coMdasdasd']);
 
@@ -428,7 +428,7 @@ echo'</div><div class="clearBoth"></div>
 //Fin Posts
 
 
-$cant=mysql_num_rows(db_query("SELECT com.id FROM ({$db_prefix}comunidades_comentarios AS com) WHERE com.id_tema='{$context['coMid']}'",__FILE__, __LINE__));
+$cant=mysqli_num_rows(db_query("SELECT com.id FROM ({$db_prefix}comunidades_comentarios AS com) WHERE com.id_tema='{$context['coMid']}'",__FILE__, __LINE__));
 
 echo'<div style="margin-bottom:5px;"><div style="float:left;margin-right:5px;"><a href="/rss/temas-comment/'.$context['coMid'].'"><div style="height: 16px; width: 16px; cursor: pointer;" class="feed png"><img alt="" src="'.$tranfer1.'/espacio.gif" class="png" height="16px" width="16px"></div></a></div><div><b style="font-size:14px;">Comentarios (<span id="nrocoment">'.$cant.'</span>)</b></div></div>
 <div id="comentarios">
@@ -437,7 +437,7 @@ $rs443=db_query("SELECT com.comentario,m.realName,com.id,com.fecha,m.ID_MEMBER
 FROM ({$db_prefix}members AS m,{$db_prefix}comunidades_comentarios AS com)
 WHERE com.id_tema='{$context['coMid']}' AND com.id_user=m.ID_MEMBER
 ORDER BY com.id ASC",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs443)){
+while ($row=mysqli_fetch_assoc($rs443)){
 $dasd=$row['id'];
 $comene=parse_bbc(nohtml(nohtml2($row['comentario'])));
 $comene2=nohtml(nohtml2($row['comentario']));
@@ -500,7 +500,7 @@ elseif($user_settings['ID_POST_GROUP']=='6'){$cantidadcom='8';}
 elseif($user_settings['ID_POST_GROUP']=='8'){$cantidadcom='10';}}
 elseif($user_settings['ID_GROUP']){$cantidadcom='15';}
 
-$cuantascom=mysql_num_rows(db_query("SELECT c.id_user FROM ({$db_prefix}comunidades AS c) WHERE c.id_user='{$user_settings['ID_MEMBER']}' AND c.bloquear=0",__FILE__, __LINE__));
+$cuantascom=mysqli_num_rows(db_query("SELECT c.id_user FROM ({$db_prefix}comunidades AS c) WHERE c.id_user='{$user_settings['ID_MEMBER']}' AND c.bloquear=0",__FILE__, __LINE__));
 echo'<div style="width:354px;float:left;margin-right:8px;">
 <div class="box_354" style="margin-bottom:8px;">
 <div class="box_title" style="width:352px;"><div class="box_txt box_354-34">Importante</div><div class="box_rss"><div class="icon_img"><img src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" alt="" /></div></div></div><div style="width:344px;padding:4px;" class="windowbg">'; reglas_com('crearc'); echo'</div></div>
@@ -513,7 +513,7 @@ $request=db_query("SELECT url,nombre FROM {$db_prefix}comunidades_categorias ORD
 
 echo'<div class="dataR"><span class="gif_cargando floatR" id="subcategoria" style="top: 0px;"></span><label for="fname">Categoria</label><select style="width:264px;margin-top:5px; height: 25px;vertical-align:middle;" name="categoria">
 <option value="-1" selected="true">Elegir una categor&iacute;a</option>';
-while ($row = mysql_fetch_assoc($request)){echo'<option value="'.$row['url'].'" >'.$row['nombre'].'</option>';}
+while ($row = mysqli_fetch_assoc($request)){echo'<option value="'.$row['url'].'" >'.$row['nombre'].'</option>';}
 echo'</select></div><div class="clearBoth"></div>
 <div class="data"><label for="uname">Descripci&oacute;n</label><textarea onfocus="foco(this);" onblur="no_foco(this);" class="c_input_desc autogrow" style="display:block;width:540px;" name="descripcion" tabindex="7" datatype="text" dataname="Descripcion"></textarea></div></div>
 
@@ -564,7 +564,7 @@ if(!$id){fatal_error('Debe seleccionar una comunidad.-');}
 $rs=db_query("SELECT c.nombre,b.rango,c.id,c.url,ca.url AS urlCat,ca.nombre AS nombreCat
 FROM ({$db_prefix}comunidades_miembros AS b, {$db_prefix}comunidades AS c, {$db_prefix}comunidades_categorias AS ca)
 WHERE c.url='$id' AND c.id=b.id_com AND b.id_user='$ID_MEMBER' AND c.bloquear=0 AND c.categoria=ca.url",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs)){
+while ($row=mysqli_fetch_assoc($rs)){
     $cat=seguridad(nohtml($row['nombre']));
     $rango=$row['rango'];
     $rdasd=$row['id'];
@@ -605,7 +605,7 @@ SELECT c.nombre,a.titulo, a.id_com, a.id_user,a.cuerpo,a.id, a.nocoment,c.url,a.
 FROM ({$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades AS c, {$db_prefix}comunidades_categorias AS ca)
 WHERE a.id='$id' AND a.eliminado=0 AND a.id_com=c.id AND c.categoria=ca.url
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs)){
+while ($row=mysqli_fetch_assoc($rs)){
 $titulo=nohtml(nohtml2($row['titulo']));
 $cuerpo=nohtml(nohtml2($row['cuerpo']));
 $idc=$row['id_com'];
@@ -667,7 +667,7 @@ echo'<div style="width:354px;float:left;margin-right:8px;">
 $request=db_query("SELECT url,nombre FROM {$db_prefix}comunidades_categorias ORDER BY nombre ASC", __FILE__, __LINE__);
 echo'<div class="dataR"><span class="gif_cargando floatR" id="subcategoria" style="top: 0px;"></span><label for="fname">Categoria</label><select style="width:264px;margin-top:5px; height: 25px;vertical-align:middle;" name="categoria">
 <option value="-1">Elegir una categor&iacute;a</option>';
-while ($row = mysql_fetch_assoc($request)){echo'<option'; if($context['COMediTcategoria']==$row['url']){echo' selected="true"';} echo' value="'.$row['url'].'" >'.$row['nombre'].'</option>';}
+while ($row = mysqli_fetch_assoc($request)){echo'<option'; if($context['COMediTcategoria']==$row['url']){echo' selected="true"';} echo' value="'.$row['url'].'" >'.$row['nombre'].'</option>';}
 
 echo'</select></div><div class="clearBoth"></div><div class="data"><label for="uname">Descripci&oacute;n</label><textarea onfocus="foco(this);" onblur="no_foco(this);" class="c_input_desc autogrow" style="display:block;width:540px;" name="descripcion" tabindex="7" datatype="text" dataname="Descripcion">'.$context['COMediTdescripcion'].'</textarea></div></div>
 
@@ -722,7 +722,7 @@ $rs=db_query("
 SELECT ca.nombre,ca.comunidades,ca.url
 FROM ({$db_prefix}comunidades_categorias AS ca)",__FILE__, __LINE__);
 echo'<table style="width:922px;"><tr>';
-while ($row=mysql_fetch_assoc($rs)){if($rowlevel < ($maxrowlevel+1))$rowlevel++; else{$rowlevel = 0;}
+while ($row=mysqli_fetch_assoc($rs)){if($rowlevel < ($maxrowlevel+1))$rowlevel++; else{$rowlevel = 0;}
 echo'<td style="width:230.5px;"><a href="/comunidades/dir/'.$row['url'].'" style="color:green;font-size:17px;border-bottom: 1px dotted;">'.$row['nombre'].'</a><br /><strong style="color:orange;font-size:13px;">Comunidades: '.$row['comunidades'].'</strong></td>';
 if($rowlevel < 1){echo'</tr><tr">';}} 
 echo'</tr></table><div class="noesta-am" style="width:922px;margin-top:15px;"><a href="/crear-comunidades/">Crea tu comunidad. Es GRATIS, R&Aacute;PIDO Y FACIL</a></div>';}else{
@@ -733,7 +733,7 @@ if($_GET['paeg']<1){$per='1';}else{$per=$_GET['paeg'];}
 if(isset($per)){$RegistrosAEmpezar=($per-1)*$RegistrosAMostrar;
 $PagAct=$per;}else{$RegistrosAEmpezar=0;$PagAct=1;}
 
-$ta=mysql_num_rows(db_query("SELECT ca.nombre FROM ({$db_prefix}comunidades_categorias AS ca) WHERE ca.url='$cat' LIMIT 1",__FILE__, __LINE__));
+$ta=mysqli_num_rows(db_query("SELECT ca.nombre FROM ({$db_prefix}comunidades_categorias AS ca) WHERE ca.url='$cat' LIMIT 1",__FILE__, __LINE__));
 if(!$ta){fatal_error('Esta categor&iacute;a no existe.');}
 echo'<div style="width:922px;">
 <div class="dir">';
@@ -743,7 +743,7 @@ FROM ({$db_prefix}comunidades AS ca)
 WHERE ca.categoria='$cat' AND ca.bloquear=0
 ORDER BY ca.id DESC
 LIMIT $RegistrosAEmpezar, $RegistrosAMostrar",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs)){
+while ($row=mysqli_fetch_assoc($rs)){
 $nombre=nohtml2(nohtml($row['nombre']));
 
 if(!$row['imagen']){$img=$no_avatar;}else{$img=$row['imagen'];}
@@ -756,7 +756,7 @@ echo '<div class="dir-ind" id="muroEfectAV">
 <div class="clearfix"></div>';}
 
 echo'</div></div>';
-$tda=mysql_num_rows(db_query("SELECT ca.nombre FROM ({$db_prefix}comunidades AS ca) WHERE ca.categoria='$cat' AND ca.bloquear=0",__FILE__, __LINE__));
+$tda=mysqli_num_rows(db_query("SELECT ca.nombre FROM ({$db_prefix}comunidades AS ca) WHERE ca.categoria='$cat' AND ca.bloquear=0",__FILE__, __LINE__));
 $PagAnt=$PagAct-1;
 $PagSig=$PagAct+1;
 $PagUlt=$tda/$RegistrosAMostrar;
@@ -792,7 +792,7 @@ ORDER BY ca.calificacion DESC
 LIMIT 10",__FILE__, __LINE__);
 $uno=1;
 $row['titulo']=nohtml2(nohtml($row['titulo']));
-while ($row=mysql_fetch_assoc($rs)){echo'<div class="size11"><strong>'.$uno++.'</strong> - <a href="/comunidades/'.$row['url'].'/'.$row['id'].'/'.urls($row['titulo']).'.html">'.$row['titulo'].' ('.$row['calificacion'].')</div>';}
+while ($row=mysqli_fetch_assoc($rs)){echo'<div class="size11"><strong>'.$uno++.'</strong> - <a href="/comunidades/'.$row['url'].'/'.$row['id'].'/'.urls($row['titulo']).'.html">'.$row['titulo'].' ('.$row['calificacion'].')</div>';}
 
 
 echo'</div></div>

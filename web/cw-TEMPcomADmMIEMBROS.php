@@ -14,7 +14,7 @@ $rs=db_query("SELECT c.rango,c.ban,c.id,m.realName,c.rango,c.ban,c.ban_por,m.ID_
 FROM ({$db_prefix}comunidades_miembros AS c, {$db_prefix}members AS m)
 WHERE c.id_com='{$_GET['c']}' AND m.realName='{$_GET['r']}' AND m.ID_MEMBER=c.id_user AND c.aprobado=1
 LIMIT 1",__FILE__, __LINE__);
-while($row=mysql_fetch_assoc($rs)){
+while($row=mysqli_fetch_assoc($rs)){
     $cdavvbv=$row['id'];
     $crngo=$row['rango'];
     $ban_por=$row['ban_por'];

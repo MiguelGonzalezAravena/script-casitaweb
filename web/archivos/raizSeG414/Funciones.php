@@ -111,27 +111,27 @@ LIMIT 1", __FILE__, __LINE__);}
 } 
 
 function signosyletras($valor){					
-$valor = str_replace("á", "&aacute;", $valor);
-$valor = str_replace("é", "&eacute;", $valor);
-$valor = str_replace("í", "&iacute;", $valor);
-$valor = str_replace("ó", "&oacute;", $valor);
-$valor = str_replace("ú", "&uacute;", $valor);
-$valor = str_replace("ñ", "&ntilde;", $valor);
-$valor = str_replace("Á", "&Aacute;", $valor);
-$valor = str_replace("É", "&Eacute;", $valor);
-$valor = str_replace("Í", "&Iacute;", $valor);
-$valor = str_replace("Ó", "&Oacute;", $valor);
-$valor = str_replace("Ú", "&Uacute;", $valor);
-$valor = str_replace("Ñ", "&Ñtilde;", $valor);
+$valor = str_replace("ï¿½", "&aacute;", $valor);
+$valor = str_replace("ï¿½", "&eacute;", $valor);
+$valor = str_replace("ï¿½", "&iacute;", $valor);
+$valor = str_replace("ï¿½", "&oacute;", $valor);
+$valor = str_replace("ï¿½", "&uacute;", $valor);
+$valor = str_replace("ï¿½", "&ntilde;", $valor);
+$valor = str_replace("ï¿½", "&Aacute;", $valor);
+$valor = str_replace("ï¿½", "&Eacute;", $valor);
+$valor = str_replace("ï¿½", "&Iacute;", $valor);
+$valor = str_replace("ï¿½", "&Oacute;", $valor);
+$valor = str_replace("ï¿½", "&Uacute;", $valor);
+$valor = str_replace("ï¿½", "&ï¿½tilde;", $valor);
 $valor = str_replace("!", "&#33;", $valor);
-$valor = str_replace("¡", "&iexcl;", $valor);
-$valor = str_replace("¿", "&iquest;", $valor);
-$valor = str_replace("ö", "&ouml;", $valor);
-$valor = str_replace("Ö", "&Ouml;", $valor);
-$valor = str_replace("º", "&ordm;", $valor);
-$valor = str_replace("°", "&#176;", $valor);
-$valor = str_replace("®", "&reg;", $valor);
-$valor = str_replace("©", "&#169;", $valor);
+$valor = str_replace("ï¿½", "&iexcl;", $valor);
+$valor = str_replace("ï¿½", "&iquest;", $valor);
+$valor = str_replace("ï¿½", "&ouml;", $valor);
+$valor = str_replace("ï¿½", "&Ouml;", $valor);
+$valor = str_replace("ï¿½", "&ordm;", $valor);
+$valor = str_replace("ï¿½", "&#176;", $valor);
+$valor = str_replace("ï¿½", "&reg;", $valor);
+$valor = str_replace("ï¿½", "&#169;", $valor);
 return $valor;}
 
 function seguridad($variable){$variable = addslashes(trim($variable));return $variable;}
@@ -166,40 +166,40 @@ SELECT m.ID_MEMBER,m.posts
 FROM {$db_prefix}members AS m
 WHERE m.ID_MEMBER='{$valor}'", __FILE__, __LINE__);
 
-while($grup=mysql_fetch_assoc($request)){$grup['posts']=$grup['posts'];
+while($grup=mysqli_fetch_assoc($request)){$grup['posts']=$grup['posts'];
 
             if($grup['posts'] < '15'){
             db_query("UPDATE {$db_prefix}members
-				SET ID_POST_GROUP=4
-				WHERE ID_MEMBER='{$valor}'
-				LIMIT 1", __FILE__, __LINE__);}
-			elseif($grup['posts'] >= '15' && $grup['posts'] < '250'){
+        SET ID_POST_GROUP=4
+        WHERE ID_MEMBER='{$valor}'
+        LIMIT 1", __FILE__, __LINE__);}
+      elseif($grup['posts'] >= '15' && $grup['posts'] < '250'){
             db_query("UPDATE {$db_prefix}members
-				SET ID_POST_GROUP=5
-				WHERE ID_MEMBER='{$valor}'
-				LIMIT 1", __FILE__, __LINE__);}
-		    elseif($grup['posts'] >= '250' && $grup['posts'] < '500'){
+        SET ID_POST_GROUP=5
+        WHERE ID_MEMBER='{$valor}'
+        LIMIT 1", __FILE__, __LINE__);}
+        elseif($grup['posts'] >= '250' && $grup['posts'] < '500'){
             db_query("UPDATE {$db_prefix}members
-				SET ID_POST_GROUP=9
-				WHERE ID_MEMBER='{$valor}'
-				LIMIT 1", __FILE__, __LINE__);}
-			elseif($grup['posts'] >= '500' && $grup['posts'] < '1000'){
+        SET ID_POST_GROUP=9
+        WHERE ID_MEMBER='{$valor}'
+        LIMIT 1", __FILE__, __LINE__);}
+      elseif($grup['posts'] >= '500' && $grup['posts'] < '1000'){
             db_query("UPDATE {$db_prefix}members
-				SET ID_POST_GROUP=10
-				WHERE ID_MEMBER='{$valor}'
-				LIMIT 1", __FILE__, __LINE__);}
-			elseif($grup['posts'] >= '1000' && $grup['posts'] < '1500'){
+        SET ID_POST_GROUP=10
+        WHERE ID_MEMBER='{$valor}'
+        LIMIT 1", __FILE__, __LINE__);}
+      elseif($grup['posts'] >= '1000' && $grup['posts'] < '1500'){
             db_query("UPDATE {$db_prefix}members
-				SET ID_POST_GROUP=6
-				WHERE ID_MEMBER='{$valor}'
-				LIMIT 1", __FILE__, __LINE__);}
-			elseif($grup['posts'] >= '1500'){
+        SET ID_POST_GROUP=6
+        WHERE ID_MEMBER='{$valor}'
+        LIMIT 1", __FILE__, __LINE__);}
+      elseif($grup['posts'] >= '1500'){
             db_query("UPDATE {$db_prefix}members
-				SET ID_POST_GROUP=8
-				WHERE ID_MEMBER='{$valor}'
-				LIMIT 1", __FILE__, __LINE__);}
+        SET ID_POST_GROUP=8
+        WHERE ID_MEMBER='{$valor}'
+        LIMIT 1", __FILE__, __LINE__);}
                 }
-mysql_free_result($request);
+mysqli_free_result($request);
 
 }
 
@@ -242,27 +242,27 @@ return $valor;}
 
 if(!$context['user']['is_admin']){$shas=' AND ID_BOARD<>142';}else{$shas='';}
 
-$context['postuser']=mysql_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}messages WHERE ID_MEMBER='{$user}'$shas", __FILE__, __LINE__));
+$context['postuser']=mysqli_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}messages WHERE ID_MEMBER='{$user}'$shas", __FILE__, __LINE__));
 
 $userse = db_query("
 SELECT mem.ID_MEMBER,mem.memberName,mem.avatar,mem.personalText,mem.ID_POST_GROUP,mem.ID_GROUP,mem.realName,mem.usertitle,mem.gender,mem.topics,mem.signature,mem.posts,mem.memberIP
 FROM ({$db_prefix}members as mem)
 WHERE mem.ID_MEMBER='{$user}'", __FILE__, __LINE__);
-while($row = mysql_fetch_assoc($userse)){
-	$context['memberName']=$row['memberName'];
-	$context['avatar']=$row['avatar'];
-	$context['personalText']=$row['personalText'];	
-	$context['ID_POST_GROUP']=$row['ID_POST_GROUP'];
-	$context['ID_GROUP']=$row['ID_GROUP'];
-	$context['realName']=$row['realName'];
-	$context['usertitle']=$row['usertitle'];
-	$context['gender']=$row['gender'];
-	$context['topics']=$row['topics'];
-	$context['firma']=$row['signature'];
-	$context['money']=$row['posts'];
-	$context['ip']=$row['memberIP'];
-	$context['ID_MEMBER']=$row['ID_MEMBER'];}
-mysql_free_result($userse);		
+while($row = mysqli_fetch_assoc($userse)){
+  $context['memberName']=$row['memberName'];
+  $context['avatar']=$row['avatar'];
+  $context['personalText']=$row['personalText'];	
+  $context['ID_POST_GROUP']=$row['ID_POST_GROUP'];
+  $context['ID_GROUP']=$row['ID_GROUP'];
+  $context['realName']=$row['realName'];
+  $context['usertitle']=$row['usertitle'];
+  $context['gender']=$row['gender'];
+  $context['topics']=$row['topics'];
+  $context['firma']=$row['signature'];
+  $context['money']=$row['posts'];
+  $context['ip']=$row['memberIP'];
+  $context['ID_MEMBER']=$row['ID_MEMBER'];}
+mysqli_free_result($userse);		
 echo'<div class="box_140" style="float:left; margin-right:8px;width: 140px;">
 <div class="box_title" style="width: 138px;"><div class="box_txt box_140-34">Publicado por:</div>
 <div class="box_rss"><a href="/rss/post-user/'.$context['realName'].'"><div style="height: 16px; width: 16px; cursor: pointer;" class="feed png"><img alt="" src="'.$tranfer1.'/espacio.gif" class="png" height="16px" width="16px" /></div></a></div></div><div class="windowbg" style="width: 130px; padding: 4px;overflow: hidden; ">
@@ -273,30 +273,30 @@ $userse2 = db_query("
 SELECT g.groupName,g.ID_GROUP
 FROM {$db_prefix}membergroups as g
 WHERE g.ID_GROUP=$idgrup", __FILE__, __LINE__);
-while($row2 = mysql_fetch_assoc($userse2))
+while($row2 = mysqli_fetch_assoc($userse2))
 {$membergropu=$row2['groupName'];}
-mysql_free_result($userse2);		
+mysqli_free_result($userse2);		
 $userse3 = db_query("SELECT g.groupName,g.ID_GROUP
 FROM {$db_prefix}membergroups as g
 WHERE g.ID_GROUP=$idgrup2", __FILE__, __LINE__);
-while($row2 = mysql_fetch_assoc($userse3))
+while($row2 = mysqli_fetch_assoc($userse3))
 {$membergropu2=$row2['groupName'];}
-mysql_free_result($userse3);
+mysqli_free_result($userse3);
 
 $medallavr=db_query("SELECT g.ID_GROUP,g.stars FROM {$db_prefix}membergroups as g WHERE g.ID_GROUP=".(!empty($idgrup2) ? $idgrup2 : $idgrup)."", __FILE__, __LINE__);
-while($row7 = mysql_fetch_assoc($medallavr)){$medalla=$row7['stars'];}
-mysql_free_result($medallavr);
+while($row7 = mysqli_fetch_assoc($medallavr)){$medalla=$row7['stars'];}
+mysqli_free_result($medallavr);
 
-			if ($modSettings['avatar_action_too_large'] == 'option_html_resize' || $modSettings['avatar_action_too_large'] == 'option_js_resize')
-			{
-				if (!empty($modSettings['avatar_max_width_external']))
-					$context['user']['avatar']['width'] = $modSettings['avatar_max_width_external'];
-				if (!empty($modSettings['avatar_max_height_external']))
-		 			$context['user']['avatar']['height'] = $modSettings['avatar_max_height_external'];
-			}
-	
+      if ($modSettings['avatar_action_too_large'] == 'option_html_resize' || $modSettings['avatar_action_too_large'] == 'option_js_resize')
+      {
+        if (!empty($modSettings['avatar_max_width_external']))
+          $context['user']['avatar']['width'] = $modSettings['avatar_max_width_external'];
+        if (!empty($modSettings['avatar_max_height_external']))
+           $context['user']['avatar']['height'] = $modSettings['avatar_max_height_external'];
+      }
+  
 if (!empty($context['avatar']))
-		$context['user']['avatar']['image'] = '<img src="'.$context['avatar'].'"' . (isset($context['user']['avatar']['width']) ? ' width="' . $context['user']['avatar']['width'] . '"' : '') . (isset($context['user']['avatar']['height']) ? ' height="' . $context['user']['avatar']['height'] . '"' : '') . ' alt="" class="avatar" border="0" onerror="error_avatar(this)" />';
+    $context['user']['avatar']['image'] = '<img src="'.$context['avatar'].'"' . (isset($context['user']['avatar']['width']) ? ' width="' . $context['user']['avatar']['width'] . '"' : '') . (isset($context['user']['avatar']['height']) ? ' height="' . $context['user']['avatar']['height'] . '"' : '') . ' alt="" class="avatar" border="0" onerror="error_avatar(this)" />';
 
 
 if ($context['avatar']){
@@ -307,16 +307,16 @@ echo '<div class="fondoavatar" style="overflow: auto; width: 130px;" align="cent
 
 echo'</center><br/>';
 
-	echo'<a href="/perfil/'.$context['memberName'].'" style="font-size:14px;color:#FF6600;"><strong>'.$context['realName'].'</strong></a><br />';
-		
-			echo '<strong style="font-size:12px;color:#747474;text-shadow: #6A5645 0px 1px 1px;">'.(!empty($membergropu2) ? $membergropu2 : $membergropu).'</strong><br />';
-			
-			echo '<span title="', (!empty($membergropu2) ? $membergropu2 : $membergropu), '"><img alt="" src="',str_replace("1#rangos", "$tranfer1/rangos", $medalla), '" /></span>';
-			
-     	
-			echo '&nbsp;<span title="'. sexo1($context['gender']) . '">'. sexo2($context['gender']) . '</span>';
-			if($context['usertitle'])
-			{echo'&nbsp;<img alt="" width="16px" height="11px" title="'. pais($context['usertitle'])  . '" src="'.$tranfer1.'/icons/banderas/'.$context['usertitle'].'.gif" />';}
+  echo'<a href="/perfil/'.$context['memberName'].'" style="font-size:14px;color:#FF6600;"><strong>'.$context['realName'].'</strong></a><br />';
+    
+      echo '<strong style="font-size:12px;color:#747474;text-shadow: #6A5645 0px 1px 1px;">'.(!empty($membergropu2) ? $membergropu2 : $membergropu).'</strong><br />';
+      
+      echo '<span title="', (!empty($membergropu2) ? $membergropu2 : $membergropu), '"><img alt="" src="',str_replace("1#rangos", "$tranfer1/rangos", $medalla), '" /></span>';
+      
+       
+      echo '&nbsp;<span title="'. sexo1($context['gender']) . '">'. sexo2($context['gender']) . '</span>';
+      if($context['usertitle'])
+      {echo'&nbsp;<img alt="" width="16px" height="11px" title="'. pais($context['usertitle'])  . '" src="'.$tranfer1.'/icons/banderas/'.$context['usertitle'].'.gif" />';}
             else{echo'&nbsp;<img alt="" width="16px" height="11px" src="'.$tranfer1.'/icons/banderas/ot.gif" />';}
 if(!$context['user']['is_guest']){echo'&nbsp;<a href="/web/cw-TEMPenviarMP.php?user='.$context['memberName'].'" title="Enviar MP a '.$context['memberName'].'" class="boxy" ><img alt="" src="'.$tranfer1.'/icons/mensaje_para.gif" border="0" /></a>';}
 
@@ -342,28 +342,38 @@ echo'<span class="size11">';
 if($context['ID_MEMBER']<>'1'){
 if($context['allow_admin']){echo'<div class="hrs"></div><b class="size11">Moderador:</b><br />IP: <a target="_blank" href="http://lacnic.net/cgi-bin/lacnic/whois?query='.$context['ip'].'" title="IP: '.$context['ip'].'" rel="nofollow">'.$context['ip'].'</a><br /><a href="/moderacion/edit-user/perfil/',$context['ID_MEMBER'],'" title="Administrar Usuario">ADMINISTRAR USUARIO</a><br />';}}
 if ($context['user']['is_admin']){
-$context['estaon']=mysql_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}log_online WHERE ID_MEMBER='{$user}'", __FILE__, __LINE__));
+$context['estaon']=mysqli_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}log_online WHERE ID_MEMBER='{$user}'", __FILE__, __LINE__));
 if(empty($context['estaon'])){echo'<span style="color:red;">DESCONECTADO</span>';}
 elseif(!empty($context['estaon'])){echo'<span style="color:green;">CONECTADO</span>';}}
 echo'</span>';}
-	
+  
 echo'</div></div>';}
-function nohtml($html){$html=htmlspecialchars(trim($html));return $html;}
-function nohtml1($html){$html=stripslashes($html);return $html;}
-function nohtml2($html){$html=stripslashes(stripslashes($html));return $html;}
+
+function nohtml($html) {
+  return htmlspecialchars(trim($html));
+}
+
+function nohtml1($html) {
+  return stripslashes($html);
+}
+
+function nohtml2($html) {
+  return stripslashes(stripslashes($html));
+}
+
 function moticon($mensaje,$smileys = true){if ($smileys === true){parsesmileys($mensaje);}else{$mensaje=$mensaje;} return $mensaje;}
 
 
 function usuarioComentariosPOST($user){ global $db_prefix;
-$u349jmdjfnsidufh8er=mysql_num_rows(db_query("SELECT id_user FROM {$db_prefix}comentarios WHERE id_user='$user'", __FILE__, __LINE__));
+$u349jmdjfnsidufh8er=mysqli_num_rows(db_query("SELECT id_user FROM {$db_prefix}comentarios WHERE id_user='$user'", __FILE__, __LINE__));
 return $u349jmdjfnsidufh8er;}
 
 function usuarioComentariosIMG($user){ global $db_prefix;
-$u349jmdjfnsidufh8er2=mysql_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}gallery_comment WHERE ID_MEMBER='$user'", __FILE__, __LINE__));
+$u349jmdjfnsidufh8er2=mysqli_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}gallery_comment WHERE ID_MEMBER='$user'", __FILE__, __LINE__));
 return $u349jmdjfnsidufh8er2;}
 
 function usuarioPOST($user){ global $db_prefix;
-$u349jmdjfnsidufh8er3=mysql_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}messages WHERE ID_MEMBER='$user'", __FILE__, __LINE__));
+$u349jmdjfnsidufh8er3=mysqli_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}messages WHERE ID_MEMBER='$user'", __FILE__, __LINE__));
 return $u349jmdjfnsidufh8er3;}
 
 
@@ -375,11 +385,11 @@ SELECT ID_MEMBER,realName,memberIP,avatar
 FROM ({$db_prefix}members)
 WHERE ID_MEMBER='$getid'
 LIMIT 1", __FILE__, __LINE__);
-while ($row = mysql_fetch_assoc($request)){
+while ($row = mysqli_fetch_assoc($request)){
 $context['membernames'] = $row['realName'];
 $context['memberips'] = $row['memberIP'];
 $context['avatar'] = $row['avatar'];}
-mysql_free_result($request);
+mysqli_free_result($request);
 if($getid==$ID_MEMBER){
 if($_GET['sa']=='cuenta'){die();}
 elseif($_GET['sa']=='perfil'){die();}
@@ -439,7 +449,7 @@ echo'<div class="box_140" style="float:left; margin-right:8px;margin-bottom:8px;
 
 echo'</div></div>';}else{fatal_error('Solo para usuarios especiales.');}}
 
-function año(){echo'2010';}
+function aï¿½o(){echo'2010';}
 
 function hides($mje){$mje=str_replace('[img ]','[img]',$mje);return $mje;}
 
@@ -486,12 +496,12 @@ function categorias($tipo,$extra=null){
 global $db_prefix,$context;
 $request=db_query("SELECT ID_BOARD,description,name FROM {$db_prefix}boards", __FILE__, __LINE__);
 $context['boards'] = array();
-while ($row = mysql_fetch_assoc($request)){
+while ($row = mysqli_fetch_assoc($request)){
 $context['boards'][] = array(
 'id' => $row['ID_BOARD'],
 'description' => $row['description'],
 'name' => $row['name'],);}
-mysql_free_result($request);
+mysqli_free_result($request);
 
 if($tipo=='1'){echo'<select style="width:202px;" name="categoria" class="select"><option value="0" selected="selected">Todas</option>';
 foreach ($context['boards'] as $board){
@@ -505,9 +515,9 @@ return false;}
 
 function enlaces()
 {echo'<div align="left" style="margin-bottom:4px;"><a title="Anunciate aca" href="/contactanos/" target="_blank" rel="nofollow" class="anuncio">Anunciate aca</a></div>
-	       <div align="left" style="margin-bottom:4px;"><a title="Anunciate aca" href="/contactanos/" target="_blank" rel="nofollow" class="anuncio">Anunciate aca</a></div>
-	<div class="hrs"></div><center><a class="size10" href="/enlazanos/" target="_blank" rel="nofollow">Enlazanos en tu Web</a></center>';}
-	
+         <div align="left" style="margin-bottom:4px;"><a title="Anunciate aca" href="/contactanos/" target="_blank" rel="nofollow" class="anuncio">Anunciate aca</a></div>
+  <div class="hrs"></div><center><a class="size10" href="/enlazanos/" target="_blank" rel="nofollow">Enlazanos en tu Web</a></center>';}
+  
 function destacado(){global $tranfer1;
 
 $adsense='<p align="center" style="margin:0px;padding:0px;"><iframe src="/web/cw-ads.php?tamanio=300x250" width="300px" height="250px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px" marginheight="0px" marginwidth="0px">.</iframe></p>';
@@ -531,7 +541,7 @@ echo $destacados[$destacados01];}
 
 function actualizareliminados($id = ''){global $db_prefix,$user_info;
 if(!$user_info['is_guest']){
-$lvccct=db_query("SELECT id FROM ({$db_prefix}mensaje_personal) WHERE eliminado_de=1 AND eliminado_para=1", __FILE__, __LINE__);while($asserr=mysql_fetch_assoc($lvccct)){db_query("DELETE FROM {$db_prefix}mensaje_personal WHERE id='{$asserr['id']}'", __FILE__, __LINE__);} $dd=true;}else{$dd=false;} return $dd;}
+$lvccct=db_query("SELECT id FROM ({$db_prefix}mensaje_personal) WHERE eliminado_de=1 AND eliminado_para=1", __FILE__, __LINE__);while($asserr=mysqli_fetch_assoc($lvccct)){db_query("DELETE FROM {$db_prefix}mensaje_personal WHERE id='{$asserr['id']}'", __FILE__, __LINE__);} $dd=true;}else{$dd=false;} return $dd;}
 
 function valida_url($url){
 $direccion=@fopen($url,"r");
@@ -559,11 +569,11 @@ $ht = time()-$valor;
 if($ht>=2116800){
 $dia = date('d',$valor);
 $mes = date('n',$valor);
-$año = date('Y',$valor);
+$aï¿½o = date('Y',$valor);
 $hora = date('H',$valor);
 $minuto = date('i',$valor);
 $mesarray = array('','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre');
-$fecha = "el&nbsp;$dia&nbsp;de&nbsp;$mesarray[$mes]&nbsp;del&nbsp;$año";}
+$fecha = "el&nbsp;$dia&nbsp;de&nbsp;$mesarray[$mes]&nbsp;del&nbsp;$aï¿½o";}
 if($ht<30242054.045){$hc=(int)round($ht/2629743.83);
 if($hc>1){$s="es";}else{$s="";}$fecha="hace&nbsp;$hc&nbsp;mes".$s;}
 if($ht<2116800){$hc=(int)round($ht/604800);
@@ -704,37 +714,52 @@ else{ unset($_SESSION['ultima_accionTIME']); }
 }
 
 
-function salir(){
-global $db_prefix, $sourcedir, $ID_MEMBER, $modSettings,$user_info;
-if(!$user_info['is_guest']){
-if(isset($modSettings['integrate_logout']) && function_exists($modSettings['integrate_logout']))
-call_user_func($modSettings['integrate_logout'], $user_settings['memberName']);
-db_query("
-DELETE FROM {$db_prefix}log_online
-WHERE ID_MEMBER='$ID_MEMBER'
-LIMIT 1", __FILE__, __LINE__);
-require($sourcedir.'/Subs-Auth.php');
-$_SESSION['log_time']=0;
-setLoginCookie(-3600, 0);
-return true;}else{return false;} }
+function salir() {
+  global $db_prefix, $sourcedir, $ID_MEMBER, $modSettings, $user_info, $user_settings;
 
-function cw_header(){ global $tranfer1;
-header("Cache-Control: must-revalidate");
-header("Expires: ".gmdate ("D, d M Y H:i:s", time() + 60*60*24*30)." GMT");
-echo'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es" >
-<!--2008/2010 casitaweb.net/por rigo-->
-<head profile="http://purl.org/NET/erdf/profile">
-<link rel="schema.dc" href="http://purl.org/dc/elements/1.1/" />
-<link rel="schema.foaf" href="http://xmlns.com/foaf/0.1/" />
-<meta name="verify-v1" content="HTXLHK/cBp/LYfs9+fLwj1UOxfq+/iFsv1DZjB6zWZU=" />
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="icon" href="/favicon.ico" type="image/x-icon" />
-<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-<link rel="apple-touch-icon" href="'.$tranfer1.'/apple-touch-icon.png" />
-<meta name="robots" content="All" />
-<meta name="revisit-after" content="1 days" />';
-return true;}
+  if (!$user_info['is_guest']) {
+    if (isset($modSettings['integrate_logout']) && function_exists($modSettings['integrate_logout'])) {
+      call_user_func($modSettings['integrate_logout'], $user_settings['memberName']);
+    }
+
+    db_query("
+      DELETE FROM {$db_prefix}log_online
+      WHERE ID_MEMBER = $ID_MEMBER
+      LIMIT 1", __FILE__, __LINE__);
+
+    require($sourcedir . '/Subs-Auth.php');
+
+    $_SESSION['log_time'] = 0;
+
+    setLoginCookie(-3600, 0);
+
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function cw_header() {
+    global $tranfer1;
+//header("Cache-Control: must-revalidate");
+//header("Expires: ".gmdate ("D, d M Y H:i:s", time() + 60*60*24*30)." GMT");
+  echo '
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es">
+    <!--2008/2010 casitaweb.net/por rigo-->
+    <head profile="http://purl.org/NET/erdf/profile">
+      <link rel="schema.dc" href="http://purl.org/dc/elements/1.1/" />
+      <link rel="schema.foaf" href="http://xmlns.com/foaf/0.1/" />
+      <meta name="verify-v1" content="HTXLHK/cBp/LYfs9+fLwj1UOxfq+/iFsv1DZjB6zWZU=" />
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+      <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+      <link rel="apple-touch-icon" href="' . $tranfer1 . '/apple-touch-icon.png" />
+      <meta name="robots" content="All" />
+      <meta name="revisit-after" content="1 days" />';
+
+  return true;
+}
 
 /*
 
@@ -844,7 +869,7 @@ function html2bbcode($mje) {
         $html [] = '[quote]$2[/quote]';
         //IMG
         //IMG
-            //IMG - TAMAÑO
+            //IMG - TAMAï¿½O
         $bbcode [] = '/\<img(.*?)src=\"(.*?)\"(.*?)width=\"(.*?)\"(.*?)height=\"(.*?)\"(.*?)\>/i';
         $html [] = '[img width=$4 height=$6]$2[/img]';
         
@@ -875,10 +900,10 @@ SELECT count(palabra) as quantity,id
 FROM {$db_prefix}tags
 GROUP BY palabra
 ORDER BY id DESC",__FILE__, __LINE__);
-while($row=mysql_fetch_array($result)){$tag['cantidad']=$row['quantity'];$tag['id']=$row['id'];
+while($row=mysqli_fetch_array($result)){$tag['cantidad']=$row['quantity'];$tag['id']=$row['id'];
 
 db_query("UPDATE {$db_prefix}tags SET cantidad='{$tag['cantidad']}' WHERE id='{$tag['id']}'",__FILE__, __LINE__);}
-mysql_free_result($result);}
+mysqli_free_result($result);}
 */
 
 ?>

@@ -68,9 +68,9 @@ $.ajax({
 </script>';
 
 echo'<form action="/web/cw-PostEditar.php" method="post" accept-charset="'.$context['character_set'].'" name="editarPost" id="editarPost" enctype="multipart/form-data">';
-//previsualización:
+//previsualizaciï¿½n:
 echo'<div id="preview" style="display:none;width:922px;"></div>';
-//fin previsualización
+//fin previsualizaciï¿½n
 
 
 echo'<div style="margin-bottom:8px;margin-right:8px;float:left;width: 235px">
@@ -102,8 +102,8 @@ SELECT hidden,ID_SMILEY,description,filename,code
 FROM ({$db_prefix}smileys)
 WHERE hidden=0
 ORDER BY ID_SMILEY ASC", __FILE__, __LINE__);
-while ($row = mysql_fetch_assoc($existe))
-{echo'<span style="cursor:pointer;" onclick="replaceText(\' ', $row['code'], '\', document.forms.editarPost.editorCW); return false;"><img src="'.$tranfer1.'/emoticones/'.$row['filename'].'" align="bottom" alt="'.$row['description']. '" title="'.$row['description'].'" class="png" /></span> ';}mysql_free_result($existe);
+while ($row = mysqli_fetch_assoc($existe))
+{echo'<span style="cursor:pointer;" onclick="replaceText(\' ', $row['code'], '\', document.forms.editarPost.editorCW); return false;"><img src="'.$tranfer1.'/emoticones/'.$row['filename'].'" align="bottom" alt="'.$row['description']. '" title="'.$row['description'].'" class="png" /></span> ';}mysqli_free_result($existe);
 echo'<a href="javascript:moticonup()">['.$txt['more_smileys'].']</a>';}
 
 $dasdasd=db_query("
@@ -111,7 +111,7 @@ SELECT palabra
 FROM {$db_prefix}tags
 WHERE id_post='{$context['id_post']}'
 ORDER BY palabra ASC", __FILE__, __LINE__);
-while ($row = mysql_fetch_assoc($dasdasd)){$palabra[]=$row['palabra'];}
+while ($row = mysqli_fetch_assoc($dasdasd)){$palabra[]=$row['palabra'];}
 $pal=isset($palabra) ? join(', ', $palabra) : '';
 $col=empty($pal) ? 'background-color:#FFD9CE;' : '';
 echo'<div id="MostrarError3" class="capsprotBAJO">Hace falta que escribas el contenido del post.</div>

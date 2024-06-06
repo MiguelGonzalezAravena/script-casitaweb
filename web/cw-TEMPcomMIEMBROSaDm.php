@@ -21,7 +21,7 @@ $PagSig=$PagAct+1;
 $PagUlt=$NroRegistros/$RegistrosAMostrar;
 $Res=$NroRegistros%$RegistrosAMostrar;
 if($Res>0) $PagUlt=floor($PagUlt)+1;
-$NroRegistros=mysql_num_rows(db_query("SELECT c.id FROM ({$db_prefix}comunidades_miembros AS c, {$db_prefix}members AS m) WHERE c.id_com='{$_GET['c']}' AND c.id_user=m.ID_MEMBER AND c.aprobado=0",__FILE__, __LINE__));
+$NroRegistros=mysqli_num_rows(db_query("SELECT c.id FROM ({$db_prefix}comunidades_miembros AS c, {$db_prefix}members AS m) WHERE c.id_com='{$_GET['c']}' AND c.id_user=m.ID_MEMBER AND c.aprobado=0",__FILE__, __LINE__));
 
 
 echo'<div><div id="contenidoPG" style="width:510px;_width:515px;height: 340px;overflow-y:auto;overflow-x:hidden;">';
@@ -39,7 +39,7 @@ FROM ({$db_prefix}comunidades_miembros AS c, {$db_prefix}members AS m)
 WHERE c.id_com='{$_GET['c']}' AND c.id_user=m.ID_MEMBER AND c.aprobado=0
 ORDER BY c.id DESC
 LIMIT $RegistrosAEmpezar, $RegistrosAMostrar",__FILE__, __LINE__);
-while($row=mysql_fetch_assoc($rs)){
+while($row=mysqli_fetch_assoc($rs)){
 $img=$row['avatar'];
 $gender=$row['gender'];
 $usertitle=$row['usertitle'];

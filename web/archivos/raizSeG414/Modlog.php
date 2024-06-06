@@ -20,7 +20,7 @@ if(!$context['user']['id']){is_not_guest();}
 		ORDER BY lm.ID_ACTION DESC
 		LIMIT 20", __FILE__, __LINE__);
 	$context['entries'] = array();
-	while ($row = mysql_fetch_assoc($result))
+	while ($row = mysqli_fetch_assoc($result))
 	{
 		$row['extra'] = unserialize($row['extra']);
 		$row['extra'] = is_array($row['extra']) ? $row['extra'] : array();
@@ -39,6 +39,6 @@ if(!$context['user']['id']){is_not_guest();}
 			'action' => isset($descriptions[$row['action']]) ? $descriptions[$row['action']] : $row['action'],
 		);
 	}
-	mysql_free_result($result);
+	mysqli_free_result($result);
 }
 ?>

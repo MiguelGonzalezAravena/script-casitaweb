@@ -12,7 +12,7 @@ SELECT p.ID_MEMBER
 FROM ({$db_prefix}messages as p)
 WHERE p.ID_TOPIC='{$post}'
 LIMIT 1",__FILE__, __LINE__);
-while ($post = mysql_fetch_assoc($request)){$mem=$post['ID_MEMBER'];}
+while ($post = mysqli_fetch_assoc($request)){$mem=$post['ID_MEMBER'];}
 $mem=isset($mem) ? $mem : '';
 
     db_query("UPDATE {$db_prefix}members 

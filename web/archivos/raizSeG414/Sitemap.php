@@ -15,7 +15,7 @@ function BoardDisplay(){global $context, $db_prefix, $user_info;
 		FROM {$db_prefix}boards as b
 		WHERE $user_info[query_see_board] $shas
 		ORDER BY b.boardOrder", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{$context['sitemap']['board'][$row['ID_BOARD']] = array(
 			'id' => $row['ID_BOARD'],
 			'level' => $row['childLevel'],
@@ -28,7 +28,7 @@ function BoardDisplay(){global $context, $db_prefix, $user_info;
 			$context['sitemap']['board'][$row['ID_PARENT']]['has_children'] = true;
 			$context['sitemap']['collapsible'] = $context['sitemap']['collapsible'] + array($row['ID_PARENT'] => $row['ID_PARENT']);}}	
 	$context['sitemap']['collapsible'] = '\'parent' . implode('\', \'parent', $context['sitemap']['collapsible']) . '\'';
-	mysql_free_result($request);}
+	mysqli_free_result($request);}
 
 function TopicDisplay($start) {
 	global $context, $db_prefix, $user_info, $scripturl, $modSettings;
@@ -48,7 +48,7 @@ function TopicDisplay($start) {
 		ORDER BY m.ID_TOPIC DESC
 		LIMIT $start,$end", __FILE__, __LINE__);
 
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 			$context['sitemap']['topic'][] = array(
 			'privado' => $row['hiddenOption'],
@@ -66,7 +66,7 @@ function TopicDisplay($start) {
 	}
 
 	// Free the result
-	mysql_free_result($request);
+	mysqli_free_result($request);
 }
 
 function XMLDisplay() {}

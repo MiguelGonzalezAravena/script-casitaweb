@@ -23,7 +23,7 @@ echo'<table class="linksList size11" style="width:922px;" id="nohaynada3">
 foreach ($context['entries'] as $entry){
 echo'<tr>';
 
-$request = db_query("SELECT realName FROM {$db_prefix}members WHERE ID_MEMBER = '{$entry['extra']['member']}' LIMIT 1", __FILE__, __LINE__); while ($row = mysql_fetch_assoc($request)){$iser=$row['realName'];}
+$request = db_query("SELECT realName FROM {$db_prefix}members WHERE ID_MEMBER = '{$entry['extra']['member']}' LIMIT 1", __FILE__, __LINE__); while ($row = mysqli_fetch_assoc($request)){$iser=$row['realName'];}
 
 echo'<td style="text-align:left;">';
 echo traduccion($entry['que']).censorText($entry['extra'][$entry['que']]).'<br />Por: <a href="/perfil/'.$iser.'">'.$iser.'</a>';

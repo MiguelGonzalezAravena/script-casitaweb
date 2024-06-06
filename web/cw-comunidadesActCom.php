@@ -5,7 +5,7 @@ FROM ({$db_prefix}comunidades_comentarios AS c, {$db_prefix}members AS m, {$db_p
 WHERE c.id_user=m.ID_MEMBER AND c.id_tema=t.id AND t.id_com=co.id AND co.bloquear=0 AND t.eliminado=0 AND co.acceso <> 4
 ORDER BY c.id DESC
 LIMIT 10",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs2)){
+while ($row=mysqli_fetch_assoc($rs2)){
 $ddddsxx=nohtml(nohtml2($row['titulo']));
 $ddaa=$row['titulo'];
 echo'<font class="size11"><b><a href="/perfil/'.$row['realName'].'" target="_self" title="'.$row['realName'].'">'.$row['realName'].'</a></b> - <a href="/comunidades/'.$row['url'].'/'.$row['id'].'/'.urls($ddaa).'.html" target="_self" title="'.$ddddsxx.'">'.$ddddsxx.'</a></font><br style="margin: 0px; padding: 0px;">';}}

@@ -29,7 +29,7 @@ if (empty($_REQUEST['u']) && empty($_POST['user'])){
 		LIMIT 1", __FILE__, __LINE__);
 
 	// Does this user exist at all?
-	if (mysql_num_rows($request) == 0)
+	if (mysqli_num_rows($request) == 0)
 	{
 		$context['sub_template'] = 'retry_activate';
 		$context['page_title'] = isset($txt['invalid_userid']) ? $txt['invalid_userid'] : '';
@@ -38,8 +38,8 @@ if (empty($_REQUEST['u']) && empty($_POST['user'])){
 		return;
 	}
 
-	$row = mysql_fetch_assoc($request);
-	mysql_free_result($request);
+	$row = mysqli_fetch_assoc($request);
+	mysqli_free_result($request);
 
 	if (isset($_POST['new_email'], $_REQUEST['passwd']) && sha1(strtolower($row['memberName']) . $_REQUEST['passwd']) == $row['passwd'])
 	{
@@ -54,9 +54,9 @@ if (empty($_REQUEST['u']) && empty($_POST['user'])){
 			FROM {$db_prefix}members
 			WHERE emailAddress = '$_POST[new_email]'
 			LIMIT 1", __FILE__, __LINE__);
-		if (mysql_num_rows($request) != 0)
+		if (mysqli_num_rows($request) != 0)
 			fatal_error(sprintf($txt[730], htmlspecialchars($_POST['new_email'])), false);
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		updateMemberData($row['ID_MEMBER'], array('emailAddress' => "'$_POST[new_email]'"));
 		$row['emailAddress'] = stripslashes($_POST['new_email']);

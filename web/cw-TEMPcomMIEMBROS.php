@@ -10,7 +10,7 @@ $RegistrosAMostrar=8;
 if($_GET['pag']<1){$per='1';}else{$per=$_GET['pag'];}
 if(isset($per)){$RegistrosAEmpezar=($per-1)*$RegistrosAMostrar;
 $PagAct=$per;}else{$RegistrosAEmpezar=0;$PagAct=1;}
-$NroRegistros=mysql_num_rows(db_query("SELECT c.id FROM ({$db_prefix}comunidades_miembros AS c, {$db_prefix}members AS m) WHERE c.id_com='{$_GET['c']}' AND c.id_user=m.ID_MEMBER AND c.aprobado=1",__FILE__, __LINE__));
+$NroRegistros=mysqli_num_rows(db_query("SELECT c.id FROM ({$db_prefix}comunidades_miembros AS c, {$db_prefix}members AS m) WHERE c.id_com='{$_GET['c']}' AND c.id_user=m.ID_MEMBER AND c.aprobado=1",__FILE__, __LINE__));
 $PagAnt=$PagAct-1;
 $PagSig=$PagAct+1;
 $PagUlt=$NroRegistros/$RegistrosAMostrar;
@@ -31,7 +31,7 @@ FROM ({$db_prefix}comunidades_miembros AS c, {$db_prefix}members AS m)
 WHERE c.id_com='{$_GET['c']}' AND c.id_user=m.ID_MEMBER AND c.aprobado=1
 ORDER BY c.id DESC
 LIMIT $RegistrosAEmpezar, $RegistrosAMostrar",__FILE__, __LINE__);
-while($row=mysql_fetch_assoc($rs)){
+while($row=mysqli_fetch_assoc($rs)){
 $img=$row['avatar'];
 $gender=$row['gender'];
 $usertitle=$row['usertitle'];

@@ -1,26 +1,26 @@
-php_flag safe_mode ON
-php_flag always_populate_raw_post_data Off
-php_flag register_globals OFF
-php_flag magic_quotes_gpc OFF
-php_flag magic_quotes_runtime Off
-php_flag magic_quotes_sybase Off
-php_flag safe_mode_gid Off
-php_flag expose_php OFF
-php_flag engine ON
-php_flag precision 14
-php_flag y2k_compliance ON
-php_flag output_buffering Off
-php_flag short_open_tag OFF
-php_flag register_argc_argv OFF
-php_flag sendmail_from soporte@casitaweb.net
-php_flag define_syslog_variables OFF
-php_flag allow_url_fopen OFF
-php_flag upload_max_filesize 1M
-php_flag display_errors OFF
-php_flag file_uploads OFF
-php_flag log_errors OFF
+#php_flag safe_mode ON
+#php_flag always_populate_raw_post_data Off
+#php_flag register_globals OFF
+#php_flag magic_quotes_gpc OFF
+#php_flag magic_quotes_runtime Off
+#php_flag magic_quotes_sybase Off
+#php_flag safe_mode_gid Off
+#php_flag expose_php OFF
+#php_flag engine ON
+#php_flag precision 14
+#php_flag y2k_compliance ON
+#php_flag output_buffering Off
+#php_flag short_open_tag OFF
+#php_flag register_argc_argv OFF
+#php_flag sendmail_from soporte@casitaweb.net
+#php_flag define_syslog_variables OFF
+#php_flag allow_url_fopen OFF
+#php_flag upload_max_filesize 1M
+#php_flag display_errors OFF
+#php_flag file_uploads OFF
+#php_flag log_errors OFF
 RewriteEngine On
-RewriteBase /
+RewriteBase /casitaweb/
 Rewriterule ^sitemap.xml /web/cw-sitemapPost.php [PT,L]
 Rewriterule ^crear-comunidad(.*)$ index.php?accioncw241=com;m=crearcomunidad [PT,L]
 Rewriterule ^comunidades/dir/(.+)/pag-(.+)$ index.php?accioncw241=com;m=dir;cat=$1;paeg=$2 [PT,L]

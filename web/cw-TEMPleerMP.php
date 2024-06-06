@@ -9,7 +9,7 @@ SELECT p.name_de,p.fecha,p.mensaje,p.id,p.leido
 FROM ({$db_prefix}mensaje_personal AS p)
 WHERE p.id='$id' AND p.id_para='{$ID_MEMBER}' AND p.eliminado_para=0
 LIMIT 1", __FILE__, __LINE__);
-while($row=mysql_fetch_array($leer)){
+while($row=mysqli_fetch_array($leer)){
 if(empty($row['leido'])){
 db_query("UPDATE {$db_prefix}mensaje_personal SET leido=1 WHERE id='$id' AND id_para='{$ID_MEMBER}' LIMIT 1", __FILE__, __LINE__);
 db_query("UPDATE {$db_prefix}members SET topics=topics-1 WHERE ID_MEMBER='{$ID_MEMBER}' LIMIT 1", __FILE__, __LINE__);}
@@ -38,7 +38,7 @@ echo '<p align="right" style="margin-top:5px;"><input class="login" style="font-
 
 </div>';
 $d=$row['id'];
-}mysql_free_result($leer);
+}mysqli_free_result($leer);
 $d=isset($d) ? $d : '';
 if(empty($d)){die('<div class="noesta" style=";width:552px;">Mensaje no econtrado.</div>');}
 

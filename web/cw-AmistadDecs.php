@@ -10,7 +10,7 @@ SELECT c.amigo,c.user
 FROM ({$db_prefix}amistad AS c)
 WHERE c.id='{$aLista}' AND c.acepto=0
 LIMIT 1", __FILE__, __LINE__);
-while($red=mysql_fetch_array($reddd)){$context['amigo']=$red['amigo'];$userxx=$red['user'];}
+while($red=mysqli_fetch_array($reddd)){$context['amigo']=$red['amigo'];$userxx=$red['user'];}
 
 if($context['amigo']==$user_settings['ID_MEMBER']){
 $tip=(int)$_GET['tipo'];

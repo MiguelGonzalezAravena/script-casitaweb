@@ -26,7 +26,7 @@ $titulo=addcslashes($tituloedit, '"');
 $titulo=trim($tituloedit);
 
 $postedit=$func['htmlspecialchars']($_POST['contenido']);
-$post=str_replace(array('"', '<', '>', '  ', "'", "’", "‘"), array('&quot;', '&lt;', '&gt;', ' &nbsp;', '&#39;', '&#8217;', '&#8216;'), $postedit);
+$post=str_replace(array('"', '<', '>', '  ', "'", "ï¿½", "ï¿½"), array('&quot;', '&lt;', '&gt;', ' &nbsp;', '&#39;', '&#8217;', '&#8216;'), $postedit);
 $post= preg_replace('~<br(?: /)?' . '>~i', "\n", $postedit);
 $post=trim($postedit);
 
@@ -48,7 +48,7 @@ if(strlen($_POST['contenido'])<=60){Header("Location: $url");exit();die();}
 if(strlen($_POST['contenido'])>$modSettings['max_messageLength']){Header("Location: $url");exit();die();}
 
 
-$context['contadorsss']=mysql_num_rows(db_query("
+$context['contadorsss']=mysqli_num_rows(db_query("
 SELECT ID_BOARD
 FROM {$db_prefix}boards
 WHERE ID_BOARD='$categorias'
@@ -78,7 +78,7 @@ $ID_TOPICTA=db_insert_id();
 
 //tags
 for($i=0;$i<$c;++$i){    
-$lvccct=db_query("SELECT id FROM ({$db_prefix}tags) WHERE palabra='$a[$i]' AND rango=1 LIMIT 1", __FILE__, __LINE__); while($asserr=mysql_fetch_assoc($lvccct)){$idse=$asserr['id'];}
+$lvccct=db_query("SELECT id FROM ({$db_prefix}tags) WHERE palabra='$a[$i]' AND rango=1 LIMIT 1", __FILE__, __LINE__); while($asserr=mysqli_fetch_assoc($lvccct)){$idse=$asserr['id'];}
 $idse=isset($idse) ? $idse : '';
 $a[$i]=nohtml($a[$i]);
 if(!empty($idse)){db_query("UPDATE {$db_prefix}tags SET cantidad=cantidad+1 WHERE id='$idse' AND rango=1 LIMIT 1", __FILE__, __LINE__); $rg='0';}else{$rg='1';}

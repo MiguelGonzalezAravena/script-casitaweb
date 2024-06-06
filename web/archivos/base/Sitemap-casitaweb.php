@@ -5,13 +5,13 @@ $request = db_query("
 SELECT b.ID_BOARD,b.description, b.name, b.childLevel
 FROM {$db_prefix}boards AS b", __FILE__, __LINE__);
 $context['boards'] = array();
-while ($row = mysql_fetch_assoc($request))
+while ($row = mysqli_fetch_assoc($request))
 $context['boards'][] = array(
 'id' => $row['ID_BOARD'],
 'name' => $row['name'],
 'description' => $row['description'],
 'child_level' => $row['childLevel']);
-mysql_free_result($request);
+mysqli_free_result($request);
 echo'<div class="box_300" style="float:left;margin-right:8px;" align="left">
 <div class="box_title" style="width: 300px;"><div class="box_txt box_300-34">General</div>
 <div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="padding:4px;width:292px;"><span class="size11"><a href="http://ayuda.casitaweb.net/" title="Ayuda">Ayuda</a><br /><a href="/buscador/" title="Buscador">Buscador</a><br /><a href="/chat/" title="Chat">Chat</a><br /><a href="/contactanos/" title="Contacto">Contacto</a><br /><a href="/enlazanos/" title="Enlazanos">Enlazanos</a><br /><a href="/protocolo/" title="Protocolo">Protocolo</a><br /><a href="/widget/" title="Widget">Widget</a><br /><a href="/terminos-y-condiciones/" title="T&eacute;rminos y condiciones">T&eacute;rminos y condiciones</a><br /><a href="/tops/" title="Top">Top</a>

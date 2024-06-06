@@ -25,7 +25,7 @@ if(strlen($_POST['titulo'])>=61){falta('El titulo no puede tener m&aacute;s de <
 if(strlen($_POST['contenido'])<=60){falta('El post no puede tener menos de <b>60 letras</b>.-');}
 if(strlen($_POST['contenido'])>$modSettings['max_messageLength']){falta('El post no puede tener m&aacute;s de <b>'.$modSettings['max_messageLength'].' letras</b>.-');}
 
-$context['contadorsss']=mysql_num_rows(db("
+$context['contadorsss']=mysqli_num_rows(db("
 SELECT catid
 FROM {$prefijo}cats
 WHERE catid='$categorias'

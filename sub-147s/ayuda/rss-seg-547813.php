@@ -19,7 +19,7 @@ $casd=db("SELECT titulo,id,contenido
 FROM {$prefijo}articulos
 ORDER BY id DESC
 LIMIT 10", __FILE__, __LINE__);
-while ($row = mysql_fetch_assoc($casd)){
+while ($row = mysqli_fetch_assoc($casd)){
 $row['contenido']=censorText(nohtml2($row['contenido']));
 $row['titulo']=censorText(nohtml2($row['titulo']));
 $row['contenido']=str_replace('http://link.casitaweb.net/index.php?l=','',$row['contenido']);

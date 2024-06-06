@@ -55,9 +55,9 @@ $.ajax({
 </script>';
           
 echo'<form action="/web/cw-PostAgregar.php" method="post" accept-charset="'.$context['character_set'].'" name="nuevoPost" id="nuevoPost" enctype="multipart/form-data">';
-//previsualización:
+//previsualizaciï¿½n:
 echo'<div id="preview" style="display:none;width:922px;"></div>';
-//fin previsualización
+//fin previsualizaciï¿½n
 
 echo'<div style="margin-bottom:8px; margin-right:8px; float:left;width: 235px;">
 
@@ -86,8 +86,8 @@ SELECT hidden,ID_SMILEY,description,filename,code
 FROM ({$db_prefix}smileys)
 WHERE hidden=0
 ORDER BY ID_SMILEY ASC", __FILE__, __LINE__);
-while ($row = mysql_fetch_assoc($existe))
-{echo'<span style="cursor:pointer;" onclick="replaceText(\' ', $row['code'], '\', document.forms.nuevoPost.editorCW); return false;"><img src="'.$tranfer1.'/emoticones/'.$row['filename'].'" align="bottom" alt="'.$row['description']. '" title="'.$row['description'].'" /></span> ';}mysql_free_result($existe);
+while ($row = mysqli_fetch_assoc($existe))
+{echo'<span style="cursor:pointer;" onclick="replaceText(\' ', $row['code'], '\', document.forms.nuevoPost.editorCW); return false;"><img src="'.$tranfer1.'/emoticones/'.$row['filename'].'" align="bottom" alt="'.$row['description']. '" title="'.$row['description'].'" /></span> ';}mysqli_free_result($existe);
 echo'<a href="javascript:moticonup()">['.$txt['more_smileys'].']</a>';}
 
 echo'<div id="MostrarError3" class="capsprotBAJO">Hace falta que escribas el contenido del post.</div>

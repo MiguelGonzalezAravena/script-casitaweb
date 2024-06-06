@@ -8,7 +8,7 @@ $rs=db_query("SELECT c.rango,c.ban,c.id,c.rango,c.id_user,co.url,c.id_com
 FROM ({$db_prefix}comunidades_miembros AS c, {$db_prefix}comunidades AS co)
 WHERE c.id='$us' AND c.id_com=co.id AND c.aprobado=1
 LIMIT 1",__FILE__, __LINE__);
-while($row=mysql_fetch_assoc($rs)){
+while($row=mysqli_fetch_assoc($rs)){
     $cdavvbv=$row['id'];
     $id_comvv=$row['id_com'];
     $url=$row['url'];

@@ -30,11 +30,11 @@ SELECT m.memberName, m.realName,m.ID_MEMBER
 FROM {$db_prefix}members AS m
 WHERE m.realName='$us'
 LIMIT 1", __FILE__, __LINE__);
-$row=mysql_fetch_assoc($dbresult);
+$row=mysqli_fetch_assoc($dbresult);
 $context['gallery_userid']=$row['ID_MEMBER'];
 if(!$context['gallery_userid']){fatal_error('Este usuario no existe.-',false);}
 $context['gallery_usergallery_name']=$row['realName'];
-mysql_free_result($dbresult);
+mysqli_free_result($dbresult);
 $context['page_title'] = $txt[18];
 $context['sub_template']  = 'galeria';
 $context['sub_template']  = 'main';
@@ -70,7 +70,7 @@ FROM {$db_prefix}gallery_pic as p
 LEFT JOIN {$db_prefix}members AS m ON (p.ID_MEMBER = m.ID_MEMBER)
 WHERE p.ID_PICTURE='$id' 
 LIMIT 1", __FILE__, __LINE__);
-$row = mysql_fetch_assoc($dbresult);
+$row = mysqli_fetch_assoc($dbresult);
 $title=censorText(nohtml2(nohtml($row['title'])));
 $context['gallery_pic'] = array(
 		'ID_PICTURE' => $row['ID_PICTURE'],
@@ -81,7 +81,7 @@ $context['gallery_pic'] = array(
 		'filename' => censorText(nohtml2(nohtml($row['filename']))),
 		'date' => $row['date']
         );
-mysql_free_result($dbresult);
+mysqli_free_result($dbresult);
 $title=isset($title) ? $title : '';
 $ds=isset($row['ID_PICTURE']) ? '1' : '0'; 
 if(empty($ds)) fatal_error('Esta imagen no existe.',false);
@@ -92,9 +92,9 @@ if($user_info['smiley_set'] != 'none'){
 			FROM {$db_prefix}smileys
 			WHERE hidden IN (0, 2)
 			ORDER BY smileyRow, smileyOrder", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$context['smileys'][empty($row['hidden']) ? 'postform' : 'popup'][$row['smileyRow']]['smileys'][] = $row;
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 
 $context['sub_template']  = 'view_picture';
@@ -117,11 +117,11 @@ $dbresult=db_query("
 SELECT p.filename,p.title,p.ID_PICTURE
 FROM {$db_prefix}gallery_pic as p
 WHERE ID_PICTURE='$id' LIMIT 1", __FILE__, __LINE__);
-	$row=mysql_fetch_assoc($dbresult);
+	$row=mysqli_fetch_assoc($dbresult);
 	$context['gallery_pic'] = array(
 		'filename' => $row['filename'],
 		'title' => $row['title']);
-	mysql_free_result($dbresult);
+	mysqli_free_result($dbresult);
 if(empty($row['ID_PICTURE'])){
 fatal_error('Esta im&aacute;gen no existe o fue eliminada.-',false);}
 

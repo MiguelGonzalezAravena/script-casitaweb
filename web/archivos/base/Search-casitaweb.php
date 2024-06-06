@@ -35,7 +35,7 @@ $PagAct=$dud;}else{$RegistrosAEmpezar=0;$PagAct=1;}
 
 if(!$context['user']['is_admin']){$shas=' AND p.ID_BOARD<>142 ';}else{$shas='';}
 
-$NroRegistros=mysql_num_rows(db_query("
+$NroRegistros=mysqli_num_rows(db_query("
 SELECT p.subject 
 FROM {$db_prefix}messages AS p
 WHERE $ssdeeesss2 $cats $ssdeeesss $shas", __FILE__, __LINE__));
@@ -52,7 +52,7 @@ WHERE $ssdeeesss2 $cats $ssdeeesss AND p.ID_BOARD=c.ID_BOARD$shas AND p.ID_MEMBE
 ORDER BY $dbor
 LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
 $context['posts']=array();
-while($row=mysql_fetch_assoc($result)){
+while($row=mysqli_fetch_assoc($result)){
     $context['posts'][]=array(
 		'puntos' => $row['puntos'],
 		'description' => $row['description'],
@@ -62,7 +62,7 @@ while($row=mysql_fetch_assoc($result)){
 		'relevancia' => $row['Score'],
 		'titulo' => censorText($row['subject']));
         }
-mysql_free_result($result);
+mysqli_free_result($result);
 if(!$NroRegistros){echo'<div class="noesta-am" style="width:922px;">No se encontraron resultados.</div>';}else{
     
 $daasdasda=$RegistrosAEmpezar ? ($RegistrosAEmpezar+1) : '1';

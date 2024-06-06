@@ -11,7 +11,7 @@ FROM ({$db_prefix}gallery_pic)
 WHERE ID_MEMBER='{$user_settings['ID_MEMBER']}'
 ORDER BY date DESC
 LIMIT 1", __FILE__, __LINE__);
-while($lim2=mysql_fetch_assoc($limit3)){$modifiedTime=$lim2['date'];}
+while($lim2=mysqli_fetch_assoc($limit3)){$modifiedTime=$lim2['date'];}
 if($modifiedTime>time()-60){die('0: No es posible agregar im&aacute;gen con tan poca diferencia de tiempo.<br />Vuelva a intentar en segundos.');}
 
 $title=seguridad(nohtml2($_POST['title']));

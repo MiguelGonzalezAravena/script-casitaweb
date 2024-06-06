@@ -32,13 +32,13 @@ $request=db_query("
 		WHERE b.ID_BOARD=m.ID_BOARD
 		ORDER BY m.ID_TOPIC DESC
 		LIMIT 100", __FILE__, __LINE__);
-while ($row = mysql_fetch_assoc($request))
+while ($row = mysqli_fetch_assoc($request))
 {$context['sitemap']['topic'][] = array(
 			'id' => $row['ID_TOPIC'] . '',
 			'description' => $row['description'] . '',
 			'subject' => $row['subject'] . '',
 			'time' => date_iso8601($row['posterTime']),
-		);}mysql_free_result($request);
+		);}mysqli_free_result($request);
 foreach ($context['sitemap']['topic'] as $topic){echo'<url>
 <loc>'.text($myurl.'post/'.$topic['id'].'/'.$topic['description'].'/'.urls($topic['subject'])).'.html</loc>
 <lastmod>'.$topic['time'].'</lastmod>

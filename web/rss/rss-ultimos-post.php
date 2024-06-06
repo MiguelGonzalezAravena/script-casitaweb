@@ -19,7 +19,7 @@ FROM ({$db_prefix}messages AS m, {$db_prefix}boards as b)
 WHERE b.ID_BOARD=m.ID_BOARD AND m.ID_BOARD<>142
 ORDER BY m.ID_TOPIC DESC LIMIT 10",__FILE__, __LINE__);
 $context['rssuser'] = array();
-while ($row = mysql_fetch_assoc($existe))
+while ($row = mysqli_fetch_assoc($existe))
 {$row['body'] = nohtml($row['body']);
 $row['body'] = parse_bbc($row['body'], 1, $row['ID_MSG']);
 $row['body'] = str_replace(' onload="if(this.width >720) {this.width=720}"','',$row['body']);
@@ -34,7 +34,7 @@ $context['rssuser'][] = array(
 'description' => $row['description'], 
 'body' => $row['body'], 
 'postprivado' => $row['hiddenOption'],);}
-mysql_free_result($existe);
+mysqli_free_result($existe);
 foreach($context['rssuser'] AS $rssuser){echo'<item>
 <title><![CDATA['. $rssuser['titulo'] .']]></title>
 <link>http://casitaweb.net/post/'. $rssuser['id'] .'/'.$rssuser['description'].'/'.censorText(urls($rssuser['titulo'])).'.html</link>

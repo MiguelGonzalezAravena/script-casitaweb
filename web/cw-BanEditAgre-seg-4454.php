@@ -25,7 +25,7 @@ SELECT g.notes,g.clave,m.ID_MEMBER,m.memberIP,m.emailAddress
 FROM ({$db_prefix}ban_groups as g,{$db_prefix}members as m)
 WHERE g.ID_BAN_GROUP='$id' AND g.name=m.realName
 LIMIT 1", __FILE__, __LINE__);
-while($rows=mysql_fetch_assoc($request352)){
+while($rows=mysqli_fetch_assoc($request352)){
 $memberIP=$rows['memberIP'];
 $emailAddress=$rows['emailAddress'];
 $notes=$rows['notes'];$clavsss=$rows['clave'];$IssD_MEMBER=$rows['ID_MEMBER'];}
@@ -62,24 +62,24 @@ SELECT realName,memberIP,emailAddress
 FROM {$db_prefix}members
 WHERE ID_MEMBER='$id'
 LIMIT 1", __FILE__, __LINE__);
-while($rows=mysql_fetch_assoc($request352)){$name=$rows['realName'];$memberIP=$rows['memberIP'];
+while($rows=mysqli_fetch_assoc($request352)){$name=$rows['realName'];$memberIP=$rows['memberIP'];
 $resultado=db_query("
 SELECT a.expire_time,a.name
 FROM ({$db_prefix}ban_groups AS a)
 WHERE a.name='{$name}'
 LIMIT 1", __FILE__, __LINE__);
-while($ban=mysql_fetch_array($resultado)){
+while($ban=mysqli_fetch_array($resultado)){
 $expirate=$ban['expire_time'] === null ? 0 : ($ban['expire_time'] < time() ? 1 : 0);
 if($expirate){db_query("DELETE FROM {$db_prefix}ban_groups WHERE name='{$name}' LIMIT 1", __FILE__, __LINE__);}}
 
 
 $emailAddress=$rows['emailAddress'];}
-mysql_free_result($request352);
+mysqli_free_result($request352);
 if(!$name){die('0: El usuario especificado no existe.');}
 if($name==$user_settings['realName']){die('0: No puedes banearte a vos mismo.');}
 if($name=='rigo'){die('0: No puedes banear a este usuario.');}
 
-$ddd=mysql_num_rows(db_query("
+$ddd=mysqli_num_rows(db_query("
 SELECT name
 FROM {$db_prefix}ban_groups
 WHERE name='$name'

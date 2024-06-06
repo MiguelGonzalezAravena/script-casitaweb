@@ -11,10 +11,10 @@ SELECT ID_MEMBER,title
 FROM {$db_prefix}gallery_pic
 WHERE ID_PICTURE='$id'
 LIMIT 1", __FILE__, __LINE__);
-while($grups = mysql_fetch_assoc($dbs)){
+while($grups = mysqli_fetch_assoc($dbs)){
 $user=$grups['ID_MEMBER'];
 $title=$grups['title'];}
-mysql_free_result($dbs);
+mysqli_free_result($dbs);
 $user=isset($user) ? $user : '';
 if(empty($user)){die('0: La im&aacute;gen no existe o fue eliminada.');}
 
@@ -23,7 +23,7 @@ SELECT id_user
 FROM {$db_prefix}gallery_cat
 WHERE id_user='{$user_settings['ID_MEMBER']}' AND id_img='{$id}'
 LIMIT 1", __FILE__, __LINE__);
-$yadio=mysql_num_rows($errorr) != 0 ? true : false; mysql_free_result($errorr);
+$yadio=mysqli_num_rows($errorr) != 0 ? true : false; mysqli_free_result($errorr);
 	if($user_settings['posts'] < $cantidad)
 	die('0: No tienes esa cantidad de puntos.-');
 	elseif ($cantidad < 1)

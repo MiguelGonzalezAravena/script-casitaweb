@@ -14,8 +14,8 @@
 <ul onclick="AbrirCats();" class="language"><li class="cats"><a href="#" >Ver Categor&iacute;as</a></li>
 <?php 
 $catlist=db("SELECT cat,enlace FROM cfaq_cats WHERE maincat=0 ORDER BY cat DESC", __FILE__, __LINE__);
-while ($rows = mysql_fetch_assoc($catlist)){echo'<li class="cats otherlang" ><a href="/categoria/'.$rows['enlace'].'" >'.$rows['cat'].'</a></li>';} 
-mysql_free_result($catlist); ?>
+while ($rows = mysqli_fetch_assoc($catlist)){echo'<li class="cats otherlang" ><a href="/categoria/'.$rows['enlace'].'" >'.$rows['cat'].'</a></li>';} 
+mysqli_free_result($catlist); ?>
 
 </ul><ul class="servicenav">
 <?php if($user_info['is_admin'] || $user_info['is_mods']){?> <li><a href="/agregar/">Agregar articulo</a></li><?php } ?>

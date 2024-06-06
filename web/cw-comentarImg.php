@@ -7,7 +7,7 @@ FROM ({$db_prefix}gallery_comment AS m)
 WHERE '{$user_settings['ID_MEMBER']}'=m.ID_MEMBER
 ORDER BY m.ID_COMMENT DESC
 LIMIT 1", __FILE__, __LINE__);
-while($lim0=mysql_fetch_assoc($limit)){$posterTime=$lim0['date'];}
+while($lim0=mysqli_fetch_assoc($limit)){$posterTime=$lim0['date'];}
 if($posterTime>time()-25){die('0: No es posible comentar imagen con tan poca diferencia de tiempo.-');}
 
 $id=isset($_POST['id']) ? (int)$_POST['id'] : '';
@@ -18,10 +18,10 @@ FROM ({$db_prefix}gallery_pic AS m)
 WHERE m.ID_PICTURE='$id'
 ORDER BY m.ID_PICTURE DESC
 LIMIT 1", __FILE__, __LINE__);
-while($row=mysql_fetch_assoc($datos)){$id_pic=$row['ID_PICTURE'];$lmemdsa=$row['ID_MEMBER'];}mysql_free_result($datos);
+while($row=mysqli_fetch_assoc($datos)){$id_pic=$row['ID_PICTURE'];$lmemdsa=$row['ID_MEMBER'];}mysqli_free_result($datos);
 
 if(empty($id_pic)){die('0: La im&aacute;gen seleccionada no existe.-');}
-$ignorado=mysql_num_rows(db_query("SELECT id_user FROM ({$db_prefix}pm_admitir) WHERE id_user='$lmemdsa' AND quien='{$user_settings['ID_MEMBER']}' LIMIT 1", __FILE__, __LINE__));
+$ignorado=mysqli_num_rows(db_query("SELECT id_user FROM ({$db_prefix}pm_admitir) WHERE id_user='$lmemdsa' AND quien='{$user_settings['ID_MEMBER']}' LIMIT 1", __FILE__, __LINE__));
 if($ignorado){die('0: No podes comentar esta imagen.-');}
 $comentario=isset($_POST['editorCW']) ? trim($_POST['editorCW']) : '';
 if(strlen($comentario)>4500){die('0: El comentario es demasiado extenso, abrevi&aacute;.-');}
@@ -44,11 +44,11 @@ $request = db_query("SELECT c.comment, c.date,c.ID_COMMENT
 FROM ({$db_prefix}gallery_comment AS c) 
 WHERE c.ID_MEMBER='{$user_settings['ID_MEMBER']}'
 ORDER BY c.ID_COMMENT ASC", __FILE__, __LINE__);
-while ($row = mysql_fetch_assoc($request)){
+while ($row = mysqli_fetch_assoc($request)){
 $context['comentariods']=censorText(parse_bbc($row['comment']));
 $context['id_coment']=$row['ID_COMMENT'];
 $context['fecha']=$row['date'];}
-mysql_free_result($request);
+mysqli_free_result($request);
 
 if($ID_MEMBER<>$lmemdsa){
 $url='/imagenes/ver/'.$id_pic.'#cmt_'.$context['id_coment'];

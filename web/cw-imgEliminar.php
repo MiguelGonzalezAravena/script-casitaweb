@@ -9,11 +9,11 @@ if(empty($id))fatal_error($txt['gallery_error_no_pic_selected']);
 	FROM {$db_prefix}gallery_pic as p
 	WHERE p.ID_PICTURE='$id'
 	LIMIT 1", __FILE__, __LINE__);
-	$row = mysql_fetch_assoc($dbresult);
+	$row = mysqli_fetch_assoc($dbresult);
 	$memID=$row['ID_MEMBER'];
 	$title=censorText(nohtml($row['title']));
 	$puntosdados=$row['puntos'];
-	mysql_free_result($dbresult);
+	mysqli_free_result($dbresult);
 if(empty($memID))fatal_error($txt['gallery_error_no_pic_selected']);
     
 if(($user_info['is_admin'] || $user_info['is_mods']) || $ID_MEMBER == $memID){
@@ -22,7 +22,7 @@ if($puntosdados){db_query("UPDATE {$db_prefix}members SET posts=posts-$puntosdad
 		db_query("DELETE FROM {$db_prefix}gallery_pic WHERE ID_PICTURE='$id' LIMIT 1",__FILE__, __LINE__);
 
 $datosmem=db_query("SELECT realName,recibirmail FROM ({$db_prefix}members) WHERE ID_MEMBER='$memID'",__FILE__, __LINE__);
-while($data=mysql_fetch_assoc($datosmem)){$ser=$data['realName'];$remail=$data['recibirmail'];}
+while($data=mysqli_fetch_assoc($datosmem)){$ser=$data['realName'];$remail=$data['recibirmail'];}
 
 if(($user_info['is_admin'] || $user_info['is_mods']) && $memID != $user_settings['ID_MEMBER']){
 

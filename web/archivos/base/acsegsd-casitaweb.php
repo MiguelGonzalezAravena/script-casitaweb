@@ -18,7 +18,7 @@ SELECT signature
 FROM ({$db_prefix}members)
 WHERE ID_MEMBER='$usecc'
 LIMIT 1", __FILE__, __LINE__);
-while ($row = mysql_fetch_assoc($existe)){$signature=$row['signature'];}
+while ($row = mysqli_fetch_assoc($existe)){$signature=$row['signature'];}
 
 echo'<script type="text/javascript">
 function comprobar(firma) {
@@ -64,17 +64,17 @@ if($_GET['pag-seg-157'] < 0){$dud=1;}else{$dud=$_GET['pag-seg-157'];}
 if(isset($dud)){$RegistrosAEmpezar=($dud-1)*$RegistrosAMostrar;
 $PagAct=$dud;}else{$RegistrosAEmpezar=0;$PagAct=1;}
 $Resultado=db_query("SELECT pm.id,pm.id_user,pm.de,pm.muro,pm.tipo FROM ({$db_prefix}muro as pm) ORDER BY pm.id DESC LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
-while($MostrarFila2=mysql_fetch_array($Resultado)){
+while($MostrarFila2=mysqli_fetch_array($Resultado)){
 echo'<div id="muro-'.$MostrarFila2['id'].'">';
 
-$datosmem=db_query("SELECT realName FROM ({$db_prefix}members) WHERE ID_MEMBER='{$MostrarFila2['id_user']}' LIMIT 1", __FILE__, __LINE__);while($data=mysql_fetch_assoc($datosmem)){$nick=$data['realName'];}
-$datosmem2=db_query("SELECT realName FROM ({$db_prefix}members) WHERE ID_MEMBER='{$MostrarFila2['de']}' LIMIT 1", __FILE__, __LINE__);while($data4=mysql_fetch_assoc($datosmem2)){$nick3=$data4['realName'];}
+$datosmem=db_query("SELECT realName FROM ({$db_prefix}members) WHERE ID_MEMBER='{$MostrarFila2['id_user']}' LIMIT 1", __FILE__, __LINE__);while($data=mysqli_fetch_assoc($datosmem)){$nick=$data['realName'];}
+$datosmem2=db_query("SELECT realName FROM ({$db_prefix}members) WHERE ID_MEMBER='{$MostrarFila2['de']}' LIMIT 1", __FILE__, __LINE__);while($data4=mysqli_fetch_assoc($datosmem2)){$nick3=$data4['realName'];}
 
 if($MostrarFila2['tipo']=='0'){echo'<img src="'.$tranfer1.'/icons/bullet-verde.gif" alt="Escrito" title="Escrito" />';}elseif($MostrarFila2['tipo']=='1'){echo'<img src="'.$tranfer1.'/icons/bullet-rojo.gif" alt="Esta haciendo..." title="Esta haciendo..." />';}else{echo'<b style="color:red;"><i>Tipo de muro no conocido ||| </i></b>';}
 
 echo' - <a onclick="if (!confirm(\'\xbfEstas seguro que deseas borrar este mensaje?\')) return false; del_coment_muro(\''.$MostrarFila2['id'].'\'); return false;" href="#" title="Eliminar Mensaje"><img alt="Eliminar Mensaje" src="'.$tranfer1.'/eliminar.gif" width="8px" height="8px"></a><br/><b>Por:</b> <a href="/perfil/'.$nick3.'" title="'.$nick3.'">'.$nick3.'</a><br/><b>A:</b> <a href="/perfil/'.$nick.'" title="'.$nick.'">'.$nick.'</a><br/><b>Mensaje:</b><br/>'.censorText(parse_bbc(str_replace("<br/>","\n",$MostrarFila2['muro']))).'<div class="hrs"></div></div>';}
 
-$NroRegistros=mysql_num_rows(db_query("SELECT id FROM {$db_prefix}muro", __FILE__, __LINE__));
+$NroRegistros=mysqli_num_rows(db_query("SELECT id FROM {$db_prefix}muro", __FILE__, __LINE__));
  $PagAnt=$PagAct-1;
  $PagSig=$PagAct+1;
  $PagUlt=$NroRegistros/$RegistrosAMostrar;

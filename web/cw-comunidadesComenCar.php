@@ -7,7 +7,7 @@ SELECT c.id,a.nocoment
 FROM ({$db_prefix}members AS m,{$db_prefix}comunidades as c,{$db_prefix}comunidades_articulos as a)
 WHERE a.id='$id' AND a.id_com=c.id AND a.id_user=m.ID_MEMBER AND c.bloquear=0
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs44)){$dasdasd=$row['id'];$nocoment=$row['nocoment'];}
+while ($row=mysqli_fetch_assoc($rs44)){$dasdasd=$row['id'];$nocoment=$row['nocoment'];}
 
 
 include($sourcedir.'/FuncionesCom.php');
@@ -22,7 +22,7 @@ if(isset($per)){$st=($per-1)*$pp;}else{$st=1;}
 
 echo'<div class="post-com" id="carando" style="display:none;padding:4px 0px 4px 0px;margin-bottom:4px;"><center><img alt="" src="'.$tranfer1.'/comunidades/cargando.gif" /></center></div>
 <div class="post-com">';
-$cant=mysql_num_rows(db_query("SELECT com.id FROM ({$db_prefix}comunidades_comentarios AS com) WHERE com.id_tema='$id'",__FILE__, __LINE__));
+$cant=mysqli_num_rows(db_query("SELECT com.id FROM ({$db_prefix}comunidades_comentarios AS com) WHERE com.id_tema='$id'",__FILE__, __LINE__));
 $rs443=db_query("
 SELECT com.comentario,m.realName,com.id,com.fecha,m.ID_MEMBER
 FROM ({$db_prefix}members AS m,{$db_prefix}comunidades_comentarios AS com)
@@ -38,7 +38,7 @@ $caste=$emrr;
 $caste32=$emrr;
 $caste2=$emrr;
 
-while ($row=mysql_fetch_assoc($rs443)){    
+while ($row=mysqli_fetch_assoc($rs443)){    
 $mesesano2 = array("1","2","3","4","5","6","7","8","9","10","11","12") ;
 $diames2 = date(j,$row['fecha']); $mesano2 = date(n,$row['fecha']) - 1 ; $ano2 = date(Y,$row['fecha']);
 $seg2=date(s,$row['fecha']); $hora2=date(H,$row['fecha']); $min2=date(i,$row['fecha']);

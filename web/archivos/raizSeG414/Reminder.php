@@ -18,11 +18,11 @@ $userlimpio=seguridad($_POST['user']);
 if (!isset($userlimpio) || empty($userlimpio))
 fatal_error('Error con el Nick');
 $request = db_query("SELECT ID_MEMBER, realName, memberName, emailAddress, is_activated, validation_code FROM {$db_prefix}members WHERE realName = '$userlimpio' LIMIT 1", __FILE__, __LINE__);
-if (mysql_num_rows($request) == 0){
+if (mysqli_num_rows($request) == 0){
 fatal_error('Error con el Nick');}
 
-$row = mysql_fetch_assoc($request);
-mysql_free_result($request);
+$row = mysqli_fetch_assoc($request);
+mysqli_free_result($request);
 
 captcha(2);
     
@@ -34,7 +34,7 @@ captcha(2);
 	updateMemberData($row['ID_MEMBER'], array('validation_code' => "'" . substr(md5(md5(md5(md5($password)))), 0, 10) . "'"));
     require_once($sourcedir . '/Subs-Post.php');
        sendmail($row['emailAddress'], 'Recuperar mi Password',
-		sprintf("Se ha enviado este mensaje porque se ha aplicado la función \"Recuperar mi Password\" en tu cuenta. Para establecer un nuevo Password haz clic en el siguiente enlace:\n") .
+		sprintf("Se ha enviado este mensaje porque se ha aplicado la funciï¿½n \"Recuperar mi Password\" en tu cuenta. Para establecer un nuevo Password haz clic en el siguiente enlace:\n") .
 		sprintf("<a href='http://casitaweb.net/recuperar-pass/user-$row[ID_MEMBER]/id-$password'>http://casitaweb.net/recuperar-pass/user-$row[ID_MEMBER]/id-$password</a>"));
         
 	$context += array(
@@ -63,9 +63,9 @@ if (empty($_POST['passwrd1']))fatal_lang_error(91, false);
 loadLanguage('Login');
 
 $request = db_query("SELECT validation_code, memberName, emailAddress FROM {$db_prefix}members WHERE ID_MEMBER ='$_POST[u]' AND is_activated = 1 AND validation_code != '' LIMIT 1", __FILE__, __LINE__);
-if (mysql_num_rows($request) == 0) fatal_lang_error('invalid_userid', false);
-list ($realCode, $username, $email) = mysql_fetch_row($request);
-mysql_free_result($request);
+if (mysqli_num_rows($request) == 0) fatal_lang_error('invalid_userid', false);
+list ($realCode, $username, $email) = mysqli_fetch_row($request);
+mysqli_free_result($request);
 
 require($sourcedir . '/Subs-Auth.php');
 $passwordError = validatePassword($_POST['passwrd1'], $username, array($email));

@@ -34,10 +34,10 @@
 		FROM {$db_prefix}members
 		WHERE realName='$userlimpio'
 		LIMIT 1", __FILE__, __LINE__);
-	if (mysql_num_rows($request) == 0)
+	if (mysqli_num_rows($request) == 0)
 	{die('0: <div class="noesta">Cuenta incorrecta.</div>');}    
-	$user_settings = mysql_fetch_assoc($request);
-	mysql_free_result($request);
+	$user_settings = mysqli_fetch_assoc($request);
+	mysqli_free_result($request);
     
 	$activation_status = $user_settings['is_activated'] > 10 ? $user_settings['is_activated'] - 10 : $user_settings['is_activated'];
     
@@ -99,7 +99,7 @@ $other_passwords[]=sha1_casitaweb(strtolower($user_settings['memberName']).un_ht
 
 //ESTA BAN
 $request = db_query("SELECT bg.reason, bg.expire_time,bg.ip,bg.ban_time FROM ({$db_prefix}ban_groups AS bg) WHERE bg.name='$userlimpio' LIMIT 1", __FILE__, __LINE__);
-while($row = mysql_fetch_assoc($request)){
+while($row = mysqli_fetch_assoc($request)){
 $rason=nohtml1(nohtml($row['reason']));
 $ban_time=hace($row['ban_time']);
 $Sxpirate= $row['expire_time'];
@@ -108,7 +108,7 @@ if(!empty($rehabilitacion)){
 die('2: <div class="noesta" style="font-size:11px;"><b class="error">Cuenta suspendida!!!</b><br/><b>Causa:</b> '.$rason.'<br />'.$ban_time.'<br /><b>Su expiraci&oacute;n:</b> '.$rehabilitacion.'</div>');}
 
 }
-mysql_free_result($request);
+mysqli_free_result($request);
 // FIN EST BAN
 
 

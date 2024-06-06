@@ -8,7 +8,7 @@ $quienid=(int)$_GET['user'];
 if(empty($quienid)){die('0: Debes seleccionar alguien a quien desadmitir.-');}
 if($user_settings['ID_MEMBER']==$quieid){die('0: No te podes desadmitir a vos mismo.-');}
 
-$existeUser = mysql_num_rows(db_query("SELECT ID_MEMBER FROM ({$db_prefix}members) WHERE ID_MEMBER='$quienid' LIMIT 1", __FILE__, __LINE__));
+$existeUser = mysqli_num_rows(db_query("SELECT ID_MEMBER FROM ({$db_prefix}members) WHERE ID_MEMBER='$quienid' LIMIT 1", __FILE__, __LINE__));
 if(empty($existeUser)){die('0: El usuario seleccionado no existe.-');}
 
 $fecha=time();

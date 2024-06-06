@@ -10,7 +10,7 @@ SELECT co.id,co.categoria
 FROM ({$db_prefix}comunidades AS co)
 WHERE co.url='$id' AND co.bloquear=0
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs44)){
+while ($row=mysqli_fetch_assoc($rs44)){
     $id_com=$row['id'];
     $categ=$row['categoria'];}
 $id_com=isset($id_com) ? $id_com : '';

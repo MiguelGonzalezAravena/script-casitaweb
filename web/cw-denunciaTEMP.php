@@ -7,7 +7,7 @@ $_GET['d']=isset($_GET['d']) ? seguridad($_GET['d']) : '0';
 
 //0: Usuarios // 1: Post // 2: Imagenes
 if(empty($_GET['t'])){
-$esta=mysql_num_rows(db_query("SELECT realName FROM {$db_prefix}members WHERE realName='{$_GET['d']}'",__file__, __line__));
+$esta=mysqli_num_rows(db_query("SELECT realName FROM {$db_prefix}members WHERE realName='{$_GET['d']}'",__file__, __line__));
 if(empty($esta)){die('<div style="width:400px;" class="noesta">El usuario que deseas denunciar no existe.</div>');}
 
 if($context['user']['name']==$_GET['d']){die('<div style="width:400px;" class="noesta">No te podes denunciar a vos.</div>');}
@@ -30,7 +30,7 @@ echo'<div style="width:400px;" >
 
 elseif($_GET['t']=='1'){
 
-$request = db_query("SELECT m.ID_MEMBER FROM ({$db_prefix}messages AS m) WHERE m.ID_TOPIC='{$_GET['d']}' LIMIT 1", __FILE__, __LINE__); while ($row=mysql_fetch_assoc($request)){$idmember=$row['ID_MEMBER'];} mysql_free_result($request);
+$request = db_query("SELECT m.ID_MEMBER FROM ({$db_prefix}messages AS m) WHERE m.ID_TOPIC='{$_GET['d']}' LIMIT 1", __FILE__, __LINE__); while ($row=mysqli_fetch_assoc($request)){$idmember=$row['ID_MEMBER'];} mysqli_free_result($request);
 $idmember=isset($idmember) ? $idmember : '';
 if(empty($idmember)){die('<div style="width:400px;" class="noesta">El post que deseas denunciar no existe.</div>');}
 
@@ -64,7 +64,7 @@ echo'<div style="width:400px;" >
 
 elseif($_GET['t']=='2'){
 
-$request=db_query("SELECT p.ID_MEMBER FROM ({$db_prefix}gallery_pic AS p) WHERE p.ID_PICTURE={$_GET['d']} LIMIT 1", __FILE__, __LINE__); while($row = mysql_fetch_assoc($request)){$idmember=$row['ID_MEMBER'];} mysql_free_result($request);
+$request=db_query("SELECT p.ID_MEMBER FROM ({$db_prefix}gallery_pic AS p) WHERE p.ID_PICTURE={$_GET['d']} LIMIT 1", __FILE__, __LINE__); while($row = mysqli_fetch_assoc($request)){$idmember=$row['ID_MEMBER'];} mysqli_free_result($request);
 $idmember=isset($idmember) ? $idmember : '';
 if(empty($idmember)){die('<div style="width:400px;" class="noesta">El post que deseas denunciar no existe.</div>');}
 

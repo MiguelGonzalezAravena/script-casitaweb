@@ -32,7 +32,7 @@ if (!isset($_GET['m']) || !isset($context['all_pages'][$_GET['m']]))
 if($_GET['m']=='tyc12'){
 $id=(int)$_GET['id'];
 $request = db_query("SELECT i.ID_PICTURE,i.title FROM ({$db_prefix}gallery_pic as i) WHERE i.ID_PICTURE='{$id}' LIMIT 1", __FILE__, __LINE__);
-$row = mysql_fetch_assoc($request);
+$row = mysqli_fetch_assoc($request);
 $context['page_title'] = censorText($row['title']);
 }
 //Nuve Tags
@@ -112,7 +112,7 @@ if (isset($settings['use_default_images']) && $settings['use_default_images'] ==
 				FROM {$db_prefix}smileys
 				WHERE hidden IN (0, 2)
 				ORDER BY smileyRow, smileyOrder", __FILE__, __LINE__);
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 			{
 				$row['code'] = htmlspecialchars($row['code']);
 				$row['filename'] = htmlspecialchars($row['filename']);
@@ -120,7 +120,7 @@ if (isset($settings['use_default_images']) && $settings['use_default_images'] ==
 
 				$context['smileys'][empty($row['hidden']) ? 'postform' : 'popup'][$row['smileyRow']]['smileys'][] = $row;
 			}
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			cache_put_data('posting_smileys', $context['smileys'], 480);
 		}

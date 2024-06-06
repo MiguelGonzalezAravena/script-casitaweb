@@ -7,7 +7,7 @@ SELECT c.id,co.id AS id_com,co.url
 FROM ({$db_prefix}comunidades_miembros AS c, {$db_prefix}comunidades AS co) 
 WHERE c.id='$us' AND c.id_com=co.id
 LIMIT 1",__FILE__, __LINE__);
-while ($r2ow=mysql_fetch_assoc($rss3)){$dddd=$r2ow['id'];$url=$r2ow['url'];$id_com=$r2ow['id_com'];
+while ($r2ow=mysqli_fetch_assoc($rss3)){$dddd=$r2ow['id'];$url=$r2ow['url'];$id_com=$r2ow['id_com'];
 include($sourcedir.'/FuncionesCom.php');
 permisios($id_com);
 if($context['permisoCom']==1){ 

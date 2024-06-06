@@ -19,7 +19,7 @@ if(strlen($muro)>10000){die('0: No se aceptan escritos tan grandes.-');}else {
 $yo=$user_settings['ID_MEMBER'];
 if(empty($yo)){die('0: Usuarios no logueados no pueden escribir en el muro de nadie.-');}else{
     
-$ignorado=mysql_num_rows(db_query("SELECT id_user FROM ({$db_prefix}pm_admitir) WHERE id_user='$idmem' AND quien='$yo' LIMIT 1", __FILE__, __LINE__));
+$ignorado=mysqli_num_rows(db_query("SELECT id_user FROM ({$db_prefix}pm_admitir) WHERE id_user='$idmem' AND quien='$yo' LIMIT 1", __FILE__, __LINE__));
 if($ignorado){die('0: No podes comentar este muro.-');}
 
 timeforComent();
@@ -41,8 +41,8 @@ $mensaje=nohtml2(moticon($mensaje,true));
 $filtrado=str_replace("\n","<br />",$mensaje);
 
 
-$datosmem = db_query("SELECT ID_MEMBER,realName FROM ({$db_prefix}members) WHERE ID_MEMBER='$idmem' LIMIT 1", __FILE__, __LINE__);while ($data=mysql_fetch_assoc($datosmem)){$nombremem=$data['realName'];}
-mysql_free_result($datosmem);
+$datosmem = db_query("SELECT ID_MEMBER,realName FROM ({$db_prefix}members) WHERE ID_MEMBER='$idmem' LIMIT 1", __FILE__, __LINE__);while ($data=mysqli_fetch_assoc($datosmem)){$nombremem=$data['realName'];}
+mysqli_free_result($datosmem);
 
 echo'1: ';
 echo'<div id="muro-'.$ivvd.'"><div id="muroEfectAV">';
@@ -80,7 +80,7 @@ die();
 $quehago=nohtml($_POST['quehago']);
 if(!$_POST['quehago']){fatal_error('Debes escribir algo.');}
 
-if($_POST['quehago']=='¿Qué est&aacute;s haciendo ahora?' || $_POST['quehago']=='&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;'){fatal_error('Debes escribir algo.');}
+if($_POST['quehago']=='ï¿½Quï¿½ est&aacute;s haciendo ahora?' || $_POST['quehago']=='&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;'){fatal_error('Debes escribir algo.');}
 
 if(!empty($quehago)){
 if(strlen($quehago)>70){fatal_error('No se aceptan escritos mayor a 70 letras.');}

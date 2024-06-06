@@ -10,11 +10,11 @@ WHERE maincat=0
 ORDER BY cat ASC", __FILE__, __LINE__);
 $countt=1;
 echo'<table align="center"><tr>';
-while ($cat=mysql_fetch_assoc($catlist)){
+while ($cat=mysqli_fetch_assoc($catlist)){
 $thiscat=stripslashes($cat['cat']);
 
 echo'<td style="padding-right:150px;"><img alt="" src="/imagenes/carpeta.png" title="'.$thiscat.'" /> <a href="'.$cfaqindex.'/categoria/'.$cat['enlace'].'">'.$thiscat.'</a>';
-	$qcount=mysql_num_rows(db("
+	$qcount=mysqli_num_rows(db("
 	SELECT categoria
 	FROM {$prefijo}articulos
 	WHERE categoria='{$cat['catid']}'", __FILE__, __LINE__));
@@ -34,7 +34,7 @@ LIMIT 5", __FILE__, __LINE__);
 echo'
 <div class="box_460" style="float:left;margin-right:4px;"><div class="box_title" style="width: 456px;"><div class="box_txt box_460-34">5 articulos recientes</div><div class="box_rss"><img alt="" src="/imagenes/espacio.gif" style="width:14px;height:12px;" border="0" /></div></div>
 <div style="width: 448px;padding:4px;" class="windowbg">';
-while ($questions=mysql_fetch_assoc($qlist)){
+while ($questions=mysqli_fetch_assoc($qlist)){
     if(strlen($questions['titulo'])>45){$questions['titulo']=substr($questions['titulo'],0,42)."...";}else{$questions['titulo']=$questions['titulo'];}    
 	$question=censorText(nohtml2($questions['titulo']));
 	$dateadded=$questions['fecha'];
@@ -52,7 +52,7 @@ LIMIT 5", __FILE__, __LINE__);
 echo'<div style="float:left;" class="box_460"><div class="box_title" style="width: 460px;"><div class="box_txt box_460-34">5 articulos m&aacute;s populares (Por visitas)</div><div class="box_rss"><img alt="" src="/imagenes/espacio.gif" style="width:14px;height:12px;" border="0" /></div></div>
 <div style="width: 452px;padding:4px;" class="windowbg">';
 
-while($questions=mysql_fetch_assoc($qlist)){
+while($questions=mysqli_fetch_assoc($qlist)){
     if(strlen($questions['titulo'])>45){$questions['titulo']=substr($questions['titulo'],0,42)."...";}else{$questions['titulo']=$questions['titulo'];}
 	$question=censorText(nohtml2($questions['titulo']));
 	if($questions['vieron']==1) $viewed='1  visita'; else $viewed=$questions['vieron'].' visitas';

@@ -33,7 +33,7 @@ SELECT c.id, c.nombre, c.descripcion, c.acceso, c.permiso, c.url, c.imagen, c.ca
 FROM ({$db_prefix}comunidades AS c, {$db_prefix}comunidades_categorias AS ca) 
 WHERE c.url='$id' AND c.categoria=ca.url
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs)){
+while ($row=mysqli_fetch_assoc($rs)){
     $context['COMediTidvb']=$row['id'];
     $context['COMediTnombre']=nohtml(nohtml2($row['nombre']));
     $context['COMediTdescripcion']=nohtml(nohtml2($row['descripcion']));
@@ -75,7 +75,7 @@ INNER JOIN {$db_prefix}comunidades_articulos AS a ON a.id='{$context['coMid']}' 
 INNER JOIN {$db_prefix}comunidades AS c ON a.id_com=c.id
 INNER JOIN {$db_prefix}comunidades_categorias AS b ON c.categoria=b.url
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs44)){
+while ($row=mysqli_fetch_assoc($rs44)){
 $context['coMtitulo']=nohtml(nohtml2($row['titulo']));
 $context['coMtitulo2']=$row['titulo'];
 $context['coMcuerpo']=parse_bbc(nohtml(nohtml2($row['cuerpo'])));
@@ -93,7 +93,7 @@ $context['coMcalificacion']=$row['calificacion'];
 $context['coMnombre']=$row['nombre'];
 $context['coMurl2']=$row['url2'];
 $context['coMcnam']=$row['cnam'];}
-mysql_free_result($rs44);
+mysqli_free_result($rs44);
 $context['coMdasdasd']=isset($context['coMdasdasd']) ? $context['coMdasdasd'] : '';
 $titulo=$context['coMtitulo'] ? $context['coMtitulo'] : $txt[18];
 $context['page_title'] = $titulo;
@@ -132,7 +132,7 @@ SELECT b.nombre,b.url,c.nombre AS nom2,c.url as url2,c.descripcion,c.fecha_inici
 FROM ({$db_prefix}comunidades_categorias AS b, {$db_prefix}comunidades AS c)
 WHERE c.url='{$context['comuid']}' AND c.categoria=b.url
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs)){
+while ($row=mysqli_fetch_assoc($rs)){
 $context['nombrecat']=nohtml(nohtml2($row['nom2']));
 $context['url2222']=$row['url2'];
 $context['ivvvaar']=$row['bloquear'];

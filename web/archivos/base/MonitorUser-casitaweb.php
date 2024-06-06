@@ -14,7 +14,7 @@ FROM ({$db_prefix}notificaciones)
 WHERE a_quien='{$user_settings['ID_MEMBER']}'
 ORDER BY id DESC
 LIMIT 30", __FILE__, __LINE__); 
-while ($data=mysql_fetch_assoc($datosmem)){
+while ($data=mysqli_fetch_assoc($datosmem)){
     
 
 
@@ -25,8 +25,8 @@ SELECT realName,avatar
 FROM ({$db_prefix}members) 
 WHERE ID_MEMBER='{$data['por_quien']}' 
 LIMIT 1", __FILE__, __LINE__); 
-while ($dd=mysql_fetch_assoc($MIEMBRO)){$realName=$dd['realName'];$avatar=$dd['avatar'];}
-mysql_free_result($MIEMBRO);
+while ($dd=mysqli_fetch_assoc($MIEMBRO)){$realName=$dd['realName'];$avatar=$dd['avatar'];}
+mysqli_free_result($MIEMBRO);
 if(empty($avatar)){$AVA=$no_avatar;}else{$AVA=$avatar;}
 
 echo'<div style="'.$backCOLOR.'display:inline-block;#display: inline-block;_display: inline;padding:4px;border-bottom: 1px dotted #CCC;margin-bottom:2px;width:786px;"><div style="float:left;margin-right:8px;"><a href="/perfil/'.$realName.'"><img src="'.$AVA.'" class="avatar-box" onerror="error_avatar(this)" width="50" height="50" alt="" /></a></div>
@@ -35,7 +35,7 @@ echo'<div style="'.$backCOLOR.'display:inline-block;#display: inline-block;_disp
 db_query("UPDATE {$db_prefix}notificaciones SET leido='1' WHERE id='{$data['id']}' LIMIT 1", __FILE__, __LINE__);
 $dac='1';
 }
-mysql_free_result($datosmem);
+mysqli_free_result($datosmem);
 
 
 $dac=isset($dac) ? $dac : '';
@@ -47,8 +47,8 @@ FROM ({$db_prefix}notificaciones)
 WHERE a_quien='{$user_settings['ID_MEMBER']}'
 ORDER BY id DESC
 LIMIT 31, 500", __FILE__, __LINE__); 
-while ($dff=mysql_fetch_assoc($d)){db_query("DELETE FROM {$db_prefix}notificaciones WHERE id='{$dff['id']}'",__FILE__, __LINE__);}
-mysql_free_result($d);
+while ($dff=mysqli_fetch_assoc($d)){db_query("DELETE FROM {$db_prefix}notificaciones WHERE id='{$dff['id']}'",__FILE__, __LINE__);}
+mysqli_free_result($d);
 ?>
 
 

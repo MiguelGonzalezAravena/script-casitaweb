@@ -21,7 +21,7 @@ WHERE a.id_com=c.id AND c.bloquear=0 AND a.eliminado=0 AND a.acceso <> 4
 ORDER BY a.id DESC
 LIMIT 10",__FILE__, __LINE__);
 $context['posts']=array();
-while ($row=mysql_fetch_assoc($rs)){
+while ($row=mysqli_fetch_assoc($rs)){
     
 $row['cuerpo']=nohtml(nohtml2($row['cuerpo']));
 $row['cuerpo']=parse_bbc($row['cuerpo']);

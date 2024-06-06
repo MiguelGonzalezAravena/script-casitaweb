@@ -11,7 +11,7 @@ FROM {$prefijo}articulos
 WHERE id='{$id}'
 ORDER BY id ASC
 LIMIT 1", __FILE__, __LINE__);
-while($dat=mysql_fetch_assoc($catlist)){$qid=$dat['id'];}
+while($dat=mysqli_fetch_assoc($catlist)){$qid=$dat['id'];}
 if(empty($qid)){falta('El articulo no existe.-');}
 
 db("DELETE FROM {$prefijo}articulos WHERE id='$id'",__FILE__, __LINE__);

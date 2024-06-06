@@ -1,30 +1,36 @@
-<?php require("../../funcion-seg-1547.php");
+<?php
+require("../../funcion-seg-1547.php");
 global $tranfer1, $mtitle, $mmessage;
 
-$dbhost="mysql1082.servage.net";
-$dbusername="M0P76SoD";
-$dbname="M0P76SoD";
-$dbpassword="v815jPtxtmBnCF";
-$dbtype="mySQL";
-$faqname="Ayuda - CasitaWeb!";
-$prefijo='cfaq_';
-$adminemail='soporte@casitaweb.net';
+$dbhost = "mysql1082.servage.net";
+$dbusername = "M0P76SoD";
+$dbname = "M0P76SoD";
+$dbpassword = "v815jPtxtmBnCF";
+$dbtype = "mySQL";
+$faqname = "Ayuda - CasitaWeb!";
+$prefijo = 'cfaq_';
+$adminemail = 'soporte@casitaweb.net';
 
-$link=@mysql_connect( "$dbhost", "$dbusername" , "$dbpassword");
-if(!$link || !@mysql_select_db("$dbname", $link)){die($mtitle.$mmessage);die;exit;}
+$link = @mysqli_connect($dbhost, $dbusername, $dbpassword);
 
-function db($query, $dieerror){global $dbtype, $link;
-$result=mysql_query($query, $link) or die($dieerror."".mysql_error);
-return $result;}
+if (!$link || !@mysqli_select_db($link, $dbname)) {
+	die($mtitle . $mmessage);
+}
 
+function db($query, $dieerror) {
+	global $dbtype, $link;
 
-function falta($texto){
-echo'<div align="center"><div class="box_errors"><div class="box_title" style="width: 390px"><div class="box_txt box_error" align="left">&iexcl;Atenci&oacute;n!</div><div class="box_rss"><img alt="" src="/imagenes/espacio.gif" style="width:14px;height:12px;" border="0" /></div></div><div class="windowbg" style="width:380px;padding:4px;"><br />'.$texto.'<br /><br /><input class="login" style="font-size: 11px;" title="Ir a la P&aacute;gina principal" value="Ir a la P&aacute;gina principal" onclick="location.href=\'/\'" type="submit" /><br /><br /></div></div><br /><div align="center"><p align="center" style="padding:0px;margin:0px;"><br />'; anuncio_728x90(); echo'</p></div></div>';
-include("footer-seg-145747dd.php");
-die();exit();}
+	$result = mysqli_query($query, $link) or die($dieerror . "" . mysqli_error($link));
+	return $result;
+}
 
+function falta($texto) {
+	echo'<div align="center"><div class="box_errors"><div class="box_title" style="width: 390px"><div class="box_txt box_error" align="left">&iexcl;Atenci&oacute;n!</div><div class="box_rss"><img alt="" src="/imagenes/espacio.gif" style="width:14px;height:12px;" border="0" /></div></div><div class="windowbg" style="width:380px;padding:4px;"><br />'.$texto.'<br /><br /><input class="login" style="font-size: 11px;" title="Ir a la P&aacute;gina principal" value="Ir a la P&aacute;gina principal" onclick="location.href=\'/\'" type="submit" /><br /><br /></div></div><br /><div align="center"><p align="center" style="padding:0px;margin:0px;"><br />'; anuncio_728x90(); echo'</p></div></div>';
+	include("footer-seg-145747dd.php");
+	die();exit();
+}
 
-function bbcode($message, $smileys = true, $cache_id = ''){
+function bbcode($message, $smileys = true, $cache_id = '') {
 	global $txt, $scripturl,$tranfer1,$db_prefix, $context, $modSettings,$tranfer1, $user_info;
 	static $bbc_codes = array(), $itemcodes = array(), $no_autolink_tags = array();
 	static $disabled;

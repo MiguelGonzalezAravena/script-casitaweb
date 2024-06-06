@@ -11,7 +11,7 @@ WHERE c.ID_PICTURE=$id AND c.ID_PICTURE=img.ID_PICTURE AND c.ID_MEMBER=mem.ID_ME
 ORDER BY c.ID_COMMENT DESC
 LIMIT 25",__FILE__, __LINE__);
 $context['comment-img'] = array();
-while ($row = mysql_fetch_assoc($comment_pic)){
+while ($row = mysqli_fetch_assoc($comment_pic)){
 if(strlen($row['comment'])>400){$row['comment']=substr($row['comment'],0,397)."...";}
 else{$row['comment']=$row['comment'];}
 $row['comment']=parse_bbc($row['comment']);
@@ -22,7 +22,7 @@ $context['comment-img'][] = array(
 'nom-user' => $row['realName'],
 'id_comment' => $row['ID_COMMENT'],
 'id' => $row['ID_PICTURE']);}
-mysql_free_result($comment_pic);
+mysqli_free_result($comment_pic);
 
 if(!$titulo){die('La imagen no existe o no tiene comentarios.-');exit;}
 echo'<channel>

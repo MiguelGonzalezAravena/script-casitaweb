@@ -9,7 +9,7 @@ SELECT a.id,a.id_com,co.url,a.titulo,a.id_user
 FROM ({$db_prefix}comunidades_articulos as a, {$db_prefix}comunidades AS co)
 WHERE a.id='$id' AND a.id_com=co.id AND a.eliminado=0
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs44)){
+while ($row=mysqli_fetch_assoc($rs44)){
     $dasdasd=$row['id'];
     $url=$row['url'];
     $vbvbvki=$row['id_user'];

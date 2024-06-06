@@ -7,7 +7,7 @@ SELECT catid,cat
 FROM {$prefijo}cats
 WHERE enlace='{$cat}'
 ORDER BY cat ASC", __FILE__, __LINE__);
-while ($dat=mysql_fetch_assoc($catlist)){
+while ($dat=mysqli_fetch_assoc($catlist)){
 $id=$dat['catid'];
 $namec=$dat['cat'];}
 if(empty($id)){falta('Esta categor&iacute;a no existe.-');}
@@ -19,7 +19,7 @@ SELECT a.titulo,a.id
 FROM ({$prefijo}articulos as a)
 WHERE a.categoria='{$id}'
 ORDER BY a.id DESC", __FILE__, __LINE__);
-while ($yet=mysql_fetch_assoc($catss)){
+while ($yet=mysqli_fetch_assoc($catss)){
 $titulo=$yet['titulo'];
 $qid=$yet['id'];
 echo'<img alt="" src="/imagenes/articulo.png" title="'.censorText($titulo).'" />&nbsp;<a href="/articulo/'.$qid.'">'.censorText($titulo).'</a><br />';}

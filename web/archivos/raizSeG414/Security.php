@@ -58,14 +58,14 @@ die();exit();}
 function is_not_banned(){global $user_info,$user_settings,$db_prefix;
 if(!$user_info['is_guest']){
 $request = db_query("SELECT bg.reason, bg.expire_time,bg.ip,bg.ban_time FROM ({$db_prefix}ban_groups AS bg) WHERE bg.name='{$user_settings['realName']}' LIMIT 1", __FILE__, __LINE__);
-while($row = mysql_fetch_assoc($request)){
+while($row = mysqli_fetch_assoc($request)){
 $rason=nohtml1(nohtml($row['reason']));
 $ban_time=hace($row['ban_time']);
 $Sxpirate= $row['expire_time'];
 $rehabilitacion=$row['expire_time'] === null ? 'Indefinido' : ($row['expire_time'] < time() ? '' : '' . (int)ceil(($row['expire_time'] - time()) / (60 * 60 * 24)) . '&nbsp;d&iacute;a(s)');
 if(!empty($rehabilitacion)){PostAccionado('Cuenta suspendida','<b>Causa:</b> '.$rason.'<br /><b>Su expiraci&oacute;n:</b> '.$rehabilitacion.'<br />'.$ban_time.'');die();}
 }
-mysql_free_result($request);
+mysqli_free_result($request);
 }
 return true;}
 
@@ -226,13 +226,13 @@ function allowedTo($permission, $boards = null)
 		GROUP BY b.ID_BOARD", __FILE__, __LINE__);
 
 	// Make sure they can do it on all of the boards.
-	if (mysql_num_rows($request) != count($boards))
+	if (mysqli_num_rows($request) != count($boards))
 		return false;
 
 	$result = true;
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$result &= !empty($row['addDeny']);
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// If the query returned 1, they can do it... otherwise, they can't.
 	return $result;
@@ -309,14 +309,14 @@ function boardsAllowedTo($permission)
 			AND bp.permission = '$permission'", __FILE__, __LINE__);
 	$boards = array();
 	$deny_boards = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		if (empty($row['addDeny']))
 			$deny_boards[] = $row['ID_BOARD'];
 		else
 			$boards[] = $row['ID_BOARD'];
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 	$boards = array_values(array_diff($boards, $deny_boards));
 	return $boards;}
 function is_admin(){isAllowedTo('admin_forum');}

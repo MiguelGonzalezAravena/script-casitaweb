@@ -20,9 +20,9 @@ if(empty($_SESSION['last_read_topic']) || $_SESSION['last_read_topic'] != $post)
 	}
 
 // aca marca si hay comentarios
-$context['numcom']=mysql_num_rows(db_query("SELECT id_post FROM ({$db_prefix}comentarios) WHERE id_post='{$post}'", __FILE__, __LINE__));
+$context['numcom']=mysqli_num_rows(db_query("SELECT id_post FROM ({$db_prefix}comentarios) WHERE id_post='{$post}'", __FILE__, __LINE__));
 // aca marca si hay favoritos
-$context['fav1']=mysql_num_rows(db_query("SELECT o.ID_TOPIC,o.tipo FROM ({$db_prefix}favoritos AS o) WHERE o.ID_TOPIC='{$post}' AND o.tipo=0", __FILE__, __LINE__));
+$context['fav1']=mysqli_num_rows(db_query("SELECT o.ID_TOPIC,o.tipo FROM ({$db_prefix}favoritos AS o) WHERE o.ID_TOPIC='{$post}' AND o.tipo=0", __FILE__, __LINE__));
 
 // aca marca los comentarios
 $request = db_query("SELECT c.comentario, c.comentario AS comentario2, c.id_post, c.id_user, mem.ID_MEMBER, mem.memberName, mem.realName, c.id_coment, c.fecha
@@ -30,7 +30,7 @@ FROM ({$db_prefix}comentarios AS c, {$db_prefix}members AS mem)
 WHERE c.id_post='$post' AND c.id_user=mem.ID_MEMBER
 ORDER BY c.id_coment ASC", __FILE__, __LINE__);
 $context['comentarios'] = array();
-while ($row = mysql_fetch_assoc($request))
+while ($row = mysqli_fetch_assoc($request))
 {
         $row['comentario2']=$row['comentario2'];
 		$row['comentario'] = parse_bbc($row['comentario'], '1');
@@ -44,7 +44,7 @@ while ($row = mysql_fetch_assoc($request))
 			'nommem' => $row['memberName'],
 			'id' => $row['id_coment'],
 			'fecha' => $row['fecha'],);}
-mysql_free_result($request);
+mysqli_free_result($request);
 
 if(empty($user_info['is_guest'])){
 $context['idgrup'] =$user_settings['ID_POST_GROUP'];
@@ -79,19 +79,19 @@ $dc=(count($tit)-1);
 for($i=1; $i<=$dc;++$i){$n[]="palabra='".str_replace("'","",$tit[$i])."'";}
 $ff=join(" OR ",$n);
 $select=db_query("SELECT id_post FROM {$db_prefix}tags WHERE $ff GROUP BY id_post ORDER BY id_post DESC LIMIT 10", __FILE__, __LINE__);
-while($row24 = mysql_fetch_assoc($select)){
+while($row24 = mysqli_fetch_assoc($select)){
 $request=db_query("
 SELECT m.ID_TOPIC,m.subject,b.description, m.posterTime, m.posterName
 FROM ({$db_prefix}messages AS m)
 INNER JOIN {$db_prefix}boards AS b ON m.ID_TOPIC='{$row24['id_post']}' AND m.ID_BOARD=b.ID_BOARD AND m.eliminado=0
 ORDER BY m.ID_TOPIC DESC
 LIMIT 1", __FILE__, __LINE__);
-while($row=mysql_fetch_assoc($request)){
+while($row=mysqli_fetch_assoc($request)){
 echo'<tr><td style="text-align:left;" ><a rel="dc:relation" class="categoriaPost '.$row['description'].'" href="/post/'.$row['ID_TOPIC'].'/'.$row['description'].'/'.urls($row['subject']).'.html" title="'.$row['subject'].'">'.$row['subject'].'</a></td>
 <td title="'.$row['posterName'].'"><a href="/perfil/'.$row['posterName'].'">'.$row['posterName'].'</a></td>
 <td title="'.timeformat($row['posterTime']).'">'.hace($row['posterTime'],true).'</td></tr>';}
-mysql_free_result($request);}
-mysql_free_result($select);}
+mysqli_free_result($request);}
+mysqli_free_result($select);}
 
 
 
@@ -102,12 +102,12 @@ FROM ({$db_prefix}messages as m,{$db_prefix}boards as b)
 WHERE m.ID_BOARD=b.ID_BOARD
 ORDER BY m.ID_TOPIC DESC
 LIMIT 10", __FILE__, __LINE__);
-while($row44=mysql_fetch_assoc($request3)){
+while($row44=mysqli_fetch_assoc($request3)){
 echo'<tr><td style="text-align:left;" ><a rel="dc:relation" class="categoriaPost '.$row44['description'].'" href="/post/'.$row44['ID_TOPIC'].'/'.$row44['description'].'/'.urls($row44['subject']).'.html" title="'.$row44['subject'].'">'.$row44['subject'].'</a></td>
 <td title="'.$row44['posterName'].'"><a href="/perfil/'.$row44['posterName'].'">'.$row44['posterName'].'</a></td>
 <td title="'.timeformat($row44['posterTime']).'">'.hace($row44['posterTime'],true).'</td></tr>';
 }
-mysql_free_result($request3);
+mysqli_free_result($request3);
 
 }
 echo'</tbody></table>
@@ -145,7 +145,7 @@ function theme_quickreply_box()
 				FROM {$db_prefix}smileys
 				WHERE hidden IN (0, 2)
 				ORDER BY smileyRow, smileyOrder", __FILE__, __LINE__);
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 			{
 				$row['code'] = htmlspecialchars($row['code']);
 				$row['filename'] = htmlspecialchars($row['filename']);
@@ -153,7 +153,7 @@ function theme_quickreply_box()
 
 				$context['smileys'][empty($row['hidden']) ? 'postform' : 'popup'][$row['smileyRow']]['smileys'][] = $row;
 			}
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			cache_put_data('posting_smileys', $context['smileys'], 480);
 		}

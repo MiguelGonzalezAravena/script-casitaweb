@@ -31,14 +31,14 @@ LIMIT $RegistrosAEmpezar, $RegistrosAMostrar
 ", __FILE__, __LINE__);}
 
 
-while($row=mysql_fetch_assoc($dbresult)){
+while($row=mysqli_fetch_assoc($dbresult)){
 if($rowlevel < ($maxrowlevel+1))$rowlevel++;
 else{echo '<tr>';$rowlevel = 0;}
 			$row['title']=str_replace('"','&#34;',$row['title']);
 			$row['title']=str_replace('\'','&#39;',$row['title']);
 			$row['title']=str_replace('<','&#60;',$row['title']);
 			$row['title']=str_replace('>','&#62;',$row['title']);
-$context['dato']=mysql_num_rows(db_query("
+$context['dato']=mysqli_num_rows(db_query("
 SELECT c.ID_PICTURE
 FROM ({$db_prefix}gallery_comment AS c)
 WHERE c.ID_PICTURE='{$row['ID_PICTURE']}'", __FILE__, __LINE__));
@@ -49,10 +49,10 @@ echo'</td>';
 if($rowlevel < ($maxrowlevel+1))$rowlevel++;
 
 else{echo '</tr>';$rowlevel = 0;}}
-mysql_free_result($dbresult);
+mysqli_free_result($dbresult);
 echo'</table>';
 
-$NroRegistros=mysql_num_rows(db_query("
+$NroRegistros=mysqli_num_rows(db_query("
  SELECT p.ID_MEMBER,m.ID_MEMBER
 FROM {$db_prefix}gallery_pic as p, {$db_prefix}members AS m 
 WHERE p.ID_MEMBER='$userid' AND p.ID_MEMBER=m.ID_MEMBER", __FILE__, __LINE__));
@@ -81,7 +81,7 @@ echo'</div></div>';}
 
 function template_view_picture(){global $tranfer1, $context, $db_prefix, $user_settings, $options, $ID_MEMBER, $modSettings,  $ie;
 
-$context['contando']=mysql_num_rows(db_query("
+$context['contando']=mysqli_num_rows(db_query("
 SELECT den.id_post
 FROM ({$db_prefix}denuncias AS den)
 WHERE den.id_post='{$context['gallery_pic']['ID_PICTURE']}' AND den.tipo=1 AND den.borrado<>1", __FILE__, __LINE__));
@@ -90,9 +90,9 @@ fatal_error('Im&aacute;gen eliminada por acumulaci&oacute;n de denuncias, se enc
 if($context['contando'] >= 3 && $context['allow_admin'])
 echo'<p align="center" style="color: red;"><b class="size12">Verificar Im&aacute;gen - Tiene '.$context['contando'].' denuncias</b></p>';
 
-$context['sin_coment']=mysql_num_rows(db_query("SELECT c.ID_PICTURE FROM {$db_prefix}gallery_comment as c WHERE c.ID_PICTURE='{$context['gallery_pic']['ID_PICTURE']}'", __FILE__, __LINE__));
+$context['sin_coment']=mysqli_num_rows(db_query("SELECT c.ID_PICTURE FROM {$db_prefix}gallery_comment as c WHERE c.ID_PICTURE='{$context['gallery_pic']['ID_PICTURE']}'", __FILE__, __LINE__));
 
-$context['fav2']=mysql_num_rows(db_query("SELECT o.ID_TOPIC,o.tipo FROM ({$db_prefix}favoritos AS o) WHERE o.ID_TOPIC='{$context['gallery_pic']['ID_PICTURE']}' AND o.tipo=1", __FILE__, __LINE__));
+$context['fav2']=mysqli_num_rows(db_query("SELECT o.ID_TOPIC,o.tipo FROM ({$db_prefix}favoritos AS o) WHERE o.ID_TOPIC='{$context['gallery_pic']['ID_PICTURE']}' AND o.tipo=1", __FILE__, __LINE__));
 
 $cantidad=1;
 
@@ -163,18 +163,18 @@ echo'<div class="hrs"></div>';
 
 echo'<b class="size13">Otras imagenes:</b><br />';
 $r = db_query("SELECT COUNT(*) FROM {$db_prefix}gallery_pic", __FILE__, __LINE__);
-$d = mysql_fetch_row($r); 
+$d = mysqli_fetch_row($r); 
 $rand=mt_rand(0,$d[0] - 1);
 
 $al_azar=db_query("
 SELECT img.title,img.puntos,img.ID_PICTURE
 FROM ({$db_prefix}gallery_pic AS img)
 LIMIT $rand, 10", __FILE__, __LINE__);
-while ($row = mysql_fetch_assoc($al_azar))
+while ($row = mysqli_fetch_assoc($al_azar))
 {$tiitulo=censorText(nohtml2(nohtml($row['title'])));
 $idlo=$row['ID_PICTURE'];
 echo'<div class="postENTry"><a rel="dc:relation" href="/imagenes/ver/'.$idlo.'" title="'.$tiitulo.'" class="categoriaPost imagenesNOCAT" target="_self" >'.$tiitulo.'</a><div style="clear: left;"></div></div>';}
-mysql_free_result($al_azar);
+mysqli_free_result($al_azar);
 
 
 echo'</div></div></div>';
@@ -194,12 +194,12 @@ SELECT p.id_user,p.fecha,p.cantidad,m.realName
 FROM ({$db_prefix}gallery_cat AS p, {$db_prefix}members AS m)
 WHERE p.id_img='{$context['gallery_pic']['ID_PICTURE']}' AND p.cantidad<>0 AND p.fecha<>0 AND p.id_user=m.ID_MEMBER
 ORDER BY p.ID_CAT DESC", __FILE__, __LINE__);
-while($row = mysql_fetch_assoc($request)){
+while($row = mysqli_fetch_assoc($request)){
 if($row['cantidad']<='0'){$asndbrbjweb='';}
 elseif($row['cantidad']=='1'){$asndbrbjweb=' 1&nbsp;punto';}
 elseif($row['cantidad']>='2'){$asndbrbjweb=''.$row['cantidad'].'&nbsp;puntos';}
 $userdasd[]='<a href="/perfil/'.$row['realName'].'" title="'.$asndbrbjweb.'">'.$row['realName'].'</a>';}
-$skasdasdbsddd=mysql_num_rows($request);
+$skasdasdbsddd=mysqli_num_rows($request);
 if(!empty($skasdasdbsddd)){echo'<div class="hrs"></div><b>Dieron puntos a esta imagen:</b> ';
 echo join(', ', $userdasd);}
 }
@@ -219,8 +219,8 @@ $requests=db_query("
 SELECT signature
 FROM {$db_prefix}members
 WHERE ID_MEMBER='{$context['gallery_pic']['ID_MEMBER']}'", __FILE__, __LINE__);
-while($grups=mysql_fetch_assoc($requests)){$context['firma']=$grups['signature'];}
-mysql_free_result($requests);
+while($grups=mysqli_fetch_assoc($requests)){$context['firma']=$grups['signature'];}
+mysqli_free_result($requests);
 $nwesdas=$context['firma'];
 if(!empty($nwesdas) && empty($options['show_no_signatures'])){
 echo'<div class="box_390" style="margin-top:8px;"><div class="box_title" style="width:384px;"><div class="box_txt box_390-34">Firma</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="width: 376px; padding: 4px;">';echo'<div class="fimaFIX"><b class="size11">'.censorText(str_replace('if(this.width >720) {this.width=720}','if(this.width > 375) {this.width=375}',str_replace('class="imagen"','class="imagen-firma"',parse_bbc($nwesdas)))).'</b>';echo'</div></div></div>';} echo'</div>';
@@ -234,7 +234,7 @@ if($context['sin_coment']){echo'<div class="icon_img" style="float: left; margin
 
 $dbresult = db_query("SELECT c.ID_PICTURE,  c.ID_COMMENT, c.date, c.comment, c.ID_MEMBER, m.memberName,m.realName FROM {$db_prefix}gallery_comment as c, {$db_prefix}members AS m WHERE   c.ID_PICTURE ='{$context['gallery_pic']['ID_PICTURE']}' AND c.ID_MEMBER = m.ID_MEMBER ORDER BY c.ID_COMMENT ASC", __FILE__, __LINE__);
 $context['pic_comment'] = array();
-while ($row = mysql_fetch_assoc($dbresult)){
+while ($row = mysqli_fetch_assoc($dbresult)){
 		censorText($row['comment']);
 		$context['pic_comment'][] = array(
 			'id' => $row['ID_COMMENT'],
@@ -245,7 +245,7 @@ while ($row = mysql_fetch_assoc($dbresult)){
 			'fecha' => $row['date'],
 			);
 		$context['id_img']=$row['ID_PICTURE'];}
-mysql_free_result($dbresult);
+mysqli_free_result($dbresult);
 
 foreach ($context['pic_comment'] AS $coment){
 echo'<div id="cmt_'.$coment['id'].'" class="Coment">
@@ -275,7 +275,7 @@ echo'<div class="errorDelCom" style="display:hide;width: 774px;"></div>
 <!-- fin comentarios -->';
 
 if($context['user']['id']){
-$ignorado=mysql_num_rows(db_query("SELECT id_user FROM ({$db_prefix}pm_admitir) WHERE id_user='{$context['gallery_pic']['ID_MEMBER']}' AND quien='{$context['user']['id']}' LIMIT 1", __FILE__, __LINE__));
+$ignorado=mysqli_num_rows(db_query("SELECT id_user FROM ({$db_prefix}pm_admitir) WHERE id_user='{$context['gallery_pic']['ID_MEMBER']}' AND quien='{$context['user']['id']}' LIMIT 1", __FILE__, __LINE__));
 if(!$ignorado){
 echo'<!-- comentar -->
 <div style="clear: left;"></div>
@@ -335,7 +335,7 @@ SELECT ID_MEMBER
 FROM ({$db_prefix}gallery_pic)
 WHERE ID_PICTURE='{$id}'
 LIMIT 1",__FILE__, __LINE__);
-while($lim2=mysql_fetch_assoc($limit3)){$ID_MEMBER23234=$lim2['ID_MEMBER'];}
+while($lim2=mysqli_fetch_assoc($limit3)){$ID_MEMBER23234=$lim2['ID_MEMBER'];}
 
 if($context['allow_admin'] || $ID_MEMBER23234==$context['user']['id']){
 echo'<script language="JavaScript" type="text/javascript">

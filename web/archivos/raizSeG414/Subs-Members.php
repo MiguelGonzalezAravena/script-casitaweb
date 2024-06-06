@@ -47,9 +47,9 @@ function deleteMembergroups($groups){global $db_prefix;
 		FROM {$db_prefix}boards
 		WHERE FIND_IN_SET(" . implode(', memberGroups) OR FIND_IN_SET(', $groups) . ', memberGroups)', __FILE__, __LINE__);
 	$updates = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$updates[$row['memberGroups']][] = $row['ID_BOARD'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	foreach ($updates as $memberGroups => $boardArray)
 		db_query("
@@ -93,9 +93,9 @@ function removeMembersFromGroups($members, $groups = null)
 		SELECT ID_GROUP
 		FROM {$db_prefix}membergroups
 		WHERE minPosts != -1", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$implicitGroups[] = $row['ID_GROUP'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Now get rid of those groups.
 	$groups = array_diff($groups, $implicitGroups);
@@ -143,9 +143,9 @@ function addMembersToGroup($members, $group, $type = 'auto')
 		FROM {$db_prefix}membergroups
 		WHERE minPosts != -1", __FILE__, __LINE__);
 	$implicitGroups = array(-1, 0, 3);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$implicitGroups[] = $row['ID_GROUP'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Sorry, you can't join an implicit group.
 	if (in_array($group, $implicitGroups) || empty($members))
@@ -193,9 +193,9 @@ function groupsAllowedTo($permission, $board_id = null)
 			SELECT ID_GROUP, addDeny
 			FROM {$db_prefix}permissions
 			WHERE permission = '$permission'", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$membergroups[$row['addDeny'] === '1' ? 'allowed' : 'denied'][] = $row['ID_GROUP'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 
 	else
@@ -209,10 +209,10 @@ function groupsAllowedTo($permission, $board_id = null)
 				FROM {$db_prefix}boards
 				WHERE ID_BOARD = $board_id
 				LIMIT 1", __FILE__, __LINE__);
-			if (mysql_num_rows($request) == 0)
+			if (mysqli_num_rows($request) == 0)
 				fatal_lang_error('smf232');
-			list($permission_mode) = mysql_fetch_row($request);
-			mysql_free_result($request);
+			list($permission_mode) = mysqli_fetch_row($request);
+			mysqli_free_result($request);
 		}
 
 		$moderator_only = false;
@@ -237,9 +237,9 @@ function groupsAllowedTo($permission, $board_id = null)
 				AND modperm.permission = 'moderate_board' 
 				AND modperm.addDeny = 1" : '') . "
 				AND bp.ID_BOARD " . (empty($modSettings['permission_enable_by_board']) || empty($permission_mode) || $board_id === 0 ? '= 0' : 'IN (0, ' . $board_id . ')'), __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$membergroups[$row['addDeny'] === '1' ? 'allowed' : 'denied'][] = $row['ID_GROUP'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 
 	$membergroups['allowed'] = array_diff($membergroups['allowed'], $membergroups['denied']);
@@ -265,9 +265,9 @@ function membersAllowedTo($permission, $board_id = null)
 		WHERE (" . ($include_moderators ? "mods.ID_MEMBER IS NOT NULL OR " : '') . 'ID_GROUP IN (' . implode(', ', $membergroups['allowed']) . ") " . (empty($membergroups['denied']) ? '' : "
 			AND NOT (" . ($exclude_moderators ? "mods.ID_MEMBER IS NOT NULL OR " : '') . 'ID_GROUP IN (' . implode(', ', $membergroups['denied']) . ")"), __FILE__, __LINE__);
 	$members = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$members[] = $row['ID_MEMBER'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	return $members;
 }
@@ -282,8 +282,8 @@ function reattributePosts($memID, $email = false, $post_count = false)
 			FROM {$db_prefix}members
 			WHERE ID_MEMBER = $memID
 			LIMIT 1", __FILE__, __LINE__);
-		list ($email) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($email) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 	}
 
 	if ($post_count)
@@ -296,8 +296,8 @@ function reattributePosts($memID, $email = false, $post_count = false)
 				AND m.icon != 'recycled'
 				AND b.ID_BOARD = m.ID_BOARD
 				AND b.countPosts = 1", __FILE__, __LINE__);
-		list ($messageCount) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($messageCount) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 
 		updateMemberData($memID, array('posts' => 'posts + ' . $messageCount));
 	}

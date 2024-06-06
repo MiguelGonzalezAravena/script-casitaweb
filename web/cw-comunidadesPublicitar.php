@@ -11,7 +11,7 @@ SELECT c.id, c.credito,c.url
 FROM ({$db_prefix}comunidades as c)
 WHERE c.id='$id' AND c.bloquear=0
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs44)){$dasdasd=$row['id'];$credito=$row['credito'];$url=$row['url'];}
+while ($row=mysqli_fetch_assoc($rs44)){$dasdasd=$row['id'];$credito=$row['credito'];$url=$row['url'];}
 if(!$dasdasd){fatal_error('La comuniad no existe.-');}
 baneadoo($dasdasd);
 permisios($dasdasd);
@@ -28,7 +28,7 @@ db_query("UPDATE {$db_prefix}members
 			SET posts=posts-100
 			WHERE ID_MEMBER='$ID_MEMBER'
 			LIMIT 1", __FILE__, __LINE__);}
-else{fatal_error('Para publicitar tu comunidad debes tener más de 500 puntos');}}else{fatal_error('No tenes permisos para publicitar esta comunidad');}
+else{fatal_error('Para publicitar tu comunidad debes tener mï¿½s de 500 puntos');}}else{fatal_error('No tenes permisos para publicitar esta comunidad');}
 
 Header("Location: /comunidades/$url/");
 die();exit();

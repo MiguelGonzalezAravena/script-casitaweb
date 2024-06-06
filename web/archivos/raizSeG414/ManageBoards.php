@@ -230,7 +230,7 @@ function EditBoard()
 		FROM {$db_prefix}membergroups
 		WHERE ID_GROUP > 3 OR ID_GROUP = 2
 		ORDER BY minPosts, ID_GROUP != 2, groupName", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		if ($_REQUEST['sa'] == 'newboard' && $row['minPosts'] == -1)
 			$curBoard['memberGroups'][] = $row['ID_GROUP'];
@@ -242,7 +242,7 @@ function EditBoard()
 			'is_post_group' => $row['minPosts'] != -1,
 		);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	foreach ($boardList[$curBoard['category']] as $boardid)
 	{
@@ -291,9 +291,9 @@ function EditBoard()
 		FROM {$db_prefix}themes
 		WHERE variable = 'name'", __FILE__, __LINE__);
 	$context['themes'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$context['themes'][] = $row;
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	if (!isset($_REQUEST['delete']))
 	{
@@ -428,14 +428,14 @@ function EditBoardSettings(){global $context, $txt, $db_prefix, $sourcedir, $mod
 	$request = db_query("
 		SELECT b.ID_BOARD, b.name AS bName
 		FROM {$db_prefix}boards AS b", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$context['boards'][] = array(
 			'id' => $row['ID_BOARD'],
 			'name' => $row['bName'],
 			'is_recycle' => !empty($modSettings['recycle_board']) && $modSettings['recycle_board'] == $row['ID_BOARD'],
 
 		);
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	init_inline_permissions(array('manage_boards'), array(-1));
 }

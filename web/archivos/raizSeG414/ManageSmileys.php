@@ -199,10 +199,10 @@ function EditSmileySets()
 					SELECT filename
 					FROM {$db_prefix}smileys
 					WHERE filename IN ('" . implode("', '", $smileys) . "')", __FILE__, __LINE__);
-				while ($row = mysql_fetch_assoc($request))
+				while ($row = mysqli_fetch_assoc($request))
 					if (isset($smileys[strtolower($row['filename'])]))
 						unset($smileys[strtolower($row['filename'])]);
-				mysql_free_result($request);
+				mysqli_free_result($request);
 
 				$context['current_set']['can_import'] = count($smileys);
 				// Setup this string to look nice.
@@ -255,9 +255,9 @@ function AddSmiley()
 			SELECT ID_SMILEY
 			FROM {$db_prefix}smileys
 			WHERE code = BINARY '$_POST[smiley_code]'", __FILE__, __LINE__);
-		if (mysql_num_rows($request) > 0)
+		if (mysqli_num_rows($request) > 0)
 			fatal_lang_error('smiley_not_unique');
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 
 
@@ -273,8 +273,8 @@ function AddSmiley()
 				FROM {$db_prefix}smileys
 				WHERE hidden = $_POST[smiley_location]
 					AND smileyRow = 0", __FILE__, __LINE__);
-			list ($smileyOrder) = mysql_fetch_row($request);
-			mysql_free_result($request);
+			list ($smileyOrder) = mysqli_fetch_row($request);
+			mysqli_free_result($request);
 
 			if (empty($smileyOrder))
 				$smileyOrder = '0';
@@ -356,9 +356,9 @@ function EditSmileys()
 				FROM {$db_prefix}smileys
 				WHERE code = BINARY '$_POST[smiley_code]'" . (empty($_POST['smiley']) ? '' : "
 					AND ID_SMILEY != $_POST[smiley]"), __FILE__, __LINE__);
-			if (mysql_num_rows($request) > 0)
+			if (mysqli_num_rows($request) > 0)
 				fatal_lang_error('smiley_not_unique');
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			db_query("
 				UPDATE {$db_prefix}smileys
@@ -404,7 +404,7 @@ function EditSmileys()
 			FROM {$db_prefix}smileys
 			ORDER BY $context[sort]", __FILE__, __LINE__);
 		$context['smileys'] = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$context['smileys'][] = array(
 				'id' => $row['ID_SMILEY'],
 				'code' => htmlspecialchars($row['code']),
@@ -415,7 +415,7 @@ function EditSmileys()
 				'location' => empty($row['hidden']) ? $txt['smileys_location_form'] : ($row['hidden'] == 1 ? $txt['smileys_location_hidden'] : $txt['smileys_location_popup']),
 				'sets_not_found' => array(),
 			);
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		if (!empty($modSettings['smileys_dir']) && is_dir($modSettings['smileys_dir']))
 		{
@@ -438,10 +438,10 @@ function EditSmileys()
 			SELECT ID_SMILEY AS id, code, filename, description, hidden AS location, 0 AS is_new
 			FROM {$db_prefix}smileys
 			WHERE ID_SMILEY = " . (int) $_GET['smiley'], __FILE__, __LINE__);
-		if (mysql_num_rows($request) != 1)
+		if (mysqli_num_rows($request) != 1)
 			fatal_lang_error('smiley_not_found');
-		$context['current_smiley'] = mysql_fetch_assoc($request);
-		mysql_free_result($request);
+		$context['current_smiley'] = mysqli_fetch_assoc($request);
+		mysqli_free_result($request);
 
 		$context['current_smiley']['code'] = htmlspecialchars($context['current_smiley']['code']);
 		$context['current_smiley']['filename'] = htmlspecialchars($context['current_smiley']['filename']);
@@ -476,10 +476,10 @@ function EditSmileyOrder()
 				FROM {$db_prefix}smileys
 				WHERE hidden = $_GET[location]
 					AND ID_SMILEY = $_GET[after]", __FILE__, __LINE__);
-			if (mysql_num_rows($request) != 1)
+			if (mysqli_num_rows($request) != 1)
 				fatal_lang_error('smiley_not_found');
-			list ($smileyRow, $smileyOrder, $smileyLocation) = mysql_fetch_row($request);
-			mysql_free_result($request);
+			list ($smileyRow, $smileyOrder, $smileyLocation) = mysqli_fetch_row($request);
+			mysqli_free_result($request);
 		}
 		else
 		{
@@ -520,7 +520,7 @@ function EditSmileyOrder()
 			'rows' => array(),
 		),
 	);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		$location = empty($row['hidden']) ? 'postform' : 'popup';
 		$context['smileys'][$location]['rows'][$row['smileyRow']][] = array(
@@ -533,7 +533,7 @@ function EditSmileyOrder()
 			'selected' => !empty($_REQUEST['move']) && $_REQUEST['move'] == $row['ID_SMILEY'],
 		);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	$context['move_smiley'] = empty($_REQUEST['move']) ? 0 : (int) $_REQUEST['move'];
 

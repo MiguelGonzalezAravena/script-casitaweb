@@ -10,11 +10,11 @@ SELECT ID_POST_GROUP,ID_MEMBER,ID_GROUP
 FROM {$db_prefix}members
 WHERE realName='$user'
 LIMIT 1",__FILE__, __LINE__);
-while ($grupsa = mysql_fetch_assoc($requestr)){
+while ($grupsa = mysqli_fetch_assoc($requestr)){
 	$id_post_grup=$grupsa['ID_POST_GROUP'];
 	$id_grup=$grupsa['ID_GROUP'];
 	$id_user=$grupsa['ID_MEMBER'];}
-	mysql_free_result($requestr);
+	mysqli_free_result($requestr);
     
     
 $id_user=isset($id_user) ? $id_user : '';
@@ -36,8 +36,8 @@ SELECT CantidadDePuntos
 FROM {$db_prefix}membergroups
 WHERE ID_GROUP='$grupoo'
 LIMIT 1",__FILE__, __LINE__);
-while ($row = mysql_fetch_assoc($cantidadDDD)){$das=$row['CantidadDePuntos'];}
-mysql_free_result($cantidadDDD);
+while ($row = mysqli_fetch_assoc($cantidadDDD)){$das=$row['CantidadDePuntos'];}
+mysqli_free_result($cantidadDDD);
 if(empty($das)){die('0: El rango de este usuario no contiene puntos.');}
 
 

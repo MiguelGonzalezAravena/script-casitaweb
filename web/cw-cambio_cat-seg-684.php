@@ -4,7 +4,7 @@ if($user_info['is_admin']){
 $ids=(int)seguridad($_POST['id-seg-2451']);
 $tipo=seguridad($_POST['tipo']);
 if(empty($ids)){fatal_error('Debe seleccionar el id.-');}
-$context['topicss']=mysql_num_rows(db_query("
+$context['topicss']=mysqli_num_rows(db_query("
 SELECT ID_TOPIC
 FROM {$db_prefix}messages
 WHERE ID_TOPIC='$ids'
@@ -14,7 +14,7 @@ if(empty($context['topicss'])){fatal_error('El post no existe.-');}
 if($tipo=='Cambiar cat'){	
 $cat=(int)seguridad($_POST['categorias']);
 if(empty($cat)){fatal_error('Debe seleccionar la cat.-');}
-$context['contadorsss']=mysql_num_rows(db_query("
+$context['contadorsss']=mysqli_num_rows(db_query("
 SELECT ID_BOARD
 FROM {$db_prefix}boards
 WHERE ID_BOARD='$cat'
@@ -35,7 +35,7 @@ FROM ({$db_prefix}members)
 WHERE realName='{$user}'
 ORDER BY ID_MEMBER DESC
 LIMIT 1", __FILE__, __LINE__);
-while($des=mysql_fetch_assoc($lvccct)){
+while($des=mysqli_fetch_assoc($lvccct)){
 $memberIP=$des['memberIP'];
 $id_mem=$des['ID_MEMBER'];
 $emailAddress=$des['emailAddress'];}

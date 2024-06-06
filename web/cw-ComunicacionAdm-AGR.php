@@ -30,8 +30,8 @@ $post = db_insert_id();
 
 //NOTIFICACIONES
 $getData=db_query("SELECT m.ID_MEMBER FROM ({$db_prefix}members as m) WHERE m.ID_GROUP=1 OR m.ID_GROUP=2", __FILE__, __LINE__);
-while($celda=mysql_fetch_array($getData)){notificacionAGREGAR($celda['ID_MEMBER'],'10');} 
-mysql_free_result($getData);
+while($celda=mysqli_fetch_array($getData)){notificacionAGREGAR($celda['ID_MEMBER'],'10');} 
+mysqli_free_result($getData);
 
 $_SESSION['ultima_accionTIME']=time();
 

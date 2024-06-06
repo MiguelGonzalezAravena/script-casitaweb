@@ -10,14 +10,14 @@ SELECT p.id,p.titulo,p.fecha,p.mensaje,p.id_para
 FROM ({$db_prefix}mensaje_personal AS p)
 WHERE p.id='$id' AND p.id_de='{$ID_MEMBER}' AND p.eliminado_para=0 AND p.sistema=0
 LIMIT 1", __FILE__, __LINE__);
-while($row=mysql_fetch_array($leer)){
+while($row=mysqli_fetch_array($leer)){
 $dato=db_query("
 SELECT p.realName
 FROM ({$db_prefix}members AS p)
 WHERE p.ID_MEMBER='{$row['id_para']}'
 LIMIT 1", __FILE__, __LINE__);
-while($drow=mysql_fetch_array($dato)){$nick_a=$drow['realName'];}
-mysql_free_result($dato);
+while($drow=mysqli_fetch_array($dato)){$nick_a=$drow['realName'];}
+mysqli_free_result($dato);
     
 echo'<div>
 
@@ -37,7 +37,7 @@ echo'<div>
 
 </div></div>';
 $d=$row['id'];
-}mysql_free_result($leer);
+}mysqli_free_result($leer);
 $d=isset($d) ? $d : '';
 if(empty($d)){die('<div class="noesta" style=";width:552px;">Mensaje no econtrado.</div>');}
 

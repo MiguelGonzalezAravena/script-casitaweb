@@ -8,11 +8,11 @@ FROM ({$db_prefix}muro AS m)
 WHERE m.id_user='{$context['member']['id']}' AND m.tipocc=0 AND m.tipo=1
 ORDER BY m.id DESC
 LIMIT 1", __FILE__, __LINE__);
-while($mostrarmuros1=mysql_fetch_array($mostrarmuros)){
+while($mostrarmuros1=mysqli_fetch_array($mostrarmuros)){
 $mensaje=censorText(nohtml2($mostrarmuros1['muro']));
 $yata=hace($mostrarmuros1['fecha']);
 echo'<div style="border-bottom:#C8C8C8 solid 1px;width:541px;padding-bottom:8px;margin-bottom:2px;"><strong style="font-size:20px;color:#D35F2C;" title="'.$context['member']['name'].'">'.$context['member']['name'].'</strong> <span style="font-size:13px;">'.$mensaje.'. <span style="color:#C0C0C0;font-size:11px;">'.$yata.'</span></span></div>';}
-mysql_free_result($mostrarmuros);
+mysqli_free_result($mostrarmuros);
 $yata=isset($yata) ? $yata : '';
 if(empty($yata)){echo'<div style="border-bottom:#C8C8C8 solid 1px;width:541px;padding-bottom:8px;margin-bottom:2px;float:left;"><strong style="font-size:20px;color:#D35F2C;" title="'.$context['member']['name'].'">'.$context['member']['name'].'</strong></div>';}
 
@@ -48,9 +48,9 @@ $pagq1= isset($_GET['pag-seg-15487135']) ? $_GET['pag-seg-15487135'] : '';
 
 
 
-$cantidadmuro=mysql_num_rows(db_query("SELECT id_user FROM {$db_prefix}muro WHERE id_user='{$context['member']['id']}'", __FILE__, __LINE__));
+$cantidadmuro=mysqli_num_rows(db_query("SELECT id_user FROM {$db_prefix}muro WHERE id_user='{$context['member']['id']}'", __FILE__, __LINE__));
 
-$bbvxc=mysql_num_rows(db_query("SELECT user FROM {$db_prefix}amistad 
+$bbvxc=mysqli_num_rows(db_query("SELECT user FROM {$db_prefix}amistad 
 WHERE (user='{$context['member']['id']}' OR amigo='{$context['member']['id']}') AND acepto=1", __FILE__, __LINE__));
 
 if(!$user_info['is_guest']){
@@ -59,12 +59,12 @@ $q=db_query("
 SELECT amigo,user
 FROM {$db_prefix}amistad
 WHERE (user='{$user_settings['ID_MEMBER']}' or amigo='{$user_settings['ID_MEMBER']}') AND acepto=1", __FILE__, __LINE__);
-while($r=mysql_fetch_array($q)){
+while($r=mysqli_fetch_array($q)){
 if($r['amigo']<>$user_settings['ID_MEMBER']){$sdasds=$r['amigo'];}else{$sdasds=$r['user'];}
 $amigos_en_comun[]=$sdasds;
 $sssdas=$sdasds;}
 if(!empty($sssdas)){
-$cantidaddss=mysql_num_rows(db_query("
+$cantidaddss=mysqli_num_rows(db_query("
 SELECT user
 FROM {$db_prefix}amistad
 WHERE (user='{$context['member']['id']}' AND amigo IN (".join(',', $amigos_en_comun).") OR user IN (".join(',', $amigos_en_comun).") AND amigo = '{$context['member']['id']}') AND acepto=1 ", __FILE__, __LINE__));}}}
@@ -88,19 +88,19 @@ $request52=db_query("
 SELECT name,reason,ban_time,notes,expire_time
 FROM {$db_prefix}ban_groups
 WHERE name='{$context['member']['name']}'", __FILE__, __LINE__);
-while($row=mysql_fetch_assoc($request52)){
+while($row=mysqli_fetch_assoc($request52)){
 $context['reason']=$row['reason'];
 $context['fecha']=$row['ban_time'];
 $context['notes']=$row['notes'];
 $context['expira']=$row['expire_time'] === null ? $txt['never'] : ($row['expire_time'] < time() ? '' : (int)ceil(($row['expire_time'] - time()) / (60 * 60 * 24)) . '&nbsp;d&iacute;a(s)');}
-mysql_free_result($request52);
+mysqli_free_result($request52);
 if(!empty($context['expira'])){
 $request352=db_query("
 SELECT realName
 FROM {$db_prefix}members
 WHERE ID_MEMBER='{$context['notes']}'", __FILE__, __LINE__);
-while($rows=mysql_fetch_assoc($request352)){$nameesss=$rows['realName'];}
-mysql_free_result($request352);
+while($rows=mysqli_fetch_assoc($request352)){$nameesss=$rows['realName'];}
+mysqli_free_result($request352);
 echo'<div class="noesta" style="margin-bottom:8px;">CUENTA BANEADA!!!<br /><b>Raz&oacute;n:</b> '.$context['reason'].' | <b>El d&iacute;a:</b> '.timeformat($context['fecha']).'<br /><b>Por:</b> <a href="/perfil/'.$nameesss.'" title="'.$nameesss.'">'.$nameesss.'</a> | <b>Expira:</b> '.$context['expira'].'</div>';}
 }
 
@@ -132,7 +132,7 @@ FROM {$db_prefix}amistad
 WHERE (user='{$context['member']['id']}' AND amigo IN (".join(',', $amigos_en_comun).") OR user IN (".join(',', $amigos_en_comun).") AND amigo = '{$context['member']['id']}') AND acepto=1
 LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
 
-while($rowd3 = mysql_fetch_assoc($qd3)){
+while($rowd3 = mysqli_fetch_assoc($qd3)){
 if($rowd3['amigo']<>$context['member']['id']){$sdasdsddvdv=$rowd3['amigo'];}else{$sdasdsddvdv=$rowd3['user'];}
 
 $datosmem=db_query("
@@ -140,7 +140,7 @@ SELECT m.ID_MEMBER,m.personalText,m.avatar,m.realName
 FROM ({$db_prefix}members as m)
 WHERE m.ID_MEMBER='$sdasdsddvdv'
 LIMIT 1", __FILE__, __LINE__);
-while($data=mysql_fetch_assoc($datosmem)){
+while($data=mysqli_fetch_assoc($datosmem)){
 $nombremem=$data['realName'];
 $avatar=$data['avatar'];
 $pt=$data['personalText'];
@@ -152,16 +152,16 @@ SELECT a.fecha
 FROM ({$db_prefix}amistad AS a)
 INNER JOIN {$db_prefix}members as m ON (a.amigo='$conejjssuu' AND a.user='{$user_settings['ID_MEMBER']}' OR a.amigo='{$user_settings['ID_MEMBER']}' AND a.user='$conejjssuu') AND a.acepto=1
 LIMIT 1", __FILE__, __LINE__);
-while($dataddf=mysql_fetch_assoc($dadd)){$yata=hace($dataddf['fecha']);}
-mysql_free_result($dadd);
+while($dataddf=mysqli_fetch_assoc($dadd)){$yata=hace($dataddf['fecha']);}
+mysqli_free_result($dadd);
 
-$esta=mysql_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}log_online WHERE ID_MEMBER='$conejjssuu' LIMIT 1", __FILE__, __LINE__));
+$esta=mysqli_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}log_online WHERE ID_MEMBER='$conejjssuu' LIMIT 1", __FILE__, __LINE__));
 
 
 echo'<div class="muroEfect" id="muroEfectAV"><table><tr><td valign="top">'; if(empty($avatar)){echo'<img style="width:50px;height:50px;" class="avatar-box" alt="" src="'.$no_avatar.'" onerror="error_avatar(this)" />';}else {echo'<img style="width:50px;height:50px;" class="avatar-box" alt="" src="'.$avatar.'" onerror="error_avatar(this)" />';} echo'</td><td valign="top" style="margin:0px;padding:4px;">';echo'<a onclick="if (!confirm(\'\xbfEstas seguro que deseas eliminar a este usuario de tus amigos?\')) return false;" href="/web/cw-AmistadBorrar.php?user='.$nombremem.'" title="Eliminar usuario de mi lista de amigos"><img alt="Eliminar usuario de mi lista de amigos" src="'.$tranfer1.'/eliminar.gif" width="8px" height="8px" /></a>&#32;-&#32;';echo'<b><span style="font-size:12px;"><a href="/perfil/'.$nombremem.'" title="'.$nombremem.'">'.$nombremem.'</a></b>';
 if(!empty($pt)){echo'&#32;-&#32;'.$pt;} if($esta=='1'){echo'&#32;-&#32;<img src="'.$tranfer1.'/icons/bullet-verde.gif" alt="Conectado/a" title="Conectado/a" />';}if(empty($esta)){echo'&#32;-&#32;<img src="'.$tranfer1.'/icons/bullet-rojo.gif" alt="Desconectado/a" title="Desconectado/a" />';} echo'</span><br /><span style="color:green;font-size:10px;"><b>Son amigos '.$yata.'</b></span></td></tr></table></div><div class="hrs"></div>';
 }}
-mysql_free_result($qd3);}
+mysqli_free_result($qd3);}
 if(empty($conejjssuu)){echo'<div class="noesta">No tienes ning&uacute;n amigo en com&uacute;n con '.$context['member']['name'].'</div>';}
 
  $PagAnt=$PagAct-1;
@@ -203,7 +203,7 @@ FROM ({$db_prefix}amistad AS a)
 WHERE (a.user='{$context['member']['id']}' OR a.amigo='{$context['member']['id']}') AND a.acepto=1
 ORDER BY a.fecha DESC
 LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
-while($mostrarmuros1=mysql_fetch_array($mostrarmuros)){
+while($mostrarmuros1=mysqli_fetch_array($mostrarmuros)){
 if($mostrarmuros1['amigo']<>$context['member']['id']){$sdasdc=$mostrarmuros1['amigo'];}
 else{$sdasdc=$mostrarmuros1['user'];}
 $ivvd=$mostrarmuros1['id'];
@@ -214,19 +214,19 @@ SELECT m.ID_MEMBER,m.personalText,m.avatar,m.realName
 FROM ({$db_prefix}members as m)
 WHERE m.ID_MEMBER='{$sdasdc}'
 LIMIT 1", __FILE__, __LINE__);
-while($data=mysql_fetch_assoc($datosmem)){
+while($data=mysqli_fetch_assoc($datosmem)){
 $nombremem=$data['realName'];
 $avatar=$data['avatar'];
 $pt=$data['personalText'];
 $conejjssuu=$data['ID_MEMBER'];}
-mysql_free_result($datosmem);
-$esta=mysql_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}log_online WHERE ID_MEMBER='$conejjssuu' LIMIT 1", __FILE__, __LINE__));
+mysqli_free_result($datosmem);
+$esta=mysqli_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}log_online WHERE ID_MEMBER='$conejjssuu' LIMIT 1", __FILE__, __LINE__));
 
 if($user_settings['ID_MEMBER']==$context['member']['id']){$predd='Sos ';}else{$predd='Es ';}
 echo'<div id="amig_'.$ivvd.'"><div class="muroEfect" id="muroEfectAV"><table><tr><td valign="top">'; if(empty($avatar)){echo'<img style="width:50px;height:50px;" class="avatar-box" alt="" src="'.$no_avatar.'" onerror="error_avatar(this)" />';}else {echo'<img style="width:50px;height:50px;" class="avatar-box" alt="" src="'.$avatar.'" onerror="error_avatar(this)" />';} echo'</td><td valign="top" style="margin:0px;padding:4px;">';if($user_settings['ID_MEMBER']==$context['member']['id']){echo'<img onclick="if (!confirm(\'\xbfEstas seguro que deseas eliminar a este usuario de tus amigos?\')) return false;EliminarAmistad(\''.$conejjssuu.'\',\''.$ivvd.'\'); return false;" style="cursor:pointer;" alt="" title="Eliminar usuario de mi lista de amigos" src="'.$tranfer1.'/comunidades/eliminar.png" class="png" width="16px" height="16px" />&#32;-&#32;';}echo'<b><span style="font-size:12px;"><a href="/perfil/'.$nombremem.'" title="'.$nombremem.'" style="font-size:13px;color:#666666;">'.$nombremem.'</a></b>';
 if(!empty($pt)){echo'<span style="font-size:11px;">&#32;-&#32;'.$pt.'</span>';} if($user_settings['ID_MEMBER']==$context['member']['id']){if($esta=='1'){echo'&#32;-&#32;<img src="'.$tranfer1.'/icons/si.png" alt="" class="png" width="16px" height="16px" title="Conectado/a" />';}if(empty($esta)){echo'&#32;-&#32;<img src="'.$tranfer1.'/icons/no.png" alt="" width="16px" height="16px" class="png" title="Desconectado/a" />';}} echo'</span><br /><span style="color:green;font-size:11px;"><b>'.$predd.' amigo desde:</b> '.$yata.' </span></td></tr></table></div></div><div class="noesta" id="error_'.$ivvd.'" style="display:none;filter: alpha(opacity=65);-moz-opacity: .65;opacity: .65;"></div><div class="hrs"></div>';
 }
-mysql_free_result($mostrarmuros);
+mysqli_free_result($mostrarmuros);
 
 echo'</div>';
 }else{echo'<div class="noestaGR" style="width:541px;">'.$context['member']['name'].' no tiene ning&uacute;n amigos.</div>';}
@@ -269,7 +269,7 @@ echo'<form action="/web/cw-comentarMuro.php" method="post" accept-charset="', $c
 </p>
 <div class="clearBoth"></div></div></form>';}
 
-$ignorado=mysql_num_rows(db_query("SELECT id_user FROM ({$db_prefix}pm_admitir) WHERE id_user='{$context['member']['id']}' AND quien='{$user_settings['ID_MEMBER']}' LIMIT 1", __FILE__, __LINE__));
+$ignorado=mysqli_num_rows(db_query("SELECT id_user FROM ({$db_prefix}pm_admitir) WHERE id_user='{$context['member']['id']}' AND quien='{$user_settings['ID_MEMBER']}' LIMIT 1", __FILE__, __LINE__));
 
 if(!$ignorado){
 echo'<div class="muroEscribir"><textarea title="Escribe algo..." onfocus="if(this.value==\'Escribe algo...\') this.value=\'\';$(\'#muro_publicar_bottom\').css(\'display\', \'block\');foco(this);" onblur="if(this.value==\'\'){$(\'#muro_publicar_bottom\').css(\'display\', \'none\');this.value=\'Escribe algo...\';}no_foco(this);" style="height:30px;overflow:visible;width:517px;font-size:11px;font-family:Arial,FreeSans;" name="muro" id="muro">Escribe algo...</textarea><p style="padding:0px;margin:0px;display:none;" id="muro_publicar_bottom" align="right"><input class="login" value="Publicar" style="margin-top:2px;" onclick="add_muro(\''.$context['member']['id'].'\'); return false;" type="button" id="button_add_muro" /><input value="'.$PagAct.'" type="hidden" name="datapagss" id="datapagss" /><img alt="" src="'.$tranfer1.'/icons/cargando.gif" style="width: 16px; height: 16px;display: none;" id="gif_cargando_add_muro" border="0"></p>
@@ -289,7 +289,7 @@ FROM ({$db_prefix}muro AS m)
 WHERE m.id_user='{$context['member']['id']}' AND m.tipocc=0
 ORDER BY m.id DESC
 LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
-while($mostrarmuros1=mysql_fetch_array($mostrarmuros)){
+while($mostrarmuros1=mysqli_fetch_array($mostrarmuros)){
 $mensaje=censorText(nohtml2($mostrarmuros1['muro']));
 $ivvd=$mostrarmuros1['id'];
 $yata=hace($mostrarmuros1['fecha']);
@@ -301,10 +301,10 @@ $datosmem=db_query("
 SELECT realName,avatar
 FROM ({$db_prefix}members)
 WHERE ID_MEMBER='{$mostrarmuros1['de']}' LIMIT 1", __FILE__, __LINE__);
-while ($data=mysql_fetch_assoc($datosmem)){
+while ($data=mysqli_fetch_assoc($datosmem)){
 	$nombremem=$data['realName'];
 	$avatar=$data['avatar'];}
-mysql_free_result($datosmem);
+mysqli_free_result($datosmem);
 
 echo'<div id="muro-'.$ivvd.'"><div id="muroEfectAV" >';
 
@@ -329,7 +329,7 @@ ORDER BY m.id ASC$limit", __FILE__, __LINE__);
 echo'<div align="center">';
 $maxrowlevel=2;
 $rowlevel = 0;
-while($mostrarcmtarios1=mysql_fetch_array($mostrarcmtarios)){
+while($mostrarcmtarios1=mysqli_fetch_array($mostrarcmtarios)){
 $sdddd=$mostrarcmtarios1['id'];
 $haces=hace($mostrarcmtarios1['fecha']);
 $mensaje2=moticon(censorText(nohtml2(nohtml($mostrarcmtarios1['muro']))),true);
@@ -338,16 +338,16 @@ $datosmem=db_query("
 SELECT ID_MEMBER,realName,avatar
 FROM ({$db_prefix}members)
 WHERE ID_MEMBER='{$mostrarcmtarios1['de']}' LIMIT 1", __FILE__, __LINE__);
-while ($data=mysql_fetch_assoc($datosmem)){
+while ($data=mysqli_fetch_assoc($datosmem)){
 	$nombremem=$data['realName'];
 	$avatar=$data['avatar'];}
-mysql_free_result($datosmem);
+mysqli_free_result($datosmem);
 echo'<div id="SETcto_'.$sdddd.'"><div id="cto_'.$ivvd.'" class="muroCcs" style="text-align:left;color:#666666;margin-bottom:3px;"><strong><a href="/perfil/'.$nombremem.'" style="color:#666666;" title="'.$nombremem.'">'.$nombremem.'</a></strong>&#32;-&#32;'.$haces;
 if($user_settings['ID_MEMBER']==$context['member']['id'] || ($user_info['is_admin'] || $user_info['is_mods'])){echo'&#32;-&#32;<span class="pointer" onclick="Boxy.confirm(\'&iquest;Estas seguro que deseas borrar este comentario?\', function() { del_comentCC_muro(\''.$sdddd.'\'); }, {title: \'Eliminar Comentario\'});" title="Eliminar Comentario">eliminar</span>';}
 
 echo'<br />'.$mensaje2.'</div></div><div class="noestaGR" id="SETcto2_'.$sdddd.'" style="display:none;width:416px;margin-bottom:3px;"></div>';
 }
-mysql_free_result($mostrarcmtarios);
+mysqli_free_result($mostrarcmtarios);
 
 if($cmntarioss > 2 && $jsAP<>$ivvd){
 $leerTXT='Leer m&aacute;s ('.($cmntarioss - 2).')';
@@ -361,7 +361,7 @@ echo'</div>'.textarea2($ivvd);
 
 echo'<div class="hrs" style="margin:0px;padding:0px;"></div></div></div>';
 }
-mysql_free_result($mostrarmuros);
+mysqli_free_result($mostrarmuros);
 echo'</div></div>';}
 else{echo'<div class="clearBoth"></div><div class="windowbg" id="si_muro" style="border-top:#C8C8C8 solid 1px;width:523px;padding:8px;font-size:11px;display:none;"><div class="muroBug"><div id="return_agregar_muro"></div></div></div>
 <div id="no_muro" style="width:541px" class="noestaGR">No hay mensajes en este muro.</div>';}
@@ -386,7 +386,7 @@ SELECT m.id_user,m.muro,m.id,m.fecha,m.de,m.tipo,m.ccos
 FROM ({$db_prefix}muro AS m)
 WHERE m.id='{$_GET['ccIDmuro']}' AND m.id_user='{$context['member']['id']}'
 LIMIT 1", __FILE__, __LINE__);
-while($mostrarmuros1=mysql_fetch_array($mostrarmuros)){
+while($mostrarmuros1=mysqli_fetch_array($mostrarmuros)){
 $mensaje=censorText(nohtml2($mostrarmuros1['muro']));
 $ivvd=$mostrarmuros1['id'];
 $yata=timeformat($mostrarmuros1['fecha']);
@@ -400,10 +400,10 @@ $datosmem=db_query("
 SELECT realName,avatar
 FROM ({$db_prefix}members)
 WHERE ID_MEMBER='{$mostrarmuros1['de']}' LIMIT 1", __FILE__, __LINE__);
-while ($data=mysql_fetch_assoc($datosmem)){
+while ($data=mysqli_fetch_assoc($datosmem)){
 	$nombremem=$data['realName'];
 	$avatar=$data['avatar'];}
-mysql_free_result($datosmem);
+mysqli_free_result($datosmem);
 
 echo'<div id="muro-'.$ivvd.'"><div id="muroEfectAV" >';
 echo'<table><tr><td valign="top">';
@@ -420,7 +420,7 @@ SELECT m.id_user,m.muro,m.id,m.fecha,m.de
 FROM ({$db_prefix}muro AS m)
 WHERE m.id_cc='{$ivvd}' AND m.tipocc=1
 ORDER BY m.id ASC", __FILE__, __LINE__);
-while($mostrarcmtarios1=mysql_fetch_array($mostrarcmtarios)){
+while($mostrarcmtarios1=mysqli_fetch_array($mostrarcmtarios)){
 echo'<div align="center">';    
 $sdddd=$mostrarcmtarios1['id'];
 $haces=hace($mostrarcmtarios1['fecha']);
@@ -429,20 +429,20 @@ $datosmem=db_query("
 SELECT ID_MEMBER,realName,avatar
 FROM ({$db_prefix}members)
 WHERE ID_MEMBER='{$mostrarcmtarios1['de']}' LIMIT 1", __FILE__, __LINE__);
-while ($data=mysql_fetch_assoc($datosmem)){
+while ($data=mysqli_fetch_assoc($datosmem)){
 	$nombremem=$data['realName'];
 	$avatar=$data['avatar'];}
-mysql_free_result($datosmem);
+mysqli_free_result($datosmem);
 
 echo'<div id="SETcto_'.$sdddd.'"><div id="cto_'.$ivvd.'" class="muroCcs" style="text-align:left;color:#666666;margin-bottom:3px;"><strong><a href="/perfil/'.$nombremem.'" style="color:#666666;" title="'.$nombremem.'">'.$nombremem.'</a></strong>&#32;-&#32;'.$haces;
 if($user_settings['ID_MEMBER']==$context['member']['id'] || ($user_info['is_admin'] || $user_info['is_mods'])){echo'&#32;-&#32;<a onclick="Boxy.confirm(\'&iquest;Estas seguro que deseas borrar este comentario?\', function() { del_comentCC_muro(\''.$sdddd.'\'); }, {title: \'Eliminar Comentario\'});" href="#" title="Eliminar Comentario">eliminar</a>';}
 
 echo'<br />'.$mensaje2.'</div></div><div class="noestaGR" id="SETcto2_'.$sdddd.'" style="display:none;width:416px;margin-bottom:3px;"></div>';  echo'</div>';}
-mysql_free_result($mostrarcmtarios);
+mysqli_free_result($mostrarcmtarios);
 echo textarea2($ivvd,1);
 echo'</div></div></div></div>';$dac='1';
 }
-mysql_free_result($mostrarmuros);
+mysqli_free_result($mostrarmuros);
 $dac=isset($dac) ? $dac : '';
 if(empty($dac)){echo'<div class="noestaGR">Este comentario no existe.</div>';}
 
@@ -461,8 +461,8 @@ $nombre3=db_query("SELECT MSN
 FROM {$db_prefix}members 
 WHERE ID_MEMBER='{$context['member']['id']}' 
 LIMIT 1", __FILE__, __LINE__);
-while($row = mysql_fetch_assoc($nombre3)){$MSN=$row['MSN'];}
-mysql_free_result($nombre3);
+while($row = mysqli_fetch_assoc($nombre3)){$MSN=$row['MSN'];}
+mysqli_free_result($nombre3);
 
 echo'<li><label>Edad:</label><strong>'.$context['member']['age'].'</strong></li>
 <li><label>Sexo:</label><strong>'.$context['member']['gender']['name'].'</strong></li>
@@ -477,7 +477,7 @@ SELECT *
 FROM ({$db_prefix}infop)
 WHERE id_user='$user'
 LIMIT 1", __FILE__, __LINE__);
-while($mddd=mysql_fetch_array($refoagr)){ 
+while($mddd=mysqli_fetch_array($refoagr)){ 
 if(!empty($mddd['altura']) || !empty($mddd['tomo_alcohol']) || !empty($mddd['peso']) || !empty($mddd['color_de_pelo']) || !empty($mddd['complexion']) || !empty($mddd['color_de_ojos']) || !empty($mddd['mi_dieta_es']) || !empty($mddd['fumo'])){
 echo'<li class="sep"><h4>Como es</h4></li>';
 if(!empty($mddd['altura'])){echo'<li><label>Mide:</label><strong>'.$mddd['altura'].' centimetros</strong></li>';}
@@ -522,10 +522,10 @@ if(!empty($mddd['mis_heroes_son'])){echo'<li><label>Sus heroes son:</label><stro
 }
 
 $dataquien=$mddd['a_quien'];}
-mysql_free_result($refoagr);
+mysqli_free_result($refoagr);
 }
 $dataquien=isset($dataquien) ? $dataquien : '';
-$refoagr2=db_query("SELECT user FROM ({$db_prefix}amistad) WHERE user='{$context['member']['id']}' AND amigo='{$user_settings['ID_MEMBER']}' AND acepto=1", __FILE__, __LINE__);while($mddddd4=mysql_fetch_array($refoagr2)){$esfeee=$mddddd4['user'];}mysql_free_result($refoagr2);
+$refoagr2=db_query("SELECT user FROM ({$db_prefix}amistad) WHERE user='{$context['member']['id']}' AND amigo='{$user_settings['ID_MEMBER']}' AND acepto=1", __FILE__, __LINE__);while($mddddd4=mysqli_fetch_array($refoagr2)){$esfeee=$mddddd4['user'];}mysqli_free_result($refoagr2);
 
 echo'<div style="width:541px;"><div class="perfil-content general">
 <div class="widget big-info clearfix">
@@ -549,7 +549,7 @@ echo'</ul></div></div></div>';
 //COMUNIDADES
 elseif($tipo=='5'){
 partearriba($context['member']['name'],$lugar);                                
-$NroRegistros=mysql_num_rows(db_query("SELECT m.id FROM ({$db_prefix}comunidades_articulos AS m, {$db_prefix}comunidades AS p) WHERE m.id_user='{$context['member']['id']}' AND m.eliminado=0 AND m.id_com=p.id AND p.bloquear=0 AND p.acceso <> 4", __FILE__, __LINE__));
+$NroRegistros=mysqli_num_rows(db_query("SELECT m.id FROM ({$db_prefix}comunidades_articulos AS m, {$db_prefix}comunidades AS p) WHERE m.id_user='{$context['member']['id']}' AND m.eliminado=0 AND m.id_com=p.id AND p.bloquear=0 AND p.acceso <> 4", __FILE__, __LINE__));
 
 if($NroRegistros){
 $RegistrosAMostrar=20;
@@ -565,13 +565,13 @@ LIMIT  $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
 
 echo'<div style="width:541px;"><div class="clearBoth"></div><div class="title-w clearfix"><h3>&Uacute;ltimos temas creados</h3></div>
 <ul class="ultimos">';
-while($row = mysql_fetch_assoc($request)){
+while($row = mysqli_fetch_assoc($request)){
 $context['rownombre999']=nohtml(nohtml2($row['nombre']));
 $titulo=nohtml(nohtml2($row['titulo']));
 if(strlen($titulo)>45){$cort2=substr($titulo,0,42)."...";}else{$cort2=$titulo;}
 echo'<li><img title="Comunidades" src="'.$tranfer1.'/comunidades/categorias/'.$row['categoria'].'.png" class="png" alt="" />&nbsp;<a title="'.$titulo.'"  href="/comunidades/'.$row['url'].'/'.$row['id'].'/'.urls($row['titulo']).'.html">'.$cort2.'</a>
 <div><span>En <a title="'.$context['rownombre2'].'" href="/comunidades/'.$row['url'].'">'.$context['rownombre999'].'</a></span></div></li>
-';}mysql_free_result($request);
+';}mysqli_free_result($request);
 echo'</ul>';
 
 echo'</div><div class="clearBoth"></div>';
@@ -668,13 +668,13 @@ ORDER BY m.id DESC
 LIMIT 10", __FILE__, __LINE__);
 echo'<div class="title-w"><h3>&Uacute;ltimos temas creados</h3></div>
 <ul class="ultimos">';
-while($row = mysql_fetch_assoc($request)){
+while($row = mysqli_fetch_assoc($request)){
 $context['rownombre2']=nohtml(nohtml2($row['nombre']));
 $titulo=nohtml(nohtml2($row['titulo']));
 if(strlen($titulo)>45){$cort2=substr($titulo,0,42)."...";}else{$cort2=$titulo;}
 echo'<li><img title="Comunidades" src="'.$tranfer1.'/comunidades/categorias/'.$row['categoria'].'.png" class="png" alt="" />&nbsp;<a title="'.$titulo.'"  href="/comunidades/'.$row['url'].'/'.$row['id'].'/'.urls($row['titulo']).'.html">'.$cort2.'</a>
 <div><span>En <a title="'.$context['rownombre2'].'" href="/comunidades/'.$row['url'].'">'.$context['rownombre2'].'</a></span></div></li>
-';}mysql_free_result($request);
+';}mysqli_free_result($request);
 echo'</ul>';
 $context['rownombre2']=isset($context['rownombre2']) ? $context['rownombre2'] : '';
 if(!$context['rownombre2']){echo'<div class="noestaGR">No creo temas.</div>';}else{echo'<div class="clearBoth" style="height:21px;"><div class="windowbgpag" style="float:right;"><a href="/perfil/'.$context['member']['name'].'/comunidades">ver m&aacute;s</a></div></div>';}
@@ -689,13 +689,13 @@ FROM ({$db_prefix}comunidades_miembros AS m)
 INNER JOIN {$db_prefix}comunidades AS p ON m.id_user='{$context['member']['id']}' AND m.id_com=p.id AND p.bloquear=0 AND p.acceso <> 4
 ORDER BY p.id DESC
 LIMIT 10", __FILE__, __LINE__);                
-while($row = mysql_fetch_assoc($request)){
+while($row = mysqli_fetch_assoc($request)){
 $context['rownombre']=nohtml(nohtml2($row['nombre']));
 if($row['UserName']==$context['member']['name']){
 $enlazar[]='<a title="'.$context['rownombre'].' (Creador)" href="/comunidades/'.$row['url'].'" class="titlePost" style="color:#FFCF0F;"><strong>'.$context['rownombre'].'</strong></a>';}
 else{$enlazar[]='<a title="'.$context['rownombre'].'" href="/comunidades/'.$row['url'].'" class="titlePost">'.$context['rownombre'].'</a>';}
 }
-mysql_free_result($request);
+mysqli_free_result($request);
 $context['rownombre']=isset($context['rownombre']) ? $context['rownombre'] : '';
 if(!$context['rownombre']){echo'<div class="noestaGR">No participa de comunidades.</div>';}else{
 echo'<div>'.join(" - ",$enlazar).'<div class="clearBoth"></div></div>';
@@ -741,14 +741,14 @@ WHERE (user='{$context['member']['id']}' AND amigo IN (".join(',', $amigos_en_co
 ORDER BY RAND()
 LIMIT 16", __FILE__, __LINE__);
 
-while($row3 = mysql_fetch_assoc($q3)){
+while($row3 = mysqli_fetch_assoc($q3)){
 if($row3['amigo']<>$context['member']['id']){$sdasdsddvv=$row3['amigo'];}else{$sdasdsddvv=$row3['user'];}
 $q1=db_query("
 SELECT m.avatar,m.realName
 FROM ({$db_prefix}members as m)
 WHERE m.ID_MEMBER='$sdasdsddvv'
 LIMIT 1", __FILE__, __LINE__);
-while($row = mysql_fetch_assoc($q1)){
+while($row = mysqli_fetch_assoc($q1)){
 
 $nombremem=$row['realName'];
 $avatar=$row['avatar'];
@@ -774,14 +774,14 @@ FROM ({$db_prefix}amistad AS a)
 WHERE (user='{$context['member']['id']}' OR amigo='{$context['member']['id']}') AND a.acepto=1
 ORDER BY RAND()
 LIMIT 16", __FILE__, __LINE__);
-while($mostrarmuros1=mysql_fetch_array($mostrarmuros)){
+while($mostrarmuros1=mysqli_fetch_array($mostrarmuros)){
 if($mostrarmuros1['amigo']<>$context['member']['id']){$sdasd=$mostrarmuros1['amigo'];}else{$sdasd=$mostrarmuros1['user'];}
 $datosmem=db_query("
 SELECT m.ID_MEMBER,m.avatar,m.realName,m.personalText
 FROM ({$db_prefix}members as m)
 WHERE m.ID_MEMBER='{$sdasd}'
 LIMIT 1", __FILE__, __LINE__);
-while ($data=mysql_fetch_assoc($datosmem)){
+while ($data=mysqli_fetch_assoc($datosmem)){
 $nombremem=$data['realName'];
 $avatar=$data['avatar'];
 $pt=$data['personalText'];}
@@ -914,11 +914,11 @@ echo'<div style="float:left;width: 776px;"><form action="/web/cw-perfilEditar.ph
 $nombre3=db_query("SELECT nombre,MSN,recibirmail 
 FROM {$db_prefix}members
  WHERE ID_MEMBER='{$context['member']['id']}'", __FILE__, __LINE__);
-while($row = mysql_fetch_assoc($nombre3)){
+while($row = mysqli_fetch_assoc($nombre3)){
 $nombre=$row['nombre'];
 $MSN=$row['MSN'];
 $recibirmail=$row['recibirmail'];}
-mysql_free_result($nombre3);
+mysqli_free_result($nombre3);
 
 echo'<tr>
 <td width="20%"><b class="size11">Nombre y Apellido </b></td>
@@ -1171,7 +1171,7 @@ if ($context['allow_edit_membergroups'])
 								</td>
 							</tr>';
 
-$Dfa=db_query("SELECT a_quien FROM ({$db_prefix}infop) WHERE id_user='{$context['member']['id']}'", __FILE__, __LINE__);while($das343=mysql_fetch_array($Dfa)){$quien=$das343['a_quien'];}
+$Dfa=db_query("SELECT a_quien FROM ({$db_prefix}infop) WHERE id_user='{$context['member']['id']}'", __FILE__, __LINE__);while($das343=mysqli_fetch_array($Dfa)){$quien=$das343['a_quien'];}
 $quien=isset($quien) ? $quien : '0';
 
 echo'<tr>						<td width="40%"><b class="size11">Mostrar apariencia a:</b></td>

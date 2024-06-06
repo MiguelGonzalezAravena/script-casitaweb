@@ -185,7 +185,7 @@ function sendpm($titulo,$mensaje,$para,$sis){
 global $db_prefix, $context, $scripturl, $txt, $user_info, $language,$user_settings, $func, $modSettings;
 if($user_info['is_guebs']){die();}else{
 $para=(int)$para;
-$verdad_para=mysql_num_rows(db_query("SELECT m.ID_MEMBER FROM ({$db_prefix}members AS m) WHERE m.ID_MEMBER='$para' LIMIT 1", __FILE__, __LINE__));
+$verdad_para=mysqli_num_rows(db_query("SELECT m.ID_MEMBER FROM ({$db_prefix}members AS m) WHERE m.ID_MEMBER='$para' LIMIT 1", __FILE__, __LINE__));
 if(empty($verdad_para)){die('0: El destinario no existe.');}
 
 $id_de=$user_settings['ID_MEMBER'];

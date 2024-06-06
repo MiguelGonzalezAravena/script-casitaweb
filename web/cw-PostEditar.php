@@ -14,13 +14,13 @@ SELECT men.ID_BOARD,men.ID_TOPIC,men.ID_MEMBER,men.sticky
 FROM ({$db_prefix}messages as men)
 WHERE men.ID_TOPIC='{$id_topics}' AND men.eliminado=0".(!empty($user_info['is_mods']) || !empty($user_info['is_admin']) ? '' : " AND men.ID_MEMBER='{$user_settings['ID_MEMBER']}'")."
 LIMIT 1",__FILE__, __LINE__);
-while($data44=mysql_fetch_assoc($datos)){
+while($data44=mysqli_fetch_assoc($datos)){
 $id_cat=$data44['ID_BOARD'];
 $stikccss=$data44['sticky'];
 $id_post=$data44['ID_TOPIC'];
 $id_user=$data44['ID_MEMBER'];}
 
-$error=mysql_num_rows($datos);
+$error=mysqli_num_rows($datos);
 if(empty($error)){fatal_error('No tienes permisos para editar este post.-');}
 
 
@@ -30,7 +30,7 @@ $titulo=trim($tituloedit);
 
 
 $postedit=$func['htmlspecialchars']($_POST['contenido']);
-$post=str_replace(array('"', '<', '>', '  ', "'", "’", "‘"), array('&quot;', '&lt;', '&gt;', ' &nbsp;', '&#39;', '&#8217;', '&#8216;'), $postedit);
+$post=str_replace(array('"', '<', '>', '  ', "'", "ï¿½", "ï¿½"), array('&quot;', '&lt;', '&gt;', ' &nbsp;', '&#39;', '&#8217;', '&#8216;'), $postedit);
 $post= preg_replace('~<br(?: /)?' . '>~i', "\n", $postedit);
 $post=trim($postedit);
 
@@ -53,10 +53,10 @@ SELECT description
 FROM {$db_prefix}boards
 WHERE ID_BOARD='$categorias'
 LIMIT 1", __FILE__, __LINE__);
-while($row=mysql_fetch_assoc($resquest)){$descript=$row['description'];}
+while($row=mysqli_fetch_assoc($resquest)){$descript=$row['description'];}
 $descript=isset($descript) ? $descript : '';
 if(empty($descript)){fatal_error('La categor&iacute;a especificada no existe.');}
-mysql_free_result($resquest);
+mysqli_free_result($resquest);
 
 $ak=explode(',',$tags);
 $Nn=implode(',', array_diff($ak, array_values(array(''))));
@@ -104,7 +104,7 @@ logAction('modify', array('topic' => $titulo. ' (ID: '.$id_topics.')', 'member' 
 //tags
 db_query("DELETE FROM {$db_prefix}tags WHERE id_post='{$id_topics}' AND rango=0", __FILE__, __LINE__);
 for($i=0;$i<$c;++$i){
-$lvccct=db_query("SELECT id FROM ({$db_prefix}tags) WHERE palabra='$a[$i]' AND rango=1 LIMIT 1", __FILE__, __LINE__); while($asserr=mysql_fetch_assoc($lvccct)){$idse=$asserr['id'];}
+$lvccct=db_query("SELECT id FROM ({$db_prefix}tags) WHERE palabra='$a[$i]' AND rango=1 LIMIT 1", __FILE__, __LINE__); while($asserr=mysqli_fetch_assoc($lvccct)){$idse=$asserr['id'];}
 $idse=isset($idse) ? $idse : '';
 $a[$i]=nohtml($a[$i]);
 if(!empty($idse)){db_query("UPDATE {$db_prefix}tags SET cantidad=cantidad+1 WHERE id='$idse' AND rango=1 LIMIT 1", __FILE__, __LINE__); $rg='0';}else{$rg='1';}

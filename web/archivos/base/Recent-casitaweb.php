@@ -97,7 +97,7 @@ FROM {$db_prefix}tags
 WHERE rango=1
 ORDER BY cantidad DESC
 LIMIT 29,1", __FILE__, __LINE__);
-while($row=mysql_fetch_array($result3)){$cantidad=$row['cantidad'];}
+while($row=mysqli_fetch_array($result3)){$cantidad=$row['cantidad'];}
 $result=db_query("
 SELECT palabra as tag,count(palabra) as quantity, cantidad
 FROM {$db_prefix}tags
@@ -105,7 +105,7 @@ WHERE cantidad >= $cantidad AND rango=1
 GROUP BY palabra
 ORDER BY palabra DESC
 LIMIT 0,$tagmax", __FILE__, __LINE__);
-while($row=mysql_fetch_array($result)){$tags[$row['tag']]=$row['cantidad'];}
+while($row=mysqli_fetch_array($result)){$tags[$row['tag']]=$row['cantidad'];}
 $max_qty = max(array_values($tags));
 $universo = array_sum(array_values($tags));
 $elemento_menor = min(array_values($tags));
@@ -173,8 +173,8 @@ if(!empty($context['user']['id'])){ ?> <center><a href="/web/cw-TEMPAgregarIMG.p
 
 <?php if($context['user']['name']=='Miguel'){
 
-$context['invitados']=mysql_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}log_online WHERE ID_MEMBER=0", __FILE__, __LINE__));
-$context['usuarios']=mysql_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}log_online WHERE ID_MEMBER<>0", __FILE__, __LINE__));
+$context['invitados']=mysqli_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}log_online WHERE ID_MEMBER=0", __FILE__, __LINE__));
+$context['usuarios']=mysqli_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}log_online WHERE ID_MEMBER<>0", __FILE__, __LINE__));
     
 ?>
 
@@ -185,7 +185,7 @@ $context['usuarios']=mysql_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}
 <b style="color:green;"><?php echo ($context['invitados']+$context['usuarios']);?> personas conectadas</b><br />
 <?php echo $context['invitados'];?> invitados conectados<br />
 <a href="/conectados/" title="<?php echo $context['usuarios'];?> registrados conectados"><?php echo $context['usuarios'];?> registrados conectados</a>
-<?php $context['cantidadcoment']=mysql_num_rows(db_query("SELECT id_coment FROM {$db_prefix}comentarios", __FILE__, __LINE__)); ?>
+<?php $context['cantidadcoment']=mysqli_num_rows(db_query("SELECT id_coment FROM {$db_prefix}comentarios", __FILE__, __LINE__)); ?>
 
 <?php echo $context['cantidadcoment'];?> comentarios</div></div>
 
@@ -205,7 +205,7 @@ INNER JOIN {$db_prefix}boards as b ON m.ID_BOARD=b.ID_BOARD$shas
 ORDER BY c.id_coment DESC
 LIMIT $modSettings[catcoment]",__FILE__, __LINE__);
 $context['comentarios25']=array();
-while($row=mysql_fetch_assoc($rs)){
+while($row=mysqli_fetch_assoc($rs)){
 censorText($row['subject']);
 $context['comentarios25'][] = array(
 		'id_coment' => $row['id_coment'],
@@ -214,7 +214,7 @@ $context['comentarios25'][] = array(
 			'description' => $row['description'],
 			'memberName' => $row['memberName'],
 			'realName' => $row['realName'],
-		);}mysql_free_result($rs);
+		);}mysqli_free_result($rs);
 foreach ($context['comentarios25'] as $coment25){ ?>
 <font class="size11" ><b><a title="<?php echo $coment25['realName']; ?>" href="/perfil/<?php echo $coment25['realName']; ?>"><?php echo $coment25['realName']; ?></a></b> - <a title="<?php echo $coment25['titulo'];?>"  href="/post/<?php echo $coment25['ID_TOPIC']; ?>/<?php echo $coment25['description'];?>/<?php echo urls($coment25['titulo']);?>.html#cmt_<?php echo $coment25['id_coment'];?>"><?php echo achicars($coment25['titulo']);?></a></font><br style="margin:0px;padding:0px;" />
 <?php }} ?>

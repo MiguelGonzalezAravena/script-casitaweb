@@ -11,14 +11,14 @@ WHERE {$cat} m.ID_BOARD=b.ID_BOARD AND m.ID_BOARD<>142
 ORDER BY m.ID_TOPIC DESC
 LIMIT {$can}",__FILE__, __LINE__);
 $context['widget'] = array();
-while ($row = mysql_fetch_assoc($rs)){
+while ($row = mysqli_fetch_assoc($rs)){
 $row['subject']=censorText($row['subject']);
 $context['widget'][] = array(
 		'description' => $row['description'],
 		'titulo' => $row['subject'],
 		'name' => $row['name'],
 		'ID_TOPIC' => $row['ID_TOPIC'],
-		);}mysql_free_result($rs); ?>
+		);}mysqli_free_result($rs); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es" ><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>CasitaWeb! - WidGet</title>

@@ -5,7 +5,7 @@ require($sourcedir.'/RemoveTopic.php');
 
 $ser=seguridad($_GET['user']);
 if(empty($ser)){fatal_error('No selecciono el usuario.-');}
-$sadasd33=mysql_num_rows(db_query("SELECT p.realName 
+$sadasd33=mysqli_num_rows(db_query("SELECT p.realName 
 FROM ({$db_prefix}members AS p) 
 WHERE p.realName='$ser'
 LIMIT 1", __FILE__, __LINE__));
@@ -15,7 +15,7 @@ $datosmem27=db_query("
 SELECT ID_MEMBER 
 FROM ({$db_prefix}members) 
 WHERE realName='$ser' LIMIT 1",__FILE__, __LINE__);
-while($data37=mysql_fetch_assoc($datosmem27)){$id_mem=$data37['ID_MEMBER'];}
+while($data37=mysqli_fetch_assoc($datosmem27)){$id_mem=$data37['ID_MEMBER'];}
 
 if(empty($_POST['campos'])){fatal_error('No selecciono posts para eliminar.-');}
 
@@ -38,7 +38,7 @@ $datosmem2=db_query("
 SELECT t.puntos,t.ID_BOARD,m.subject
 FROM ({$db_prefix}topics AS t, {$db_prefix}messages AS m) 
 WHERE t.ID_TOPIC='$a[$i]' AND t.ID_TOPIC=m.ID_TOPIC",__FILE__, __LINE__);
-while($data3=mysql_fetch_assoc($datosmem2)){
+while($data3=mysqli_fetch_assoc($datosmem2)){
 $puntosdados=$data3['puntos'];
 $subject=$data3['subject'];
 $icon=$data44['ID_BOARD'];}

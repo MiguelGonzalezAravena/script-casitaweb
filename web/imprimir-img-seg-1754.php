@@ -2,8 +2,8 @@
 global $context,$db_prefix,$modSettings,$user_info;
 $userdb=(int)$_GET['id487315'];
 $valid=db_query("SELECT title,filename FROM {$db_prefix}gallery_pic WHERE ID_PICTURE='$userdb' LIMIT 1",__FILE__, __LINE__);
-while ($udb = mysql_fetch_assoc($valid)){$title=$udb['title'];$filename=$udb['filename'];}
-mysql_free_result($valid);
+while ($udb = mysqli_fetch_assoc($valid)){$title=$udb['title'];$filename=$udb['filename'];}
+mysqli_free_result($valid);
 echo'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html version="XHTML+RDFa 1.0"  xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es" >
 <!--2009 casitaweb.net/por rigo-->
@@ -31,5 +31,5 @@ table{empty-cells: show;}
 .smalltext, .quoteheader, .codeheader{font-size: xxx-small;}
 hr{height: 1px;border: 0;color: black;background-color: black;}</style></head>';
 echo'<body onload="javascript:window.print();"><center><h1 class="largetext">'.$title.'</h1>http://casitaweb.net/imagenes/ver/'.$userdb.'<br /><b></b><hr /><img alt="" onload="if(this.width > 750) {this.width=750}" src="'.$filename.'" title="'.$title.'" /></center>';
-echo'<center><hr />&copy; ';año();echo' casitaweb.net</center></body></html>';
+echo'<center><hr />&copy; ';aï¿½o();echo' casitaweb.net</center></body></html>';
 ?>

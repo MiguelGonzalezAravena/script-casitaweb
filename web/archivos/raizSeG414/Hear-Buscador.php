@@ -166,14 +166,14 @@ $requess=db_query("SELECT url,nombre FROM {$db_prefix}comunidades_categorias ORD
 
 if($mm){echo'<select style="float:left;margin:0px;padding:0px;width:150px;_width:130px;#width:130px;height:20px;" name="categoria" id="categoria">
 <option value="" '; if(!$_GET['categoria']){echo'selected="selected" ';} echo'>Todas</option>';
-while ($row = mysql_fetch_assoc($requess)){echo'<option value="'.$row['url'].'" '; if($_GET['categoria']==$row['url']){echo'selected="selected" ';} echo'>'.$row['nombre'].'</option>';}
-mysql_free_result($requess);
+while ($row = mysqli_fetch_assoc($requess)){echo'<option value="'.$row['url'].'" '; if($_GET['categoria']==$row['url']){echo'selected="selected" ';} echo'>'.$row['nombre'].'</option>';}
+mysqli_free_result($requess);
 echo'</select>';}else{
 echo'<select style="float:left;margin:0px;padding:0px;width:150px;_width:130px;#width:130px;height:20px;" name="categoria" id="categoria">
 <option value="" '; if(!$_GET['categoria']){echo'selected="selected" ';} echo'>Todas</option>';
-while ($row = mysql_fetch_assoc($request)){
+while ($row = mysqli_fetch_assoc($request)){
 echo'<option'; if($_GET['categoria']==$row['ID_BOARD']){echo' selected="selected"';} echo' value="'.$row['ID_BOARD'].'" >'.$row['name'].'</option>';}
-mysql_free_result($request);
+mysqli_free_result($request);
 echo'</select>';}
 
 echo'</div>';

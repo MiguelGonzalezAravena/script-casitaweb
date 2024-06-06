@@ -9,7 +9,7 @@ $rs=db_query("SELECT c.id,c.url
 FROM ({$db_prefix}comunidades AS c)
 WHERE c.id='$idCom'
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs)){$url=$row['url'];$Esta=$row['id'];}
+while ($row=mysqli_fetch_assoc($rs)){$url=$row['url'];$Esta=$row['id'];}
 $Esta=isset($Esta) ? $Esta : '';
 if(empty($Esta)){fatal_error('Debes seleccionar una comunidad.-');}
 
@@ -40,7 +40,7 @@ if(!$permiso){fatal_error('Debes seleccionar un permiso.-');}
 $imagen=trim($_POST['imagen']);
 $cat=trim($_POST['categoria']);
 if(!$cat || $cat=='-1'){fatal_error('Debes elegir una categor&iacute;a');}
-$comunidades_categorias=mysql_num_rows(db_query("SELECT c.url FROM ({$db_prefix}comunidades_categorias AS c) WHERE c.url='$cat' LIMIT 1",__FILE__, __LINE__));
+$comunidades_categorias=mysqli_num_rows(db_query("SELECT c.url FROM ({$db_prefix}comunidades_categorias AS c) WHERE c.url='$cat' LIMIT 1",__FILE__, __LINE__));
 if(!$comunidades_categorias){fatal_error('Esta categor&iacuet;a no existe.');}
 
 if(!$aprobar){

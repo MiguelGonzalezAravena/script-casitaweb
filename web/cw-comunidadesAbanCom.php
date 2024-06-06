@@ -13,7 +13,7 @@ SELECT c.id
 FROM ({$db_prefix}comunidades as c)
 WHERE c.url='$id' AND c.bloquear=0
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs44)){$dasdasd=$row['id'];}
+while ($row=mysqli_fetch_assoc($rs44)){$dasdasd=$row['id'];}
 $dasdasd=isset($dasdasd) ? $dasdasd : '';
 if(empty($dasdasd)){fatal_error('Debes seleccionar una comunidad.');}
 
@@ -21,7 +21,7 @@ baneadoo($dasdasd);
 permisios($id_comvv);
 
 if($context['permisoCom']=='1'){
-$dddasd=mysql_num_rows(db_query("SELECT id FROM ({$db_prefix}comunidades_miembros) WHERE id_com='$dasdasd' AND rango=1",__FILE__, __LINE__));
+$dddasd=mysqli_num_rows(db_query("SELECT id FROM ({$db_prefix}comunidades_miembros) WHERE id_com='$dasdasd' AND rango=1",__FILE__, __LINE__));
 if($dddasd < 2){fatal_error('No podes dejar a la comunidad sin administrador.');}}
 
 db_query("DELETE FROM {$db_prefix}comunidades_miembros

@@ -12,11 +12,11 @@ $usersta=db_query("
 SELECT m.realName,m.ID_MEMBER
 FROM ({$db_prefix}ban_groups AS b,{$db_prefix}members AS m)
 WHERE m.ID_MEMBER='$user'", __FILE__, __LINE__);
-while($ban=mysql_fetch_array($usersta)){
+while($ban=mysqli_fetch_array($usersta)){
 $name=$ban['realName'];
 }   
 
-$haygentea=mysql_num_rows(db_query("
+$haygentea=mysqli_num_rows(db_query("
 SELECT b.name
 FROM ({$db_prefix}ban_groups AS b)
 WHERE b.name='$name'", __FILE__, __LINE__));
@@ -32,7 +32,7 @@ $usersta=db_query("
 SELECT m.realName,b.notes,b.expire_time,b.reason
 FROM ({$db_prefix}ban_groups AS b,{$db_prefix}members AS m)
 WHERE b.ID_BAN_GROUP ='$bg' AND b.name=m.realName", __FILE__, __LINE__);
-while($ban=mysql_fetch_array($usersta)){
+while($ban=mysqli_fetch_array($usersta)){
 $name=$ban['realName'];
 $mod=$ban['notes'];
 $reason=trim(nohtml1(nohtml($ban['reason'])));

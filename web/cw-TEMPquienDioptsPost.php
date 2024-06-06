@@ -12,7 +12,7 @@ INNER JOIN {$db_prefix}boards AS b ON m.ID_BOARD = b.ID_BOARD AND m.ID_MEMBER = 
  ORDER BY m.ID_TOPIC DESC
  LIMIT 30", __FILE__, __LINE__);
 
-while($row=mysql_fetch_assoc($datos)){
+while($row=mysqli_fetch_assoc($datos)){
 $d=$row['ID_TOPIC'];
 echo'<strong><a title="'.censorText($row['subject']).'" href="/post/'.$row['ID_TOPIC'].'/'.$row['description'].'/'.censorText(urls($row['subject'])).'.html" class="titlePost">'.censorText($row['subject']).'</a> ('.$row['puntos'].' puntos)</strong><br /><i style="color:red;">Puntos otorgados por:';
 
@@ -21,8 +21,8 @@ SELECT p.cantidad,m.realName
 FROM ({$db_prefix}puntos AS p)
 INNER JOIN {$db_prefix}members AS m ON p.id_post='{$row['ID_TOPIC']}' AND p.id_member=m.ID_MEMBER
 ORDER BY p.id DESC", __FILE__, __LINE__);
-while($row2 = mysql_fetch_assoc($request)){echo'&#8226;&#32;<a href="/perfil/'.$row2['realName'].'" title="'.$row2['cantidad'].' puntos">'.$row2['realName'].'</a>&#32;';}mysql_free_result($request);
-echo'</i><div class="hrs"></div>';}mysql_free_result($datos);
+while($row2 = mysqli_fetch_assoc($request)){echo'&#8226;&#32;<a href="/perfil/'.$row2['realName'].'" title="'.$row2['cantidad'].' puntos">'.$row2['realName'].'</a>&#32;';}mysqli_free_result($request);
+echo'</i><div class="hrs"></div>';}mysqli_free_result($datos);
 $d=isset($d) ? $d : '';
 if(empty($d)){echo'<div class="noesta">No tiene posts creados.</div>';}
 

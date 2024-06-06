@@ -9,7 +9,7 @@ SELECT a.id_com
 FROM ({$db_prefix}comunidades_articulos as a)
 WHERE a.id='$id' AND a.eliminado=1
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs44)){$id_com=$row['id_com'];}
+while ($row=mysqli_fetch_assoc($rs44)){$id_com=$row['id_com'];}
 $id_com=isset($id_com) ? $id_com : '';
 if(empty($id_com)){die('0: El tema no existe.');}
 

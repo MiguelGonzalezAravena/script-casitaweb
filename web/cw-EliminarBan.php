@@ -9,7 +9,7 @@ $request=db_query("SELECT p.notes,p.clave
 FROM ({$db_prefix}ban_groups AS p)
 WHERE p.ID_BAN_GROUP='$id'
 LIMIT 1", __FILE__, __LINE__);
-while($row=mysql_fetch_array($request)){
+while($row=mysqli_fetch_array($request)){
 $context['ussdee']=$row['notes'];
 $context['clave']=$row['clave'];}
 $context['ussdee']=isset($context['ussdee']) ? $context['ussdee'] : '';

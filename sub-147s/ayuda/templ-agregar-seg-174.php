@@ -14,7 +14,7 @@ $catlist=db("SELECT catid,cat,enlace
 FROM {$prefijo}cats
 WHERE maincat=0
 ORDER BY cat ASC", __FILE__, __LINE__);
-while($cat=mysql_fetch_assoc($catlist)){echo'<option value="'.$cat['catid'].'">'.$cat['cat'].'</option>';}
+while($cat=mysqli_fetch_assoc($catlist)){echo'<option value="'.$cat['catid'].'">'.$cat['cat'].'</option>';}
 echo'</select><br /><br />';
 
 echo'<input class="button" style="font-size: 15px;" value="Publicar" title="Publicar" type="submit" tabindex="4" /></div></div></form>';

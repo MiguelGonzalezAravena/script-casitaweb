@@ -11,7 +11,7 @@ $rs=db_query("SELECT c.nombre,b.rango,c.id,c.categoria,c.url
 FROM ({$db_prefix}comunidades_miembros AS b, {$db_prefix}comunidades AS c)
 WHERE c.url='$id' AND c.id=b.id_com AND b.id_user='{$user_settings['ID_MEMBER']}' AND c.bloquear='0'
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs)){
+while ($row=mysqli_fetch_assoc($rs)){
 $cat=seguridad(nohtml($row['nombre']));
 $rango=$row['rango'];
 $url=$row['url'];
@@ -25,13 +25,13 @@ acces($dsds);
 
 if($context['puedo']=='1' || $context['puedo']=='3'){
 //tiempo aregar post
-$rs=db_query("SELECT creado FROM ({$db_prefix}comunidades_articulos) WHERE id_user='{$user_settings['ID_MEMBER']}' AND id_com='$dsds'",__FILE__, __LINE__);while($row=mysql_fetch_assoc($rs)){$creado=$row['creado'];}
+$rs=db_query("SELECT creado FROM ({$db_prefix}comunidades_articulos) WHERE id_user='{$user_settings['ID_MEMBER']}' AND id_com='$dsds'",__FILE__, __LINE__);while($row=mysqli_fetch_assoc($rs)){$creado=$row['creado'];}
 if($creado>time()-30){fatal_error('No es posible agregar temas con tan poca diferencia de tiempo.<br />Vuelva a intentar en segundos.-');}
 // FINN tiempo aregar post
 
 if(!$rango){
 $rkks=db_query("SELECT c.permiso FROM ({$db_prefix}comunidades AS c) WHERE c.url='$id'",__FILE__, __LINE__);
-while($row=mysql_fetch_assoc($rkks)){$rangofinal=$row['permiso'];}    
+while($row=mysqli_fetch_assoc($rkks)){$rangofinal=$row['permiso'];}    
 
 if($rangofinal != '3'){fatal_error('No tienes permiso para postear en esta comunidad.-');}}else{$rangofinal='4';}
 if($rangofinal=='4'){$stiky=$_POST['sticky'] ? '1' : '0';}else{$stiky='0';}

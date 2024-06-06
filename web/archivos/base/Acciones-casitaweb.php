@@ -97,7 +97,7 @@ SELECT cantidad
 FROM {$db_prefix}tags
 ORDER BY cantidad DESC
 LIMIT 99,1", __FILE__, __LINE__);
-while($row=mysql_fetch_array($result3)){$cantidad=$row['cantidad'];}
+while($row=mysqli_fetch_array($result3)){$cantidad=$row['cantidad'];}
 
 $result=db_query("SELECT palabra as tag,count(palabra) as quantity, cantidad
 FROM {$db_prefix}tags
@@ -105,7 +105,7 @@ WHERE cantidad >= '$cantidad'
 GROUP BY palabra 
 ORDER BY $orden
 LIMIT 0,$tagmax", __FILE__, __LINE__);
-while($row=mysql_fetch_array($result)){$tags[$row['tag']]=$row['cantidad'];}
+while($row=mysqli_fetch_array($result)){$tags[$row['tag']]=$row['cantidad'];}
 $max_qty = max(array_values($tags));
 $universo = array_sum(array_values($tags));
 $elemento_menor = min(array_values($tags));
@@ -140,9 +140,9 @@ $pasda=seguridad($_GET['palabra']);
 if($pasda){
 $request = db_query("SELECT b.ID_BOARD, b.name, b.childLevel FROM {$db_prefix}boards AS b", __FILE__, __LINE__);
 	$context['boards'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$context['boards'][] = array('id' => $row['ID_BOARD'], 'name' => $row['name']);
-	mysql_free_result($request);
+	mysqli_free_result($request);
  $RegistrosAMostrar=$modSettings['search_results_per_page'];
  $_GET['pag']=isset($_GET['pag']) ? $_GET['pag'] : '';
  if($_GET['pag'] < 1){$dud=1;}else{$dud=$_GET['pag'];}
@@ -150,7 +150,7 @@ $request = db_query("SELECT b.ID_BOARD, b.name, b.childLevel FROM {$db_prefix}bo
  $PagAct=$dud;}
  else{$RegistrosAEmpezar=0;$PagAct=1;}
  
-$NroRegistros=mysql_num_rows(db_query("SELECT t.palabra FROM ({$db_prefix}tags as t, {$db_prefix}messages AS p) WHERE t.palabra='$pasda' AND t.id_post=p.ID_TOPIC", __FILE__, __LINE__));
+$NroRegistros=mysqli_num_rows(db_query("SELECT t.palabra FROM ({$db_prefix}tags as t, {$db_prefix}messages AS p) WHERE t.palabra='$pasda' AND t.id_post=p.ID_TOPIC", __FILE__, __LINE__));
 $request = db_query("
 SELECT p.puntos,t.palabra,p.subject,p.ID_TOPIC,b.description,p.hiddenOption,p.posterName,p.posterTime
 FROM ({$db_prefix}tags AS t, {$db_prefix}messages AS p,{$db_prefix}boards AS b) 
@@ -159,7 +159,7 @@ GROUP BY p.subject
 ORDER BY p.ID_TOPIC ASC
 LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
 $context['tags'] = array();
-while ($row = mysql_fetch_assoc($request))
+while ($row = mysqli_fetch_assoc($request))
 {$context['tags'][] = array(
 		    'subject' => $row['subject'],
 		    'id' => $row['ID_TOPIC'],
@@ -168,7 +168,7 @@ while ($row = mysql_fetch_assoc($request))
 		    'posterTime' => $row['posterTime'],
 		    'description' => $row['description']
 			);}
-mysql_free_result($request);
+mysqli_free_result($request);
 //div grande
 
 if(!$NroRegistros){echo'<div class="noesta-am" style="width:922px;">No se encontraron resultados.</div>';}else{
@@ -226,7 +226,7 @@ if(!$context['user']['is_admin']){$shas=' AND p.ID_BOARD<>142 ';}else{$shas='';}
 $ddcc=$_GET['q'];
 $pssads=trim(seguridad($ddcc));
 
-$NroRegistros=mysql_num_rows(db_query("SELECT p.ID_TOPIC
+$NroRegistros=mysqli_num_rows(db_query("SELECT p.ID_TOPIC
 FROM ({$db_prefix}tags AS t, {$db_prefix}messages AS p,{$db_prefix}boards AS b)
 WHERE t.palabra LIKE '%$pssads%' AND t.id_post=p.ID_TOPIC$shas AND p.ID_BOARD={$cat} AND p.ID_BOARD=b.ID_BOARD 
 GROUP BY p.subject", __FILE__, __LINE__));
@@ -238,7 +238,7 @@ GROUP BY p.subject
 ORDER BY {$order2}
 LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
 $context['tags'] = array();
-while ($row = mysql_fetch_assoc($request))
+while ($row = mysqli_fetch_assoc($request))
 {$context['tags'][] = array(
 		    'subject' => $row['subject'],
 		    'id' => $row['ID_TOPIC'],
@@ -247,7 +247,7 @@ while ($row = mysql_fetch_assoc($request))
 		    'posterTime' => $row['posterTime'],
 		    'description' => $row['description']
 			);}
-mysql_free_result($request);
+mysqli_free_result($request);
 
 //div grande
 
@@ -289,10 +289,10 @@ $request=db_query("SELECT i.title
 FROM ({$db_prefix}gallery_pic as i)
 WHERE i.ID_PICTURE='{$id}'
 LIMIT 1", __FILE__, __LINE__);
-$siesta=mysql_num_rows($request);
+$siesta=mysqli_num_rows($request);
 if(empty($siesta)){fatal_error('Esta imagen no existe.-', false);}
-$row=mysql_fetch_assoc($request);
-mysql_free_result($request);
+$row=mysqli_fetch_assoc($request);
+mysqli_free_result($request);
 
 echo'<div><div class="box_buscador"><div class="box_title" style="width: 920px;"><div class="box_txt box_buscadort"><center>Recomendar a tus amigos</center></div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width:14px;height:12px;" border="0" /></div></div><div style="width:912px;padding:4px;" class="windowbg"><center>
 <form action="/web/cw-EnviarImgMail.php" method="post" accept-charset="'.$context['character_set'].'"><br /><font class="size11"><b>Recomendarle esta imagen hasta a seis amigos:</b></font><br /><b class="size11">1 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email" size="28" maxlength="60" /> <b class="size11">2 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email1" size="28" maxlength="60" /><br /><b class="size11">3 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email2" size="28" maxlength="60" /> <b class="size11">4 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email3" size="28" maxlength="60" /><br /><b class="size11">5 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email4" size="28" maxlength="60" /> <b class="size11">6 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email5" size="28" maxlength="60" /><br /><br />
@@ -459,9 +459,9 @@ echo'<div><div class="box_buscador">
 <td align="center" style="padding:0px;margin:0px;" class="windowbg">
     <b>Categor&iacute;a:</b><br /><select id="cat" onchange="actualizar_preview();">
 	<option value="" selected="selected">Todas</option>';
-while($row = mysql_fetch_assoc($rs)){
+while($row = mysqli_fetch_assoc($rs)){
 	echo'<option value="'.$row['ID_BOARD'].'">'.$row['name'].'</option>';}
-	mysql_free_result($rs);
+	mysqli_free_result($rs);
 	echo'</select>
 	<br/><b>Cantidad:</b><br /><input size="4" maxlength="2" id="cantidad" value="20" onchange="actualizar_preview();" type="text" onfocus="foco(this);" onblur="no_foco(this);"> <span class="smalltext">(max 50 - min 5)</span>
    <br/><b>Tama&ntilde;o:</b><br />
@@ -492,7 +492,7 @@ global $db_prefix, $user_info, $scripturl, $modSettings, $board;
 if($context['allow_admin']){
 $getid=(int)$_GET['id'];
 
-$context['comentarios_mod']=mysql_num_rows(db_query("
+$context['comentarios_mod']=mysqli_num_rows(db_query("
 SELECT id_post
 FROM ({$db_prefix}comentarios_mod)
 WHERE id_post='{$getid}'", __FILE__, __LINE__));
@@ -502,7 +502,7 @@ SELECT id_user,cerrado
 FROM ({$db_prefix}comunicacion)
 WHERE id_contenido='{$getid}'
 LIMIT 1", __FILE__, __LINE__);
-while($cerrado=mysql_fetch_array($mcerrado)){
+while($cerrado=mysqli_fetch_array($mcerrado)){
 $cerrar=$cerrado['cerrado'];
 $id_user=$cerrado['id_user'];}
 $_GET['inicio']=isset($_GET['inicio']) ? $_GET['inicio'] : '';
@@ -525,7 +525,7 @@ SELECT c.id_contenido,c.id_user,u.ID_MEMBER,c.id_contenido,u.realName,c.titulo,c
 FROM ({$db_prefix}comunicacion as c,{$db_prefix}members as u)
 WHERE c.id_contenido='$getid' AND c.id_user=u.ID_MEMBER
 LIMIT 1",__FILE__, __LINE__);
-while($MostrarFila=mysql_fetch_array($Resultado)){
+while($MostrarFila=mysqli_fetch_array($Resultado)){
     
 echo"<b class='size11'>Titulo:</b>&nbsp;<span title='", censorText($MostrarFila['titulo']), "'>",censorText($MostrarFila['titulo']), "</span> - <span class='size11'>ID: <a href='/moderacion/comunicacion-mod/post/".$MostrarFila['id_contenido']."'>".$MostrarFila['id_contenido']."</a></span> - <span class='size11'>COM: <a href='/moderacion/comunicacion-mod/post/".$MostrarFila['id_contenido']."#comentarios'>".$context['comentarios_mod']."</a></span>";
 if($context['user']['is_admin']){echo' - <span class="size11">[<b><a href="/web/cw-ComunicacionAdm-EliPost.php?post='.$MostrarFila['id_contenido'].'" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este post?\')) return false;">X</a></b>]</span>';}elseif($context['user']['id']==$id_user){echo' - <span class="size11">[<b><a href="/moderacion/comunicacion-mod/post/eliminar/'.$MostrarFila['id_contenido'].'" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este post?\')) return false;">X</a></b>]</span>';}
@@ -557,13 +557,13 @@ echo'<div style="float:left;margin-right:10px;">
 <tr><th>&nbsp</th>
 <th>Post</th><th>Por</th></tr></thead>
 <tbody>';
-while($MostrarFila=mysql_fetch_array($Resultado)){
+while($MostrarFila=mysqli_fetch_array($Resultado)){
 echo'<tr><td><div class="icon_img" style="float:left;margin-right:2px;"><img alt="" src="'.$tranfer1.'/icons/cwbig-v1-iconos.gif?v3.2.3" style="margin-top:-559px;display:inline;" /></div></td>
 <td><a href="/moderacion/comunicacion-mod/post/'.$MostrarFila['id_contenido'].'">'.$MostrarFila['titulo'].'</a></td>
 <td><a href="/perfil/'.$MostrarFila['realName'].'">'.$MostrarFila['realName'].'</a></td></tr>';}
 echo'</tbody></table>';
 
- $NroRegistros=mysql_num_rows(db_query("SELECT id_contenido FROM {$db_prefix}comunicacion",__FILE__, __LINE__));
+ $NroRegistros=mysqli_num_rows(db_query("SELECT id_contenido FROM {$db_prefix}comunicacion",__FILE__, __LINE__));
  
  $PagAnt=$PagAct-1;
  $PagSig=$PagAct+1;
@@ -590,7 +590,7 @@ FROM ({$db_prefix}comunicacion as c,{$db_prefix}comentarios_mod as cm,{$db_prefi
 WHERE c.id_contenido=cm.id_post AND cm.id_user=u.ID_MEMBER
 ORDER BY cm.id DESC
 LIMIT 15",__FILE__, __LINE__);
-while($MostrarFila=mysql_fetch_array($Resultado)){
+while($MostrarFila=mysqli_fetch_array($Resultado)){
 echo'
 <tr><td><img src="'.$tranfer1.'/comunidades/respuesta.png" alt="" /></td>
 <td><a href="/moderacion/comunicacion-mod/post/'.$MostrarFila['id_post'].'">'.$MostrarFila['titulo'].'</a></td>
@@ -608,7 +608,7 @@ $Resultado=db_query("SELECT c.id,c.comentario,m.realName
                          FROM ({$db_prefix}comentarios_mod as c, {$db_prefix}members as m)
 						 WHERE c.id_post='$getid' AND c.id_user = m.ID_MEMBER
 						 ORDER BY c.id ASC ",__FILE__, __LINE__);
-while($MostrarFila=mysql_fetch_array($Resultado)){
+while($MostrarFila=mysqli_fetch_array($Resultado)){
 $MostrarFila['comentario']=censorText($MostrarFila['comentario']);
 echo'<div id="cmt_'.$MostrarFila['id'].'" class="Coment" style="width:922px;">
 <span class="size12"><div class="User-Coment">
@@ -646,10 +646,10 @@ SELECT description,filename,code
 FROM ({$db_prefix}smileys)
 WHERE hidden=0
 ORDER BY ID_SMILEY ASC",__FILE__, __LINE__);
-while($row = mysql_fetch_assoc($existe)){
+while($row = mysqli_fetch_assoc($existe)){
 echo'<span class="pointer" onclick="replaceText(\' '.$row['code'].'\', document.forms.enviar.cuerpo_comment); return false;"><img class="png" src="'.$tranfer1.'/emoticones/'.$row['filename'].'" align="bottom" alt="" title="', $row['description'], '" /></span> ';}
 
-mysql_free_result($existe);
+mysqli_free_result($existe);
 echo ' <a href="javascript:moticonup()">[m&aacute;s]</a>';
 echo'<br /><input class="login" name="post" id="post" value="Enviar Comentario" onclick="return errorrojo(this.form.cuerpo_comment.value);" tabindex="2" type="submit" /><input name="id_post" value="'.(int)$getid.'" type="hidden" /></p><div style="clear: left;"></div>';
 echo'</form></div>
@@ -662,7 +662,7 @@ function template_denuncias(){
 global $tranfer1, $context, $db_prefix;
 if($context['allow_admin']){
 
-$NroRegistros=mysql_num_rows(db_query("SELECT id_denuncia FROM {$db_prefix}denuncias",__FILE__, __LINE__));
+$NroRegistros=mysqli_num_rows(db_query("SELECT id_denuncia FROM {$db_prefix}denuncias",__FILE__, __LINE__));
 ?>
 <script type="text/javascript">
 function actuarDenuncia(a,id,den,ident){ $('#cargando_'+id).css('display','block');
@@ -710,7 +710,7 @@ GROUP BY den.id_post
 ORDER BY den.borrado ASC
 LIMIT $RegistrosAEmpezar, $RegistrosAMostrar",__FILE__, __LINE__);
 $context['denunciasss'] = array();
-while ($row = mysql_fetch_assoc($request))
+while ($row = mysqli_fetch_assoc($request))
 {$context['denunciasss'][] = array(
 'borrado' => $row['borrado'],
 'id_post' => $row['id_post'],
@@ -721,7 +721,7 @@ while ($row = mysql_fetch_assoc($request))
 'tipo' => $row['tipo'],
 'mod' => $row['atendido'],
 'id_denuncia' => $row['id_denuncia']);}
-mysql_free_result($request);
+mysqli_free_result($request);
 
 foreach($context['denunciasss'] as $den1){
 
@@ -771,12 +771,12 @@ SELECT den.comentario,m.realName,m.memberIP,den.razon
 FROM ({$db_prefix}denuncias AS den, {$db_prefix}members AS m)
 WHERE den.id_user=m.ID_MEMBER AND den.id_post='{$den1['id_post']}'
 ORDER BY den.id_denuncia DESC", __FILE__, __LINE__);
-while ($den2 = mysql_fetch_assoc($reques2)){
+while ($den2 = mysqli_fetch_assoc($reques2)){
 $comentario = nohtml(nohtml2($den2['comentario']));
 $den2['razon'] = str_replace('razon','raz&oacute;n',str_replace('contrasena','contrase&ntilde;a',str_replace('Esta','Esta&aacute;',str_replace('mayuscula','Esta&may&uacute;scula',str_replace('informacion','informaci&oacute;n',$den2['razon'])))));
 
 echo'<span class="size11"><b class="size11">Denunciante:</b> <a href="/perfil/'.$den2['realName'].'" title="'.$den2['realName'].'">'.$den2['realName'].'</a> | <b class="size11">IP:</b> <a href="http://lacnic.net/cgi-bin/lacnic/whois?query='.$den2['memberIP'].'" title="'.$den2['memberIP'].'">'.$den2['memberIP'].'</a> | <b class="size11">Raz&oacute;n:</b> '.$den2['razon'].' | <b class="size11">Comentario:</b> '.str_replace("\n", "<br />",$comentario).'</span><br />';}
-mysql_free_result($reques2);
+mysqli_free_result($reques2);
 echo'</div>';}
 
  $PagAnt=$PagAct-1;
@@ -806,8 +806,8 @@ SELECT hidden,ID_SMILEY,description,filename,code
 FROM ({$db_prefix}smileys)
 WHERE hidden=0
 ORDER BY ID_SMILEY ASC", __FILE__, __LINE__);
-while ($row = mysql_fetch_assoc($existe))
-{echo'<span style="cursor:pointer;" onclick="replaceText(\' ', $row['code'], '\', document.forms.agregarp.texto); return false;"><img class="png" src="'.$tranfer1.'/emoticones/'.$row['filename'].'" align="bottom" alt="" title="', $row['description'], '" /></span> ';}mysql_free_result($existe);
+while ($row = mysqli_fetch_assoc($existe))
+{echo'<span style="cursor:pointer;" onclick="replaceText(\' ', $row['code'], '\', document.forms.agregarp.texto); return false;"><img class="png" src="'.$tranfer1.'/emoticones/'.$row['filename'].'" align="bottom" alt="" title="', $row['description'], '" /></span> ';}mysqli_free_result($existe);
 if (!empty($context['smileys']['popup']))
 echo'<a href="javascript:moticonup()">[', $txt['more_smileys'], ']</a>';
 echo'<br /><label id="cerrado"><input class="check" tabindex="3" name="cerrado" value="1" type="checkbox"> No permitir comentarios</label><br /><center><input class="login" type="submit" value="Postear"></center>';} ?>

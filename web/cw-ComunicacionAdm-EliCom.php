@@ -6,7 +6,7 @@ if($id <= 0){fatal_error('Falta el comentario a eliminar.-',false);}
 $post=(int)$_GET['post'];
 if($post <= 0){fatal_error('Falta el comentario a eliminar.-',false);}
 
-$existe=mysql_num_rows(db_query("SELECT c.id
+$existe=mysqli_num_rows(db_query("SELECT c.id
 FROM ({$db_prefix}comentarios_mod AS c)
 WHERE c.id='$id' 
 LIMIT 1", __FILE__, __LINE__));
@@ -17,7 +17,7 @@ SELECT c.id_user
 FROM ({$db_prefix}comunicacion as c)
 WHERE c.id_contenido='$post'
 LIMIT 1", __FILE__, __LINE__);
-while($red=mysql_fetch_array($reddd)){$context['id_user']=$red['id_user'];}
+while($red=mysqli_fetch_array($reddd)){$context['id_user']=$red['id_user'];}
 if(!$context['id_user']){fatal_error('Este comentario no se puede eliminar.');}
 
 

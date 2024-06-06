@@ -10,7 +10,7 @@ SELECT mensaje,fecha,titulo,name_de
 FROM ({$db_prefix}mensaje_personal)
 WHERE id='$responder' AND id_para='{$ID_MEMBER}'
 LIMIT 1", __FILE__, __LINE__);
-while($row=mysql_fetch_assoc($request)){
+while($row=mysqli_fetch_assoc($request)){
 
 censorText($row['mensaje']);
 $row['mensaje']=trim(un_htmlspecialchars(strip_tags(strtr(parse_bbc($row['mensaje'],false), array('<br />' => "\n", '</div>' => "\n", '</li>' => "\n", '&#91;' => '[', '&#93;' => ']')))));
@@ -18,7 +18,7 @@ $comentario=$row['mensaje'];
 $fecha=$row['fecha'];
 $titulo='Re: '.censorText($row['titulo']);
 $nombre=$row['name_de'];}
-mysql_free_result($request);}
+mysqli_free_result($request);}
 
 $_GET['user']=isset($_GET['user']) ? $_GET['user'] : '';
 echo'
@@ -53,8 +53,8 @@ SELECT hidden,ID_SMILEY,description,filename,code
 FROM ({$db_prefix}smileys)
 WHERE hidden=0
 ORDER BY ID_SMILEY ASC", __FILE__, __LINE__);
-while ($row = mysql_fetch_assoc($existe))
-{echo'<span style="cursor:pointer;" onclick="replaceText(\' ', $row['code'], '\', document.forms.postmodify.editorCW); return false;"><img src="'.$tranfer1.'/emoticones/'.$row['filename'].'" align="bottom" alt="" title="'.$row['description'].'" class="png" /></span> ';}mysql_free_result($existe);}
+while ($row = mysqli_fetch_assoc($existe))
+{echo'<span style="cursor:pointer;" onclick="replaceText(\' ', $row['code'], '\', document.forms.postmodify.editorCW); return false;"><img src="'.$tranfer1.'/emoticones/'.$row['filename'].'" align="bottom" alt="" title="'.$row['description'].'" class="png" /></span> ';}mysqli_free_result($existe);}
 
 echo'<br /><input class="login" type="button" value="Enviar" tabindex="3" onclick="enviarMP(\''.$tip.'\',\''.$_GET['user'].'\');"/></p></form></div>
 </form></div>

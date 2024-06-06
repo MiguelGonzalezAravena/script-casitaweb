@@ -4,7 +4,7 @@ if($user_info['is_guest']){echo'0: faltan datos.-';}else{
 
 $_POST['shortname']=seguridad($_POST['shortname']);
 
-$igual=mysql_fetch_row(db_query("SELECT c.url
+$igual=mysqli_fetch_row(db_query("SELECT c.url
 FROM ({$db_prefix}comunidades AS c)
 WHERE c.url='{$_POST['shortname']}' AND c.bloquear=0 LIMIT 1",__FILE__, __LINE__));
 

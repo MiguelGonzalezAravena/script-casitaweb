@@ -16,17 +16,17 @@ isAllowedTo(array('admin_forum', 'manage_permissions', 'moderate_forum', 'manage
 		WHERE ID_GROUP = 1
 		LIMIT 33", __FILE__, __LINE__);
 	$context['administrators'] = array();
-	while ($row = mysql_fetch_assoc($request)){
+	while ($row = mysqli_fetch_assoc($request)){
 	$context['administrators'][] = '<a href="/perfil/'.$row['realName'].'" title="'.$row['realName'].'">'.$row['realName'].'</a>';}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 	$request2 = db_query("SELECT realName
 		FROM {$db_prefix}members
 		WHERE ID_GROUP = 2", __FILE__, __LINE__);
 $context['moderadores'] = array();
-while ($row = mysql_fetch_assoc($request2))
+while ($row = mysqli_fetch_assoc($request2))
 {	$context['moderadores'][] = array(
 		    'realName' => $row['realName'],);}
-	mysql_free_result($request2);
+	mysqli_free_result($request2);
 
 	$context['time_format'] = urlencode($user_info['time_format']);
 	$context['can_admin'] = allowedTo('admin_forum');

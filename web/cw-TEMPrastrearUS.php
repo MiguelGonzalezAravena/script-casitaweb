@@ -10,15 +10,15 @@ $request = db_query("
 			FROM {$db_prefix}members
 			WHERE ID_MEMBER = '$memID'
             LIMIT 1", __FILE__, __LINE__);
-		if (mysql_num_rows($request) > 0)
-			while ($row = mysql_fetch_assoc($request)){
+		if (mysqli_num_rows($request) > 0)
+			while ($row = mysqli_fetch_assoc($request)){
 			 $context['last_ip'] = $row['memberIP'];
              $context['member']['name'] = $row['realName'];
              $ips = array(
              $row['memberIP'],
              $row['memberIP2'],
              ); }
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 
 $ips = array_unique($ips);
@@ -30,10 +30,10 @@ if(!empty($ips))
 			FROM {$db_prefix}members
 			WHERE ID_MEMBER != $memID
 				AND memberIP IN ('" . implode("', '", $ips) . "')", __FILE__, __LINE__);
-		if (mysql_num_rows($request) > 0)
-			while ($row = mysql_fetch_assoc($request))
+		if (mysqli_num_rows($request) > 0)
+			while ($row = mysqli_fetch_assoc($request))
 				$context['members_in_range'][$row['ID_MEMBER']] = '<a href="/perfil/'.$row['realName'].'">'.$row['realName'].'</a>';
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		$request = db_query("
 			SELECT mem.ID_MEMBER, mem.realName
@@ -41,10 +41,10 @@ if(!empty($ips))
 			WHERE mem.ID_MEMBER = m.ID_MEMBER
 				AND mem.ID_MEMBER != $memID
 				AND m.posterIP IN ('" . implode("', '", $ips) . "')", __FILE__, __LINE__);
-		if (mysql_num_rows($request) > 0)
-			while ($row = mysql_fetch_assoc($request))
+		if (mysqli_num_rows($request) > 0)
+			while ($row = mysqli_fetch_assoc($request))
 				$context['members_in_range'][$row['ID_MEMBER']] = '<a href="/perfil/'.$row['realName'].'">' . $row['realName'] . '</a>';
-		mysql_free_result($request);}
+		mysqli_free_result($request);}
 
 
 echo'<div style="width:552px;">';

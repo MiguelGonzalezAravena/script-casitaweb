@@ -10,7 +10,7 @@ timeforComent();
 
 if(empty($post)){fatal_error("Debes seleccionar el post.-",false);}
 
-$sas=mysql_num_rows(db_query("SELECT id_contenido FROM {$db_prefix}comunicacion WHERE id_contenido='$post'",__FILE__, __LINE__));
+$sas=mysqli_num_rows(db_query("SELECT id_contenido FROM {$db_prefix}comunicacion WHERE id_contenido='$post'",__FILE__, __LINE__));
 if(empty($sas)){fatal_error("Quieres comentar un post que no existe.-",false);}
 
 $comentario=seguridad($_POST['cuerpo_comment']);
@@ -26,8 +26,8 @@ db_query("INSERT INTO {$db_prefix}comentarios_mod (id_user,id_post,data,comentar
 
 //NOTIFICACIONES
 $getData=db_query("SELECT m.ID_MEMBER FROM ({$db_prefix}members as m) WHERE m.ID_GROUP=1 OR m.ID_GROUP=2", __FILE__, __LINE__);
-while($celda=mysql_fetch_array($getData)){notificacionAGREGAR($celda['ID_MEMBER'],'9');} 
-mysql_free_result($getData);
+while($celda=mysqli_fetch_array($getData)){notificacionAGREGAR($celda['ID_MEMBER'],'9');} 
+mysqli_free_result($getData);
 
 $_SESSION['ultima_accionTIME']=time();
 Header("Location: /moderacion/comunicacion-mod/post/$post");exit();die();

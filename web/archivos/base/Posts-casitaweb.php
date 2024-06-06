@@ -80,24 +80,24 @@ if($context['user']['is_logged']){echo'</span></center>';}
 echo'<div class="hrs"></div>';
 echo'<b class="size13">Posts relacionados:</b><br />';
 $dasdasd2=db_query("SELECT id_post,palabra FROM {$db_prefix}tags WHERE id_post='{$post}' ORDER BY palabra ASC",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($dasdasd2)){
+while ($row=mysqli_fetch_assoc($dasdasd2)){
 $n[]="palabra='".str_replace("'","",$row['palabra'])."'";
 $ff=join(" OR ",$n);}
-mysql_free_result($dasdasd2);
+mysqli_free_result($dasdasd2);
 $n=isset($n) ? $n : '';
 if($n){
 $select=db_query("SELECT id_post FROM {$db_prefix}tags WHERE $ff GROUP BY id_post LIMIT 10", __FILE__, __LINE__);
-while($row24 = mysql_fetch_assoc($select)){
+while($row24 = mysqli_fetch_assoc($select)){
 $request = db_query("
 		SELECT m.ID_TOPIC,m.subject,b.description
 		FROM ({$db_prefix}messages AS m)
         INNER JOIN {$db_prefix}boards AS b ON m.ID_TOPIC='{$row24['id_post']}' AND m.ID_TOPIC<>'{$post}' AND m.ID_BOARD=b.ID_BOARD AND m.eliminado=0
 		ORDER BY m.ID_TOPIC DESC
 		LIMIT 1", __FILE__, __LINE__);
-while($row=mysql_fetch_assoc($request)){
+while($row=mysqli_fetch_assoc($request)){
 $titulosssss=censorText($row['subject']);
 echo'<div class="postENTry"><a rel="dc:relation" href="/post/'.$row['ID_TOPIC'].'/'.$row['description'].'/'.urls($titulosssss).'.html" title="'.$titulosssss.'" target="_self" class="categoriaPost '.$row['description'].'">'.$titulosssss.'</a><div style="clear: left;"></div></div>';}
-mysql_free_result($request);}
+mysqli_free_result($request);}
 if(!$titulosssss){echo'No hay posts relacionados.';}}else{echo'No hay posts relacionados.';}
 
 echo'</div></div></div>';
@@ -115,13 +115,13 @@ SELECT p.id_post,p.id_member,p.fecha,p.cantidad,p.id,m.ID_MEMBER,m.realName
 FROM ({$db_prefix}puntos AS p, {$db_prefix}members AS m)
 WHERE p.id_post='{$post}' AND p.cantidad<>0 AND p.fecha<>0 AND p.id_member=m.ID_MEMBER
 ORDER BY p.id DESC", __FILE__, __LINE__);
-while($row = mysql_fetch_assoc($request)){
+while($row = mysqli_fetch_assoc($request)){
 if($row['cantidad']<='0'){$asndbrbjweb='';}
 elseif($row['cantidad']=='1'){$asndbrbjweb=' 1&nbsp;punto';}
 elseif($row['cantidad']>='2'){$asndbrbjweb=''.$row['cantidad'].'&nbsp;puntos';}
 $userdasd[]='<a href="/perfil/'.$row['realName'].'" title="'.$asndbrbjweb.'">'.$row['realName'].'</a>';}
-$skasdasdbsddd=mysql_num_rows($request);
-mysql_free_result($request);
+$skasdasdbsddd=mysqli_num_rows($request);
+mysqli_free_result($request);
 
 if(!empty($skasdasdbsddd)){echo'<div class="hrs"></div><b>Dieron puntos a este post:</b> ';
 echo join(', ', $userdasd);}}
@@ -130,10 +130,10 @@ echo'<div class="hrs"></div>
 <b>Categor&iacute;a:</b>&nbsp;<a href="/categoria/'.$context['link_cat'].'" title="'.$context['name_cat'].'">'.$context['name_cat'].'</a><div class="hrs"></div>';
 $dasdasd=db_query("SELECT palabra,id_post FROM {$db_prefix}tags WHERE id_post='{$post}' ORDER BY palabra ASC", __FILE__, __LINE__);
 echo'<b>Tags:</b>&nbsp;';
-while ($row = mysql_fetch_assoc($dasdasd))
+while ($row = mysqli_fetch_assoc($dasdasd))
 {$context['palabra']=$row['palabra'];
 $palabra[]='<a href="/tags/'.$context['palabra'].'" title="'.$context['palabra'].'">'.$context['palabra'].'</a>';}
-mysql_free_result($dasdasd);
+mysqli_free_result($dasdasd);
 $palabra=isset($palabra) ? $palabra : '';
 echo join(' - ', $palabra);
 
@@ -146,8 +146,8 @@ $requests=db_query("
 SELECT signature
 FROM {$db_prefix}members
 WHERE ID_MEMBER='{$context['user_ID']}'", __FILE__, __LINE__);
-while($grups=mysql_fetch_assoc($requests)){$context['firma']=$grups['signature'];}
-mysql_free_result($requests);
+while($grups=mysqli_fetch_assoc($requests)){$context['firma']=$grups['signature'];}
+mysqli_free_result($requests);
 $nwesdas=$context['firma'];
 if(!empty($nwesdas) && empty($options['show_no_signatures'])){
 echo'<div class="box_390" style="margin-top:8px;width:386px;"><div class="box_title" style="width:384px;"><div class="box_txt box_390-34">Firma</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="width: 384px;overflow:auto;"><div class="fimaFIX" style="padding: 4px;">';echo'<b class="size11">'.censorText(str_replace('if(this.width >720) {this.width=720}','if(this.width > 375) {this.width=375}',str_replace('class="imagen"','class="imagen-firma"',parse_bbc($nwesdas)))).'</b>';echo'</div></div></div>';}
@@ -194,7 +194,7 @@ if ($context['is_locked'] && $context['user']['id']){echo'<div id="post_cerrado"
 echo'<div class="errorDelCom" style="display:hide;width: 774px;"></div></div>
 <!-- fin comentarios -->';
 
-$ignorado=mysql_num_rows(db_query("SELECT id_user FROM ({$db_prefix}pm_admitir) WHERE id_user='{$context['user_ID']}' AND quien='{$context['user']['id']}' LIMIT 1", __FILE__, __LINE__));
+$ignorado=mysqli_num_rows(db_query("SELECT id_user FROM ({$db_prefix}pm_admitir) WHERE id_user='{$context['user_ID']}' AND quien='{$context['user']['id']}' LIMIT 1", __FILE__, __LINE__));
 
 if ($context['user']['id'] && !$context['is_locked']){
 if(!$ignorado){

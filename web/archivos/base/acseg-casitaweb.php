@@ -8,7 +8,7 @@ if($_GET['accion']=='misnotas'){
 
 echo'<div style="float:left;width:776px;">';
 $RegistrosAMostrar=10;
-$NroRegistros=mysql_num_rows(db_query("
+$NroRegistros=mysqli_num_rows(db_query("
 SELECT id_user
 FROM {$db_prefix}notas
 WHERE id_user='{$ID_MEMBER}'", __FILE__, __LINE__)); 
@@ -34,12 +34,12 @@ WHERE id_user='{$ID_MEMBER}'
 ORDER BY id DESC 
 LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
 $context['posts']=array();
-while($row=mysql_fetch_assoc($notas)){
+while($row=mysqli_fetch_assoc($notas)){
     $context['posts'][]=array(
 		'id' => $row['id'],
 		'titulo' => nohtml($row['titulo']),
 		'fechac' => timeformat($row['fecha_creado']));}
-mysql_free_result($notas);
+mysqli_free_result($notas);
 
 
 foreach($context['posts'] as $post){
@@ -76,17 +76,17 @@ SELECT pm.id,pm.titulo,pm.name_de,pm.mensaje,pm.id_para
 FROM ({$db_prefix}mensaje_personal as pm)
 ORDER BY pm.id DESC
 LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
-while($MostrarFila2=mysql_fetch_array($Resultado)){
+while($MostrarFila2=mysqli_fetch_array($Resultado)){
 $datosmem=db_query("
 SELECT realName
 FROM ({$db_prefix}members)
 WHERE ID_MEMBER='{$MostrarFila2['id_para']}'
 LIMIT 1", __FILE__, __LINE__);
-while($data=mysql_fetch_assoc($datosmem)){$nick=$data['realName'];}
+while($data=mysqli_fetch_assoc($datosmem)){$nick=$data['realName'];}
 
 echo'<input type="checkbox" name="campos['.$MostrarFila2['id'].']" /><br/><b>Por:</b> <a href="/perfil/'.$MostrarFila2['name_de'].'" title="'.$MostrarFila2['name_de'].'">'.$MostrarFila2['name_de'].'</a><br/><b>A:</b> <a href="/perfil/'.$nick.'" title="'.$nick.'">'.$nick.'</a><br/><b>Asunto:</b> '.censorText($MostrarFila2['titulo']).'<br/><b>Mensaje:</b><br/>'.censorText(parse_bbc(str_replace("<br/>","\n",$MostrarFila2['mensaje']))).'<div class="hrs"></div>';
 }
-$NroRegistros=mysql_num_rows(db_query("SELECT id FROM {$db_prefix}mensaje_personal", __FILE__, __LINE__));
+$NroRegistros=mysqli_num_rows(db_query("SELECT id FROM {$db_prefix}mensaje_personal", __FILE__, __LINE__));
  $PagAnt=$PagAct-1;
  $PagSig=$PagAct+1;
  $PagUlt=$NroRegistros/$RegistrosAMostrar;
@@ -292,7 +292,7 @@ function template_tyc23(){global $context, $db_prefix;
 ditaruser();
 $refoagr=db_query("SELECT i.* FROM ({$db_prefix}infop as i) WHERE i.id_user='{$context['user']['id']}' LIMIT 1", __FILE__, __LINE__);
 
-while($mddd=mysql_fetch_array($refoagr)){
+while($mddd=mysqli_fetch_array($refoagr)){
 $hp=$mddd['habilidades_profesionales'];
 $ip=$mddd['intereses_profesionales'];
 $ingresos=$mddd['nivel_de_ingresos'];
@@ -408,11 +408,11 @@ $musica_favorita=censorText($mddd['musica_favorita']);
 $deportes_y_equipos_favoritos=censorText($mddd['deportes_y_equipos_favoritos']);
 $libros_favoritos=censorText($mddd['libros_favoritos']);
 $mis_intereses=censorText($mddd['mis_intereses']);
-$películas_favoritas=censorText($mddd['peliculas_favoritas']);
-$comida_favoríta=censorText($mddd['comida_favorita']);
+$pelï¿½culas_favoritas=censorText($mddd['peliculas_favoritas']);
+$comida_favorï¿½ta=censorText($mddd['comida_favorita']);
 $mis_heroes_son=censorText($mddd['mis_heroes_son']);
 }
-mysql_free_result($refoagr);
+mysqli_free_result($refoagr);
 
 $pasos=isset($_GET['paso']) ? (int)$_GET['paso'] : '';
 if($pasos=='1'){
@@ -530,7 +530,7 @@ echo'<form action="/accion-apariencia/paso1/" method="post" accept-charset="'.$c
 <tr><td colspan="3" align="right"><div class="hrs"></div><input class="button" style="font-size: 15px;" value="Editar mi apariencia" title="Editar mi apariencia" type="submit" name="enviar-265" /><input value="3" type="hidden" name="tipo" /></td></tr></tbody></table></form></div>
 
 <h3 class="titlesCom '.$pasoabierto4.'" style="width: 762px;" onclick="chgsec(this)">4. Intereses y preferencias</h3>
-<div class="active" id="contennnt" '.$pasoabierto4a.'><form action="/accion-apariencia/paso4/" method="post" accept-charset="'.$context['character_set'].'" enctype="multipart/form-data" style="margin:0px;padding:0px;"><table width="100%" cellpadding="4"><tbody><tr><td align="right" valign="top" width="23%"><b>Mis intereses:</b></td><td width="40%"><textarea style="width:235px;height:102px;" name="mis_intereses" cols="30" rows="5" id="mis_intereses" onfocus="foco(this);" onblur="no_foco(this);">'.$mis_intereses.'</textarea></td></tr><tr><td align="right" valign="top"><b>Hobbies:</b></td><td><textarea style="width:235px;height:102px;" name="hobbies" cols="30" rows="5" id="hobbies" onfocus="foco(this);" onblur="no_foco(this);">'.$hobbies.'</textarea></td></tr><tr><td align="right" valign="top"><b>Series de Tv favoritas:</b></td><td><textarea style="width:235px;height:102px;" name="series_tv_favoritas" cols="30" rows="5" id="series_tv_favoritas" onfocus="foco(this);" onblur="no_foco(this);">'.$series_de_tv_favorita.'</textarea></td></tr><tr><td align="right" valign="top" width="23%"><b>M&uacute;sica favorita:</b></td><td width="40%"><textarea style="width:235px;height:102px;" name="musica_favorita" cols="30" rows="5" id="musica_favorita" onfocus="foco(this);" onblur="no_foco(this);">'.$musica_favorita.'</textarea></td></tr><tr><td align="right" valign="top"><b>Deportes y equipos favoritos:</b></td><td><textarea style="width:235px;height:102px;" name="deportes_y_equipos_favoritos" cols="30" rows="5" id="deportes_y_equipos_favoritos" onfocus="foco(this);" onblur="no_foco(this);">'.$deportes_y_equipos_favoritos.'</textarea></td></tr><tr><td align="right" valign="top"><b>Libros Favoritos:</b></td><td><textarea style="width:235px;height:102px;" name="libros_favoritos" cols="30" rows="5" id="libros_favoritos" onfocus="foco(this);" onblur="no_foco(this);">'.$libros_favoritos.'</textarea></td></tr><tr><td align="right" valign="top" width="23%"><b>Pel&iacute;culas favoritas:</b></td><td width="40%"><textarea style="width:235px;height:102px;" name="peliculas_favoritas" cols="30" rows="5" id="peliculas_favoritas" onfocus="foco(this);" onblur="no_foco(this);">'.$películas_favoritas.'</textarea></td></tr><tr><td align="right" valign="top"><b>Comida favor&iacute;ta:</b></td><td><textarea style="width:235px;height:102px;" name="comida_favorita" cols="30" rows="5" id="comida_favorita" onfocus="foco(this);" onblur="no_foco(this);">'.$comida_favoríta.'</textarea></td></tr><tr><td align="right" valign="top"><b>Mis h&eacute;roes son:</b></td><td><textarea style="width:235px;height:102px;" name="mis_heroes_son" cols="30" rows="5" id="mis_heroes_son" onfocus="foco(this);" onblur="no_foco(this);">'.$mis_heroes_son.'</textarea></td></tr><tr><td colspan="3" align="right"><div class="hrs"></div><input class="button" style="font-size: 15px;" value="Editar mi apariencia" title="Editar mi apariencia" type="submit" name="enviar-265" /><input value="4" type="hidden" name="tipo" /></td></tr></tbody></table></form></div>
+<div class="active" id="contennnt" '.$pasoabierto4a.'><form action="/accion-apariencia/paso4/" method="post" accept-charset="'.$context['character_set'].'" enctype="multipart/form-data" style="margin:0px;padding:0px;"><table width="100%" cellpadding="4"><tbody><tr><td align="right" valign="top" width="23%"><b>Mis intereses:</b></td><td width="40%"><textarea style="width:235px;height:102px;" name="mis_intereses" cols="30" rows="5" id="mis_intereses" onfocus="foco(this);" onblur="no_foco(this);">'.$mis_intereses.'</textarea></td></tr><tr><td align="right" valign="top"><b>Hobbies:</b></td><td><textarea style="width:235px;height:102px;" name="hobbies" cols="30" rows="5" id="hobbies" onfocus="foco(this);" onblur="no_foco(this);">'.$hobbies.'</textarea></td></tr><tr><td align="right" valign="top"><b>Series de Tv favoritas:</b></td><td><textarea style="width:235px;height:102px;" name="series_tv_favoritas" cols="30" rows="5" id="series_tv_favoritas" onfocus="foco(this);" onblur="no_foco(this);">'.$series_de_tv_favorita.'</textarea></td></tr><tr><td align="right" valign="top" width="23%"><b>M&uacute;sica favorita:</b></td><td width="40%"><textarea style="width:235px;height:102px;" name="musica_favorita" cols="30" rows="5" id="musica_favorita" onfocus="foco(this);" onblur="no_foco(this);">'.$musica_favorita.'</textarea></td></tr><tr><td align="right" valign="top"><b>Deportes y equipos favoritos:</b></td><td><textarea style="width:235px;height:102px;" name="deportes_y_equipos_favoritos" cols="30" rows="5" id="deportes_y_equipos_favoritos" onfocus="foco(this);" onblur="no_foco(this);">'.$deportes_y_equipos_favoritos.'</textarea></td></tr><tr><td align="right" valign="top"><b>Libros Favoritos:</b></td><td><textarea style="width:235px;height:102px;" name="libros_favoritos" cols="30" rows="5" id="libros_favoritos" onfocus="foco(this);" onblur="no_foco(this);">'.$libros_favoritos.'</textarea></td></tr><tr><td align="right" valign="top" width="23%"><b>Pel&iacute;culas favoritas:</b></td><td width="40%"><textarea style="width:235px;height:102px;" name="peliculas_favoritas" cols="30" rows="5" id="peliculas_favoritas" onfocus="foco(this);" onblur="no_foco(this);">'.$pelï¿½culas_favoritas.'</textarea></td></tr><tr><td align="right" valign="top"><b>Comida favor&iacute;ta:</b></td><td><textarea style="width:235px;height:102px;" name="comida_favorita" cols="30" rows="5" id="comida_favorita" onfocus="foco(this);" onblur="no_foco(this);">'.$comida_favorï¿½ta.'</textarea></td></tr><tr><td align="right" valign="top"><b>Mis h&eacute;roes son:</b></td><td><textarea style="width:235px;height:102px;" name="mis_heroes_son" cols="30" rows="5" id="mis_heroes_son" onfocus="foco(this);" onblur="no_foco(this);">'.$mis_heroes_son.'</textarea></td></tr><tr><td colspan="3" align="right"><div class="hrs"></div><input class="button" style="font-size: 15px;" value="Editar mi apariencia" title="Editar mi apariencia" type="submit" name="enviar-265" /><input value="4" type="hidden" name="tipo" /></td></tr></tbody></table></form></div>
 
 
 </div>'; } ?>

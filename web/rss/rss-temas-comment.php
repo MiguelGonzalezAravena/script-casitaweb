@@ -13,7 +13,7 @@ WHERE com.id_tema='$id' AND com.id_user=m.ID_MEMBER AND com.id_tema=ar.id AND ar
 ORDER BY com.id DESC
 LIMIT 25",__FILE__, __LINE__);
 $context['comment-img'] = array();
-while ($row = mysql_fetch_assoc($comment_pic)){
+while ($row = mysqli_fetch_assoc($comment_pic)){
     
 $row['comentario']=nohtml(nohtml2($row['comentario']));
 if(strlen($row['comentario'])>400){$row['comentario']=substr($row['comentario'],0,397)."...";}
@@ -25,7 +25,7 @@ $context['comment-img'][] = array(
 'nom-user' => $row['realName'],
 'id_comment' => $row['id'],
 'id' => $row['ids']);}
-mysql_free_result($comment_pic);
+mysqli_free_result($comment_pic);
 
 if(!$titulo){die('Este tema no tiene comentarios.-');exit;}
 

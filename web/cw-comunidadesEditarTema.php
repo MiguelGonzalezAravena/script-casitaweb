@@ -11,7 +11,7 @@ if(!$id){fatal_error('Debe seleccionar un tema.-');}
 $rs=db_query("SELECT t.id_com,t.id_user,t.stiky
 FROM ({$db_prefix}comunidades_articulos AS t)
 WHERE t.id='$id' AND t.eliminado=0",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs)){
+while ($row=mysqli_fetch_assoc($rs)){
 $id_com=$row['id_com'];
 $id_user=$row['id_user'];
 $stikyd=$row['stiky'];}
@@ -50,7 +50,7 @@ db_query("UPDATE {$db_prefix}comunidades_articulos
  LIMIT 1", __FILE__, __LINE__);
  
 $rs=db_query("SELECT c.url FROM ({$db_prefix}comunidades AS c) WHERE c.id='$id_com' LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs)){$url=$row['url'];}
+while ($row=mysqli_fetch_assoc($rs)){$url=$row['url'];}
 
  
 Header("Location: /comunidades/$url/");exit();die();}

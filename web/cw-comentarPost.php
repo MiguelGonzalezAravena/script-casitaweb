@@ -11,16 +11,16 @@ SELECT m.ID_BOARD,m.smileysEnabled,m.ID_MEMBER,m.subject,b.description
 FROM ({$db_prefix}messages as m)
 INNER JOIN {$db_prefix}boards as b ON m.ID_BOARD=b.ID_BOARD AND m.ID_TOPIC='{$ID_TOPIC}' AND m.eliminado=0
 LIMIT 1", __FILE__, __LINE__);
-while($srhh=mysql_fetch_array($hha)){
+while($srhh=mysqli_fetch_array($hha)){
     $ID_BOARD=$srhh['ID_BOARD'];
     $locked=$srhh['smileysEnabled'];
     $lmemdsa=$srhh['ID_MEMBER'];
     $description=$srhh['description'];
     $subject=$srhh['subject'];
     }
-mysql_free_result($hha);
+mysqli_free_result($hha);
 
-$ignorado=mysql_num_rows(db_query("SELECT id_user FROM ({$db_prefix}pm_admitir) WHERE id_user='$lmemdsa' AND quien='$ID_MEMBER' LIMIT 1", __FILE__, __LINE__));
+$ignorado=mysqli_num_rows(db_query("SELECT id_user FROM ({$db_prefix}pm_admitir) WHERE id_user='$lmemdsa' AND quien='$ID_MEMBER' LIMIT 1", __FILE__, __LINE__));
 if($ignorado){die('0: No podes comentar este post.-');}
 if($locked){die('0: Este comentario est&aacute; cerrado.-');}else{
 $comentario=isset($_POST['editorCW']) ? trim($_POST['editorCW']) : '';
@@ -36,8 +36,8 @@ FROM ({$db_prefix}comentarios)
 WHERE id_user='$ID_MEMBER'
 ORDER BY id_coment DESC
 LIMIT 1", __FILE__, __LINE__);
-while($lim2=mysql_fetch_assoc($d218)){$modifiedTime=$lim2['fecha'];}
-mysql_free_result($d218);
+while($lim2=mysqli_fetch_assoc($d218)){$modifiedTime=$lim2['fecha'];}
+mysqli_free_result($d218);
 if($modifiedTime>time()-25){die('0: No es posible comentar posts con tan poca diferencia de tiempo.-');}else{
 if(empty($ID_BOARD)){die('0: Este post fue eliminado o no existe.-');}else{
 $fecha=time();
@@ -48,12 +48,12 @@ $request = db_query("SELECT c.comentario, c.id_coment,c.fecha
 FROM ({$db_prefix}comentarios AS c) 
 WHERE c.id_user='$ID_MEMBER'
 ORDER BY c.id_coment ASC", __FILE__, __LINE__);
-while ($row = mysql_fetch_assoc($request)){
+while ($row = mysqli_fetch_assoc($request)){
 $context['comentariods']=censorText(parse_bbc($row['comentario']));
 $context['id_coment']=$row['id_coment'];
 $context['fecha']=$row['fecha'];
 }
-mysql_free_result($request);
+mysqli_free_result($request);
 
 if($ID_MEMBER<>$lmemdsa){
 $url='/post/'.$ID_TOPIC.'/'.$description.'/'.urls($subject).'.html#cmt_'.$context['id_coment'];

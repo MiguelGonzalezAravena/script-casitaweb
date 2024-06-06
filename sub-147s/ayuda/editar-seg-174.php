@@ -12,7 +12,7 @@ FROM {$prefijo}articulos
 WHERE id='{$id_articulo}'
 ORDER BY id ASC
 LIMIT 1", __FILE__, __LINE__);
-while($dat=mysql_fetch_assoc($catlist)){$qid=$dat['id'];}
+while($dat=mysqli_fetch_assoc($catlist)){$qid=$dat['id'];}
 if(empty($qid)){falta('El articulo no existe.-');}
 
 if(empty($id_articulo)){falta('Debe seleccionar un articulo.-');}
@@ -36,7 +36,7 @@ if(strlen($_POST['titulo'])>=61){falta('El titulo no puede tener m&aacute;s de <
 if(strlen($_POST['contenido'])<=60){falta('El post no puede tener menos de <b>60 letras</b>.-');}
 if(strlen($_POST['contenido'])>$modSettings['max_messageLength']){falta('El post no puede tener m&aacute;s de <b>'.$modSettings['max_messageLength'].' letras</b>.-');}
 
-$context['contadorsss']=mysql_num_rows(db("
+$context['contadorsss']=mysqli_num_rows(db("
 SELECT catid
 FROM {$prefijo}cats
 WHERE catid='$categorias'

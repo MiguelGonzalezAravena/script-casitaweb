@@ -10,11 +10,11 @@ SELECT m.id_user,u.realName,m.id_cc
 FROM ({$db_prefix}muro AS m)
 INNER JOIN {$db_prefix}members AS u ON m.id='$ids' AND u.ID_MEMBER=m.id_user
 LIMIT 1",__FILE__, __LINE__);
-while($data=mysql_fetch_assoc($datosmem)){
+while($data=mysqli_fetch_assoc($datosmem)){
 $ser=$data['id_user'];
 $id_cc=$data['id_cc'];
 $nomade=$data['realName'];}
-mysql_free_result($datosmem);
+mysqli_free_result($datosmem);
 $id_cc= isset($id_cc) ? $id_cc : '0';
 $ser= isset($ser) ? $ser : '0';
 if(empty($ser)){die('0: Este comentario no existe.');}

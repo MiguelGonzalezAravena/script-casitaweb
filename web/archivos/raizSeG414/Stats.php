@@ -45,14 +45,14 @@ WHERE i.ID_MEMBER = m.ID_MEMBER
 ORDER BY i.ID_PICTURE DESC
 LIMIT 10", __FILE__, __LINE__);
 $context['imagenestop'] = array();
-while ($row = mysql_fetch_assoc($request)){
+while ($row = mysqli_fetch_assoc($request)){
 $context['imagenestop'][] = array(
 			'id' => $row['ID_PICTURE'],
 			'titulo' => $row['title'],
 			'idm' => $row['ID_MEMBER'],
 			'nombrem' => $row['memberName'],
 			'nombrem2' => $row['realName'],
-			);}mysql_free_result($request);
+			);}mysqli_free_result($request);
 //imagenes
 $request = db_query("
 SELECT m.ID_MEMBER, i.ID_MEMBER, i.ID_PICTURE, i.title, m.memberName, m.realName, i.views
@@ -62,7 +62,7 @@ ORDER BY i.views DESC
 LIMIT 0 , 10", __FILE__, __LINE__);
 
 	$context['imgv'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		
 			$context['imgv'][] = array(
@@ -74,7 +74,7 @@ LIMIT 0 , 10", __FILE__, __LINE__);
 			'nombrem2' => $row['realName'],
 			);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	$context['shop_richest'] = array();
 		$result = db_query("
@@ -82,7 +82,7 @@ LIMIT 0 , 10", __FILE__, __LINE__);
 			FROM {$db_prefix}members
 			ORDER BY posts DESC, realName
 			LIMIT 10", __FILE__, __LINE__);
-		while ($row = mysql_fetch_array($result, MYSQL_ASSOC))
+		while ($row = mysqli_fetch_array($result))
 			// And add them to the list
 			$context['shop_richest'][] = array(
 				'ID_MEMBER' => $row['ID_MEMBER'],
@@ -98,9 +98,9 @@ LIMIT 0 , 10", __FILE__, __LINE__);
 			ORDER BY visitas DESC
 			LIMIT 100", __FILE__, __LINE__);
 		$topic_ids = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$topic_ids[] = $row['ID_TOPIC'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 	else
 		$topic_ids = array();
@@ -114,7 +114,7 @@ LIMIT 0 , 10", __FILE__, __LINE__);
 		LIMIT 10", __FILE__, __LINE__);
 	$context['top_topics_views'] = array();
 	$max_num_views = 1;
-	while ($row_topic_views = mysql_fetch_assoc($topic_view_result))
+	while ($row_topic_views = mysqli_fetch_assoc($topic_view_result))
 	{
 censorText($row_topic_views['subject']);
   
@@ -134,7 +134,7 @@ censorText($row_topic_views['subject']);
 
 		if ($max_num_views < $row_topic_views['visitas'])
 			$max_num_views = $row_topic_views['visitas'];}
-	mysql_free_result($topic_view_result);
+	mysqli_free_result($topic_view_result);
 
 	foreach ($context['top_topics_views'] as $i => $topic)
 	$context['top_topics_views'][$i]['post_percent'] = round(($topic['num_views'] * 100) / $max_num_views);
@@ -147,11 +147,11 @@ GROUP BY m.id_user
 ORDER BY Cuenta DESC
 LIMIT 10", __FILE__, __LINE__);
 $context['muroc'] = array();
-while ($row = mysql_fetch_assoc($murosc))
+while ($row = mysqli_fetch_assoc($murosc))
 $context['muroc'][] = array(
 'realName' => $row['realName'],
 'cuenta' => $row['Cuenta']);
-mysql_free_result($murosc);
+mysqli_free_result($murosc);
 $masi=db_query("
 SELECT COUNT(m.ID_MEMBER) as Cuenta,u.realName,u.ID_MEMBER
 From ({$db_prefix}gallery_pic as m, {$db_prefix}members as u)
@@ -160,24 +160,24 @@ GROUP BY m.ID_MEMBER
 ORDER BY Cuenta DESC
 LIMIT 10", __FILE__, __LINE__);
 $context['masi'] = array();
-while ($row = mysql_fetch_assoc($masi))
+while ($row = mysqli_fetch_assoc($masi))
 $context['masi'][] = array(
 'realName' => $row['realName'],
 'cuenta' => $row['Cuenta']);
-mysql_free_result($masi);
+mysqli_free_result($masi);
 $request = db_query("SELECT m.subject, m.ID_TOPIC, m.puntos, b.description
 FROM ({$db_prefix}messages AS m,{$db_prefix}boards AS b)
 WHERE m.ID_BOARD=b.ID_BOARD
 ORDER BY m.puntos DESC
 LIMIT 10 ", __FILE__, __LINE__);
 $context['postporpuntos'] = array();
-while ($row = mysql_fetch_assoc($request))
+while ($row = mysqli_fetch_assoc($request))
 $context['postporpuntos'][] = array(
 'titulo' => $row['subject'],
 'description' => $row['description'],
 'puntos' => $row['puntos'],
 'id' => $row['ID_TOPIC'],);
-mysql_free_result($request);
+mysqli_free_result($request);
 $requestq = db_query("
 SELECT t.ID_TOPIC,COUNT(c.id_post) as Cuenta,t.subject,b.description
 From ({$db_prefix}comentarios as c, {$db_prefix}messages as t,{$db_prefix}boards AS b)
@@ -186,13 +186,13 @@ GROUP BY c.id_post
 ORDER BY Cuenta DESC
 LIMIT 10", __FILE__, __LINE__);
 $context['tcomentados'] = array();
-while ($row = mysql_fetch_assoc($requestq))
+while ($row = mysqli_fetch_assoc($requestq))
 $context['tcomentados'][] = array(
 'subject' => $row['subject'],
 'description' => $row['description'],
 'cuenta' => $row['Cuenta'],
 'id' => $row['ID_TOPIC'],);
-mysql_free_result($requestq);
+mysqli_free_result($requestq);
 $requestq2= db_query("
 SELECT t.ID_PICTURE,COUNT(c.ID_PICTURE) as Cuenta,t.title
 From ({$db_prefix}gallery_comment as c, {$db_prefix}gallery_pic as t)
@@ -201,12 +201,12 @@ GROUP BY c.ID_PICTURE
 ORDER BY Cuenta DESC
 LIMIT 10", __FILE__, __LINE__);
 $context['comment-img2']= array();
-while ($row = mysql_fetch_assoc($requestq2)){
+while ($row = mysqli_fetch_assoc($requestq2)){
 $context['comment-img2'][] = array(
 'title' => $row['title'],
 'commenttotal' => $row['Cuenta'],
 'id' => $row['ID_PICTURE'],);}
-mysql_free_result($requestq2);
+mysqli_free_result($requestq2);
 
 $requestqs=db_query("
 SELECT t.ID_MEMBER,COUNT(u.ID_MEMBER) as Cuenta,u.realName
@@ -216,24 +216,24 @@ GROUP BY u.ID_MEMBER
 ORDER BY Cuenta DESC
 LIMIT 10", __FILE__, __LINE__);
 $context['tuser'] = array();
-while ($row = mysql_fetch_assoc($requestqs))
+while ($row = mysqli_fetch_assoc($requestqs))
 $context['tuser'][] = array(
 'realName' => $row['realName'],
 'cuenta' => $row['Cuenta'],
 'id' => $row['ID_MEMBER'],);
-mysql_free_result($requestqs);
+mysqli_free_result($requestqs);
 
 $comment_pic3=db_query("
 SELECT title,puntos,ID_PICTURE
 FROM {$db_prefix}gallery_pic
 ORDER BY puntos DESC LIMIT 10", __FILE__, __LINE__);
 $context['comment-img3']=array();
-while ($row = mysql_fetch_assoc($comment_pic3))
+while ($row = mysqli_fetch_assoc($comment_pic3))
 {$context['comment-img3'][] = array(
 'title' => $row['title'],
 'puntos' => $row['puntos'],
 'id' => $row['ID_PICTURE']);}
-mysql_free_result($comment_pic3);
+mysqli_free_result($comment_pic3);
 
 
 
@@ -246,7 +246,7 @@ mysql_free_result($comment_pic3);
 		FROM {$db_prefix}log_activity
 		GROUP BY stats_year, stats_month", __FILE__, __LINE__);
 	$context['monthly'] = array();
-	while ($row_months = mysql_fetch_assoc($months_result))
+	while ($row_months = mysqli_fetch_assoc($months_result))
 	{
 		$ID_MONTH = $row_months['stats_year'] . sprintf('%02d', $row_months['stats_month']);
 		$expanded = !empty($_SESSION['expanded_stats'][$row_months['stats_year']]) && in_array($row_months['stats_month'], $_SESSION['expanded_stats'][$row_months['stats_year']]);
@@ -296,7 +296,7 @@ function getDailyStats($condition){global $context, $db_prefix;
 		FROM {$db_prefix}log_activity
 		WHERE $condition
 		ORDER BY stats_day ASC", __FILE__, __LINE__);
-	while ($row_days = mysql_fetch_assoc($days_result))
+	while ($row_days = mysqli_fetch_assoc($days_result))
 		$context['monthly'][$row_days['stats_year'] . sprintf('%02d', $row_days['stats_month'])]['days'][] = array(
 			'day' => sprintf('%02d', $row_days['stats_day']),
 			'month' => sprintf('%02d', $row_days['stats_month']),
@@ -307,7 +307,7 @@ function getDailyStats($condition){global $context, $db_prefix;
 			'most_members_online' => $row_days['mostOn'],
 			'hits' => $row_days['hits']
 		);
-	mysql_free_result($days_result);
+	mysqli_free_result($days_result);
 }
 function SMStats(){}
 

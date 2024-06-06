@@ -8,16 +8,16 @@ echo'<div class="box_r_buscador" style="float:left;margin-right:8px;margin-botto
 <div class="box_title" style="width: 700px;"><div class="box_txt box_r_buscadort"><center>Usuarios conectados</center></div>
 <div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0" /></div></div>
 <div class="windowbg" style="width:690px;padding:4px;"><table align="center">';
-$conectados=mysql_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}log_online WHERE ID_MEMBER<>0", __FILE__, __LINE__));
+$conectados=mysqli_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}log_online WHERE ID_MEMBER<>0", __FILE__, __LINE__));
 echo'<center><b>Usuarios registrados online: '.$conectados.'</b></center><div class="hrs"></div>';
 $anuncio = db_query("SELECT ID_MEMBER FROM {$db_prefix}log_online WHERE ID_MEMBER<>0", __FILE__, __LINE__);
-while($row = mysql_fetch_assoc($anuncio)){
+while($row = mysqli_fetch_assoc($anuncio)){
 
 $user=db_query("
 SELECT m.ID_MEMBER,m.avatar,m.realName,m.location,m.gender 
 FROM ({$db_prefix}members as m) WHERE m.ID_MEMBER='{$row['ID_MEMBER']}'", __FILE__, __LINE__);
-while($datu = mysql_fetch_assoc($user)){
-$imagenes=mysql_num_rows(db_query("SELECT i.ID_MEMBER FROM {$db_prefix}gallery_pic as i WHERE i.ID_MEMBER='{$datu['ID_MEMBER']}'", __FILE__, __LINE__));
+while($datu = mysqli_fetch_assoc($user)){
+$imagenes=mysqli_num_rows(db_query("SELECT i.ID_MEMBER FROM {$db_prefix}gallery_pic as i WHERE i.ID_MEMBER='{$datu['ID_MEMBER']}'", __FILE__, __LINE__));
 if($rowlevel < ($maxrowlevel+1))$rowlevel++;
 else{echo '<tr valign="top">';$rowlevel = 0;}
 echo'<td  width="300px" valign="top"><table><tr valign="top">';

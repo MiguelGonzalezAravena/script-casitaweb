@@ -8,7 +8,7 @@ $rs=db_query("SELECT c.id,c.bloquear,c.url
 FROM ({$db_prefix}comunidades AS c)
 WHERE c.id='$us'
 LIMIT 1",__FILE__, __LINE__);
-while($row=mysql_fetch_assoc($rs)){
+while($row=mysqli_fetch_assoc($rs)){
     $cdavvbv=$row['id'];
     $banccc=$row['bloquear'];
     $url=$row['url'];}

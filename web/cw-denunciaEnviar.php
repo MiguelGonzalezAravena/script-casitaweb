@@ -18,15 +18,15 @@ if($tipo=='imagen'){
 if($razon=='Imagen ya agregada' || $razon=='Se hace Spam' || $razon=='Contiene Pornografia' || $razon=='Es Gore o asqueroso' || $razon=='No cumple con el protocolo' || $razon=='Otra razon (especificar)'){
 
 $request =db_query("SELECT ID_PICTURE,title,ID_MEMBER FROM {$db_prefix}gallery_pic WHERE ID_PICTURE='$ID_TOPIC2' LIMIT 1", __FILE__, __LINE__);
-while ($row = mysql_fetch_assoc($request))
+while ($row = mysqli_fetch_assoc($request))
 {$cxxxs=$row['ID_PICTURE'];
 $rdasdasdasd2= $row['title'];
 $rdasdasdaswdd2= $row['ID_MEMBER'];}
-mysql_free_result($request);
+mysqli_free_result($request);
 $cxxxs=isset($cxxxs) ? $cxxxs : '';
 if(empty($cxxxs)){die('0: La imagen que deseas denunciar no existe.');}
 $errorr=db_query("SELECT id_user FROM {$db_prefix}denuncias WHERE id_user='$ID_MEMBER' AND id_post='$ID_TOPIC2' AND tipo=1 LIMIT 1", __FILE__, __LINE__);
-$yadio=mysql_num_rows($errorr);
+$yadio=mysqli_num_rows($errorr);
 
 if($yadio){die('0: Ya has denunciado esta imagen');}
 $tiempo=time();
@@ -46,7 +46,7 @@ SELECT m.subject,m.ID_TOPIC,m.ID_MEMBER,m.ID_BOARD
 FROM ({$db_prefix}messages AS m)
 WHERE m.ID_TOPIC='$ID_TOPIC2'
 LIMIT 1", __FILE__, __LINE__);
-while($row = mysql_fetch_assoc($request)){
+while($row = mysqli_fetch_assoc($request)){
 $rdsasdasdasd=strtr($func['htmlspecialchars']($row['subject']), array("\r" => '', "\n" => '', "\t" => ''));
 $rdasdasdasd=addcslashes($rdsasdasdasd, '"');
 $rdasdasdasd=addcslashes($rdsasdasdasd, "'");
@@ -54,12 +54,12 @@ $rdasdasdasd=censorText($rdasdasdasd);
 $ddssss=$row['ID_TOPIC'];
 $ID_BOARD=$row['ID_BOARD'];
 $rdasdasdaswdd= $row['ID_MEMBER'];}
-mysql_free_result($request);
+mysqli_free_result($request);
 $ddssss=isset($ddssss) ? $ddssss : '';
 if(empty($ddssss)){die('0: El post que deseas denunciar no existe');}
 
 $errorr = db_query("SELECT id_user FROM {$db_prefix}denuncias WHERE id_user='$ID_MEMBER' AND id_post='$ID_TOPIC2'  AND tipo=0 LIMIT 1", __FILE__, __LINE__);
-$yadio = mysql_num_rows($errorr);
+$yadio = mysqli_num_rows($errorr);
 if($yadio)die('0: Ya has denunciado este post.');
 
 $tiempo=time();
@@ -77,15 +77,15 @@ $request=db_query("
 SELECT realName,ID_MEMBER
 FROM {$db_prefix}members
 WHERE realName='$ID_TOPIC2'", __FILE__, __LINE__);
-while($row = mysql_fetch_assoc($request)){
+while($row = mysqli_fetch_assoc($request)){
 $rdasdasdasd=$row['realName'];
 $ddssss=$row['ID_MEMBER'];}
-mysql_free_result($request);
+mysqli_free_result($request);
 $ddssss=isset($ddssss) ? $ddssss : '';
 if(empty($ddssss)){die('0: El usuario que deseas denunciar no existe.');}
 
 $errorr = db_query("SELECT id_user FROM {$db_prefix}denuncias WHERE id_user='$ID_MEMBER' AND id_post='$ID_TOPIC2'  AND tipo=3 LIMIT 1", __FILE__, __LINE__);
-$yadio = mysql_num_rows($errorr);
+$yadio = mysqli_num_rows($errorr);
 if($yadio)die('0: Ya has denunciado este usuario.');
 
 $tiempo=time();

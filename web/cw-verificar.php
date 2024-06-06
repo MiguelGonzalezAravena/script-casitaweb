@@ -8,7 +8,7 @@ if($_GET['seg']=='001' || $_GET['seg']=='002'){
 if($_GET['seg']=='001'){
 
 function verificaExistencia($apodo){ global $db_prefix;
-$registro=mysql_fetch_row(db_query("SELECT realName FROM {$db_prefix}members WHERE realName='$apodo'", __FILE__, __LINE__)); if(!empty($registro))return TRUE; else return FALSE;}
+$registro=mysqli_fetch_row(db_query("SELECT realName FROM {$db_prefix}members WHERE realName='$apodo'", __FILE__, __LINE__)); if(!empty($registro))return TRUE; else return FALSE;}
 
 if(empty($_POST["verificacion"])){?>
 <div style="height:16px;width:122px;border:solid 1px #C25B43;background-color:#F7ABA1;font-size:11px;font-family:Arial;padding:2px;"><?php echo $no;?> <div>Debes agregar el nick</div></div>
@@ -37,7 +37,7 @@ if(verificaExistencia($valor)){ ?>
 elseif($_GET['seg']=='002'){
 
 function verificaExistencia($mail){ global $db_prefix;
-$registro=mysql_fetch_row(db_query("SELECT emailAddress FROM {$db_prefix}members WHERE emailAddress='$mail'", __FILE__, __LINE__));
+$registro=mysqli_fetch_row(db_query("SELECT emailAddress FROM {$db_prefix}members WHERE emailAddress='$mail'", __FILE__, __LINE__));
 if(!empty($registro))return TRUE; else return FALSE;}
 
 

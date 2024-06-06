@@ -11,7 +11,7 @@ $rs44=db_query("SELECT c.id,c.aprobar
 FROM ({$db_prefix}comunidades as c)
 WHERE c.url='$id'  AND c.bloquear=0
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs44)){$dasdasd=$row['id'];$aprobar=$row['aprobar'];}
+while ($row=mysqli_fetch_assoc($rs44)){$dasdasd=$row['id'];$aprobar=$row['aprobar'];}
 $dasdasd=isset($dasdasd) ? $dasdasd : '';
 if(empty($dasdasd)){fatal_error('La comuniad no existe.');}
 baneadoo($dasdasd);

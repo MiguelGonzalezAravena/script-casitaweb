@@ -6,9 +6,9 @@ $request = db_query("
 		FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b)
 		WHERE m.ID_TOPIC='$posts' AND m.ID_BOARD=b.ID_BOARD
 		LIMIT 1", __FILE__, __LINE__);
-if(mysql_num_rows($request)==0)die('0: Este post no existe.');
-$row=mysql_fetch_assoc($request);
-mysql_free_result($request);
+if(mysqli_num_rows($request)==0)die('0: Este post no existe.');
+$row=mysqli_fetch_assoc($request);
+mysqli_free_result($request);
 if(empty($_POST['r_email'])){die('0: Debe agregar el primer e-mail.');}
 
 if($_POST['r_email']){

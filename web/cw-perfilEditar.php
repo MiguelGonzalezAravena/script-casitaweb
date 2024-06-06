@@ -119,7 +119,7 @@ $nac=sprintf('%04d-%02d-%02d', empty($_POST['bday3']) ? 0 : (int) $_POST['bday3'
 
 if($quienver=='1' || $quienver=='2' || $quienver=='3' || empty($quienver)){
 if(empty($quienver)){$quienver='0';}
-$agrearorefrescar=mysql_num_rows(db_query("SELECT id_user FROM ({$db_prefix}infop) WHERE id_user='$memID'", __FILE__, __LINE__));
+$agrearorefrescar=mysqli_num_rows(db_query("SELECT id_user FROM ({$db_prefix}infop) WHERE id_user='$memID'", __FILE__, __LINE__));
 
 if($agrearorefrescar=='1'){
 db_query("UPDATE {$db_prefix}infop SET a_quien='$quienver' WHERE id_user='$memID'", __FILE__, __LINE__);}

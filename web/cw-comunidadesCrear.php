@@ -36,7 +36,7 @@ FROM ({$db_prefix}comunidades as c)
 WHERE c.url='$url'
 ORDER BY c.id DESC 
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rss)){
+while ($row=mysqli_fetch_assoc($rss)){
     $igual=$row['id'];
     $bloquear=$row['bloquear'];}
     
@@ -62,9 +62,9 @@ elseif($igual && !$bloquear){fatal_error('El nombre seleccionado ya est&aacute; 
 $imagen=trim($_POST['imagen']);
 $cat=trim($_POST['categoria']);
 if(!$cat || $cat=='-1'){fatal_error('Debes elegir una categor&iacute;a');}
-$comunidades_categorias=mysql_num_rows(db_query("SELECT c.url FROM ({$db_prefix}comunidades_categorias AS c) WHERE c.url='$cat' LIMIT 1",__FILE__, __LINE__));
+$comunidades_categorias=mysqli_num_rows(db_query("SELECT c.url FROM ({$db_prefix}comunidades_categorias AS c) WHERE c.url='$cat' LIMIT 1",__FILE__, __LINE__));
 if(!$comunidades_categorias){fatal_error('Esta categor&iacuet;a no existe.');}
-$cuantascom=mysql_num_rows(db_query("SELECT c.id_user FROM ({$db_prefix}comunidades AS c) WHERE c.id_user='{$user_settings['ID_MEMBER']}' AND c.bloquear=0",__FILE__, __LINE__));
+$cuantascom=mysqli_num_rows(db_query("SELECT c.id_user FROM ({$db_prefix}comunidades AS c) WHERE c.id_user='{$user_settings['ID_MEMBER']}' AND c.bloquear=0",__FILE__, __LINE__));
 if($cuantascom>$cantidadcom){
 fatal_error('Tu rango no te permite tener m&aacute;s de '.$cantidadcom.' comunidades.',false);}
 

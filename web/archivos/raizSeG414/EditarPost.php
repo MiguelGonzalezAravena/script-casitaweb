@@ -11,7 +11,7 @@ SELECT men.ID_BOARD,men.ID_TOPIC,men.hiddenOption,men.sticky,men.smileysEnabled,
 FROM ({$db_prefix}messages as men)
 WHERE men.ID_TOPIC='{$id}'".(!empty($user_info['is_mods']) || !empty($user_info['is_admin']) ? '' : " AND men.ID_MEMBER='$ID_MEMBER'")."
 LIMIT 1",__FILE__, __LINE__);
-while($data44=mysql_fetch_assoc($datos)){
+while($data44=mysqli_fetch_assoc($datos)){
 $data44['body']=censorText($data44['body']);
 $data44['subject']=censorText($data44['subject']);
 $context['id_cat']=$data44['ID_BOARD'];

@@ -9,7 +9,7 @@ FROM {$prefijo}articulos
 WHERE id='{$art}'
 ORDER BY id ASC
 LIMIT 1", __FILE__, __LINE__);
-while($dat=mysql_fetch_assoc($catlist)){
+while($dat=mysqli_fetch_assoc($catlist)){
 	$qid=$dat['id'];
 	$categoria=$dat['categoria'];
 	$texto=censorText($dat['contenido']);
@@ -29,7 +29,7 @@ $catlist=db("SELECT catid,cat,enlace
 FROM {$prefijo}cats
 WHERE maincat=0
 ORDER BY cat ASC", __FILE__, __LINE__);
-while($cat=mysql_fetch_assoc($catlist)){echo'<option '; if($categoria==$cat['catid']){echo'selected="selected" ';} echo'value="'.$cat['catid'].'">'.$cat['cat'].'</option>';}
+while($cat=mysqli_fetch_assoc($catlist)){echo'<option '; if($categoria==$cat['catid']){echo'selected="selected" ';} echo'value="'.$cat['catid'].'">'.$cat['cat'].'</option>';}
 echo'</select><br /><br />';
 
 echo'<input class="button" style="font-size: 15px;" value="Editar" title="Editar" type="submit" tabindex="4" /></div></div>

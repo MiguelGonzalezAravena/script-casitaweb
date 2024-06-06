@@ -33,7 +33,7 @@ elseif($da=='directorios'){$resultado=$comunidades.'<li id="activer">Directorios
 $cat=str_replace("/","",seguridad($_GET['cat']));
 $id=str_replace("/","",seguridad($_GET['id']));
 if($cat){
-$rs=db_query("SELECT b.nombre FROM ({$db_prefix}comunidades_categorias AS b) WHERE b.url='$cat' LIMIT 1",__FILE__, __LINE__);while($row=mysql_fetch_assoc($rs)){$categoria= $row['nombre'];
+$rs=db_query("SELECT b.nombre FROM ({$db_prefix}comunidades_categorias AS b) WHERE b.url='$cat' LIMIT 1",__FILE__, __LINE__);while($row=mysqli_fetch_assoc($rs)){$categoria= $row['nombre'];
 if($da=='directorios'){$resultado=$comunidades.' <li><a href="/comunidades/dir/" title="Directorios">Directorios</a></li><li id="activer">'.$categoria.'</li>';}else{$resultado=$comunidades.' <li id="activer">'.$categoria.'</li>';}}
 if(!$categoria){fatal_error('Esta categor&iacute;a no existe.-');}}
 
@@ -43,7 +43,7 @@ SELECT c.nombre,b.url,b.nombre as cnam,c.url AS url2,c.id
 FROM ({$db_prefix}comunidades_categorias AS b, {$db_prefix}comunidades AS c)
 WHERE c.url='$id' AND c.categoria=b.url
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs)){
+while ($row=mysqli_fetch_assoc($rs)){
 $categoria=$row['cnam'];
 $url=$row['url'];
 $urlIDDD=$row['id'];
@@ -118,7 +118,7 @@ SELECT a.rango
 FROM ({$db_prefix}comunidades_miembros as a)
 WHERE a.id_user='$ID_MEMBER' AND a.id_com='$id'
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs44)){$dasfffd=$row['rango'];}
+while ($row=mysqli_fetch_assoc($rs44)){$dasfffd=$row['rango'];}
 
 $dasfffd=isset($dasfffd) ? $dasfffd : ''; 
 
@@ -133,7 +133,7 @@ return true;}
 
 function miembro($id){global $context,$ID_MEMBER,$db_prefix;
 if(!$context['user']['is_guest']){
-$soy=mysql_num_rows(db_query("SELECT c.id FROM ({$db_prefix}comunidades as c,{$db_prefix}comunidades_miembros as a) WHERE a.id_user='$ID_MEMBER' AND a.id_com='$id' AND a.aprobado=1 LIMIT 1",__FILE__, __LINE__));
+$soy=mysqli_num_rows(db_query("SELECT c.id FROM ({$db_prefix}comunidades as c,{$db_prefix}comunidades_miembros as a) WHERE a.id_user='$ID_MEMBER' AND a.id_com='$id' AND a.aprobado=1 LIMIT 1",__FILE__, __LINE__));
 
 if($soy){$context['miembro']='1';}
 else{$context['miembro']='0';}
@@ -145,7 +145,7 @@ return true;}
 function eaprobacion($id_com){ global  $context,$db_prefix,$user_settings;
 
 if(!$context['allow_admin'] && !$context['user']['is_guest']){
-$enespera=mysql_num_rows(db_query("SELECT c.id_user FROM ({$db_prefix}comunidades_miembros AS c) 
+$enespera=mysqli_num_rows(db_query("SELECT c.id_user FROM ({$db_prefix}comunidades_miembros AS c) 
 WHERE c.id_com='$id_com' AND c.id_user='{$user_settings['ID_MEMBER']}' AND c.aprobado=0 LIMIT 1",__FILE__, __LINE__));
 if($enespera){$dde=true;}else{$dde=false;}
 return $dde;}
@@ -161,7 +161,7 @@ SELECT a.rango,c.permiso
 FROM ({$db_prefix}comunidades as c,{$db_prefix}comunidades_miembros as a)
 WHERE a.id_user='$ID_MEMBER' AND a.id_com='$id' AND a.id_com=c.id
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs44)){
+while ($row=mysqli_fetch_assoc($rs44)){
 if($row['rango']=='1'){$context['puedo']='3';}
 elseif($row['rango']=='2'){$context['puedo']='1';}
 elseif($row['rango']=='5'){$context['puedo']='1';}
@@ -182,7 +182,7 @@ SELECT c.acceso,c.url
 FROM ({$db_prefix}comunidades as c)
 WHERE c.id='$id'
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs44)){$sdas223d=$row['acceso'];$sdaddd=$row['url'];}
+while ($row=mysqli_fetch_assoc($rs44)){$sdas223d=$row['acceso'];$sdaddd=$row['url'];}
 if($user_info['is_guest'] && ($sdas223d=='2' || $sdas223d=='3')){is_not_guest('','header');}
 else{
 $rs4ee4=db_query("
@@ -190,7 +190,7 @@ SELECT c.id
 FROM ({$db_prefix}comunidades_miembros as c)
 WHERE c.id_com='$id' AND c.id_user='$ID_MEMBER' AND c.aprobado=1
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs4ee4)){$ddas224d=$row['id'];}
+while ($row=mysqli_fetch_assoc($rs4ee4)){$ddas224d=$row['id'];}
 if(eaprobacion($id) || (($sdas223d=='3' || $sdas223d=='4') && !$ddas224d)){
 if($user_info['is_admin'] || $user_info['is_mods']){$estan='';}else{
 if(eaprobacion($id)){$estan='<div class="noesta-am" style="width:922px;">Esperando aprobaci&oacute;n de Administrador.</div>';}
@@ -208,7 +208,7 @@ SELECT m.ban_por,m.ban_razon,m.ban_expirate,m.id
 FROM ({$db_prefix}comunidades_miembros as m)
 WHERE m.id_com='$id' AND m.id_user='$ID_MEMBER' AND m.ban=1 AND m.aprobado=1
 LIMIT 1",__FILE__, __LINE__);
-while($row=mysql_fetch_assoc($rs44)){
+while($row=mysqli_fetch_assoc($rs44)){
     $ban_razon=$row['ban_razon'];
     $ban_por=$row['ban_por'];
     $idor=$row['id'];
@@ -244,7 +244,7 @@ global $tranfer1, $context,$user_info, $settings,$db_prefix,$options, $txt, $mod
 				FROM {$db_prefix}smileys
 				WHERE hidden IN (0, 2)
 				ORDER BY smileyRow, smileyOrder", __FILE__, __LINE__);
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 			{
 				$row['code'] = htmlspecialchars($row['code']);
 				$row['filename'] = htmlspecialchars($row['filename']);
@@ -252,7 +252,7 @@ global $tranfer1, $context,$user_info, $settings,$db_prefix,$options, $txt, $mod
 
 				$context['smileys'][empty($row['hidden']) ? 'postform' : 'popup'][$row['smileyRow']]['smileys'][] = $row;
 			}
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			cache_put_data('posting_smileys', $context['smileys'], 480);
 		}
@@ -294,7 +294,7 @@ $rs=db_query("
 SELECT c.nombre,c.url,c.imagen,c.id,c.articulos,c.usuarios,c.paprobar
 FROM ({$db_prefix}comunidades_categorias AS b, {$db_prefix}comunidades AS c)
 WHERE c.url='$id' AND c.categoria=b.url",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs)){
+while ($row=mysqli_fetch_assoc($rs)){
 $cat=nohtml2(nohtml($row['nombre'])); 
 $img=nohtml($row['imagen']); 
 $caturl=nohtml($row['url']); 
@@ -305,8 +305,8 @@ if ($img){$img2=$img;}else{$img2=$no_avatar;}
 
 
 
-$miembrose=mysql_num_rows(db_query("SELECT c.id FROM ({$db_prefix}comunidades_miembros as c) WHERE c.id_com='$sas' AND c.aprobado=1",__FILE__, __LINE__));
-$paprobare=mysql_num_rows(db_query("SELECT c.id FROM ({$db_prefix}comunidades_miembros as c) WHERE c.id_com='$sas' AND c.aprobado=0",__FILE__, __LINE__));
+$miembrose=mysqli_num_rows(db_query("SELECT c.id FROM ({$db_prefix}comunidades_miembros as c) WHERE c.id_com='$sas' AND c.aprobado=1",__FILE__, __LINE__));
+$paprobare=mysqli_num_rows(db_query("SELECT c.id FROM ({$db_prefix}comunidades_miembros as c) WHERE c.id_com='$sas' AND c.aprobado=0",__FILE__, __LINE__));
 
 //temas
 echo'<div style="margin-bottom:10px;width:160px;margin-right:8px;float:left;">
@@ -348,7 +348,7 @@ $rs444=db_query("SELECT rango
 FROM ({$db_prefix}comunidades_miembros)
 WHERE id_user='$ID_MEMBER' AND id_com='$sas'
 LIMIT 1",__FILE__, __LINE__);
-while ($row3=mysql_fetch_assoc($rs444)){$dsdass=$row3['rango'];}
+while ($row3=mysqli_fetch_assoc($rs444)){$dsdass=$row3['rango'];}
 echo ranguearIMG($dsdass,$sas).' '.ranguear($dsdass,$sas);}
 
 echo'</center></div>';
@@ -367,7 +367,7 @@ SELECT permiso
 FROM ({$db_prefix}comunidades)
 WHERE id='$com'
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs44)){
+while ($row=mysqli_fetch_assoc($rs44)){
 if($row['permiso']=='2'){$sccb='Comentador';}
 elseif($row['permiso']=='3'){$sccb='Posteador';}
 elseif($row['permiso']=='4'){$sccb='Visitante';}}}
@@ -385,7 +385,7 @@ SELECT permiso
 FROM ({$db_prefix}comunidades)
 WHERE id='$com'
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs44)){
+while ($row=mysqli_fetch_assoc($rs44)){
 if($row['permiso']=='2'){$sccb='<img src="'.$tranfer1.'/comunidades/comentador.png" alt="" title="Comentador" />';}
 elseif($row['permiso']=='3'){$sccb='<img src="'.$tranfer1.'/comunidades/posteador.png" alt="" title="Posteador" />';}
 elseif($row['permiso']=='4'){$sccb='<img src="'.$tranfer1.'/comunidades/comentador.png" alt="" title="Visitante" />';}
@@ -407,7 +407,7 @@ $dvasad=db_query("SELECT c.bloquear,c.bloquear_razon ,c.bloquear_por
 FROM ({$db_prefix}comunidades as c) 
 WHERE c.id='$id' AND c.bloquear=1 
 LIMIT 1", __FILE__, __LINE__);
-while($row=mysql_fetch_assoc($dvasad)){
+while($row=mysqli_fetch_assoc($dvasad)){
 $razon=$row['bloquear_razon'];
 $bloquear_porr=$row['bloquear_por'];
 
@@ -453,7 +453,7 @@ SELECT m.id_com
 FROM ({$db_prefix}members as c,{$db_prefix}comunidades_miembros as m)
 WHERE c.realName='$usuario' AND m.id_user=c.ID_MEMBER
 ORDER BY m.id_com DESC", __FILE__, __LINE__);
-while($row=mysql_fetch_assoc($r)){$ddeee[]=$row['id_com'];} 
+while($row=mysqli_fetch_assoc($r)){$ddeee[]=$row['id_com'];} 
 $dd=join(',',$ddeee);
 if($dd){
 $ssdeeesss="c.id IN (".$dd.") AND ";}
@@ -468,7 +468,7 @@ $RegistrosAMostrar=$modSettings['search_results_per_page'];
 if(isset($_GET['pag'])){$RegistrosAEmpezar=($_GET['pag']-1)*$RegistrosAMostrar;
 $PagAct=$_GET['pag'];}else{$RegistrosAEmpezar=0;$PagAct=1;}
 
-$NroRegistros=mysql_num_rows(db_query("
+$NroRegistros=mysqli_num_rows(db_query("
 SELECT c.id
 FROM {$db_prefix}comunidades AS c
 WHERE $bccb $cats $ssdeeesss c.bloquear=0", __FILE__, __LINE__));
@@ -498,7 +498,7 @@ echo'<table class="linksList" style="width:922px;"><thead><tr>
 					<th>Temas</th>
 				</tr></thead><tbody>';
 
-while($row=mysql_fetch_assoc($result)){
+while($row=mysqli_fetch_assoc($result)){
 $nombCat=$row['nombCat'];
 $categoria=$row['categoria'];
 $id=$row['id'];
@@ -551,7 +551,7 @@ $RegistrosAMostrar=$modSettings['search_results_per_page'];
 if(isset($_GET['pag'])){$RegistrosAEmpezar=($_GET['pag']-1)*$RegistrosAMostrar;
 $PagAct=$_GET['pag'];}else{$RegistrosAEmpezar=0;$PagAct=1;}
 
-$NroRegistros=mysql_num_rows(db_query("
+$NroRegistros=mysqli_num_rows(db_query("
 SELECT a.id
 FROM ({$db_prefix}comunidades_articulos AS a,{$db_prefix}comunidades AS co)
 WHERE $ssdeeesss2 $cats $ssdeeesss AND a.id_com=co.id AND co.bloquear=0 AND a.eliminado=0", __FILE__, __LINE__));
@@ -580,7 +580,7 @@ echo'<table class="linksList" style="width:922px;"><thead><tr>
 					<th>Calificaci&oacute;n</th>
 					<th>Relevancia</th>
 				</tr></thead><tbody>';
-while($row=mysql_fetch_assoc($result)){
+while($row=mysqli_fetch_assoc($result)){
 $nombCat=$row['nombre'];
 $categoria=$row['categoria'];
 $id=$row['id'];

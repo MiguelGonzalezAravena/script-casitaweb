@@ -9,9 +9,9 @@ if(empty($id)){fatal_error('Debes seleccionar una imagen a enviar.-');}
 		FROM ({$db_prefix}gallery_pic as i)
 		WHERE i.ID_PICTURE='{$id}'
 		LIMIT 1", __FILE__, __LINE__);
-	if (mysql_num_rows($request) == 0){fatal_error('Esta imagen no existe.-', false);}
-	$row=mysql_fetch_assoc($request);
-	mysql_free_result($request);
+	if (mysqli_num_rows($request) == 0){fatal_error('Esta imagen no existe.-', false);}
+	$row=mysqli_fetch_assoc($request);
+	mysqli_free_result($request);
     
 $_POST['r_email']=trim($_POST['r_email']);
 if($_POST['r_email']){

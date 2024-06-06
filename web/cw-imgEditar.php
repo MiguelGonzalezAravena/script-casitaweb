@@ -13,10 +13,10 @@ if(empty($id))fatal_error('Debes seleccionar una im&aacute;gen',false,'',4);
 	FROM ({$db_prefix}gallery_pic as p, {$db_prefix}members as m)
 	WHERE p.ID_PICTURE='$id' AND p.ID_MEMBER=m.ID_MEMBER
 	LIMIT 1", __FILE__, __LINE__);
-	$row=mysql_fetch_assoc($dbresult);
+	$row=mysqli_fetch_assoc($dbresult);
 	$memID=$row['ID_MEMBER'];
 	$realName=$row['realName'];
-	mysql_free_result($dbresult);
+	mysqli_free_result($dbresult);
 	
 if(empty($memID))fatal_error('La im&aacute;gen seleccionada no existe.-',false,'',4);
 if(($user_info['is_admin'] || $user_info['is_mods']) || $ID_MEMBER==$memID){

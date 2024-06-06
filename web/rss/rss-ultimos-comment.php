@@ -21,7 +21,7 @@ WHERE id_post=m.ID_TOPIC AND c.id_user=mem.ID_MEMBER AND m.ID_BOARD=b.ID_BOARD
 ORDER BY c.id_coment DESC
 LIMIT 25",__FILE__, __LINE__);
 $context['comentarios25'] = array();
-while ($row = mysql_fetch_assoc($rs)){
+while ($row = mysqli_fetch_assoc($rs)){
 $row['comentario']=parse_bbc($row['comentario'], 1); 
 censorText($row['subject']);
 censorText($row['comentario']);
@@ -34,7 +34,7 @@ $context['comentarios25'][] = array(
 			'description' => $row['description'],
 			'memberName' => $row['realName'],
 			'nom-user' => $row['realName'],
-		);}mysql_free_result($rs);
+		);}mysqli_free_result($rs);
 $contando=1;
 foreach($context['comentarios25'] AS $comment){
 echo'<item>

@@ -9,12 +9,12 @@ $notas=db_query("
 SELECT titulo,contenido,id
 FROM {$db_prefix}notas
 WHERE id_user='{$ID_MEMBER}' AND id='{$id}'", __FILE__, __LINE__);
-while ($row = mysql_fetch_assoc($notas)){
+while ($row = mysqli_fetch_assoc($notas)){
 $id2=$row['id'];
 $titulo=nohtml($row['titulo']);
 $contenido=nohtml($row['contenido']);
 }
-mysql_free_result($notas);
+mysqli_free_result($notas);
 $id2=isset($id2) ? $id2 : '';
 if(empty($id2))echo'<div class="noesta" style="width:776px;">La nota seleccionada no existe.</div>';else{
 

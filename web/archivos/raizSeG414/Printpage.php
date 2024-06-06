@@ -12,9 +12,9 @@ if(empty($topics)){die('Debes seleccionar un post.-');}
 		WHERE m.ID_TOPIC='$topics' AND m.ID_BOARD<>142 AND m.ID_BOARD=b.ID_BOARD
 		ORDER BY m.ID_TOPIC
 		LIMIT 1", __FILE__, __LINE__);
-	if(!mysql_num_rows($request)){die('Este post no existe.-');}
-	$row = mysql_fetch_assoc($request);
-	mysql_free_result($request);
+	if(!mysqli_num_rows($request)){die('Este post no existe.-');}
+	$row = mysqli_fetch_assoc($request);
+	mysqli_free_result($request);
 
 	loadTemplate('Printpage');
 	$context['template_layers'] = array('print');
@@ -28,7 +28,7 @@ if(empty($topics)){die('Debes seleccionar un post.-');}
 	$context['hiddenOption'] = $row['hiddenOption'];
 	$context['post_time'] = timeformat($row['posterTime'], false);
     
-$context['haycomentssss'] = mysql_num_rows(db_query("
+$context['haycomentssss'] = mysqli_num_rows(db_query("
 		SELECT c.fecha
 		FROM {$db_prefix}comentarios AS c
 		WHERE c.id_post='{$context['id']}'", __FILE__, __LINE__));
@@ -39,7 +39,7 @@ $request33 = db_query("
 		WHERE c.id_post='{$context['id']}'
 		ORDER BY id_coment DESC", __FILE__, __LINE__);
 	$context['coment'] = array();
-	while ($row = mysql_fetch_assoc($request33))
+	while ($row = mysqli_fetch_assoc($request33))
 	{
 		$context['coment'][] = array(
 			'realName' => $row['realName'],
@@ -47,7 +47,7 @@ $request33 = db_query("
 			'comentario' => parse_bbc($row['comentario'], 'print'),
 		);
 	}
-	mysql_free_result($request33);
+	mysqli_free_result($request33);
 }
 
 ?>

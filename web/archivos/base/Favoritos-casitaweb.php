@@ -4,7 +4,7 @@ if (!defined('CasitaWeb!-PorRigo'))die(base64_decode("d3d3LmNhc2l0YXdlYi5uZXQgLS
 function template_intro(){global $context, $settings,$db_prefix, $scripturl, $txt, $return, $tranfer1;
 $myser=$context['user']['id'];
 
-$NroRegistros=mysql_num_rows(db_query("
+$NroRegistros=mysqli_num_rows(db_query("
 SELECT f.ID_MEMBER
 FROM ({$db_prefix}messages as m, {$db_prefix}favoritos as f)
 WHERE f.tipo='0' AND m.ID_TOPIC=f.ID_TOPIC AND f.ID_MEMBER='$myser'", __FILE__, __LINE__));
@@ -23,7 +23,7 @@ WHERE f.ID_MEMBER='$myser' AND f.tipo=0 AND m.ID_TOPIC=f.ID_TOPIC AND c.ID_BOARD
 ORDER BY f.id DESC
 LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
 $context['tos'] = array();
-while($row=mysql_fetch_array($request)){
+while($row=mysqli_fetch_array($request)){
 	$context['sdasdrr']=$row['ID_TOPIC'];
 		$context['tos'][] = array(
 			'id' => $row['id'],
@@ -32,7 +32,7 @@ while($row=mysql_fetch_array($request)){
 			'posterName' => $row['posterName'],
 			'puntos' => $row['puntos'],
 			'description' => $row['description']);}
-mysql_free_result($request);
+mysqli_free_result($request);
  $PagAnt=$PagAct-1;
  $PagSig=$PagAct+1;
  $PagUlt=$NroRegistros/$RegistrosAMostrar;
@@ -83,7 +83,7 @@ else{echo'</div>
 
 function template_imagen(){global $context, $settings,$db_prefix, $scripturl, $txt, $return, $tranfer1;
 $myser=$context['user']['id'];
-$NroRegistros=mysql_num_rows(db_query("
+$NroRegistros=mysqli_num_rows(db_query("
 SELECT f.ID_MEMBER,f.tipo,m.ID_PICTURE,f.ID_TOPIC
 FROM ({$db_prefix}gallery_pic as m, {$db_prefix}favoritos as f)
 WHERE f.ID_MEMBER='$myser' AND f.tipo=1 AND m.ID_PICTURE=f.ID_TOPIC", __FILE__, __LINE__));
@@ -101,12 +101,12 @@ WHERE f.ID_MEMBER='$myser' AND f.tipo=1 AND m.ID_PICTURE=f.ID_TOPIC
 ORDER BY f.id DESC
 LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
 $context['tos'] = array();
-while($row=mysql_fetch_array($request)){
+while($row=mysqli_fetch_array($request)){
 		$context['tos'][] = array(
 			'id' => $row['id'],
 			'ID_TOPIC' => $row['ID_PICTURE'],
 			'subject' => $row['title']);}
-mysql_free_result($request);
+mysqli_free_result($request);
  $PagAnt=$PagAct-1;
  $PagSig=$PagAct+1;
  $PagUlt=$NroRegistros/$RegistrosAMostrar;
@@ -130,10 +130,10 @@ SELECT mem.realName,p.puntos
 FROM ({$db_prefix}gallery_pic AS p, {$db_prefix}members AS mem)
 WHERE p.ID_PICTURE='{$dat['ID_TOPIC']} ' AND p.ID_MEMBER=mem.ID_MEMBER", __FILE__, __LINE__);
 
-while($row = mysql_fetch_assoc($request)){
+while($row = mysqli_fetch_assoc($request)){
 	$realname=$row['realName'];
 	$puntos=$row['puntos'];}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 echo'<tr id="fav_'.$dat['id'].'">
 <td style="text-align:left;"><a class="categoriaPost imagenesNOCAT" href="/imagenes/ver/'.$dat['ID_TOPIC'].'/" title="" title="'.$dat['subject'].'">'.achicars($dat['subject']).'</a></td>
 <td title="'.$realname.'"><a href="/perfil/'.$realname.'" title="'.$realname.'">'.$realname.'</a></td>

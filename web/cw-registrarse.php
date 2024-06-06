@@ -19,8 +19,8 @@ $request = db_query("
 		FROM {$db_prefix}members
 		WHERE realName = '$nick'
 		LIMIT 1", __FILE__, __LINE__);
-if (mysql_num_rows($request) != 0){fatal_error('El nick que intentas utilizar ya esta en uso.');}
-mysql_free_result($request);
+if (mysqli_num_rows($request) != 0){fatal_error('El nick que intentas utilizar ya esta en uso.');}
+mysqli_free_result($request);
 
 
 $passwrd1=seguridad($_POST['passwrd1']);
@@ -43,8 +43,8 @@ $request = db_query("
 		FROM {$db_prefix}members
 		WHERE emailAddress = '$email'
 		LIMIT 1", __FILE__, __LINE__);
-if (mysql_num_rows($request) != 0){fatal_error('El e-mail que intentas utilizar ya esta en uso.');}
-mysql_free_result($request);
+if (mysqli_num_rows($request) != 0){fatal_error('El e-mail que intentas utilizar ya esta en uso.');}
+mysqli_free_result($request);
 
 
 //PAIS

@@ -35,7 +35,7 @@ function enviados(){global $db_prefix,$tranfer1,$context,$ID_MEMBER;
 $RegistrosAMostrar=5;
 if(isset($_GET['pag-seg-145a'])){$RegistrosAEmpezar=($_GET['pag-seg-145a']-1)*$RegistrosAMostrar;$PagAct=$_GET['pag-seg-145a'];}else{$RegistrosAEmpezar=0;$PagAct=1;}
 
-$NroRegistros=mysql_num_rows(db_query("SELECT p.id_de FROM ({$db_prefix}mensaje_personal AS p) WHERE p.id_de='$ID_MEMBER' AND p.eliminado_de=0", __FILE__, __LINE__));
+$NroRegistros=mysqli_num_rows(db_query("SELECT p.id_de FROM ({$db_prefix}mensaje_personal AS p) WHERE p.id_de='$ID_MEMBER' AND p.eliminado_de=0", __FILE__, __LINE__));
 
 $mensajes=db_query("
 SELECT p.id_para,p.titulo,p.id,p.fecha
@@ -50,16 +50,16 @@ else{
 echo'<table class="linksList" style="width:754px;"><thead align="center"><tr><th>&nbsp;</th><th>Asunto</th><th>Destinatario</th><th>Enviado</th></tr></thead><tbody>';
 
 
-while($row=mysql_fetch_array($mensajes)){
+while($row=mysqli_fetch_array($mensajes)){
 $dato=db_query("
 SELECT p.realName
 FROM ({$db_prefix}members AS p)
 WHERE p.ID_MEMBER='{$row['id_para']}'
 LIMIT 1", __FILE__, __LINE__);
-while($drow=mysql_fetch_array($dato)){$nick_a=$drow['realName'];}mysql_free_result($dato);
+while($drow=mysqli_fetch_array($dato)){$nick_a=$drow['realName'];}mysqli_free_result($dato);
 
 echo'<tr><td><span title="Eliminar mensaje" class="pointer" onclick="Boxy.confirm(\'&iquest;Estas seguro que desea eliminar este mensaje?\', function() { location.href=\'/web/cw-eliminarMp2.php?id_sde='.$row['id'].'\'; }, {title: \'Eliminar Mensaje\'});"><img width="10px" src="'.$tranfer1.'/eliminar.gif"  alt="" /></span></td>
-<td><span class="pointer" onclick="Boxy.load(\'/web/cw-TEMPleereMP.php?id='.$row['id'].'\', {title: \''.censorText($row['titulo']).'\'});" title="'.censorText($row['titulo']).'">'.censorText($row['titulo']).'</span></td><td><a href="/perfil/'.$nick_a.'" title="'.$nick_a.'">'.$nick_a.'</a></td><td><span class="size11">'.timeformat($row['fecha']).'</span></td></tr>';}mysql_free_result($mensajes);
+<td><span class="pointer" onclick="Boxy.load(\'/web/cw-TEMPleereMP.php?id='.$row['id'].'\', {title: \''.censorText($row['titulo']).'\'});" title="'.censorText($row['titulo']).'">'.censorText($row['titulo']).'</span></td><td><a href="/perfil/'.$nick_a.'" title="'.$nick_a.'">'.$nick_a.'</a></td><td><span class="size11">'.timeformat($row['fecha']).'</span></td></tr>';}mysqli_free_result($mensajes);
 echo'</tbody></table>';}
 
  $PagAnt=$PagAct-1;
@@ -83,7 +83,7 @@ $RegistrosAMostrar=5;
 if(isset($_GET['pag-seg-145a'])){$RegistrosAEmpezar=($_GET['pag-seg-145a']-1)*$RegistrosAMostrar;$PagAct=$_GET['pag-seg-145a'];}else{$RegistrosAEmpezar=0;$PagAct=1;}
 
 
-$NroRegistros=mysql_num_rows(db_query("SELECT p.id_para,p.eliminado_para FROM ({$db_prefix}mensaje_personal AS p) WHERE p.id_para='{$ID_MEMBER}' AND p.eliminado_para=0", __FILE__, __LINE__));
+$NroRegistros=mysqli_num_rows(db_query("SELECT p.id_para,p.eliminado_para FROM ({$db_prefix}mensaje_personal AS p) WHERE p.id_para='{$ID_MEMBER}' AND p.eliminado_para=0", __FILE__, __LINE__));
  
 if(empty($NroRegistros)){echo'<div class="noesta" style="width:754px;">No hay mensajes recibidos...</div>';}else{
 $mensajes=db_query("
@@ -93,7 +93,7 @@ WHERE p.id_para='{$ID_MEMBER}' AND p.eliminado_para=0
 ORDER BY p.id DESC
 LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
 echo'<table class="linksList" style="width:754px;"><thead align="center"><tr><th>&nbsp;</th><th>Asunto</th><th>Por</th><th>Recibido</th></tr></thead><tbody>';
-while($row=mysql_fetch_array($mensajes)){
+while($row=mysqli_fetch_array($mensajes)){
 
 echo'<tr'; if(!$row['leido']){echo' style="background-color:#FDFBE7;" ';} echo' id="mp_'.$row['id'].'">
 <td><span id="imgel_'.$row['id'].'" class="pointer" onclick="Boxy.confirm(\'&iquest;Estas seguro que desea eliminar este mensaje?\', function() { del_mp_env(\''.$row['id'].'\'); }, {title: \'Eliminar Mensaje\'});" title="Eliminar mensaje"><img width="10px" src="'.$tranfer1.'/eliminar.gif"  alt="" /></span><span id="imgerr_'.$row['id'].'" style="display: none;"></span><span id="imgerrs_'.$row['id'].'" style="display: none;"><img width="10px" src="'.$tranfer1.'/eliminar.gif" alt="" /></span></td>
@@ -101,7 +101,7 @@ echo'<tr'; if(!$row['leido']){echo' style="background-color:#FDFBE7;" ';} echo' 
 <td><a href="/perfil/'.$row['name_de'].'" title="'.$row['name_de'].'">'.$row['name_de'].'</a></td>
 <td><span class="size11">'.timeformat($row['fecha']).'</span></td>
 
-</tr>';}mysql_free_result($mensajes);
+</tr>';}mysqli_free_result($mensajes);
 
 echo'</tbody></table>';}
 

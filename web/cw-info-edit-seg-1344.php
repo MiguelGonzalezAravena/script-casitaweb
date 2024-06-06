@@ -4,7 +4,7 @@ $tipo=(int)$_POST['tipo'];
 
 
 if($tipo=='1' || $tipo=='2' || $tipo=='3' || $tipo=='4'){
-$refoagr=db_query("SELECT id_user FROM ({$db_prefix}infop) WHERE id_user='{$user_settings['ID_MEMBER']}' LIMIT 1", __FILE__, __LINE__); $agrearorefrescar=mysql_num_rows($refoagr);
+$refoagr=db_query("SELECT id_user FROM ({$db_prefix}infop) WHERE id_user='{$user_settings['ID_MEMBER']}' LIMIT 1", __FILE__, __LINE__); $agrearorefrescar=mysqli_num_rows($refoagr);
 
 if($tipo=='1'){
 

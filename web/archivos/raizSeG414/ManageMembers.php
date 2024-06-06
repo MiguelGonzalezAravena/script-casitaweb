@@ -67,7 +67,7 @@ function ViewMemberlist()
 			FROM {$db_prefix}membergroups
 			WHERE ID_GROUP != 3
 			ORDER BY minPosts, IF(ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			if ($row['minPosts'] == -1)
 				$context['membergroups'][] = array(
@@ -81,7 +81,7 @@ function ViewMemberlist()
 					'name' => $row['groupName']
 				);
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		$params = array(
 			'mem_id' => array(
@@ -286,8 +286,8 @@ function ViewMemberlist()
 			SELECT COUNT(*)
 			FROM {$db_prefix}members
 			WHERE $where", __FILE__, __LINE__);
-		list ($num_members) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($num_members) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 	}
 
 	// Construct the page links.
@@ -300,7 +300,7 @@ function ViewMemberlist()
 		WHERE $where" : '') . "
 		ORDER BY $_REQUEST[sort]" . (!isset($_REQUEST['desc']) ? '' : ' DESC') . "
 		LIMIT $context[start], $modSettings[defaultMaxMembers]", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		// Calculate number of days since last online.
 		if (empty($row['lastLogin']))
@@ -332,7 +332,7 @@ function ViewMemberlist()
 			'link' => '<a href="/perfil/'.$row['realName'].'">'.$row['realName'].'</a>'
 		);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 }
 
 function SearchMembers()
@@ -354,7 +354,7 @@ function SearchMembers()
 		FROM {$db_prefix}membergroups
 		WHERE ID_GROUP != 3
 		ORDER BY minPosts, IF(ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		if ($row['minPosts'] == -1)
 			$context['membergroups'][] = array(
@@ -368,7 +368,7 @@ function SearchMembers()
 				'name' => $row['groupName']
 			);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	$context['page_title'] = $txt[9];
 	$context['sub_template'] = 'search_members';

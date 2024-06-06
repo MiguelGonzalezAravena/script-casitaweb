@@ -174,8 +174,8 @@ function createBoard($boardOptions)
 				FROM {$db_prefix}boards
 				WHERE ID_BOARD = " . (int) $boards[$board_id]['parent'] . "
 				LIMIT 1", __FILE__, __LINE__);
-			list ($boardOptions['permission_mode']) = mysql_fetch_row($request);
-			mysql_free_result($request);
+			list ($boardOptions['permission_mode']) = mysqli_fetch_row($request);
+			mysqli_free_result($request);
 
 			db_query("
 				UPDATE {$db_prefix}boards
@@ -190,9 +190,9 @@ function createBoard($boardOptions)
 				FROM {$db_prefix}board_permissions
 				WHERE ID_BOARD = " . (int) $boards[$board_id]['parent'], __FILE__, __LINE__);
 			$boardPerms = array();
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 				$boardPerms[] = "$board_id, $row[ID_GROUP], '$row[permission]', $row[addDeny]";
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			// Do the insert!
 			db_query("
@@ -249,9 +249,9 @@ function deleteBoards($boards_to_remove, $moveChildrenTo = null)
 		FROM {$db_prefix}topics
 		WHERE ID_BOARD IN (" . implode(', ', $boards_to_remove) . ')', __FILE__, __LINE__);
 	$topics = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$topics[] = $row['ID_TOPIC'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	require_once($sourcedir . '/RemoveTopic.php');
 	removeTopics($topics, false);
@@ -315,9 +315,9 @@ function fixChildren($parent, $newLevel, $newParent)
 		FROM {$db_prefix}boards
 		WHERE ID_PARENT = $parent", __FILE__, __LINE__);
 	$children = array();
-	while ($row = mysql_fetch_assoc($result))
+	while ($row = mysqli_fetch_assoc($result))
 		$children[] = $row['ID_BOARD'];
-	mysql_free_result($result);
+	mysqli_free_result($result);
 
 	// ...and set it to a new parent and childLevel.
 	db_query("
@@ -346,7 +346,7 @@ function getBoardTree()
 	$cat_tree = array();
 	$boards = array();
 	$last_board_order = 0;
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		if (!isset($cat_tree[1]))
 		{
@@ -418,7 +418,7 @@ function getBoardTree()
 			}
 		}
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Get a list of all the boards in each category (using recursion).
 	$boardList = array();

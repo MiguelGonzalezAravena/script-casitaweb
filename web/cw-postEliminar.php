@@ -9,8 +9,8 @@ $request = db_query("
 		FROM ({$db_prefix}messages AS ms)
 		WHERE ms.ID_TOPIC='$topic' AND ms.eliminado=0
 		LIMIT 1", __FILE__, __LINE__);
-	list ($starter, $subject, $puntosdados) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($starter, $subject, $puntosdados) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 if(empty($subject)){post_error();}
 
 
@@ -37,7 +37,7 @@ db_query("DELETE FROM {$db_prefix}favoritos WHERE ID_TOPIC='{$topic}'",__FILE__,
 
 //QUITAR TAGS
 $lvccct=db_query("SELECT palabra FROM ({$db_prefix}tags) WHERE id_post='{$topic}'", __FILE__, __LINE__);
-while($asserr=mysql_fetch_assoc($lvccct)){
+while($asserr=mysqli_fetch_assoc($lvccct)){
 $idse=$asserr['palabra'];
 $idse=isset($idse) ? $idse : '';
 db_query("UPDATE {$db_prefix}tags SET cantidad=cantidad-1 WHERE palabra='$idse' AND rango=1 LIMIT 1", __FILE__, __LINE__);}
@@ -51,7 +51,7 @@ $datosmem=db_query("
 SELECT recibirmail
 FROM ({$db_prefix}members)
 WHERE ID_MEMBER='$starter'",__FILE__, __LINE__);
-while($data=mysql_fetch_assoc($datosmem)){$remail=$data['recibirmail'];}
+while($data=mysqli_fetch_assoc($datosmem)){$remail=$data['recibirmail'];}
 
 if($remail){
 $pmfrom = array(

@@ -262,9 +262,9 @@ function saveProfileChanges(&$profile_vars, &$post_errors, $memID){
 				FROM {$db_prefix}members
 				WHERE ID_MEMBER != $memID AND emailAddress = '$_POST[emailAddress]'
 				LIMIT 1", __FILE__, __LINE__);
-			if (mysql_num_rows($request) > 0)
+			if (mysqli_num_rows($request) > 0)
 			fatal_error('Ya existe el E-mail.-',false);
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			$profile_vars['emailAddress'] = '\'' . $_POST['emailAddress'] . '\'';
 		}
@@ -317,8 +317,8 @@ if(allowedTo('manage_membergroups'))
 					WHERE (ID_GROUP = 1)
 						AND ID_MEMBER != $memID
 					LIMIT 1", __FILE__, __LINE__);
-				list ($another) = mysql_fetch_row($request);
-				mysql_free_result($request);
+				list ($another) = mysqli_fetch_row($request);
+				mysqli_free_result($request);
 
 				if (empty($another))
 					fatal_lang_error('at_least_one_admin');
@@ -335,14 +335,14 @@ if (!loadMemberContext($memID) || !isset($memberContext[$memID]))
 		fatal_error($txt[453] . ' - ' . $memID, false);
 
 $looped = false;
-$context['postuser']=mysql_num_rows(db_query("SELECT m.ID_MEMBER FROM ({$db_prefix}messages AS m) WHERE m.ID_MEMBER='$memID' AND m.eliminado=0", __FILE__, __LINE__));
+$context['postuser']=mysqli_num_rows(db_query("SELECT m.ID_MEMBER FROM ({$db_prefix}messages AS m) WHERE m.ID_MEMBER='$memID' AND m.eliminado=0", __FILE__, __LINE__));
 
 if(!$user_info['is_guest']){
-$context['yadio']=mysql_num_rows(db_query("SELECT user,amigo FROM {$db_prefix}amistad WHERE (user='{$ID_MEMBER}' AND amigo='{$memID}' OR user='{$memID}' AND amigo='{$ID_MEMBER}') AND acepto=1 LIMIT 1", __FILE__, __LINE__));
+$context['yadio']=mysqli_num_rows(db_query("SELECT user,amigo FROM {$db_prefix}amistad WHERE (user='{$ID_MEMBER}' AND amigo='{$memID}' OR user='{$memID}' AND amigo='{$ID_MEMBER}') AND acepto=1 LIMIT 1", __FILE__, __LINE__));
 
-$context['yadio2']=mysql_num_rows(db_query("SELECT user,amigo FROM {$db_prefix}amistad WHERE (user='{$ID_MEMBER}' AND amigo='{$memID}' OR user='{$memID}' AND amigo='{$ID_MEMBER}') AND acepto=0 LIMIT 1", __FILE__, __LINE__));
+$context['yadio2']=mysqli_num_rows(db_query("SELECT user,amigo FROM {$db_prefix}amistad WHERE (user='{$ID_MEMBER}' AND amigo='{$memID}' OR user='{$memID}' AND amigo='{$ID_MEMBER}') AND acepto=0 LIMIT 1", __FILE__, __LINE__));
 
-$context['mpno']=mysql_num_rows(db_query("SELECT id_user,quien FROM {$db_prefix}pm_admitir WHERE id_user='{$ID_MEMBER}' AND quien='{$memID}' LIMIT 1", __FILE__, __LINE__));}
+$context['mpno']=mysqli_num_rows(db_query("SELECT id_user,quien FROM {$db_prefix}pm_admitir WHERE id_user='{$ID_MEMBER}' AND quien='{$memID}' LIMIT 1", __FILE__, __LINE__));}
 
 
 $request=db_query("
@@ -352,7 +352,7 @@ $request=db_query("
 			ORDER BY m.ID_TOPIC DESC
 			LIMIT 10", __FILE__, __LINE__);
 $context['posts'] = array();
-while ($row = mysql_fetch_assoc($request))
+while ($row = mysqli_fetch_assoc($request))
 {     censorText($row['subject']);
 		$context['posts'][] = array(
 			'board' => array(
@@ -362,11 +362,11 @@ while ($row = mysql_fetch_assoc($request))
 			),
 			'topic' => $row['ID_TOPIC'],
 			'subject' => $row['subject']);}
-mysql_free_result($request);
+mysqli_free_result($request);
 	
 
 if($ID_MEMBER = $memID){
-$context['count'] =  mysql_num_rows(db_query("
+$context['count'] =  mysqli_num_rows(db_query("
 		SELECT p.ID_MEMBER
 		FROM {$db_prefix}gallery_pic as p
         INNER JOIN {$db_prefix}members AS m ON p.ID_MEMBER='$memID' AND p.ID_MEMBER = m.ID_MEMBER", __FILE__, __LINE__));
@@ -376,13 +376,13 @@ $dbresult = db_query("
 		INNER JOIN {$db_prefix}members AS m ON p.ID_MEMBER='$memID' AND p.ID_MEMBER = m.ID_MEMBER
 		ORDER BY p.ID_PICTURE DESC
 		LIMIT 8", __FILE__, __LINE__);
-while($row = mysql_fetch_assoc($dbresult)){
+while($row = mysqli_fetch_assoc($dbresult)){
 		$context['img'][] = array(
 			'id' => $row['ID_PICTURE'],
 			'title' => censorText(nohtml2(nohtml($row['title']))),
             'filename' => nohtml2(nohtml($row['filename']))
             );}
-		mysql_free_result($dbresult);
+		mysqli_free_result($dbresult);
 }
 
 	$context += array(
@@ -535,7 +535,7 @@ function perfil($memID){
 			WHERE ID_GROUP != 3
 				AND minPosts = -1
 			ORDER BY minPosts, IF(ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			// We should skip the administrator group if they don't have the admin_forum permission!
 			if ($row['ID_GROUP'] == 1 && !allowedTo('admin_forum'))
@@ -548,7 +548,7 @@ function perfil($memID){
 				'can_be_additional' => true,
 			);
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 	
 }

@@ -17,7 +17,7 @@ SELECT m.ID_TOPIC,m.subject,m.ID_BOARD,m.ID_MEMBER,b.description
 FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b)
 WHERE m.ID_TOPIC='{$topic}' AND m.eliminado=0
 LIMIT 1", __FILE__, __LINE__);
-while($lokrow=mysql_fetch_assoc($lok)){
+while($lokrow=mysqli_fetch_assoc($lok)){
 $ID_BOARD=$lokrow['ID_BOARD'];
 $id_user=$lokrow['ID_MEMBER'];
 $cat=$lokrow['description'];
@@ -29,7 +29,7 @@ $errorr=db_query("SELECT id_member,id_post
 FROM {$db_prefix}puntos
 WHERE id_member='{$user_settings['ID_MEMBER']}' AND id_post='$topic'
 LIMIT 1", __FILE__, __LINE__);
-$yadio=mysql_num_rows($errorr); mysql_free_result($errorr);
+$yadio=mysqli_num_rows($errorr); mysqli_free_result($errorr);
 if($yadio){die('0: Ya has dado puntos a este post.-');}else{
 
 if($ID_BOARD===45 || $ID_BOARD===132){

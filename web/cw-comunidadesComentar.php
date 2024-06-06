@@ -11,7 +11,7 @@ $rs=db_query("SELECT a.nocoment,a.id_user,a.id_com
 FROM ({$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades AS c)
 WHERE a.id='$id' AND a.id_com=c.id AND c.bloquear=0 AND a.eliminado=0
 LIMIT 1",__FILE__, __LINE__);
-while ($row=mysql_fetch_assoc($rs)){$iid_user=$row['id_user'];$id_com=$row['id_com']; $nocoment=$row['nocoment'];}
+while ($row=mysqli_fetch_assoc($rs)){$iid_user=$row['id_user'];$id_com=$row['id_com']; $nocoment=$row['nocoment'];}
 $iid_user=isset($iid_user) ? $iid_user : '';
 
 if(empty($iid_user)){die('0: Falto el tema.');}

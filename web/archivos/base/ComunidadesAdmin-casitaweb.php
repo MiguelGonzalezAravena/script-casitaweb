@@ -9,7 +9,7 @@ $RegistrosAMostrar=15;
 if($_GET['pag'] < 1){$dud=1;}else{$dud=$_GET['pag'];}
 if(isset($dud)){$RegistrosAEmpezar=($dud-1)*$RegistrosAMostrar;$PagAct=$dud;}else{$RegistrosAEmpezar=0;$PagAct=1;}
 
-$NroRegistros=mysql_num_rows(db_query("SELECT c.bloquear FROM ({$db_prefix}comunidades AS c) WHERE c.bloquear=1", __FILE__, __LINE__));
+$NroRegistros=mysqli_num_rows(db_query("SELECT c.bloquear FROM ({$db_prefix}comunidades AS c) WHERE c.bloquear=1", __FILE__, __LINE__));
 
 if($NroRegistros){
 $datos=db_query("
@@ -28,7 +28,7 @@ echo'<div class="clearBoth"></div>
 					<th>Por</th>
 				</tr></thead><tbody>';
                 
-while($row=mysql_fetch_assoc($datos)){
+while($row=mysqli_fetch_assoc($datos)){
 $row['nombre']=nohtml(nohtml2($row['nombre']));
 if(strlen($row['nombre'])>50){$tipo=substr($row['nombre'],0,47)."...";}else{$tipo=$row['nombre'];}
 
@@ -67,7 +67,7 @@ $RegistrosAMostrar=15;
 if($_GET['pag'] < 1){$dud=1;}else{$dud=$_GET['pag'];}
 if(isset($dud)){$RegistrosAEmpezar=($dud-1)*$RegistrosAMostrar;$PagAct=$dud;}else{$RegistrosAEmpezar=0;$PagAct=1;}
 
-$NroRegistros=mysql_num_rows(db_query("SELECT c.eliminado FROM ({$db_prefix}comunidades_articulos AS c) WHERE c.eliminado=1", __FILE__, __LINE__));
+$NroRegistros=mysqli_num_rows(db_query("SELECT c.eliminado FROM ({$db_prefix}comunidades_articulos AS c) WHERE c.eliminado=1", __FILE__, __LINE__));
 
 if($NroRegistros){
 $datos=db_query("
@@ -85,7 +85,7 @@ echo'<div class="clearBoth"></div>
 					<th>Creado por</th>
 				</tr></thead><tbody>';
                 
-while($row=mysql_fetch_assoc($datos)){
+while($row=mysqli_fetch_assoc($datos)){
 $row['titulo']=nohtml(nohtml2($row['titulo']));
 if(strlen($row['titulo'])>50){$tipo=substr($row['titulo'],0,47)."...";}else{$tipo=$row['titulo'];}
 

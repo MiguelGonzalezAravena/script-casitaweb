@@ -14,26 +14,26 @@ if(empty($topicw)){die('0: Debes seleccionar el favorito a agregar.-');}
 if($user_info['is_guest']){die('0: Solo usuarios registrados pueden agregar favoritos.-');}else{
 $limpio=(int) $topicw;
 if(!$idcc){
-$sffss=mysql_num_rows(db_query("
+$sffss=mysqli_num_rows(db_query("
 SELECT p.ID_TOPIC,p.tipo,p.ID_MEMBER
 FROM ({$db_prefix}favoritos AS p)
 WHERE p.ID_TOPIC='$limpio' AND p.tipo=0 AND p.ID_MEMBER='$myser'", __FILE__, __LINE__));
 if($sffss){die('0: Este post ya est&aacute; en tus favoritos.-');}
 
-$dss3ss=mysql_num_rows(db_query("
+$dss3ss=mysqli_num_rows(db_query("
 SELECT p.ID_TOPIC,p.ID_MEMBER
 FROM ({$db_prefix}messages AS p)
 WHERE p.ID_TOPIC='$limpio'$shas AND p.ID_MEMBER='$myser'", __FILE__, __LINE__));
 if($dss3ss){die('0: No puedes agregar a favoritos tus posts.-');}}
 
 elseif($idcc){
-$sffss=mysql_num_rows(db_query("
+$sffss=mysqli_num_rows(db_query("
 SELECT p.ID_TOPIC,p.tipo,p.ID_MEMBER
 FROM ({$db_prefix}favoritos AS p)
 WHERE p.ID_TOPIC='$limpio' AND p.tipo=1 AND p.ID_MEMBER='$myser'", __FILE__, __LINE__));
 if($sffss){die('0: Esta imagen ya est&aacute; en tus favoritos.-');}
 
-$dss3ss=mysql_num_rows(db_query("
+$dss3ss=mysqli_num_rows(db_query("
 SELECT p.ID_PICTURE,p.ID_MEMBER
 FROM ({$db_prefix}gallery_pic AS p)
 WHERE p.ID_PICTURE='$limpio' AND p.ID_MEMBER='$myser'", __FILE__, __LINE__));
@@ -44,7 +44,7 @@ $sadasd33=db_query("
 SELECT p.ID_TOPIC,p.ID_MEMBER,b.description,p.subject
 FROM ({$db_prefix}messages AS p,{$db_prefix}boards AS b)
 WHERE p.ID_TOPIC='$limpio' AND b.ID_BOARD=p.ID_BOARD$shas", __FILE__, __LINE__);
-while($red=mysql_fetch_array($sadasd33)){$idss=$red['ID_TOPIC'];$idMen=$red['ID_MEMBER'];$subject=$red['subject'];$description=$red['description'];}
+while($red=mysqli_fetch_array($sadasd33)){$idss=$red['ID_TOPIC'];$idMen=$red['ID_MEMBER'];$subject=$red['subject'];$description=$red['description'];}
 if(empty($idss)){die('0: El post seleccionado no existe.-');}
 $fecha=time();
 db_query("INSERT INTO {$db_prefix}favoritos (ID_MEMBER,ID_TOPIC,tipo,fecha) VALUES ('$myser','$idss','0','$fecha')",__FILE__, __LINE__);
@@ -62,7 +62,7 @@ SELECT p.ID_PICTURE,p.ID_MEMBER
 FROM ({$db_prefix}gallery_pic AS p)
 WHERE p.ID_PICTURE='$limpio'
 LIMIT 1", __FILE__, __LINE__);
-while($red=mysql_fetch_array($sadasd33)){$idss=$red['ID_PICTURE'];$idMen=$red['ID_MEMBER'];}
+while($red=mysqli_fetch_array($sadasd33)){$idss=$red['ID_PICTURE'];$idMen=$red['ID_MEMBER'];}
 if(empty($idss)){die('0: La imagen seleccionada no existe.-');}
 $fecha=time();
 

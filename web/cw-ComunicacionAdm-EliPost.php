@@ -10,7 +10,7 @@ WHERE c.id_contenido='$posts'
 ORDER BY c.id_contenido DESC
 LIMIT 1",__FILE__, __LINE__);
 
-while($row=mysql_fetch_array($opciones)){$user=$row['id_user'];$id=$row['id_contenido'];}
+while($row=mysqli_fetch_array($opciones)){$user=$row['id_user'];$id=$row['id_contenido'];}
 if(empty($id)){fatal_error("El post seleccionado no existe.-",false);}
 
 if($user==$user_settings['ID_MEMBER'] || $user_info['is_admin'] || $user_info['is_mods']){

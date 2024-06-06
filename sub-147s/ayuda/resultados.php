@@ -15,7 +15,7 @@ WHERE MATCH (titulo, contenido) AGAINST ('$buscar')
 ORDER BY id DESC
 LIMIT $RegistrosAEmpezar, $RegistrosAMostrar");
 
-$NroRegistros=mysql_num_rows(db("SELECT id
+$NroRegistros=mysqli_num_rows(db("SELECT id
 FROM {$prefijo}articulos 
 WHERE MATCH (titulo, contenido) AGAINST ('$buscar')"));
 
@@ -31,7 +31,7 @@ echo'<table class="linksList" style="width: 924px;"><thead><tr>
  $PagUlt=$NroRegistros/$RegistrosAMostrar;
  $Res=$NroRegistros%$RegistrosAMostrar;
 if($Res>0) $PagUlt=floor($PagUlt)+1;
-while($row=mysql_fetch_array($sql)){
+while($row=mysqli_fetch_array($sql)){
 $daasdasda=$RegistrosAEmpezar ? ($RegistrosAEmpezar+1) : '1';
 $daasdasda2=$RegistrosAEmpezar ? ($RegistrosAEmpezar+15) : '15';
 if($daasdasda2>$NroRegistros){$daasdasda4=$NroRegistros;}else{$daasdasda4=$daasdasda2;}
