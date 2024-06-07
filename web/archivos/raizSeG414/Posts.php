@@ -20,9 +20,9 @@ if(empty($_SESSION['last_read_topic']) || $_SESSION['last_read_topic'] != $post)
 	}
 
 // aca marca si hay comentarios
-$context['numcom']=mysqli_num_rows(db_query("SELECT id_post FROM ({$db_prefix}comentarios) WHERE id_post='{$post}'", __FILE__, __LINE__));
+$context['numcom'] = mysqli_num_rows(db_query("SELECT id_post FROM {$db_prefix}comentarios WHERE id_post = '{$post}'", __FILE__, __LINE__));
 // aca marca si hay favoritos
-$context['fav1']=mysqli_num_rows(db_query("SELECT o.ID_TOPIC,o.tipo FROM ({$db_prefix}favoritos AS o) WHERE o.ID_TOPIC='{$post}' AND o.tipo=0", __FILE__, __LINE__));
+$context['fav1'] = mysqli_num_rows(db_query("SELECT o.ID_TOPIC, o.tipo FROM ({$db_prefix}bookmarks AS o) WHERE o.ID_TOPIC='{$post}' AND o.tipo=0", __FILE__, __LINE__));
 
 // aca marca los comentarios
 $request = db_query("SELECT c.comentario, c.comentario AS comentario2, c.id_post, c.id_user, mem.ID_MEMBER, mem.memberName, mem.realName, c.id_coment, c.fecha

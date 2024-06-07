@@ -38,7 +38,7 @@ drawSocialLinks = function(oContainers){
   
   
 /* Actualizar comentarios */
-function actualizar_comentarios(){
+function actualizar_comentarios() {
   $('#ult_comm').fadeOut('fast');
   $.ajax({
     type: 'POST',
@@ -49,8 +49,8 @@ function actualizar_comentarios(){
     }
   });}
 
-function error_avatar(obj){
-	obj.src = '/avatar.gif';
+function error_avatar(obj) {
+	obj.src = urlWEb + '/avatar.gif';
 }
 
 /* Citar comentarios */

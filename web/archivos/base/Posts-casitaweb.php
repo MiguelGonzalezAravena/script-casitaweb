@@ -1,5 +1,8 @@
 <?php
-function template_main(){global $tranfer1, $context, $user_settings, $options, $txt, $modSettings, $db_prefix;
+require_once(dirname(dirname(__FILE__)) . '/raizSeG414/Funciones.php');
+
+function template_main() {
+  global $tranfer1, $context, $user_settings, $options, $txt, $modSettings, $db_prefix, $boardurl;
 
 $cantidad=1;
 $txt['comentarios'] = 'comentarios';
@@ -79,7 +82,12 @@ if($context['user']['is_logged']){echo'</span></center>';}
 
 echo'<div class="hrs"></div>';
 echo'<b class="size13">Posts relacionados:</b><br />';
-$dasdasd2=db_query("SELECT id_post,palabra FROM {$db_prefix}tags WHERE id_post='{$post}' ORDER BY palabra ASC",__FILE__, __LINE__);
+$dasdasd2 = db_query("
+  SELECT id_post, palabra
+  FROM {$db_prefix}tags
+  WHERE id_post = '{$post}'
+  ORDER BY palabra ASC", __FILE__, __LINE__);
+
 while ($row=mysqli_fetch_assoc($dasdasd2)){
 $n[]="palabra='".str_replace("'","",$row['palabra'])."'";
 $ff=join(" OR ",$n);}
@@ -89,11 +97,11 @@ if($n){
 $select=db_query("SELECT id_post FROM {$db_prefix}tags WHERE $ff GROUP BY id_post LIMIT 10", __FILE__, __LINE__);
 while($row24 = mysqli_fetch_assoc($select)){
 $request = db_query("
-		SELECT m.ID_TOPIC,m.subject,b.description
-		FROM ({$db_prefix}messages AS m)
+    SELECT m.ID_TOPIC,m.subject,b.description
+    FROM ({$db_prefix}messages AS m)
         INNER JOIN {$db_prefix}boards AS b ON m.ID_TOPIC='{$row24['id_post']}' AND m.ID_TOPIC<>'{$post}' AND m.ID_BOARD=b.ID_BOARD AND m.eliminado=0
-		ORDER BY m.ID_TOPIC DESC
-		LIMIT 1", __FILE__, __LINE__);
+    ORDER BY m.ID_TOPIC DESC
+    LIMIT 1", __FILE__, __LINE__);
 while($row=mysqli_fetch_assoc($request)){
 $titulosssss=censorText($row['subject']);
 echo'<div class="postENTry"><a rel="dc:relation" href="/post/'.$row['ID_TOPIC'].'/'.$row['description'].'/'.urls($titulosssss).'.html" title="'.$titulosssss.'" target="_self" class="categoriaPost '.$row['description'].'">'.$titulosssss.'</a><div style="clear: left;"></div></div>';}
@@ -130,12 +138,18 @@ echo'<div class="hrs"></div>
 <b>Categor&iacute;a:</b>&nbsp;<a href="/categoria/'.$context['link_cat'].'" title="'.$context['name_cat'].'">'.$context['name_cat'].'</a><div class="hrs"></div>';
 $dasdasd=db_query("SELECT palabra,id_post FROM {$db_prefix}tags WHERE id_post='{$post}' ORDER BY palabra ASC", __FILE__, __LINE__);
 echo'<b>Tags:</b>&nbsp;';
-while ($row = mysqli_fetch_assoc($dasdasd))
-{$context['palabra']=$row['palabra'];
-$palabra[]='<a href="/tags/'.$context['palabra'].'" title="'.$context['palabra'].'">'.$context['palabra'].'</a>';}
+while ($row = mysqli_fetch_assoc($dasdasd)) {
+  $context['palabra'] = $row['palabra'];
+  $palabra[] = '<a href="' . $boardurl . '/tags/'.$context['palabra'].'" title="'.$context['palabra'].'">'.$context['palabra'].'</a>';
+}
+
 mysqli_free_result($dasdasd);
-$palabra=isset($palabra) ? $palabra : '';
-echo join(' - ', $palabra);
+
+$palabra = isset($palabra) ? $palabra : '';
+
+if ($palabra != '') {
+  echo join(' - ', $palabra);
+}
 
 
 if($context['user']['is_admin']){
@@ -150,7 +164,7 @@ while($grups=mysqli_fetch_assoc($requests)){$context['firma']=$grups['signature'
 mysqli_free_result($requests);
 $nwesdas=$context['firma'];
 if(!empty($nwesdas) && empty($options['show_no_signatures'])){
-echo'<div class="box_390" style="margin-top:8px;width:386px;"><div class="box_title" style="width:384px;"><div class="box_txt box_390-34">Firma</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="width: 384px;overflow:auto;"><div class="fimaFIX" style="padding: 4px;">';echo'<b class="size11">'.censorText(str_replace('if(this.width >720) {this.width=720}','if(this.width > 375) {this.width=375}',str_replace('class="imagen"','class="imagen-firma"',parse_bbc($nwesdas)))).'</b>';echo'</div></div></div>';}
+echo'<div class="box_390" style="margin-top:8px;width:386px;"><div class="box_title" style="width:384px;"><div class="box_txt box_390-34">Firma</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="width: 384px;overflow:auto;"><div class="fimaFIX" style="padding: 4px;">';echo'<b class="size11">'.(str_replace('if(this.width >720) {this.width=720}','if(this.width > 375) {this.width=375}',str_replace('class="imagen"','class="imagen-firma"',parse_bbc($nwesdas)))).'</b>';echo'</div></div></div>';}
 echo'</div>';
 echo'</div><!-- fin info del post -->';}
 
@@ -166,14 +180,23 @@ if($context['numcom']){echo'<div class="icon_img" style="float: left; margin-rig
 echo'<div style="clear: both;margin-bottom: 3px;"></div>';
 
 
-if($context['numcom']){foreach ($context['comentarios'] AS $coment){
+if($context['numcom']) {
+  foreach ($context['comentarios'] as $coment) {
 echo'<div id="cmt_'.$coment['id'].'" class="Coment">
 <span class="size12"><div class="User-Coment">
 <div style="float:left;">';
 
-$mesesano2 = array("1","2","3","4","5","6","7","8","9","10","11","12") ;
-$diames2 = date('j',$coment['fecha']); $mesano2 = date('n',$coment['fecha']) - 1 ; $ano2 = date('Y',$coment['fecha']);
-$seg2=date('s',$coment['fecha']); $hora2=date('H',$coment['fecha']); $min2=date('i',$coment['fecha']);
+$mesesano2 = array("1","2","3","4","5","6","7","8","9","10","11","12");
+// $fecha = new DateTime('Septiembre 26, 2008, 04:43:58');
+// echo date('j', $fecha->format('Y-m-d H:i:s'));
+// var_dump($fecha->format('Y-m-d H:i:s'));
+$date = getEnglishDateFormat($coment['fecha']);
+$diames2 = $date->format('j');
+$mesano2 = $date->format('n') - 1;
+$ano2 = $date->format('Y');
+$seg2 = $date->format('s');
+$hora2 = $date->format('H');
+$min2 = $date->format('i');
 
 echo'<b id="autor_cmnt_'.$coment['id'].'" user_comment="'.$coment['nomuser'].'" text_comment=\''.$coment['comentario2'].'\'><a href="/perfil/'.$coment['nommem'].'" style="color:#956100;">'.$coment['nomuser'].'</a></b>&nbsp;<span title="'.$diames2.'.'.$mesesano2[$mesano2].'.'.$ano2.' '.$hora2.':'.$min2.':'.$seg2.'">'.hace($coment['fecha']).'</span> dijo:</div><div style="float:right;">';
 

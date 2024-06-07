@@ -71,20 +71,20 @@ LEFT JOIN {$db_prefix}members AS m ON (p.ID_MEMBER = m.ID_MEMBER)
 WHERE p.ID_PICTURE='$id' 
 LIMIT 1", __FILE__, __LINE__);
 $row = mysqli_fetch_assoc($dbresult);
-$title=censorText(nohtml2(nohtml($row['title'])));
+$title=nohtml2(nohtml($row['title']));
 $context['gallery_pic'] = array(
 		'ID_PICTURE' => $row['ID_PICTURE'],
 		'ID_MEMBER' => $row['ID_MEMBER'],
 		'views' => $row['views'],
 		'puntos' => $row['puntos'],
 		'title' => $title,
-		'filename' => censorText(nohtml2(nohtml($row['filename']))),
+		'filename' => nohtml2(nohtml($row['filename'])),
 		'date' => $row['date']
         );
 mysqli_free_result($dbresult);
 $title=isset($title) ? $title : '';
 $ds=isset($row['ID_PICTURE']) ? '1' : '0'; 
-if(empty($ds)) fatal_error('Esta imagen no existe.',false);
+if(empty($ds)) fatal_error('Esta imagen no existe.', false);
 
 if($user_info['smiley_set'] != 'none'){
 		$request = db_query("

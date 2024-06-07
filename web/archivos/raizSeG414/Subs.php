@@ -424,7 +424,7 @@ $time = $logTime + ($user_info['time_offset'] + $modSettings['time_offset']) * 3
   {
     foreach (array('%a', '%A', '%b', '%B') as $token)
       if (strpos($str, $token) !== false)
-        $str = str_replace($token, $func['ucwords'](strftime($token, $time)), $str);
+        $str = str_replace($token, ucwords(strftime($token, $time)), $str);
   }
   else
   {

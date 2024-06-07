@@ -18,7 +18,7 @@ function template_main_above() {
     <script type="text/javascript">var urlWEb = "' . $boardurl . '";</script>
     <script type="text/javascript" src="' . $tranfer1 . '/js/index.php"></script>';
 
-  if ($context['id-post']) {
+  if (isset($context['id-post'])) {
     $context['page_title'] = $context['titulo'];
 
     echo '
@@ -137,7 +137,7 @@ $plur = $rows > 0 's' : '';
 <li class="sn"><a href="<?php echo $boardurl; ?>/buscador/" title="">Buscar</a></li>
 <li class="sn"><a href="<?php echo $boardurl; ?>/" title="">Inicio</a></li>
 <?php 
-if (empty($accioncw241) && $context['id-post']) {
+if (empty($accioncw241) && isset($context['id-post'])) {
   $reg = '0';
 } else if (empty($accioncw241) && empty($context['id-post'])) {
   $reg = 'Home';

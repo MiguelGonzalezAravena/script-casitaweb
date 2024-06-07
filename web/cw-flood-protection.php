@@ -85,7 +85,7 @@ if (
         $datos2[1] = isset($datos2[1]) ? $datos2[1] : '';
         $datos[1] = isset($datos[1]) ? $datos[1] : '';
 
-        if ($datos2[1]==$ip) {
+        if ($datos2[1] == $ip) {
           $rime2 = $datos2[4];
           $rime32 = $datos2[0];
         }
@@ -99,10 +99,11 @@ if (
       }
 
       // TO-DO: ¿Será necesario?
-      $rime2 = isset($rime2) ? $rime2 : '';
-      $rime = isset($rime) ? $rime : '';
+      $rime2 = isset($rime2) ? $rime2 : 0;
+      $rime = isset($rime) ? $rime : 0;
       $lug = isset($lug) ? $lug : '';
 
+      // var_dump($r);
       if (($time < $rime + 4) && $lug == $r) {
         if ($cat > 4) {
           $mnc = '1';

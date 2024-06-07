@@ -92,7 +92,7 @@ echo'<p align="center" style="color: red;"><b class="size12">Verificar Im&aacute
 
 $context['sin_coment']=mysqli_num_rows(db_query("SELECT c.ID_PICTURE FROM {$db_prefix}gallery_comment as c WHERE c.ID_PICTURE='{$context['gallery_pic']['ID_PICTURE']}'", __FILE__, __LINE__));
 
-$context['fav2']=mysqli_num_rows(db_query("SELECT o.ID_TOPIC,o.tipo FROM ({$db_prefix}favoritos AS o) WHERE o.ID_TOPIC='{$context['gallery_pic']['ID_PICTURE']}' AND o.tipo=1", __FILE__, __LINE__));
+$context['fav2']=mysqli_num_rows(db_query("SELECT o.ID_TOPIC,o.tipo FROM ({$db_prefix}bookmarks AS o) WHERE o.ID_TOPIC='{$context['gallery_pic']['ID_PICTURE']}' AND o.tipo=1", __FILE__, __LINE__));
 
 $cantidad=1;
 
@@ -116,8 +116,13 @@ echo'<br />
 <a href="http://casitaweb.net/registrarse/" style="font-size:12px;color:#FFB600;margin-bottom:3px;"><b>REGISTRATE GRATIS Y ELIMINA ESTA PUBLICIDAD, ADEMAS TENDRAS ACCESO A TODOS LOS POSTS Y FUNCIONES</b></a></div>
 ';}
 
-$imgc=GetImageSize($context['gallery_pic']['filename']);
-if($imgc[0] > '748'){$w='width="748px" ';}else{$w='';}
+$imgc = getimagesize($context['gallery_pic']['filename']);
+// var_dump($imgc);
+if(is_array($imgc) && $imgc[0] > '748') {
+	$w = 'width="748px" ';
+} else {
+	$w = '';
+}
 
 echo '<center><img alt="" '.$w.'title="'.$context['gallery_pic']['title'].'"  src="'.$context['gallery_pic']['filename'].'" /></center>';
 

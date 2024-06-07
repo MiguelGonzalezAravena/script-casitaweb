@@ -1,17 +1,20 @@
 <?php 
-function template_main(){global $tranfer1, $context, $boarddir, $db_prefix, $modSettings, $scripturl, $ID_MEMBER; ?>
+function template_main() {
+  global $tranfer1, $context, $boarddir, $db_prefix, $modSettings, $scripturl, $ID_MEMBER, $boardurl;
+?>
 <div style="text-align:left;"><div style="float:left;height:auto;margin-right:8px;">
 <div class="ultimos_postsa" style="margin-bottom:4px;"><div class="box_title" style="width:378px;"><div class="box_txt ultimos_posts">&Uacute;ltimos posts</div><div class="box_rss"><a href="/rss/ultimos-post/"><div style="height: 16px; width: 16px; cursor: pointer;" class="feed png"><img alt="" src="<?php echo $tranfer1; ?>/espacio.gif" class="png" height="16px" width="16px" /></div></a></div></div>
 <div class="windowbg" style="width:370px;padding:4px;">
 <!-- empiezan los post --> 
 <?php
 
-foreach ($context['sticky'] as $sticky){
-if(empty($_GET['pag']) || $_GET['pag']==='1'){ ?>
+foreach ($context['sticky'] as $sticky) {
+  if (empty($_GET['pag']) || $_GET['pag'] == 1) {
+?>
 <div class="postENTrysticky" style="background-color: <?php if(empty($sticky['color']) || $sticky['color']=="0" || $sticky['color']=="#000000"){?>#FFFFCC <?php }else{ echo $sticky['color']; } ?>;"><a href="/post/<?php echo $sticky['id']; ?>/<?php echo $sticky['description']; ?>/<?php echo urls($sticky['titulo']); ?>.html" target="_self" title="<?php echo $sticky['titulo']; ?>" class="categoriaPost <?php echo $sticky['description']; ?>"><?php echo achicars($sticky['titulo']); ?></a></div>
 <?php } }
 
-if($context['PagAct']>$context['PagUlt']){echo'<div class="noesta"><br /><br /><br /><br />Est&aacute; p&aacute;gina no existe.<br /><br /><br /><br /><br /></div>';}
+if ($context['PagAct']>$context['PagUlt']){echo'<div class="noesta"><br /><br /><br /><br />Est&aacute; p&aacute;gina no existe.<br /><br /><br /><br /><br /></div>';}
 
 else{
 foreach ($context['posts'] as $posts){ ?> 
@@ -78,7 +81,7 @@ document.getElementById('escuchando').style.display='inline';}}
 <div class="act_comments"><div class="box_title" style="width:361px;"><div class="box_txt ultimos_comments">Tops posts de la semana</div><div class="box_rss"><img alt="" src="<?php echo $tranfer1;?>/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="width: 353px; padding:4px;margin-bottom:8px;font-size:11px;">
 <?php $conanto=1;
 foreach ($context['post_semana'] as $postssssss){ ?>
-<b><?php echo $conanto; ++$conanto;?>&nbsp;-</b>&nbsp;<a href="/post/<?php echo $postssssss['ID_TOPIC'];?>/<?php echo $postssssss['description'];?>/<?php echo urls($postssssss['subject']);?>.html" title="<?php echo $postssssss['subject'];?>"><?php echo achicars($postssssss['subject']);?></a>&nbsp;(<span title="<?php echo $postssssss['num_posts']; ?> pts"><?php echo $postssssss['num_posts'];?>&nbsp;pts</span>)<br />
+<b><?php echo $conanto; ++$conanto;?>&nbsp;-</b>&nbsp;<a href="<?php echo $boardurl; ?>/post/<?php echo $postssssss['ID_TOPIC'];?>/<?php echo $postssssss['description'];?>/<?php echo urls($postssssss['subject']);?>.html" title="<?php echo $postssssss['subject'];?>"><?php echo achicars($postssssss['subject']);?></a>&nbsp;(<span title="<?php echo $postssssss['num_posts']; ?> pts"><?php echo $postssssss['num_posts'];?>&nbsp;pts</span>)<br />
 
 <?php } ?>
 
@@ -142,9 +145,11 @@ if($asfff==40)echo'<br />';} ?>
 <?php include($boarddir.'/web/cw-AmistadesAct.php'); ?>
 <div class="img_aletat"><div class="box_title" style="width: 161px;"><div class="box_txt img_aletat">&Uacute;ltimas im&aacute;genes</div>
 <div class="box_rss"><img alt="" src="<?php echo $tranfer1;?>/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="padding:4px;width:153px;margin-bottom:8px;font-size:11px;">
-<?php foreach($context['ultimas_img'] as $ui){
-$titulo=censorText(nohtml2($ui['titulo'])); ?>
-<div class="postENTry" style="background-color:#FFFFCC;"><a href="/imagenes/ver/<?php echo $ui['id']; ?>" title="<?php echo $titulo;?>" class="categoriaPost imagenesNOCAT" target="_self"><?php if(strlen($titulo)>24){$titulo3=substr($titulo,0,strrpos(substr($titulo,0,21)," "))."..."; echo $titulo3;}else{echo $titulo;}?></a></div>
+<?php
+foreach($context['ultimas_img'] as $ui){
+$titulo = nohtml2($ui['titulo']);
+?>
+<div class="postENTry" style="background-color:#FFFFCC;"><a href="<?php echo $boardurl; ?>/imagenes/ver/<?php echo $ui['id']; ?>" title="<?php echo $titulo;?>" class="categoriaPost imagenesNOCAT" target="_self"><?php if(strlen($titulo)>24){$titulo3=substr($titulo,0,strrpos(substr($titulo,0,21)," "))."..."; echo $titulo3;}else{echo $titulo;}?></a></div>
 <?php } 
 if(!empty($context['user']['id'])){ ?> <center><a href="/web/cw-TEMPAgregarIMG.php" class="boxy" title="Agrega tu imagen">Agrega tu imagen</a></center> <?php } ?> </div></div>
 
@@ -194,27 +199,44 @@ $context['usuarios']=mysqli_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix
 </div><div style="clear:left;"></div></div>
 
 <?php }
-function mensajes(){global $context,$db_prefix,$modSettings; 
-if(!$context['user']['is_admin']){$shas=' AND m.ID_BOARD<>142';}else{$shas='';}
-$rs=db_query("
-SELECT c.id_post,m.ID_TOPIC,c.id_user,mem.ID_MEMBER,m.ID_BOARD,b.ID_BOARD,c.id_coment,m.subject,b.description,memberName,realName
-FROM ({$db_prefix}comentarios AS c)
-INNER JOIN {$db_prefix}messages AS m ON c.id_post=m.ID_TOPIC
-INNER JOIN {$db_prefix}members AS mem ON c.id_user=mem.ID_MEMBER
-INNER JOIN {$db_prefix}boards as b ON m.ID_BOARD=b.ID_BOARD$shas
-ORDER BY c.id_coment DESC
-LIMIT $modSettings[catcoment]",__FILE__, __LINE__);
-$context['comentarios25']=array();
-while($row=mysqli_fetch_assoc($rs)){
-censorText($row['subject']);
-$context['comentarios25'][] = array(
-		'id_coment' => $row['id_coment'],
-			'titulo' => censorText($row['subject']),
-			'ID_TOPIC' => $row['ID_TOPIC'],
-			'description' => $row['description'],
-			'memberName' => $row['memberName'],
-			'realName' => $row['realName'],
-		);}mysqli_free_result($rs);
-foreach ($context['comentarios25'] as $coment25){ ?>
-<font class="size11" ><b><a title="<?php echo $coment25['realName']; ?>" href="/perfil/<?php echo $coment25['realName']; ?>"><?php echo $coment25['realName']; ?></a></b> - <a title="<?php echo $coment25['titulo'];?>"  href="/post/<?php echo $coment25['ID_TOPIC']; ?>/<?php echo $coment25['description'];?>/<?php echo urls($coment25['titulo']);?>.html#cmt_<?php echo $coment25['id_coment'];?>"><?php echo achicars($coment25['titulo']);?></a></font><br style="margin:0px;padding:0px;" />
+function mensajes() {
+  global $context, $db_prefix, $modSettings, $boardurl;
+
+  if (!$context['user']['is_admin']) {
+    $shas = ' AND m.ID_BOARD <> 142';
+  } else {
+    $shas = '';
+  }
+
+  // TO-DO: Verificar dónde se setea esto
+  // $limit = $modSettings['catcoment'];
+  $limit = 25;
+  $rs = db_query("
+    SELECT c.id_post,m.ID_TOPIC,c.id_user,mem.ID_MEMBER,m.ID_BOARD,b.ID_BOARD,c.id_coment,m.subject,b.description,memberName,realName
+    FROM ({$db_prefix}comentarios AS c)
+    INNER JOIN {$db_prefix}messages AS m ON c.id_post=m.ID_TOPIC
+    INNER JOIN {$db_prefix}members AS mem ON c.id_user=mem.ID_MEMBER
+    INNER JOIN {$db_prefix}boards as b ON m.ID_BOARD=b.ID_BOARD
+    $shas
+    ORDER BY c.id_coment DESC
+    LIMIT $limit",__FILE__, __LINE__);
+
+  $context['comentarios25'] = array();
+
+  while ($row = mysqli_fetch_assoc($rs)) {
+    $context['comentarios25'][] = array(
+      'id_coment' => $row['id_coment'],
+      'titulo' => censorText($row['subject']),
+      'ID_TOPIC' => $row['ID_TOPIC'],
+      'description' => $row['description'],
+      'memberName' => $row['memberName'],
+      'realName' => $row['realName'],
+    );
+  }
+
+  mysqli_free_result($rs);
+
+  foreach ($context['comentarios25'] as $coment25) {
+?>
+<font class="size11" ><b><a title="<?php echo $coment25['realName']; ?>" href="<?php echo $boardurl; ?>/perfil/<?php echo $coment25['realName']; ?>"><?php echo $coment25['realName']; ?></a></b> - <a title="<?php echo $coment25['titulo'];?>"  href="/post/<?php echo $coment25['ID_TOPIC']; ?>/<?php echo $coment25['description'];?>/<?php echo urls($coment25['titulo']);?>.html#cmt_<?php echo $coment25['id_coment'];?>"><?php echo achicars($coment25['titulo']);?></a></font><br style="margin:0px;padding:0px;" />
 <?php }} ?>

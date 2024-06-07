@@ -137,101 +137,173 @@ return $valor;}
 function seguridad($variable){$variable = addslashes(trim($variable));return $variable;}
 //--------------------------
 
-function anuncio_300x250(){echo '<p align="center"><iframe src="/web/cw-ads.php?tamanio=300x250" width="300px" height="250px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px" marginheight="0px" marginwidth="0px">.</iframe></p>';}
-function anuncio1_120x240(){echo '<p align="center"><iframe src="/web/cw-ads.php?tamanio=160x600" width="120px" height="600px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px" marginheight="0px" marginwidth="0px">.</iframe></p>';}
-//--------------------------
-function anuncio2_120x240(){echo'<p align="center"><iframe src="/web/cw-ads.php?tamanio=160x600" width="120px" height="600px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px" marginheight="0px" marginwidth="0px">.</iframe></p>';}
-//--------------------------
-function g_anuncio_160x600(){echo'<p align="center"><iframe src="/web/cw-ads.php?tamanio=160x600" width="120px" height="600px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px" marginheight="0px" marginwidth="0px">.</iframe></p>';}
-//--------------------------
-function anuncio_468x60(){echo'<p align="center"><iframe src="/web/cw-ads.php?tamanio=468x60" width="468px" height="60px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px">.</iframe></p>';} 
-//--------------------------
-function anuncio_728x90(){echo'<p align="center"><iframe src="/web/cw-ads.php?tamanio=728x90" width="728px" height="90px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px">.</iframe></p>';} 
-//--------------------------
-function g_anuncio_728x90(){echo'<p align="center"><iframe src="/web/cw-ads.php?tamanio=728x90" width="728px" height="90px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px">.</iframe></p>';} 
-//--------------------------
-function g_anuncio_125x125(){echo'<p align="center">PUBLICIDAD</p>';}
+function anuncio_300x250() {
+  global $boardurl;
 
-function anuncio_234x60(){echo'<p align="center"><iframe src="/web/cw-ads.php?tamanio=234x60" width="234px" height="60px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px">.</iframe></p>';}
-
-//-------------------------- 
-function anuncio_160x600(){echo'<p align="center"><iframe src="/web/cw-ads.php?tamanio=160x600" width="120px" height="600px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px">.</iframe></p>';}
-
-
-//--------------------------
-function pts_sumar_grup($valor){global $func,$con, $context,$db_prefix;
-
-$request=db_query("
-SELECT m.ID_MEMBER,m.posts
-FROM {$db_prefix}members AS m
-WHERE m.ID_MEMBER='{$valor}'", __FILE__, __LINE__);
-
-while($grup=mysqli_fetch_assoc($request)){$grup['posts']=$grup['posts'];
-
-            if($grup['posts'] < '15'){
-            db_query("UPDATE {$db_prefix}members
-        SET ID_POST_GROUP=4
-        WHERE ID_MEMBER='{$valor}'
-        LIMIT 1", __FILE__, __LINE__);}
-      elseif($grup['posts'] >= '15' && $grup['posts'] < '250'){
-            db_query("UPDATE {$db_prefix}members
-        SET ID_POST_GROUP=5
-        WHERE ID_MEMBER='{$valor}'
-        LIMIT 1", __FILE__, __LINE__);}
-        elseif($grup['posts'] >= '250' && $grup['posts'] < '500'){
-            db_query("UPDATE {$db_prefix}members
-        SET ID_POST_GROUP=9
-        WHERE ID_MEMBER='{$valor}'
-        LIMIT 1", __FILE__, __LINE__);}
-      elseif($grup['posts'] >= '500' && $grup['posts'] < '1000'){
-            db_query("UPDATE {$db_prefix}members
-        SET ID_POST_GROUP=10
-        WHERE ID_MEMBER='{$valor}'
-        LIMIT 1", __FILE__, __LINE__);}
-      elseif($grup['posts'] >= '1000' && $grup['posts'] < '1500'){
-            db_query("UPDATE {$db_prefix}members
-        SET ID_POST_GROUP=6
-        WHERE ID_MEMBER='{$valor}'
-        LIMIT 1", __FILE__, __LINE__);}
-      elseif($grup['posts'] >= '1500'){
-            db_query("UPDATE {$db_prefix}members
-        SET ID_POST_GROUP=8
-        WHERE ID_MEMBER='{$valor}'
-        LIMIT 1", __FILE__, __LINE__);}
-                }
-mysqli_free_result($request);
-
+  echo '
+    <p align="center">
+      <iframe src="' . $boardurl . '/web/cw-ads.php?tamanio=300x250" width="300px" height="250px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px" marginheight="0px" marginwidth="0px">.</iframe>
+    </p>';
 }
 
-function pais($valor){				
-$valor = str_replace("ar", "Argentina", $valor);
-$valor = str_replace("bo", "Bolivia", $valor);
-$valor = str_replace("br", "Brasil", $valor);
-$valor = str_replace("cl", "Chile", $valor);
-$valor = str_replace("co", "Colombia", $valor);
-$valor = str_replace("cr", "Costa Rica", $valor);
-$valor = str_replace("cu", "Cuba", $valor);
-$valor = str_replace("ec", "Ecuador", $valor);
-$valor = str_replace("es", "Espa&ntilde;a", $valor);
-$valor = str_replace("gt", "Guatemala", $valor);
-$valor = str_replace("it", "Italia", $valor);
-$valor = str_replace("mx", "Mexico", $valor);
-$valor = str_replace("py", "Paraguay", $valor);
-$valor = str_replace("pe", "Peru", $valor);
-$valor = str_replace("pt", "Portugal", $valor);
-$valor = str_replace("pr", "Puerto Rico", $valor);
-$valor = str_replace("uy", "Uruguay", $valor);
-$valor = str_replace("ve", "Venezuela", $valor);
-$valor = str_replace("ot", "", $valor);
-return $valor;}
+function anuncio1_120x240() {
+  global $boardurl;
 
+  echo '
+    <p align="center">
+      <iframe src="' . $boardurl . '/web/cw-ads.php?tamanio=160x600" width="120px" height="600px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px" marginheight="0px" marginwidth="0px">.</iframe>
+    </p>';
+}
 
-function menuser($user){
-global $tranfer1,$scripturl, $context, $txt, $no_firma, $no_avatar, $db_prefix, $options, $ID_MEMBER, $modSettings, $boardurl, $memberContext, $themeUser;
+function anuncio2_120x240() {
+  global $boardurl;
+
+  echo '
+    <p align="center">
+      <iframe src="' . $boardurl . '/web/cw-ads.php?tamanio=160x600" width="120px" height="600px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px" marginheight="0px" marginwidth="0px">.</iframe>
+    </p>';
+}
+
+function g_anuncio_160x600() {
+  global $boardurl;
+
+  echo '
+    <p align="center">
+      <iframe src="' . $boardurl . '/web/cw-ads.php?tamanio=160x600" width="120px" height="600px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px" marginheight="0px" marginwidth="0px">.</iframe>
+    </p>';
+}
+
+function anuncio_468x60() {
+  global $boardurl;
+  echo '
+    <p align="center">
+      <iframe src="' . $boardurl . '/web/cw-ads.php?tamanio=468x60" width="468px" height="60px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px">.</iframe>
+    </p>';
+}
+
+function anuncio_728x90() {
+  global $boardurl;
+
+  echo '
+    <p align="center">
+      <iframe src="' . $boardurl . '/web/cw-ads.php?tamanio=728x90" width="728px" height="90px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px">.</iframe>
+    </p>';
+}
+
+function g_anuncio_728x90() {
+  global $boardurl;
+
+  echo '
+    <p align="center">
+      <iframe src="' . $boardurl . '/web/cw-ads.php?tamanio=728x90" width="728px" height="90px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px">.</iframe>
+    </p>';
+}
+
+function g_anuncio_125x125() {
+  echo'<p align="center">PUBLICIDAD</p>';
+}
+
+function anuncio_234x60() {
+  global $boardurl;
+
+  echo '
+    <p align="center">
+      <iframe src="' . $boardurl . '/web/cw-ads.php?tamanio=234x60" width="234px" height="60px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px">.</iframe>
+    </p>';
+}
+
+function anuncio_160x600() {
+  global $boardurl;
+
+  echo '
+    <p align="center">
+      <iframe src="' . $boardurl . '/web/cw-ads.php?tamanio=160x600" width="120px" height="600px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px">.</iframe>
+    </p>';
+}
+
+function pts_sumar_grup($valor) {
+  global $db_prefix;
+
+  $request = db_query("
+    SELECT ID_MEMBER, posts
+    FROM {$db_prefix}members
+    WHERE ID_MEMBER = '{$valor}'", __FILE__, __LINE__);
+
+  while ($grup = mysqli_fetch_assoc($request)) { 
+    $grup['posts'] = $grup['posts'];
+
+    if ($grup['posts'] < 15) {
+      db_query("
+        UPDATE {$db_prefix}members
+        SET ID_POST_GROUP = 4
+        WHERE ID_MEMBER = {$valor}
+        LIMIT 1", __FILE__, __LINE__);
+    } else if ($grup['posts'] >= 15 && $grup['posts'] < 250) {
+      db_query("
+        UPDATE {$db_prefix}members
+        SET ID_POST_GROUP = 5
+        WHERE ID_MEMBER = {$valor}
+        LIMIT 1", __FILE__, __LINE__);
+    } else if ($grup['posts'] >= 250 && $grup['posts'] < 500) {
+      db_query("
+        UPDATE {$db_prefix}members
+        SET ID_POST_GROUP = 9
+        WHERE ID_MEMBER = {$valor}
+        LIMIT 1", __FILE__, __LINE__);
+    } else if ($grup['posts'] >= 500 && $grup['posts'] < 1000) {
+      db_query("
+        UPDATE {$db_prefix}members
+        SET ID_POST_GROUP = 10
+        WHERE ID_MEMBER = {$valor}
+        LIMIT 1", __FILE__, __LINE__);
+    } else if ($grup['posts'] >= 1000 && $grup['posts'] < 1500) {
+      db_query("
+        UPDATE {$db_prefix}members
+        SET ID_POST_GROUP = 6
+        WHERE ID_MEMBER = {$valor}
+        LIMIT 1", __FILE__, __LINE__);
+    } else if ($grup['posts'] >= 1500) {
+      db_query("
+        UPDATE {$db_prefix}members
+        SET ID_POST_GROUP = 8
+        WHERE ID_MEMBER = {$valor}
+        LIMIT 1", __FILE__, __LINE__);
+    }
+  }
+
+  mysqli_free_result($request);
+}
+
+function pais($valor) {				
+  $valor = str_replace('ar', 'Argentina', $valor);
+  $valor = str_replace('bo', 'Bolivia', $valor);
+  $valor = str_replace('br', 'Brasil', $valor);
+  $valor = str_replace('cl', 'Chile', $valor);
+  $valor = str_replace('co', 'Colombia', $valor);
+  $valor = str_replace('cr', 'Costa Rica', $valor);
+  $valor = str_replace('cu', 'Cuba', $valor);
+  $valor = str_replace('ec', 'Ecuador', $valor);
+  $valor = str_replace('es', 'Espa&ntilde;a', $valor);
+  $valor = str_replace('gt', 'Guatemala', $valor);
+  $valor = str_replace('it', 'Italia', $valor);
+  $valor = str_replace('mx', 'M&eacute;xico', $valor);
+  $valor = str_replace('py', 'Paraguay', $valor);
+  $valor = str_replace('pe', 'Per&uacute;', $valor);
+  $valor = str_replace('pt', 'Portugal', $valor);
+  $valor = str_replace('pr', 'Puerto Rico', $valor);
+  $valor = str_replace('uy', 'Uruguay', $valor);
+  $valor = str_replace('ve', 'Venezuela', $valor);
+  $valor = str_replace('ot', 'Otro', $valor);
+
+  return $valor;
+}
+
+function menuser($user) {
+global $tranfer1, $scripturl, $context, $txt, $no_firma, $no_avatar, $db_prefix, $options, $ID_MEMBER, $modSettings, $boardurl, $memberContext, $themeUser;
 
 function sexo1($valor)
-{$valor = str_replace("1", "Masculino", $valor);
-$valor = str_replace("2", "Femenino", $valor);
+{$valor = str_replace('1', 'Masculino', $valor);
+$valor = str_replace('2', 'Femenino', $valor);
 return $valor;}
 
 function sexo2($valor){
@@ -518,26 +590,21 @@ function enlaces()
          <div align="left" style="margin-bottom:4px;"><a title="Anunciate aca" href="/contactanos/" target="_blank" rel="nofollow" class="anuncio">Anunciate aca</a></div>
   <div class="hrs"></div><center><a class="size10" href="/enlazanos/" target="_blank" rel="nofollow">Enlazanos en tu Web</a></center>';}
   
-function destacado(){global $tranfer1;
+function destacado() {
+  global $tranfer1, $boardurl;
 
-$adsense='<p align="center" style="margin:0px;padding:0px;"><iframe src="/web/cw-ads.php?tamanio=300x250" width="300px" height="250px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px" marginheight="0px" marginwidth="0px">.</iframe></p>';
+  $adsense = '<p align="center" style="margin:0px;padding:0px;"><iframe src="' . $boardurl . '/web/cw-ads.php?tamanio=300x250" width="300px" height="250px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px" marginheight="0px" marginwidth="0px">.</iframe></p>';
+  $adsense2a = '<p align="center" style="margin:0px;padding:0px;"><a href="http://www.apuntatelo.com.ar/" target="_blank" rel="nofollow"><img alt="" src="'.$tranfer1.'/publicidad/dest-apuntatelo.gif" border="0" title="Apuntatelo" /></a>&nbsp;<a href="/contactanos/"><img alt="" src="'.$tranfer1.'/publicidad/dest-anunciate.png" border="0" title="Anunciate Aqui" /></a></p>';
+  $adsense1a = '<p align="center" style="margin:0px;padding:0px;"><iframe src="' . $boardurl . '/web/cw-ads.php?tamanio=300x250" width="300px" height="250px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px" marginheight="0px" marginwidth="0px">.</iframe></p>';
+  $destacado = '<p align="center" style="margin:0px;padding:0px;"><iframe src="' . $boardurl . '/web/cw-ads.php?tamanio=300x250" width="300px" height="250px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px" marginheight="0px" marginwidth="0px">.</iframe></p>';
+  $destacado02 = '<p align="center" style="margin:0px;padding:0px;"><a href="http://www.apuntatelo.com.ar/" target="_blank" rel="nofollow"><img alt="" src="'.$tranfer1.'/publicidad/dest-apuntatelo.gif" border="0" title="Apuntatelo" /></a>&nbsp;<a href="/contactanos/"><img alt="" src="'.$tranfer1.'/publicidad/dest-anunciate.png" border="0" title="Anunciate Aqui" /></a></p>';
+  $destacado03 = '<p align="center"><a href="/contactanos/"><img alt="" src="' . $tranfer1 . '/publicidad/dest-anunciate.png" border="0" title="Anunciate Aqui" /></a>&nbsp;<a target="_blank" href="https://publisher.smowtion.com/users/signup/casitaweb-pay" style="border:none" rel="nofollow"><img width="125" height="125" border="0" style="border:none" src="http://ads.smowtion.com/affiliate/125_125_es.gif" alt="Rentabiliza tu sitio!" /></a></p>';
+  $destacado04 = '<p align="center" style="margin:0px;padding:0px;"><iframe src="' . $boardurl . '/web/cw-ads.php?tamanio=300x250" width="300px" height="250px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px" marginheight="0px" marginwidth="0px">.</iframe></p>';
+  $destacados = array($destacado, $adsense, $adsense1a, $adsense2a, $destacado02, $destacado03, $destacado04);
+  $destacados01 = rand(0, sizeof($destacados) - 1);
 
-$adsense2a='<p align="center" style="margin:0px;padding:0px;"><a href="http://www.apuntatelo.com.ar/" target="_blank" rel="nofollow"><img alt="" src="'.$tranfer1.'/publicidad/dest-apuntatelo.gif" border="0" title="Apuntatelo" /></a>&nbsp;<a href="/contactanos/"><img alt="" src="'.$tranfer1.'/publicidad/dest-anunciate.png" border="0" title="Anunciate Aqui" /></a></p>';
-
-$adsense1a='<p align="center" style="margin:0px;padding:0px;"><iframe src="/web/cw-ads.php?tamanio=300x250" width="300px" height="250px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px" marginheight="0px" marginwidth="0px">.</iframe></p>';
-
-$destacado='<p align="center" style="margin:0px;padding:0px;"><iframe src="/web/cw-ads.php?tamanio=300x250" width="300px" height="250px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px" marginheight="0px" marginwidth="0px">.</iframe></p>';
-
-$destacado02='<p align="center" style="margin:0px;padding:0px;"><a href="http://www.apuntatelo.com.ar/" target="_blank" rel="nofollow"><img alt="" src="'.$tranfer1.'/publicidad/dest-apuntatelo.gif" border="0" title="Apuntatelo" /></a>&nbsp;<a href="/contactanos/"><img alt="" src="'.$tranfer1.'/publicidad/dest-anunciate.png" border="0" title="Anunciate Aqui" /></a></p>';
-
-$destacado03 = '<p align="center"><a href="/contactanos/"><img alt="" src="'.$tranfer1.'/publicidad/dest-anunciate.png" border="0" title="Anunciate Aqui" /></a>&nbsp;<a target="_blank" href="https://publisher.smowtion.com/users/signup/casitaweb-pay" style="border:none" rel="nofollow"><img width="125" height="125" border="0" style="border:none" src="http://ads.smowtion.com/affiliate/125_125_es.gif" alt="Rentabiliza tu sitio!" /></a></p>';
-
-$destacado04='<p align="center" style="margin:0px;padding:0px;"><iframe src="/web/cw-ads.php?tamanio=300x250" width="300px" height="250px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px" marginheight="0px" marginwidth="0px">.</iframe></p>';
-
-
-$destacados = array($destacado, $adsense,$adsense1a,$adsense2a, $destacado02, $destacado03, $destacado04);
-$destacados01 = rand(0,sizeof($destacados)-1);
-echo $destacados[$destacados01];}
+  echo $destacados[$destacados01];
+}
 
 function actualizareliminados($id = ''){global $db_prefix,$user_info;
 if(!$user_info['is_guest']){
@@ -564,16 +631,17 @@ return $valor;}
 
 // tiempo 
 function hace($valor){
-$formato_defecto="H:i:s j-n-Y";
-$ht = time()-$valor;
-if($ht>=2116800){
-$dia = date('d',$valor);
-$mes = date('n',$valor);
-$a�o = date('Y',$valor);
-$hora = date('H',$valor);
-$minuto = date('i',$valor);
-$mesarray = array('','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre');
-$fecha = "el&nbsp;$dia&nbsp;de&nbsp;$mesarray[$mes]&nbsp;del&nbsp;$a�o";}
+$formato_defecto = "H:i:s j-n-Y";
+$date = getEnglishDateFormat($valor);
+$ht = time() - $date->getTimestamp();
+if ($ht >= 2116800) {
+$dia = $date->format('d');
+$mes = $date->format('n');
+$ano = $date->format('Y');
+$hora = $date->format('H');
+$minuto = $date->format('i');
+$mesarray = array('', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+$fecha = "el&nbsp;$dia&nbsp;de&nbsp;$mesarray[$mes]&nbsp;del&nbsp;$ano";}
 if($ht<30242054.045){$hc=(int)round($ht/2629743.83);
 if($hc>1){$s="es";}else{$s="";}$fecha="hace&nbsp;$hc&nbsp;mes".$s;}
 if($ht<2116800){$hc=(int)round($ht/604800);
@@ -759,6 +827,43 @@ function cw_header() {
       <meta name="revisit-after" content="1 days" />';
 
   return true;
+}
+
+function getEnglishDateFormat($str_date) {
+  $months = array(
+    'Enero' => 'January',
+    'Febrero' => 'February',
+    'Marzo' => 'March',
+    'Abril' => 'April',
+    'Mayo' => 'May',
+    'Junio' => 'June',
+    'Julio' => 'July',
+    'Agosto' => 'August',
+    'Septiembre' => 'September',
+    'Octubre' => 'October',
+    'Noviembre' => 'November',
+    'Diciembre' => 'December'
+  );
+
+  $date_text = trim($str_date);
+
+  // Reemplazar el nombre del mes en español con su equivalente en inglés
+  foreach ($months as $spanish => $english) {
+    if (strpos($date_text, $spanish) !== false) {
+        $date_text = str_replace($spanish, $english, $date_text);
+        break;
+    }
+  }
+
+  // Convertir la cadena en un objeto DateTime
+  $fecha_datetime = new DateTime($date_text);
+
+  // Usar la función date() para darle formato a la fecha
+  /*
+  $fecha_formateada = $fecha_datetime->format('Y-m-d'); // Puedes cambiar el formato a tu necesidad
+  */
+
+  return $fecha_datetime;
 }
 
 /*
