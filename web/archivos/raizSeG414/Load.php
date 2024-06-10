@@ -896,31 +896,35 @@ function loadLanguage($template_name, $lang = '', $fatal = true)
 }
 function getBoardParents($id_parent){}
 
-function &censorText(&$text) {
-  global $modSettings, $options, $settings, $txt;
-  static $censor_vulgar = null, $censor_proper;
+// Replace all vulgar words with respective proper words. (substring or whole words..)
+function &censorText(&$text, $force = false) {
+	global $modSettings, $options, $settings, $txt;
+	static $censor_vulgar = null, $censor_proper = null;
 
-  if ((!empty($options['show_no_censored']) && $settings['allow_no_censored']) || empty($modSettings['censor_vulgar'])) {
-    return $text;
+	if ((!empty($options['show_no_censored']) && $settings['allow_no_censored'] && !$force) || empty($modSettings['censor_vulgar'])) {
+		return $text;
   }
 
-  if ($censor_vulgar == null) {
-    $censor_vulgar = explode("\n", $modSettings['censor_vulgar']);
-    $censor_proper = explode("\n", $modSettings['censor_proper']);
+	// If they haven't yet been loaded, load them.
+	if ($censor_vulgar == null) {
+		$censor_vulgar = explode("\n", $modSettings['censor_vulgar']);
+		$censor_proper = explode("\n", $modSettings['censor_proper']);
 
-    for ($i = 0, $n = count($censor_vulgar); $i < $n; $i++) {
-      $censor_vulgar[$i] = strtr(preg_quote($censor_vulgar[$i], '/'), array('\\\\\\*' => '[*]', '\\*' => '[^\s]*?', '&' => '&amp;'));
-      $censor_vulgar[$i] = (empty($modSettings['censorWholeWord']) ? '/' . $censor_vulgar[$i] . '/' : '/(?<=^|\W)' . $censor_vulgar[$i] . '(?=$|\W)/') . (empty($modSettings['censorIgnoreCase']) ? '' : 'i') . ((empty($modSettings['global_character_set']) ? $txt['lang_character_set'] : $modSettings['global_character_set']) === 'UTF-8' ? 'u' : '');
+		// Quote them for use in regular expressions.
+		for ($i = 0, $n = count($censor_vulgar); $i < $n; $i++) {
+			$censor_vulgar[$i] = strtr(preg_quote($censor_vulgar[$i], '/'), array('\\\\\\*' => '[*]', '\\*' => '[^\s]*?', '&' => '&amp;'));
+			$censor_vulgar[$i] = (empty($modSettings['censorWholeWord']) ? '/' . $censor_vulgar[$i] . '/' : '/(?<=^|\W)' . $censor_vulgar[$i] . '(?=$|\W)/') . (empty($modSettings['censorIgnoreCase']) ? '' : 'i') . ((empty($modSettings['global_character_set']) ? $txt['lang_character_set'] : $modSettings['global_character_set']) === 'UTF-8' ? 'u' : '');
 
-      if (strpos($censor_vulgar[$i], '\'') !== false) {
-        $censor_proper[count($censor_vulgar)] = $censor_proper[$i];
-        $censor_vulgar[count($censor_vulgar)] = strtr($censor_vulgar[$i], array('\'' => '&#039;'));
-      }
-    }
-  }
+			if (strpos($censor_vulgar[$i], '\'') !== false) {
+				$censor_proper[count($censor_vulgar)] = $censor_proper[$i];
+				$censor_vulgar[count($censor_vulgar)] = strtr($censor_vulgar[$i], array('\'' => '&#039;'));
+			}
+		}
+	}
 
-  $text = preg_replace($censor_vulgar, $censor_proper, $text);
-  return $text;
+	// Censoring isn't so very complicated :P.
+	$text = preg_replace($censor_vulgar, $censor_proper, $text);
+	return $text;
 }
 
 function loadJumpTo(){}

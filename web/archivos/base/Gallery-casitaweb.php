@@ -1,12 +1,12 @@
 <?php
 function template_main(){global $tranfer1, $db_prefix, $scripturl, $txt, $context, $ID_MEMBER, $modSettings, $boarddir;
-	$g_add = allowedTo('smfgallery_add');
-	$g_manage = allowedTo('smfgallery_manage');
-	$g_edit_own = allowedTo('smfgallery_edit');
-	$g_delete_own = allowedTo('smfgallery_delete');
-	$maxrowlevel=4;	
-	$rowlevel = 0;
-	$userid = $context['gallery_userid'];
+  $g_add = allowedTo('smfgallery_add');
+  $g_manage = allowedTo('smfgallery_manage');
+  $g_edit_own = allowedTo('smfgallery_edit');
+  $g_delete_own = allowedTo('smfgallery_delete');
+  $maxrowlevel=4;	
+  $rowlevel = 0;
+  $userid = $context['gallery_userid'];
     
 echo'<style type="text/css">.photo_small{width:90px;margin:6px;padding:2px;text-align:left;background:#FFFFFF none repeat scroll 0%;border:1px solid #000000;}</style>';
 
@@ -15,7 +15,7 @@ ditaruser();
 echo'<div style="float:left;width: 776px;" >
 <div class="box_780"><div class="box_title" style="width: 774px;"><div class="box_txt box_780-34"><center>Mis im&aacute;genes</center></div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 16px; height: 16px;" border="0" /></div></div><div class="windowbg" style="width:766px;padding:4px;">';}else {echo'<div style="float:left;width: 922px;" ><div class="box_buscador"><div class="box_title" style="width: 920px;"><div class="box_txt box_buscadort"><center>Im&aacute;genes de '.$context['gallery_usergallery_name'].'</center></div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0" /></div></div><div style="width:912px;padding:4px;" class="windowbg">';}
 echo'<table border="0" width="100%">';
-	
+  
 $RegistrosAMostrar=9;
 
 if($_GET['pag-seg-154s87135'] < 1){$dev=1;}else{$dev=$_GET['pag-seg-154s87135'];}
@@ -34,15 +34,15 @@ LIMIT $RegistrosAEmpezar, $RegistrosAMostrar
 while($row=mysqli_fetch_assoc($dbresult)){
 if($rowlevel < ($maxrowlevel+1))$rowlevel++;
 else{echo '<tr>';$rowlevel = 0;}
-			$row['title']=str_replace('"','&#34;',$row['title']);
-			$row['title']=str_replace('\'','&#39;',$row['title']);
-			$row['title']=str_replace('<','&#60;',$row['title']);
-			$row['title']=str_replace('>','&#62;',$row['title']);
+      $row['title']=str_replace('"','&#34;',$row['title']);
+      $row['title']=str_replace('\'','&#39;',$row['title']);
+      $row['title']=str_replace('<','&#60;',$row['title']);
+      $row['title']=str_replace('>','&#62;',$row['title']);
 $context['dato']=mysqli_num_rows(db_query("
 SELECT c.ID_PICTURE
 FROM ({$db_prefix}gallery_comment AS c)
 WHERE c.ID_PICTURE='{$row['ID_PICTURE']}'", __FILE__, __LINE__));
-			
+      
 echo'<td width="70px"><div style="width:90px;"><div class="photo_small"><a href="/imagenes/ver/'.$row['ID_PICTURE'].'"><img src="'.$row['filename'].'" title="'.$row['title'].'" onload="if(this.height > 68) {this.height=68}" style="width:90px;" border="0"/></a></div><div class="smalltext"><center>Comentarios: (<a href="/imagenes/ver/'.$row['ID_PICTURE'].'#comentarios">'.$context['dato'].'</a>)</center></div></div>';
 echo'</td>';
 
@@ -79,7 +79,8 @@ echo'</div></div>';}
 
 
 
-function template_view_picture(){global $tranfer1, $context, $db_prefix, $user_settings, $options, $ID_MEMBER, $modSettings,  $ie;
+function template_view_picture() {
+  global $tranfer1, $context, $db_prefix, $user_settings, $options, $ID_MEMBER, $modSettings, $ie, $boardurl;
 
 $context['contando']=mysqli_num_rows(db_query("
 SELECT den.id_post
@@ -119,9 +120,9 @@ echo'<br />
 $imgc = getimagesize($context['gallery_pic']['filename']);
 // var_dump($imgc);
 if(is_array($imgc) && $imgc[0] > '748') {
-	$w = 'width="748px" ';
+  $w = 'width="748px" ';
 } else {
-	$w = '';
+  $w = '';
 }
 
 echo '<center><img alt="" '.$w.'title="'.$context['gallery_pic']['title'].'"  src="'.$context['gallery_pic']['filename'].'" /></center>';
@@ -166,19 +167,24 @@ if($context['user']['is_logged']){echo'</span></center>';}
 
 echo'<div class="hrs"></div>';
 
-echo'<b class="size13">Otras imagenes:</b><br />';
+echo'<b class="size13">Otras im&aacute;genes:</b><br />';
 $r = db_query("SELECT COUNT(*) FROM {$db_prefix}gallery_pic", __FILE__, __LINE__);
 $d = mysqli_fetch_row($r); 
-$rand=mt_rand(0,$d[0] - 1);
+$rand = mt_rand(0, $d[0] - 1);
 
-$al_azar=db_query("
+$al_azar = db_query("
 SELECT img.title,img.puntos,img.ID_PICTURE
 FROM ({$db_prefix}gallery_pic AS img)
 LIMIT $rand, 10", __FILE__, __LINE__);
-while ($row = mysqli_fetch_assoc($al_azar))
-{$tiitulo=censorText(nohtml2(nohtml($row['title'])));
-$idlo=$row['ID_PICTURE'];
-echo'<div class="postENTry"><a rel="dc:relation" href="/imagenes/ver/'.$idlo.'" title="'.$tiitulo.'" class="categoriaPost imagenesNOCAT" target="_self" >'.$tiitulo.'</a><div style="clear: left;"></div></div>';}
+while ($row = mysqli_fetch_assoc($al_azar)) {
+  $tiitulo = nohtml2(nohtml($row['title']));
+  $idlo = $row['ID_PICTURE'];
+  echo '
+    <div class="postENTry">
+      <a rel="dc:relation" href="' . $boardurl . '/imagenes/ver/'.$idlo.'" title="'.$tiitulo.'" class="categoriaPost imagenesNOCAT" target="_self" >'.$tiitulo.'</a>
+      <div style="clear: left;"></div>
+    </div>';
+}
 mysqli_free_result($al_azar);
 
 
@@ -240,16 +246,16 @@ if($context['sin_coment']){echo'<div class="icon_img" style="float: left; margin
 $dbresult = db_query("SELECT c.ID_PICTURE,  c.ID_COMMENT, c.date, c.comment, c.ID_MEMBER, m.memberName,m.realName FROM {$db_prefix}gallery_comment as c, {$db_prefix}members AS m WHERE   c.ID_PICTURE ='{$context['gallery_pic']['ID_PICTURE']}' AND c.ID_MEMBER = m.ID_MEMBER ORDER BY c.ID_COMMENT ASC", __FILE__, __LINE__);
 $context['pic_comment'] = array();
 while ($row = mysqli_fetch_assoc($dbresult)){
-		censorText($row['comment']);
-		$context['pic_comment'][] = array(
-			'id' => $row['ID_COMMENT'],
-			'nomuser' => $row['realName'],
-			'id-user' => $row['ID_MEMBER'],
-			'comentario' => parse_bbc($row['comment']),
+    censorText($row['comment']);
+    $context['pic_comment'][] = array(
+      'id' => $row['ID_COMMENT'],
+      'nomuser' => $row['realName'],
+      'id-user' => $row['ID_MEMBER'],
+      'comentario' => parse_bbc($row['comment']),
             'comentario2' => $row['comment'],
-			'fecha' => $row['date'],
-			);
-		$context['id_img']=$row['ID_PICTURE'];}
+      'fecha' => $row['date'],
+      );
+    $context['id_img']=$row['ID_PICTURE'];}
 mysqli_free_result($dbresult);
 
 foreach ($context['pic_comment'] AS $coment){
@@ -279,83 +285,150 @@ echo'<div class="errorDelCom" style="display:hide;width: 774px;"></div>
 </div>
 <!-- fin comentarios -->';
 
-if($context['user']['id']){
-$ignorado=mysqli_num_rows(db_query("SELECT id_user FROM ({$db_prefix}pm_admitir) WHERE id_user='{$context['gallery_pic']['ID_MEMBER']}' AND quien='{$context['user']['id']}' LIMIT 1", __FILE__, __LINE__));
-if(!$ignorado){
-echo'<!-- comentar -->
-<div style="clear: left;"></div>
-<div style="margin-bottom:3px;" id="comentar" name="comentar"><b style="font-size: 14px;">Agregar un nuevo comentario</b></div>
+if ($context['user']['id']) {
+  $ignorado = mysqli_num_rows(db_query("SELECT id_user FROM ({$db_prefix}pm_admitir) WHERE id_user='{$context['gallery_pic']['ID_MEMBER']}' AND quien='{$context['user']['id']}' LIMIT 1", __FILE__, __LINE__));
+    if (!$ignorado) {
+      echo '
+        <!-- comentar -->
+        <div style="clear: left;"></div>
+        <div style="margin-bottom: 3px;" id="comentar" name="comentar">
+          <b style="font-size: 14px;">Agregar un nuevo comentario</b>
+        </div>
+        <div style="width: 774px;">
+          <form name="nuevocoment">
+            <center><div class="msg_add_comment"></div></center>
+            <div style="clear: left; margin-bottom: 2px"></div>';
 
-<div style="width:774px;"><form name="nuevocoment">
-<center><div class="msg_add_comment"></div></center>
-<div style="clear: left;margin-bottom:2px"></div>';
-sas();
-echo'<br/><input class="login" type="button" id="button_add_comment" value="Enviar Comentario" onclick="add_comment_img(\''.$context['gallery_pic_id'].'\', \''.($context['sin_coment']+1).'\'); return false;" tabindex="2" /><div style="display:none;text-align:right;" id="gif_cargando_add_comment"><img alt="" src="'.$tranfer1.'/icons/cargando.gif" alt="" /></div></p>
-<div style="clear: left;"></div>
+      sas();
 
-</form></div>
-<div style="clear: left;"></div>
-<!-- fin comentar -->';}}else{
-echo'<div style="clear: left;"></div><div class="noesta-am" style="width:774px;margin-top: 5px;">Para poder comentar necesitas estar <a href="/registrarse/" style="color:#FFB600;" title="Registrarse">Registrado</a>. Si ya tenes usuario <a href="javascript:irAconectarse();" style="color:#FFB600;" title="Conectarse">Conectate!</a></div>';}
+      echo '
+              <br />
+              <input class="login" type="button" id="button_add_comment" value="Enviar comentario" onclick="add_comment_img(\'' . $context['gallery_pic_id'] . '\', \'' . ($context['sin_coment'] + 1) . '\'); return false;" tabindex="2" />
+              <div style="display: none; text-align: right;" id="gif_cargando_add_comment">
+                <img alt="" src="'.$tranfer1.'/icons/cargando.gif" alt="" />
+              </div>
+            </p>
+            <div style="clear: left;"></div>
+          </form>
+        </div>
+        <div style="clear: left;"></div>
+        <!-- fin comentar -->';
+    }
+  } else {
+    echo '
+      <div style="clear: left;"></div>
+      <div class="noesta-am" style="width: 774px; margin-top: 5px;">
+        Para poder comentar necesitas estar <a href="/registrarse/" style="color:#FFB600;" title="Registrarse">Registrado</a>. Si ya tienes usuario <a href="javascript:irAconectarse();" style="color:#FFB600;" title="Conectarse">Con&eacute;ctate!</a>
+      </div>';
+  }
 
-echo'</div></div>';
+  echo '
+        </div>
+      </div>
+    </div>';
+}
 
-echo'</div>';}
+function sas() {
+  global $tranfer1, $context, $settings, $options, $txt, $modSettings;
 
+  echo '
+    <textarea id="editorCW" style="resize: none; height: 70px; width: 768px;" name="cuerpo_comment" tabindex="1"></textarea>
+    <p align="right" style="margin: 0px; padding: 0px;">';
 
-function sas(){
-global $tranfer1, $context, $settings, $options, $txt, $modSettings;
-echo'<textarea id="editorCW" style="resize:none;height:70px; width: 768px;" name="cuerpo_comment" tabindex="1"></textarea><p align="right" style="margin:0px;padding:0px;">';
-if(!empty($context['smileys']['postform']))
-{foreach ($context['smileys']['postform'] as $smiley_row){
-foreach ($smiley_row['smileys'] as $smiley)
-echo'<span style="cursor:pointer;" onclick="replaceText(\' ', $smiley['code'], '\', document.forms.nuevocoment.editorCW); return false;"><img class="png" src="'.$tranfer1.'/emoticones/'.$smiley['filename'].'" align="bottom" alt="', $smiley['description'], '" title="', $smiley['description'], '" /></span> ';}
-if (!empty($context['smileys']['popup']))
-echo'<a href="javascript:moticonup()">[', $txt['more_smileys'], ']</a>';}}
+  if (!empty($context['smileys']['postform'])) {
+    foreach ($context['smileys']['postform'] as $smiley_row) {
+      foreach ($smiley_row['smileys'] as $smiley) {
+        echo '<span style="cursor:pointer;" onclick="replaceText(\' ', $smiley['code'], '\', document.forms.nuevocoment.editorCW); return false;"><img class="png" src="'.$tranfer1.'/emoticones/'.$smiley['filename'].'" align="bottom" alt="', $smiley['description'], '" title="', $smiley['description'], '" /></span> ';
+      }
+    }
 
+    if (!empty($context['smileys']['popup'])) {
+      echo '<a href="javascript:moticonup()">[', $txt['more_smileys'], ']</a>';
+    }
+  }
+}
 
-function template_add_picture(){
-global $tranfer1, $scripturl, $modSettings, $db_prefix, $txt, $context, $settings;
-$cat='1';
-echo'<script language="JavaScript" type="text/javascript">
-function requerido(title, filename){	
-if(title == \'\'){alert(\'No has escrito el titulo de la imagen.\');return false;}
-if(filename == \'\'){alert(\'No has agregado ning\xfan enlace de imagen.\');return false;}}</script>';
+function template_add_picture() {
+  global $tranfer1, $scripturl, $modSettings, $db_prefix, $txt, $context, $settings;
 
-ditaruser();
-echo'<div style="float:left;width: 776px;">
-<div class="box_780"><div class="box_title" style="width: 774px;"><div class="box_txt box_780-34"><center>Agregar im&aacute;gen</center></div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" border="0" style="width: 766px; padding: 4px;"><form method="POST" enctype="multipart/form-data" name="forma" id="forma" action="/web/cw-imgAgregar.php">
-<center><b class="size11">'.$txt['gallery_form_title'].'</b><br /><input onfocus="foco(this);" onblur="no_foco(this);"  tabindex="1" size="60" maxlength="54" type="text" onfocus="foco(this);" onblur="no_foco(this);" name="title" id="title" value=""/><br /><br />
-<b class="size11">URL de la im&aacute;gen:</b>&nbsp;<br /><input onfocus="foco(this);" onblur="no_foco(this);" type="text" onfocus="foco(this);" onblur="no_foco(this);" tabindex="2" size="60" name="filename" value="" />';
-  echo '<div class="hrs"></div><div class="noesta">* Si la im&aacute;gen contiene pornografia, es morboso. Se borrar&aacute;.</div><br /><input type="submit" class="button" style="font-size: 15px;" onclick="return requerido(this.form.title.value, this.form.filename.value);" tabindex="3" value="Agregar im&aacute;gen" name="submit" /></center></form></div></div>
-</div>';}
+  $cat='1';
+  echo '
+    <script language="JavaScript" type="text/javascript">
+      function requerido(title, filename){	
+        if(title == \'\'){alert(\'No has escrito el titulo de la imagen.\');return false;}
+        if(filename == \'\'){alert(\'No has agregado ning\xfan enlace de imagen.\');return false;}}
+    </script>';
 
+  ditaruser();
 
-function template_edit_picture(){
-global $tranfer1, $scripturl, $modSettings, $db_prefix, $txt, $context, $settings, $boardurl;
+  echo'<div style="float:left;width: 776px;">
+    <div class="box_780"><div class="box_title" style="width: 774px;"><div class="box_txt box_780-34"><center>Agregar im&aacute;gen</center></div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" border="0" style="width: 766px; padding: 4px;"><form method="POST" enctype="multipart/form-data" name="forma" id="forma" action="/web/cw-imgAgregar.php">
+    <center><b class="size11">'.$txt['gallery_form_title'].'</b><br /><input onfocus="foco(this);" onblur="no_foco(this);"  tabindex="1" size="60" maxlength="54" type="text" onfocus="foco(this);" onblur="no_foco(this);" name="title" id="title" value=""/><br /><br />
+    <b class="size11">URL de la im&aacute;gen:</b>&nbsp;<br /><input onfocus="foco(this);" onblur="no_foco(this);" type="text" onfocus="foco(this);" onblur="no_foco(this);" tabindex="2" size="60" name="filename" value="" />';
 
-$id=(int)$_GET['id'];
-$limit3=db_query("
-SELECT ID_MEMBER
-FROM ({$db_prefix}gallery_pic)
-WHERE ID_PICTURE='{$id}'
-LIMIT 1",__FILE__, __LINE__);
-while($lim2=mysqli_fetch_assoc($limit3)){$ID_MEMBER23234=$lim2['ID_MEMBER'];}
+  echo '
+    <div class="hrs"></div><div class="noesta">* Si la im&aacute;gen contiene pornografia, es morboso. Se borrar&aacute;.</div><br /><input type="submit" class="button" style="font-size: 15px;" onclick="return requerido(this.form.title.value, this.form.filename.value);" tabindex="3" value="Agregar im&aacute;gen" name="submit" /></center></form></div></div>
+    </div>';
+}
 
-if($context['allow_admin'] || $ID_MEMBER23234==$context['user']['id']){
-echo'<script language="JavaScript" type="text/javascript">
-function requerido(title, filename){
-if(title == \'\'){alert(\'No has escrito el titulo de la imagen.\');return false;}
-if(filename == \'\'){alert(\'No has agregado ning\xfan enlace de imagen.\');return false;}}</script>';
-
-if($ID_MEMBER23234!==$context['user']['id']){$_GET['u']=(int)$ID_MEMBER23234;}
-ditaruser();
-echo'<div style="float:left;width: 776px;">
-
-<div class="box_780"><div class="box_title" style="width: 774px;"><div class="box_txt box_780-34"><center>Editar im&aacute;gen</center></div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width:16px;height: 16px;" border="0" /></div></div><div class="windowbg" border="0" style="width: 766px; padding: 4px;">
-
-<form method="POST" enctype="multipart/form-data" name="forma2" id="forma2" action="/web/cw-imgEditar.php"><center><b class="size11">'.$txt['gallery_form_title'].'</b><br /><input onfocus="foco(this);" onblur="no_foco(this);" tabindex="1" size="60" maxlength="54" type="text" onfocus="foco(this);" onblur="no_foco(this);" name="title" id="title" value="'.censorText(nohtml2(nohtml($context['gallery_pic']['title']))).'"/><br /><br />
-<b class="size11">URL de la im&aacute;gen:</b>&nbsp;<br /><input onfocus="foco(this);" onblur="no_foco(this);" type="text" onfocus="foco(this);" onblur="no_foco(this);" tabindex="2" size="60" name="filename" value="'.censorText(nohtml2(nohtml($context['gallery_pic']['filename']))).'" />';
+function template_edit_picture() {
+  global $tranfer1, $scripturl, $modSettings, $db_prefix, $txt, $context, $settings, $boardurl;
   
-echo '<div class="hrs"></div><div class="noesta">* Si la im&aacute;gen contiene pornografia, es morboso. Se borrar&aacute;.</div><br /><input type="submit" tabindex="3" class="button" style="font-size: 15px;" onclick="return requerido(this.form.title.value, this.form.filename.value);" value="Editar im&aacute;gen" name="submit" /></center><input type="hidden" name="id" value="'.$id.'" /></form></div></div></div>';
-}else{fatal_error('Usted no tiene permisos para editar esta im&aacute;gen.-',false,'',4);}} ?>
+  $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+  $limit3 = db_query("
+    SELECT ID_MEMBER
+    FROM ({$db_prefix}gallery_pic)
+    WHERE ID_PICTURE='{$id}'
+    LIMIT 1",__FILE__, __LINE__);
+
+  while ($lim2 = mysqli_fetch_assoc($limit3)) {
+    $ID_MEMBER23234 = $lim2['ID_MEMBER'];
+  }
+
+  if ($context['allow_admin'] || $ID_MEMBER23234 == $context['user']['id']) {
+    echo '
+      <script language="JavaScript" type="text/javascript">
+        function requerido(title, filename){
+        if(title == \'\'){alert(\'No has escrito el titulo de la imagen.\');return false;}
+        if(filename == \'\'){alert(\'No has agregado ning\xfan enlace de imagen.\');return false;}}
+      </script>';
+
+    if ($ID_MEMBER23234 !== $context['user']['id']) {
+      $_GET['u'] = (int) $ID_MEMBER23234;
+    }
+
+    ditaruser();
+
+    echo '
+      <div style="float:left;width: 776px;">
+        <div class="box_780">
+          <div class="box_title" style="width: 774px;">
+            <div class="box_txt box_780-34"><center>Editar im&aacute;gen</center></div>
+            <div class="box_rss">
+              <img alt="" src="'.$tranfer1.'/blank.gif" style="width:16px;height: 16px;" border="0" />
+            </div>
+          </div>
+          <div class="windowbg" border="0" style="width: 766px; padding: 4px;">
+            <form method="POST" enctype="multipart/form-data" name="forma2" id="forma2" action="' . $boardurl . '/web/cw-imgEditar.php">
+              <center>
+                <b class="size11">'.$txt['gallery_form_title'].'</b><br />
+                <input onfocus="foco(this);" onblur="no_foco(this);" tabindex="1" size="60" maxlength="54" type="text" onfocus="foco(this);" onblur="no_foco(this);" name="title" id="title" value="'.censorText(nohtml2(nohtml($context['gallery_pic']['title']))).'" />
+                <br /><br />
+                <b class="size11">URL de la imagen:</b>&nbsp;<br />
+                <input onfocus="foco(this);" onblur="no_foco(this);" type="text" onfocus="foco(this);" onblur="no_foco(this);" tabindex="2" size="60" name="filename" value="'.censorText(nohtml2(nohtml($context['gallery_pic']['filename']))).'" />';
+    echo '
+                <div class="hrs"></div>
+                <div class="noesta">* Si la imagen contiene pornograf&iacute;a, es morboso. Se borrar&aacute;.</div><br />
+                <input type="submit" tabindex="3" class="button" style="font-size: 15px;" onclick="return requerido(this.form.title.value, this.form.filename.value);" value="Editar imagen" name="submit" />
+              </center>
+              <input type="hidden" name="id" value="' . $id . '" />
+            </form>
+          </div>
+        </div>
+      </div>';
+  } else {
+    fatal_error('Usted no tiene permisos para editar esta imagen.-', false, '', 4);
+  }
+}
+
+?>

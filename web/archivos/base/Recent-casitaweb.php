@@ -11,14 +11,14 @@ function template_main() {
 foreach ($context['sticky'] as $sticky) {
   if (empty($_GET['pag']) || $_GET['pag'] == 1) {
 ?>
-<div class="postENTrysticky" style="background-color: <?php if(empty($sticky['color']) || $sticky['color']=="0" || $sticky['color']=="#000000"){?>#FFFFCC <?php }else{ echo $sticky['color']; } ?>;"><a href="/post/<?php echo $sticky['id']; ?>/<?php echo $sticky['description']; ?>/<?php echo urls($sticky['titulo']); ?>.html" target="_self" title="<?php echo $sticky['titulo']; ?>" class="categoriaPost <?php echo $sticky['description']; ?>"><?php echo achicars($sticky['titulo']); ?></a></div>
+<div class="postENTrysticky" style="background-color: <?php if(empty($sticky['color']) || $sticky['color']=="0" || $sticky['color']=="#000000"){?>#FFFFCC <?php }else{ echo $sticky['color']; } ?>;"><a href="<?php echo $boardurl; ?>/post/<?php echo $sticky['id']; ?>/<?php echo $sticky['description']; ?>/<?php echo urls($sticky['titulo']); ?>.html" target="_self" title="<?php echo $sticky['titulo']; ?>" class="categoriaPost <?php echo $sticky['description']; ?>"><?php echo achicars($sticky['titulo']); ?></a></div>
 <?php } }
 
 if ($context['PagAct']>$context['PagUlt']){echo'<div class="noesta"><br /><br /><br /><br />Est&aacute; p&aacute;gina no existe.<br /><br /><br /><br /><br /></div>';}
 
 else{
 foreach ($context['posts'] as $posts){ ?> 
-<div class="postENTry"><a href="/post/<?php echo $posts['id']; ?>/<?php echo $posts['description']; ?>/<?php echo urls($posts['titulo']); ?>.html" target="_self" title="<?php echo $posts['titulo']; ?>" class="categoriaPost <?php echo $posts['description']; ?>"><?php echo achicars($posts['titulo']); ?></a></div> <?php } } ?> <div class="clearBoth"></div></div> 
+<div class="postENTry"><a href="<?php echo $boardurl; ?>/post/<?php echo $posts['id']; ?>/<?php echo $posts['description']; ?>/<?php echo urls($posts['titulo']); ?>.html" target="_self" title="<?php echo $posts['titulo']; ?>" class="categoriaPost <?php echo $posts['description']; ?>"><?php echo achicars($posts['titulo']); ?></a></div> <?php } } ?> <div class="clearBoth"></div></div> 
 
 <?php if($context['PagAct']>$context['PagUlt']){}else{ ?> <?php if($context['PagAct']>1 || $context['PagAct']<$context['PagUlt']){ ?>
  <div class="windowbgpag" style="width:378px;"> 
@@ -238,5 +238,5 @@ function mensajes() {
 
   foreach ($context['comentarios25'] as $coment25) {
 ?>
-<font class="size11" ><b><a title="<?php echo $coment25['realName']; ?>" href="<?php echo $boardurl; ?>/perfil/<?php echo $coment25['realName']; ?>"><?php echo $coment25['realName']; ?></a></b> - <a title="<?php echo $coment25['titulo'];?>"  href="/post/<?php echo $coment25['ID_TOPIC']; ?>/<?php echo $coment25['description'];?>/<?php echo urls($coment25['titulo']);?>.html#cmt_<?php echo $coment25['id_coment'];?>"><?php echo achicars($coment25['titulo']);?></a></font><br style="margin:0px;padding:0px;" />
+<font class="size11" ><b><a title="<?php echo $coment25['realName']; ?>" href="<?php echo $boardurl; ?>/perfil/<?php echo $coment25['realName']; ?>"><?php echo $coment25['realName']; ?></a></b> - <a title="<?php echo $coment25['titulo'];?>"  href="<?php echo $boardurl; ?>/post/<?php echo $coment25['ID_TOPIC']; ?>/<?php echo $coment25['description'];?>/<?php echo urls($coment25['titulo']);?>.html#cmt_<?php echo $coment25['id_coment'];?>"><?php echo achicars($coment25['titulo']);?></a></font><br style="margin:0px;padding:0px;" />
 <?php }} ?>

@@ -391,9 +391,16 @@ function comma_format($number, $override_decimal_count = false)
     $decimal_separator = $matches[2];
     $decimal_count = strlen($matches[3]);}
 return number_format($number, is_float($number) ? ($override_decimal_count === false ? $decimal_count : $override_decimal_count) : 0, $decimal_separator, $thousands_separator);}
-function timeformat($logTime, $show_today = true)
-{global $user_info, $txt, $db_prefix, $modSettings, $func;
-$time = $logTime + ($user_info['time_offset'] + $modSettings['time_offset']) * 3600;
+
+function timeformat($logTime, $show_today = true) {
+  global $user_info, $txt, $db_prefix, $modSettings, $func;
+
+  // TO-DO: Estandarizar en otros lugares
+  $logTime = getEnglishDateFormat($logTime);
+  $logTime = $logTime->getTimestamp();
+
+  $time = $logTime + ($user_info['time_offset'] + $modSettings['time_offset']) * 3600;
+
   if ($time < 0)
     $time = 0;
 

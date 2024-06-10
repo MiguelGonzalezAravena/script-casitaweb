@@ -11,22 +11,22 @@ function template_init() {
 }
 
 function template_main_above() {
-  global $context, $boardurl, $txt, $modSettings, $user_info, $db_prefix, $tranfer1, $user_settings, $ie, $urlSep, $internetNO;
+  global $context, $boardurl, $txt, $modSettings, $user_info, $db_prefix, $tranfer1, $user_settings, $ie, $urlSep, $internetNO, $mbname;
 
   echo '
     <link rel="stylesheet" type="text/css" href="' . $tranfer1 . '/estilo.php" />
     <script type="text/javascript">var urlWEb = "' . $boardurl . '";</script>
     <script type="text/javascript" src="' . $tranfer1 . '/js/index.php"></script>';
 
-  if (isset($context['id-post'])) {
+  if (isset($context['id-post']) && intval($context['id-post'])) {
     $context['page_title'] = $context['titulo'];
 
     echo '
       <meta property="dc:date" content="' . timeformat($context['fecha']) . '"/>
       <meta property="dc:creator" content="' . $context['posterName'] . '" />
       <link rel="canonical" href="' . $boardurl . '/post/' . $context['id-post'] . '/' . $context['link_cat'] . '/' . urls($context['titulo']) . '.html" />
-      <link rel="prev" href="http://casitaweb.net/noestilo/post/' . ($context['id-post'] - 1) . '" />
-      <link rel="next" href="http://casitaweb.net/noestilo/post/' . ($context['id-post'] + 1) . '" />
+      <link rel="prev" href="' . $boardurl . '/noestilo/post/' . ($context['id-post'] - 1) . '" />
+      <link rel="next" href="' . $boardurl . '/noestilo/post/' . ($context['id-post'] + 1) . '" />
       <link rel="alternate" type="application/atom+xml" title="Comentarios del post" href="' . $boardurl . '/rss/post-comment/' . $context['id-post'] . '" />
       <link rel="alternate" type="application/atom+xml" title="Post del usuario" href="' . $boardurl . '/rss/post-user/' . $context['posterName'] . '" />
       <meta name="description" content="' . getMetaDescription($context['CsTNidO']) . '" />';
@@ -36,7 +36,7 @@ function template_main_above() {
     }
 
     echo '
-      <meta name="description" content="- Un sitio de distraccion, de descargas (Musica, Juegos, Programas, Peliculas,etc,etc).. Lo interesante que aca VOS sos el protagonita el que aporta sos vos, Todo eso y mucho más..." />
+      <meta name="description" content="' . $mbname . ' - Un sitio de distraccion, de descargas (Musica, Juegos, Programas, Peliculas,etc,etc).. Lo interesante que aca VOS sos el protagonita el que aporta sos vos, Todo eso y mucho más..." />
       <link rel="alternate" type="application/atom+xml" title="&Uacute;ltimos posts" href="' . $boardurl . '/rss/ultimos-post" />
       <link rel="alternate" type="application/atom+xml" title="&Uacute;ltimos comentarios" href="' . $boardurl . '/rss/ultimos-comment" />';
   }
@@ -53,7 +53,7 @@ function template_main_above() {
 <meta name="generator" content="<?php echo $titlee; ?> / Para descargar / bajar / instalar gratis / Gratuito / rigo / casitaweb / 2.0 / linksaring / rapidshare / descargas / directas / megaupload / mediafire / software / freeware / serial / gratis / programas / musica / juegos / peliculas" />
 <link rel="search" type="application/opensearchdescription+xml" title="CasitaWeb!" href="<?php echo $tranfer1;?>/buscador-cw.xml" />
 <link rel="up" href="#top" title="Volver al principio de esta pagina" /> <?php
-echo'<style rel="stylesheet" type="text/css">#logob{width:360px;height:95px;background: url(\'' . $boardurl . '/logos/logo.gif\'); background-repeat:no-repeat;float:left;}</style>';  ?></head>
+echo '<style rel="stylesheet" type="text/css">#logob{width:360px;height:95px;background: url(\'' . $boardurl . '/logos/logo.gif\'); background-repeat:no-repeat;float:left;}</style>';  ?></head>
 <body id="top">
 
 <div id="cargando_boxy" style="display:none;" align="center"><div id="cargando_ajax">Cargando...</div></div>

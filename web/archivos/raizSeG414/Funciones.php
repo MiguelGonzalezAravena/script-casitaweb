@@ -1,141 +1,244 @@
 <?php
-function tiempo1($fecha){$mesesano2 = array("1","2","3","4","5","6","7","8","9","10","11","12") ;
-$diames2 = date('j',$fecha); $mesano2 = date('n',$fecha) - 1 ; $ano2 = date('Y',$fecha);
-$seg2=date('s',$fecha); $hora2=date('H',$fecha); $min2=date('i',$fecha);
-echo $diames2.'.'.$mesesano2[$mesano2].'.'.$ano2.' a las '.$hora2.':'.$min2.':'.$seg2;}
 
-function tiempo2($fecha){$mesesano2 = array("1","2","3","4","5","6","7","8","9","10","11","12") ;
-$diames2 = date('j',$fecha); $mesano2 = date('n',$fecha) - 1 ; $ano2 = date('Y',$fecha);
-$seg2=date('s',$fecha); $hora2=date('H',$fecha); $min2=date('i',$fecha);
-echo $diames2.'-'.$mesesano2[$mesano2].'-'.$ano2.' '.$hora2.':'.$min2.':'.$seg2.'';}
+function tiempo1($fecha) {
+  // $mesesano2 = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
+  $mesesano2 = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+  $diames2 = date('j', $fecha);
+  $mesano2 = date('n', $fecha) - 1;
+  $ano2 = date('Y', $fecha);
+  $seg2 = date('s', $fecha);
+  $hora2 = date('H', $fecha);
+  $min2 = date('i', $fecha);
 
-function PostAccionado($title='',$mje='',$url='',$btn=''){
-global $tranfer1,$internetNO,$mbname;    
-unset($_POST);
-unset($_GET);
+  echo $diames2 . '.' . $mesesano2[$mesano2] . '.' . $ano2 . ' a las ' . $hora2 . ':' . $min2 . ':' . $seg2;
+}
 
- if(empty($title)){$title='En mantenimiento';}  
- if(empty($mje)){$mje=$mbname.' se encuentra en mantenimiento, perdon por las molestias. Intente en segundos.';}  
- if(empty($btn)){$btnNUM='0';}else{$btnNUM='1';}  
- 
-?>
-<style type="text/css">
-body{margin:0px;width: 100%;color:#fff;font-family:Arial;padding:8% 0 0 0;_padding:15% 0 0 0;#padding:15% 0 0 0;background-color:#D35F2C;} a{color:#DBC7B6;} a:hover{color:#FFF;} .dborder{ background-image: url(<?php echo $tranfer1; ?>/dobleborder_Y.gif); background-repeat: repeat-y; padding: 1px;height: 275px;} .dborderX{clear: both; background-image: url(<?php echo $tranfer1; ?>/dobleborder_X.gif); background-repeat: repeat-x; padding: 1px; height: 2px; } input.inut {background: url('<?php echo $tranfer1; ?>/input_mje.png');outline: none;color: #fff;cursor: pointer;clear: left;width: 77px;text-shadow: #BC5427 0px 2px 2px;height: 29px; margin: 0 0 0 0; padding: 0; border:none;} input.inut:active{background-position: 0 -29px!important;outline:0px;} </style>
-<?php $sastitle=''.$title.' - '.$mbname.'';
-echo'<title>'.$sastitle.'</title></head><body>
-<div style="width: 100%;" align="center"> <div style="width: 900px;">
+function tiempo2($fecha) {
+  // $mesesano2 = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
+  $mesesano2 = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+  $diames2 = date('j', $fecha);
+  $mesano2 = date('n', $fecha) - 1;
+  $ano2 = date('Y', $fecha);
+  $seg2 = date('s', $fecha);
+  $hora2 = date('H', $fecha);
+  $min2 = date('i', $fecha);
 
+  echo $diames2 . '-' . $mesesano2[$mesano2] . '-' . $ano2 . ' ' . $hora2 . ':' . $min2 . ':' . $seg2;
+}
 
-<div style="margin-bottom:10%;">
+function PostAccionado($title = '', $mje = '', $url = '', $btn = '') {
+  global $tranfer1, $internetNO, $mbname;
 
-<div style="float:left;width: 49%;text-align:right;">  
-<div style="padding: 100px 0 0 0;"><img src="'.$tranfer1.'/logo-sin-casita.gif" title="'.$sastitle.'" alt="" /></div>
-</div>
-  
-  
-<div style="float:left;width: 1%;"><div class="dborder">&#32;</div></div>
-    
-<div style="float:left;width: 49%;text-align:left;">
-<div style="padding: 5px 0 0 0;">
+  unset($_POST);
+  unset($_GET);
 
-<div style="padding: 0 0 95px 0;color:#FFC6AF;text-shadow: #BC5427 0px 2px 2px;"><strong>'.$title.'</strong></div>
-<div style="padding: 0 0 75px 0;">
-<span style="color:#DBC7B6;">'.$mje.'</span></div>';
-if($btnNUM){ echo'<input type="submit" class="inut" value="Principal" title="Principal" onclick="location.href=\'/\'" />&#32;&#32;<input type="submit" class="inut" value="'.$btn.'" title="'.$btn.'"  onclick="location.href=\''.$url.'\'"  />'; }
-echo'</div> 
-</div>
+  $title = empty($title) ? 'En mantenimiento' : $title;
+  $mje = empty($mje) ? $mbname . ' se encuentra en mantenimiento, perd&oacute;n por las molestias. Intente en segundos.' : $mje;
+  $btnNUM = empty($btn) ? 0 : 1;
+  $sastitle = $title . ' - ' . $mbname;
 
+  echo '
+    <html>
+      <head>
+        <style type="text/css">
+          body {
+            margin: 0px;
+            width: 100%;
+            color: #fff;
+            font-family: Arial;
+            padding: 8% 0 0 0;
+            _padding: 15% 0 0 0;
+            background-color: #D35F2C;
+          }
 
-<div style="clear: both;"></div>
-</div>
+          a {
+            color: #DBC7B6;
+          }
 
+          a:hover {
+            color: #FFF;
+          }
 
-<div style="font-size:10px;font-family:Arial;">
-<div class="dborderX">&#32;</div>
+          .dborder {
+            background-image: url(\'' . $tranfer1 . '/dobleborder_Y.gif\');
+            background-repeat: repeat-y;
+            padding: 1px;
+            height: 275px;
+          }
 
-<div style="float:left;width: 50%;text-align:left;">&copy; <strong>'.$mbname.' 2010</strong></div>
- 
-<div style="float:left;width: 50%;text-align:right;">'.fotttter().'</div>
+          .dborderX {
+            clear: both;
+            background-image: url(\'' . $tranfer1 . '/dobleborder_X.gif\');
+            background-repeat: repeat-x;
+            padding: 1px;
+            height: 2px;
+          }
 
+          input.inut {
+            background: url(\'' . $tranfer1 . '/input_mje.png\');
+            outline: none;
+            color: #fff;
+            cursor: pointer;
+            clear: left;
+            width: 77px;
+            text-shadow: #BC5427 0px 2px 2px;
+            height: 29px;
+            margin: 0 0 0 0;
+            padding: 0;
+            border: none;
+          }
 
-<div style="clear: both;"></div>
-</div>
-
-
-
-</div> </div>
-</body></html>';
+          input.inut:active {
+            background-position: 0 -29px!important;
+            outline: 0px;
+          }
+        </style>
+        <title>' . $sastitle . '</title>
+      </head>
+      <body>
+        <div style="width: 100%;" align="center">
+          <div style="width: 900px;">
+            <div style="margin-bottom: 10%;">
+              <div style="float: left; width: 49%; text-align: right;">  
+                <div style="padding: 100px 0 0 0;">
+                  <img src="' . $tranfer1 . '/logo-sin-casita.gif" title="' . $sastitle . '" alt="" />
+                </div>
+              </div>
+              <div style="float: left; width: 1%;">
+                <div class="dborder">&#32;</div>
+              </div>
+              <div style="float: left; width: 49%; text-align: left;">
+                <div style="padding: 5px 0 0 0;">
+                  <div style="padding: 0 0 95px 0;color:#FFC6AF;text-shadow: #BC5427 0px 2px 2px;"><strong>' . $title . '</strong></div>
+                  <div style="padding: 0 0 75px 0;"><span style="color: #DBC7B6;">' . $mje . '</span></div>
+                  ' . ($btnNUM ? '<input type="submit" class="inut" value="Principal" title="Principal" onclick="location.href=\'/\'" />&#32;&#32;<input type="submit" class="inut" value="' . $btn . '" title="' . $btn . '"  onclick="location.href=\'' . $url . '\'"  />' : '') . '
+                </div> 
+              </div>
+              <div style="clear: both;"></div>
+            </div>
+            <div style="font-size: 10px; font-family: Arial;">
+              <div class="dborderX">&#32;</div>
+              <div style="float: left; width: 50%; text-align: left;">&copy; <strong>' . $mbname . ' ' . date('Y') . '</strong></div>
+              <div style="float: left; width: 50%; text-align: right;">' . fotttter() . '</div>
+              <div style="clear: both;"></div>
+            </div>
+          </div>
+          </div>
+      </body>
+    </html>';
     die();
 }
 
-function fotttter(){
-$res='<a href="/protocolo/" title="Protocolo">Protocolo</a> | <a href="/enlazanos/" title="Enlazanos">Enlazanos</a> | <a href="/widget/" title="Widget">Widget</a> | <a href="/contactanos/" title="Contacto">Contacto</a> | <a href="/recomendar/" title="Recomendar CasitaWeb!">Recomendar CasitaWeb!</a> | <a href="/mapa-del-sitio/" title="Mapa del sitio">Mapa del sitio</a>';
+function fotttter() {
+  global $boardurl, $mbname;
 
-return $res;}
+  return '
+    <a href="' . $boardurl . '/protocolo/" title="Protocolo">Protocolo</a>
+    |
+    <a href="' . $boardurl . '/enlazanos/" title="Enl&aacute;zanos">Enl&aacute;zanos</a>
+    |
+    <a href="' . $boardurl . '/widget/" title="Widget">Widget</a>
+    |
+    <a href="' . $boardurl . '/contactanos/" title="Contacto">Contacto</a>
+    |
+    <a href="' . $boardurl . '/recomendar/" title="Recomendar ' . $mbname . '">Recomendar ' . $mbname . '</a>
+    |
+    <a href="' . $boardurl . '/mapa-del-sitio/" title="Mapa del sitio">Mapa del sitio</a>';
+}
 
-function notificacionQUE($que='', $url='', $extra='', $boton=''){global $tranfer1;
-if(empty($boton)){
-$ir='&nbsp;<a href="'.$url.'" target="_blank"><img style="display:inline-block;#display: inline-block;_display: inline;" src="'.$tranfer1.'/icons/application-resize.png" class="png" alt="" title=""/></a>';}else{$ir='';}
+function notificacionQUE($que = '', $url = '', $extra = '', $boton = '') {
+  global $tranfer1;
 
-if($que == '1'){$resultado='coment&oacute;&nbsp;un&nbsp;post&nbsp;tuyo'.$ir.'';}
-elseif($que == '2'){$resultado='coment&oacute;&nbsp;una&nbsp;imagen&nbsp;tuya'.$ir.'';}
-elseif($que == '3'){$resultado='coment&oacute;&nbsp;tu&nbsp;muro'.$ir.'';}
-elseif($que == '4'){$resultado='dej&oacute;&nbsp;<strong>'.$extra.'</strong>&nbsp;puntos&nbsp;en&nbsp;una&nbsp;imagen&nbsp;tuya'.$ir.'';}
-elseif($que == '5'){$resultado='dej&oacute;&nbsp;<strong>'.$extra.'</strong>&nbsp;puntos&nbsp;en&nbsp;un&nbsp;post&nbsp;tuyo'.$ir.'';}
-elseif($que == '6'){$resultado='agreg&oacute;&nbsp;a&nbsp;favoritos&nbsp;un&nbsp;post&nbsp;tuyo'.$ir.'';}
-elseif($que == '7'){$resultado='agreg&oacute;&nbsp;a&nbsp;favoritos&nbsp;una&nbsp;imagen&nbsp;tuya'.$ir.'';}
-elseif($que == '8'){$resultado='actualiz&oacute;&nbsp;una&nbsp;charla&nbsp;del&nbsp;muro'.$ir.'';}
-elseif($que == '9'){$resultado='coment&oacute; un post en la baticueva'.$ir.'';}
-elseif($que == '10'){$resultado='agreg&oacute; un post en la baticueva'.$ir.'';}
-elseif($que == '11'){$resultado='se unio a tu comunidad'.$ir.'';}
-elseif($que == '12'){$resultado='coment&oacute; un tema tuyo'.$ir.'';}
-else{$resultado='';}
+  if (empty($boton)) {
+    $ir = '&nbsp;<a href="' . $url . '" target="_blank"><img style="display: inline-block; #display: inline-block; _display: inline;" src="' . $tranfer1 . '/icons/application-resize.png" class="png" alt="" title="" /></a>';
+  } else {
+    $ir = '';
+  }
 
-return $resultado;} 
+  switch ($que) {
+    case 1:
+      return 'coment&oacute; un post tuyo' . $ir;
+    case 2:
+      return 'coment&oacute; una imagen tuya' . $ir;
+    case 3:
+      return 'coment&oacute; tu muro' . $ir;
+    case 4:
+      return 'dej&oacute; <strong>' . $extra . '</strong> puntos en una imagen tuya' . $ir;
+    case 5:
+      return 'dej&oacute; <strong>' . $extra . '</strong> puntos en un post tuyo' . $ir;
+    case 6:
+      return 'agreg&oacute; a favoritos un post tuyo' . $ir;
+    case 7:
+      return 'agreg&oacute; a favoritos una imagen tuya' . $ir;
+    case 8:
+      return 'actualiz&oacute; una charla del muro' . $ir;
+    case 9:
+      return 'coment&oacute; un post en la baticueva' . $ir;
+    case 10:
+      return 'agreg&oacute; un post en la baticueva' . $ir;
+    case 11:
+      return 'se uni&oacute; a tu comunidad' . $ir;
+    case 12:
+      return 'coment&oacute; un tema tuyo' . $ir;
+    default:
+      return '';
+  }
+}
 
-function notificacionAGREGAR($us,$q,$f='',$urlExtra=''){
-global $user_settings, $db_prefix,$boardurl;
-if(empty($urlExtra)){
-$aURL=str_replace('http://','',$boardurl);
-$bURL=explode($aURL,censorText($_SERVER['HTTP_REFERER']));
-$urlFinal=$bURL[1];}else{$urlFinal=$urlExtra;}
+function notificacionAGREGAR($us, $q, $f = '', $urlExtra = '') {
+  global $user_settings, $db_prefix, $boardurl;
 
-if($us <> $user_settings['ID_MEMBER']){
-$date=time();
-db_query("INSERT INTO {$db_prefix}notificaciones (url,que,a_quien,por_quien,fecha,extra) VALUES ('$urlFinal','$q','$us','{$user_settings['ID_MEMBER']}','$date','$f')",__FILE__, __LINE__);
+  if (empty($urlExtra)) {
+    $aURL = str_replace('http://', '', $boardurl);
+    $bURL = explode($aURL, censorText($_SERVER['HTTP_REFERER']));
+    $urlFinal = $bURL[1];
+  } else {
+    $urlFinal = $urlExtra;
+  }
 
-db_query("UPDATE {$db_prefix}members 
-SET notificacionMonitor=notificacionMonitor+1 
-WHERE ID_MEMBER='{$us}' 
-LIMIT 1", __FILE__, __LINE__);}
-} 
+  if ($us <> $user_settings['ID_MEMBER']) {
+    $date = time();
+    db_query("
+      INSERT INTO {$db_prefix}notificaciones (url, que, a_quien, por_quien, fecha, extra)
+      VALUES ('$urlFinal', '$q', $us, {$user_settings['ID_MEMBER']}, '$date', '$f')", __FILE__, __LINE__);
 
-function signosyletras($valor){					
-$valor = str_replace("�", "&aacute;", $valor);
-$valor = str_replace("�", "&eacute;", $valor);
-$valor = str_replace("�", "&iacute;", $valor);
-$valor = str_replace("�", "&oacute;", $valor);
-$valor = str_replace("�", "&uacute;", $valor);
-$valor = str_replace("�", "&ntilde;", $valor);
-$valor = str_replace("�", "&Aacute;", $valor);
-$valor = str_replace("�", "&Eacute;", $valor);
-$valor = str_replace("�", "&Iacute;", $valor);
-$valor = str_replace("�", "&Oacute;", $valor);
-$valor = str_replace("�", "&Uacute;", $valor);
-$valor = str_replace("�", "&�tilde;", $valor);
-$valor = str_replace("!", "&#33;", $valor);
-$valor = str_replace("�", "&iexcl;", $valor);
-$valor = str_replace("�", "&iquest;", $valor);
-$valor = str_replace("�", "&ouml;", $valor);
-$valor = str_replace("�", "&Ouml;", $valor);
-$valor = str_replace("�", "&ordm;", $valor);
-$valor = str_replace("�", "&#176;", $valor);
-$valor = str_replace("�", "&reg;", $valor);
-$valor = str_replace("�", "&#169;", $valor);
-return $valor;}
+    db_query("
+      UPDATE {$db_prefix}members
+      SET notificacionMonitor = notificacionMonitor + 1
+      WHERE ID_MEMBER = $us
+      LIMIT 1", __FILE__, __LINE__);
+  }
+}
 
-function seguridad($variable){$variable = addslashes(trim($variable));return $variable;}
-//--------------------------
+function signosyletras($valor) {
+  $valor = str_replace("�", "&aacute;", $valor);
+  $valor = str_replace("�", "&eacute;", $valor);
+  $valor = str_replace("�", "&iacute;", $valor);
+  $valor = str_replace("�", "&oacute;", $valor);
+  $valor = str_replace("�", "&uacute;", $valor);
+  $valor = str_replace("�", "&ntilde;", $valor);
+  $valor = str_replace("�", "&Aacute;", $valor);
+  $valor = str_replace("�", "&Eacute;", $valor);
+  $valor = str_replace("�", "&Iacute;", $valor);
+  $valor = str_replace("�", "&Oacute;", $valor);
+  $valor = str_replace("�", "&Uacute;", $valor);
+  $valor = str_replace("�", "&�tilde;", $valor);
+  $valor = str_replace("!", "&#33;", $valor);
+  $valor = str_replace("�", "&iexcl;", $valor);
+  $valor = str_replace("�", "&iquest;", $valor);
+  $valor = str_replace("�", "&ouml;", $valor);
+  $valor = str_replace("�", "&Ouml;", $valor);
+  $valor = str_replace("�", "&ordm;", $valor);
+  $valor = str_replace("�", "&#176;", $valor);
+  $valor = str_replace("�", "&reg;", $valor);
+  $valor = str_replace("�", "&#169;", $valor);
+
+  return $valor;
+}
+
+function seguridad($variable) {
+  return htmlentities(addslashes(trim($variable)), ENT_QUOTES, 'UTF-8');
+}
 
 function anuncio_300x250() {
   global $boardurl;
@@ -175,6 +278,7 @@ function g_anuncio_160x600() {
 
 function anuncio_468x60() {
   global $boardurl;
+
   echo '
     <p align="center">
       <iframe src="' . $boardurl . '/web/cw-ads.php?tamanio=468x60" width="468px" height="60px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px">.</iframe>
@@ -299,18 +403,23 @@ function pais($valor) {
 }
 
 function menuser($user) {
-global $tranfer1, $scripturl, $context, $txt, $no_firma, $no_avatar, $db_prefix, $options, $ID_MEMBER, $modSettings, $boardurl, $memberContext, $themeUser;
+  global $tranfer1, $scripturl, $context, $txt, $no_firma, $no_avatar, $db_prefix, $options, $ID_MEMBER, $modSettings, $boardurl, $memberContext, $themeUser;
 
-function sexo1($valor)
-{$valor = str_replace('1', 'Masculino', $valor);
-$valor = str_replace('2', 'Femenino', $valor);
-return $valor;}
+function sexo1($valor) {
+  $valor = str_replace('1', 'Masculino', $valor);
+  $valor = str_replace('2', 'Femenino', $valor);
 
-function sexo2($valor){
-global $tranfer1;
-$valor = str_replace('1', '<img alt="Hombre" title="Hombre" src="'.$tranfer1.'/Male.gif" />', $valor);
-$valor = str_replace('2', '<img alt="Mujer" title="Mujer" src="'.$tranfer1.'/Female.gif" />', $valor);
-return $valor;}
+  return $valor;
+}
+
+function sexo2($valor) {
+  global $tranfer1;
+
+  $valor = str_replace('1', '<img alt="Hombre" title="Hombre" src="' . $tranfer1 . '/Male.gif" />', $valor);
+  $valor = str_replace('2', '<img alt="Mujer" title="Mujer" src="' . $tranfer1 . '/Female.gif" />', $valor);
+
+  return $valor;
+}
 
 if(!$context['user']['is_admin']){$shas=' AND ID_BOARD<>142';}else{$shas='';}
 
@@ -433,250 +542,413 @@ function nohtml2($html) {
   return stripslashes(stripslashes($html));
 }
 
-function moticon($mensaje,$smileys = true){if ($smileys === true){parsesmileys($mensaje);}else{$mensaje=$mensaje;} return $mensaje;}
+function moticon($mensaje, $smileys = true) {
+  if ($smileys === true) {
+    parsesmileys($mensaje);
+  }
 
-
-function usuarioComentariosPOST($user){ global $db_prefix;
-$u349jmdjfnsidufh8er=mysqli_num_rows(db_query("SELECT id_user FROM {$db_prefix}comentarios WHERE id_user='$user'", __FILE__, __LINE__));
-return $u349jmdjfnsidufh8er;}
-
-function usuarioComentariosIMG($user){ global $db_prefix;
-$u349jmdjfnsidufh8er2=mysqli_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}gallery_comment WHERE ID_MEMBER='$user'", __FILE__, __LINE__));
-return $u349jmdjfnsidufh8er2;}
-
-function usuarioPOST($user){ global $db_prefix;
-$u349jmdjfnsidufh8er3=mysqli_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}messages WHERE ID_MEMBER='$user'", __FILE__, __LINE__));
-return $u349jmdjfnsidufh8er3;}
-
-
-
-function ditaruser(){global $context, $db_prefix, $ID_MEMBER;
-$getid=isset($_GET['u']) ? (int)$_GET['u'] : '';
-$request=db_query("
-SELECT ID_MEMBER,realName,memberIP,avatar
-FROM ({$db_prefix}members)
-WHERE ID_MEMBER='$getid'
-LIMIT 1", __FILE__, __LINE__);
-while ($row = mysqli_fetch_assoc($request)){
-$context['membernames'] = $row['realName'];
-$context['memberips'] = $row['memberIP'];
-$context['avatar'] = $row['avatar'];}
-mysqli_free_result($request);
-if($getid==$ID_MEMBER){
-if($_GET['sa']=='cuenta'){die();}
-elseif($_GET['sa']=='perfil'){die();}
-elseif($_GET['m']=='tyc8'){die();}
-elseif($_GET['m']=='tyc3'){die();}}
-if($getid=='1'){
-if($_GET['sa']=='cuenta'){die();}
-elseif($_GET['sa']=='perfil'){die();}
-elseif($_GET['m']=='tyc8'){die();}
-elseif($_GET['m']=='tyc3'){die();}}
-
-
-echo'<div style="width: 138px;float:left;margin-right:8px;">
-<div class="MenuCascada">
-<div style="width: 138px;">';
-if($getid){
-echo'<div><a href="/moderacion/edit-user/perfil/'.$getid.'">Editar el perfil</a></div>
-<div><a href="/moderacion/edit-user/avatar/'.$getid.'">Editar el avatar</a></div>
-<div><a href="/moderacion/edit-user/firma/'.$getid.'">Editar la firmar</a></div>
-<div><a href="/imagenes/'.$context['membernames'].'"> Ver im&aacute;genes</a></div>
-
-';}else{
-echo'<div><a href="/editar-perfil/">Editar mi perfil</a></div>
-<div><a href="/editar-apariencia/">Editar mi apariencia</a></div>
-<div><a href="/editar-perfil/avatar/">Editar mi avatar</a></div>
-<div><a href="/editar-perfil/firma/">Editar mi firma</a></div>
-<div><a href="/web/cw-TEMPAgregarIMG.php" class="boxy" title="Agregar im&aacute;gen">Agregar im&aacute;gen</a></div>
-<div><a href="/mis-notas/">Mis notas</a></div>';
+  return $mensaje;
 }
 
+function usuarioComentariosPOST($user) {
+  global $db_prefix;
 
-echo'</div></div><div class="clearfix"></div>';
+  $request = db_query("
+    SELECT id_user
+    FROM {$db_prefix}comentarios
+    WHERE id_user = $user", __FILE__, __LINE__);
 
-if($getid){if($getid=='1'){die();}
-elseif($getid==$ID_MEMBER){die();}
-elseif($context['allow_admin']){
-echo'<div class="hrs"></div><b>IP:</b>&nbsp;<a target="_blank" href="http://lacnic.net/cgi-bin/lacnic/whois?query='.$context['memberips'].'" title="IP: '.$context['memberips'].'" rel="nofollow">'.$context['memberips'].'</a><br /><a href="/web/cw-TEMPbanUser.php?sa=add;u='.$getid.'" class="boxy" title="Banear a '.$context['membernames'].'">BANEAR USUARIO</a><br />';}
-if ($context['user']['is_admin']){echo'<a class="boxy" title="Rastrear Usuario" href="/web/cw-TEMPrastrearUS.php?id='.$getid.'">RASTREAR USUARIO</a><br />';}}
-echo'</div>';
-
-
+  return mysqli_num_rows($request);
 }
 
+function usuarioComentariosIMG($user) {
+  global $db_prefix;
 
+  $request = db_query("
+    SELECT ID_MEMBER
+    FROM {$db_prefix}gallery_comment
+    WHERE ID_MEMBER = $user", __FILE__, __LINE__);
 
-function vipmenu(){
-global $tranfer1,$scripturl, $context, $txt, $no_firma, $no_avatar, $db_prefix, $options, $ID_MEMBER, $modSettings, $boardurl, $memberContext, $user_settings;
-$getid=(int)$ID_MEMBER;
-
-if($user_settings['ID_GROUP']=='7' || $user_settings['ID_GROUP']=='11'){
-if($user_settings['ID_GROUP']=='7'){$title='Men&uacute; especial';}
-if($user_settings['ID_GROUP']=='11'){$title='Men&uacute; especial';}
-echo'<div class="box_140" style="float:left; margin-right:8px;margin-bottom:8px;">
-<div class="box_title" style="width: 138px;"><div class="box_txt box_140-34">'.$title.'</div>
-<div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="font-size:11px;width: 130px; padding: 4px;">
-<a href="/men-especial/">Inicio</a></span><br/><a href="/men-especial/recargar-pts">Recargar Puntos</a></span><br/>';
-
-echo'</div></div>';}else{fatal_error('Solo para usuarios especiales.');}}
-
-function a�o(){echo'2010';}
-
-function hides($mje){$mje=str_replace('[img ]','[img]',$mje);return $mje;}
-
-function decodeurl($texto){
-$texto=str_replace('+',' ',$texto);
-$texto=str_replace('{ad12B}','+',$texto);
-$texto=str_replace('{vD13B}',';',$texto);
-$texto=str_replace('{vvE3F}','?',$texto);
-$texto=str_replace('{Edv3A}','/',$texto);
-$texto=str_replace('{4RE23}','#',$texto);
-$texto=str_replace('{4rc24}','&',$texto);
-$texto=str_replace('{rpl3D}','=',$texto);
-$texto=str_replace('{Rfe26}','$',$texto);
-$texto=str_replace('{fce2C}',',',$texto);
-$texto=str_replace('{fci3C}','<',$texto);
-$texto=str_replace('{fco3E}','>',$texto);
-$texto=str_replace('{jho7E}','~',$texto);
-$texto=str_replace('{ds625}','%',$texto);
-return $texto;}
-
-function captcha($ds,$c=''){global $tranfer1;
-
-if($ds=='1'){
-
-$_SESSION['numeroxxx']=isset($_SESSION['numeroxxx']) ? $_SESSION['numeroxxx'] : '';      
-if($_SESSION['numeroxxx'] < 1){    
-$_SESSION['numeroxxx']='';
-unset($_SESSION['numeroxxx']);
-$aleatorio=mt_rand(1000,9999);
-$_SESSION['numeroxxx']=''.(int)trim($aleatorio).'';}
-
-if(empty($c)){echo'<table><tr><td class="camptcha"><img src="/web/captcha/index.php?id='.$_SESSION['numeroxxx'].'" alt="" /></td><td class="camptcha"><input size="10" type="text" onfocus="foco(this);" onblur="no_foco(this);" style="text-transform:uppercase;text-align:center;" maxlength="4" id="code" name="code" /></td></tr></table>';}}
-
-else{
-$sas1=(int) trim($_SESSION['numeroxxx']);
-$sas2=(int) trim($_POST['code']);
-if($sas1==$sas2){$_SESSION['numeroxxx']=''; unset($_SESSION['numeroxxx']);}
-else{ if($ds=='2'){fatal_error('C&oacute;digo de im&aacute;gen invalido.');}else{die('0: C&oacute;digo de im&aacute;gen invalido.');}} }
-
-return $_SESSION['numeroxxx'];
+  return mysqli_num_rows($request);
 }
 
-function categorias($tipo,$extra=null){
-global $db_prefix,$context;
-$request=db_query("SELECT ID_BOARD,description,name FROM {$db_prefix}boards", __FILE__, __LINE__);
-$context['boards'] = array();
-while ($row = mysqli_fetch_assoc($request)){
-$context['boards'][] = array(
-'id' => $row['ID_BOARD'],
-'description' => $row['description'],
-'name' => $row['name'],);}
-mysqli_free_result($request);
+function usuarioPOST($user) {
+  global $db_prefix;
 
-if($tipo=='1'){echo'<select style="width:202px;" name="categoria" class="select"><option value="0" selected="selected">Todas</option>';
-foreach ($context['boards'] as $board){
-echo'<option value="'.$board['id'].'" '; if($_GET['categoria']==$board['id'])echo'selected="selected" '; echo'>'.$board['name'].'</option>';}}
+  $request = db_query("
+    SELECT ID_MEMBER
+    FROM {$db_prefix}messages
+    WHERE ID_MEMBER = $user", __FILE__, __LINE__);
 
-elseif($tipo=='2'){echo'<select style="width:202px;" tabindex="5" name="categorias" class="select"><option value="-1" selected="selected">Elegir categor&iacute;a</option>';
-foreach ($context['boards'] as $board){echo'<option value="'.$board['id'].'"  '; if($extra==$board['id'])echo'selected="true"'; echo' >'.$board['name'].'</option>';}}
+  return mysqli_num_rows($request);
+}
 
-echo'</select>';
-return false;}
+function ditaruser() {
+  global $context, $db_prefix, $ID_MEMBER, $boardurl;
 
-function enlaces()
-{echo'<div align="left" style="margin-bottom:4px;"><a title="Anunciate aca" href="/contactanos/" target="_blank" rel="nofollow" class="anuncio">Anunciate aca</a></div>
-         <div align="left" style="margin-bottom:4px;"><a title="Anunciate aca" href="/contactanos/" target="_blank" rel="nofollow" class="anuncio">Anunciate aca</a></div>
-  <div class="hrs"></div><center><a class="size10" href="/enlazanos/" target="_blank" rel="nofollow">Enlazanos en tu Web</a></center>';}
+  $getid = isset($_GET['u']) ? (int) $_GET['u'] : '';
+
+  $request = db_query("
+    SELECT ID_MEMBER, realName, memberIP, avatar
+    FROM {$db_prefix}members
+    WHERE ID_MEMBER = $getid
+    LIMIT 1", __FILE__, __LINE__);
+
+  while ($row = mysqli_fetch_assoc($request)) {
+    $context['membernames'] = $row['realName'];
+    $context['memberips'] = $row['memberIP'];
+    $context['avatar'] = $row['avatar'];
+  }
+
+  mysqli_free_result($request);
+
+  if ($getid == $ID_MEMBER) {
+    if ($_GET['sa'] == 'cuenta') {
+      die();
+    } else if ($_GET['sa'] == 'perfil') {
+      die();
+    } else if ($_GET['m'] == 'tyc8') {
+      die();
+    } else if ($_GET['m'] == 'tyc3') {
+      die();
+    }
+  }
+
+  if ($getid == 1) {
+    if ($_GET['sa'] == 'cuenta') {
+      die();
+    } else if ($_GET['sa'] == 'perfil') {
+      die();
+    } else if ($_GET['m'] == 'tyc8') {
+      die();
+    } else if ($_GET['m'] == 'tyc3') {
+      die();
+    }
+  }
+
+
+  echo '
+    <div style="width: 138px; float: left; margin-right: 8px;">
+      <div class="MenuCascada">
+        <div style="width: 138px;">';
+
+  if ($getid) {
+    echo '
+      <div><a href="' . $boardurl . '/moderacion/edit-user/perfil/'.$getid.'">Editar el perfil</a></div>
+      <div><a href="' . $boardurl . '/moderacion/edit-user/avatar/'.$getid.'">Editar el avatar</a></div>
+      <div><a href="' . $boardurl . '/moderacion/edit-user/firma/'.$getid.'">Editar la firmar</a></div>
+      <div><a href="' . $boardurl . '/imagenes/'.$context['membernames'].'"> Ver im&aacute;genes</a></div>';
+  } else {
+    echo '
+      <div><a href="' . $boardurl . '/editar-perfil/">Editar mi perfil</a></div>
+      <div><a href="' . $boardurl . '/editar-apariencia/">Editar mi apariencia</a></div>
+      <div><a href="' . $boardurl . '/editar-perfil/avatar/">Editar mi avatar</a></div>
+      <div><a href="' . $boardurl . '/editar-perfil/firma/">Editar mi firma</a></div>
+      <div><a href="' . $boardurl . '/web/cw-TEMPAgregarIMG.php" class="boxy" title="Agregar imagen">Agregar imagen</a></div>
+      <div><a href="' . $boardurl . '/mis-notas/">Mis notas</a></div>';
+  }
+
+
+  echo '
+      </div>
+    </div>
+    <div class="clearfix"></div>';
+
+  if ($getid) {
+    if ($getid == 1) {
+      die();
+    } else if ($getid == $ID_MEMBER) {
+      die();
+    } else if ($context['allow_admin']) {
+      echo '
+        <div class="hrs"></div>
+        <b>IP:</b>
+        <a target="_blank" href="http://lacnic.net/cgi-bin/lacnic/whois?query=' . $context['memberips'] . '" title="IP: ' . $context['memberips'] . '" rel="nofollow">' . $context['memberips'] . '</a>
+        <br />
+        <a href="' . $boardurl . '/web/cw-TEMPbanUser.php?sa=add;u=' . $getid . '" class="boxy" title="Banear a ' . $context['membernames'] . '">BANEAR USUARIO</a>
+        <br />';
+    }
+
+    if ($context['user']['is_admin']) {
+      echo '<a class="boxy" title="Rastrear Usuario" href="' . $boardurl . '/web/cw-TEMPrastrearUS.php?id=' . $getid . '">RASTREAR USUARIO</a><br />';
+    }
+  }
+
+  echo '</div>';
+}
+
+function vipmenu() {
+  global $tranfer1, $scripturl, $context, $txt, $no_firma, $no_avatar, $db_prefix, $options, $ID_MEMBER, $modSettings, $boardurl, $memberContext, $user_settings;
+
+  $getid = (int) $ID_MEMBER;
+
+  if ($user_settings['ID_GROUP'] == 7 || $user_settings['ID_GROUP'] == 11) {
+    if ($user_settings['ID_GROUP'] == 7) {
+      $title = 'Men&uacute; especial';
+    }
+
+    if ($user_settings['ID_GROUP'] == 11) {
+      $title = 'Men&uacute; especial';
+    }
+
+    echo '
+      <div class="box_140" style="float: left; margin-right: 8px; margin-bottom: 8px;">
+        <div class="box_title" style="width: 138px;">
+          <div class="box_txt box_140-34">' . $title . '</div>
+          <div class="box_rss"><img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" /></div>
+        </div>
+        <div class="windowbg" style="font-size: 11px; width: 130px; padding: 4px;">
+          <a href="' . $boardurl . '/men-especial/">Inicio</a><br />
+          <a href="' . $boardurl . '/men-especial/recargar-pts">Recargar puntos</a><br />
+        </div>
+      </div>';
+  } else {
+    fatal_error('S&oacute;lo para usuarios especiales.');
+  }
+}
+
+function ano() {
+  return date('Y');
+}
+
+function hides($mje) {
+  return str_replace('[img ]', '[img]', $mje);
+}
+
+function decodeurl($texto) {
+  $texto = str_replace('+', ' ', $texto);
+  $texto = str_replace('{ad12B}', '+', $texto);
+  $texto = str_replace('{vD13B}', ';', $texto);
+  $texto = str_replace('{vvE3F}', '?', $texto);
+  $texto = str_replace('{Edv3A}', '/', $texto);
+  $texto = str_replace('{4RE23}', '#', $texto);
+  $texto = str_replace('{4rc24}', '&', $texto);
+  $texto = str_replace('{rpl3D}', ' = ', $texto);
+  $texto = str_replace('{Rfe26}', '$', $texto);
+  $texto = str_replace('{fce2C}', ',', $texto);
+  $texto = str_replace('{fci3C}', '<', $texto);
+  $texto = str_replace('{fco3E}', '>', $texto);
+  $texto = str_replace('{jho7E}', '~', $texto);
+  $texto = str_replace('{ds625}', '%', $texto);
+
+  return $texto;
+}
+
+function captcha($ds, $c = '') {
+  global $tranfer1, $boardurl;
+
+  if ($ds == 1) {
+    $_SESSION['numeroxxx'] = isset($_SESSION['numeroxxx']) ? $_SESSION['numeroxxx'] : '';
+
+    if ($_SESSION['numeroxxx'] < 1) {    
+      $_SESSION['numeroxxx'] = '';
+      unset($_SESSION['numeroxxx']);
+
+      $aleatorio = mt_rand(1000, 9999);
+      $_SESSION['numeroxxx'] = (int) trim($aleatorio);
+    }
+
+    if (empty($c)) {
+      echo '
+        <table>
+          <tr>
+            <td class="camptcha">
+              <img src="' . $boardurl . '/web/captcha/index.php?id=' . $_SESSION['numeroxxx'] . '" alt="" />
+            </td>
+            <td class="camptcha">
+              <input size="10" type="text" onfocus="foco(this);" onblur="no_foco(this);" style="text-transform: uppercase; text-align: center;" maxlength="4" id="code" name="code" />
+            </td>
+          </tr>
+        </table>';
+    }
+  } else {
+    $sas1 = (int) trim($_SESSION['numeroxxx']);
+    $sas2 = (int) trim($_POST['code']);
+
+    if ($sas1 == $sas2) {
+      $_SESSION['numeroxxx'] = '';
+      unset($_SESSION['numeroxxx']);
+    } else {
+      if ($ds == 2) {
+        fatal_error('C&oacute;digo de imagen no v&aacute;lido.');
+      } else {
+        die('0: C&oacute;digo de imagen invalido.');
+      }
+    }
+  }
+
+  return $_SESSION['numeroxxx'];
+}
+
+function categorias($tipo, $extra = null) {
+  global $db_prefix, $context;
+
+  $request = db_query("
+    SELECT ID_BOARD, description, name
+    FROM {$db_prefix}boards", __FILE__, __LINE__);
+
+  $context['boards'] = array();
+
+  while ($row = mysqli_fetch_assoc($request)) {
+    $context['boards'][] = array(
+      'id' => $row['ID_BOARD'],
+      'description' => $row['description'],
+      'name' => $row['name']
+    );
+  }
+
+  mysqli_free_result($request);
+
+  if ($tipo == 1) {
+    echo'<select style="width: 202px;" name="categoria" class="select"><option value="0" selected="selected">Todas</option>';
+
+    foreach ($context['boards'] as $board) {
+      echo '<option value="' . $board['id'] . '"' . ($_GET['categoria'] == $board['id'] ? ' selected="selected"' : '') . '>' . $board['name'] . '</option>';
+    }
+  } else if ($tipo == 2) {
+    echo '<select style="width: 202px;" tabindex="5" name="categorias" class="select"><option value="-1" selected="selected">Elegir categor&iacute;a</option>';
+
+    foreach ($context['boards'] as $board) {
+      echo '<option value="' . $board['id'] . '"' . ($extra == $board['id'] ? ' selected="selected"' : '') . '>' . $board['name'] . '</option>';
+    }
+  }
+
+  echo '</select>';
+
+  return false;
+}
+
+function enlaces() {
+  global $boardurl;
+
+  echo '
+    <div align="left" style="margin-bottom: 4px;">
+      <a title="Anunciate ac&aacute;" href="' . $boardurl . '/contactanos/" target="_blank" rel="nofollow" class="anuncio">Anunciate ac&aacute;</a>
+    </div>
+    <div align="left" style="margin-bottom: 4px;">
+      <a title="Anunciate ac&aacute;" href="' . $boardurl . '/contactanos/" target="_blank" rel="nofollow" class="anuncio">Anunciate ac&aacute;</a>
+    </div>
+    <div class="hrs"></div>
+    <center>
+      <a class="size10" href="' . $boardurl . '/enlazanos/" target="_blank" rel="nofollow">Enl&aacute;zanos en tu web</a>
+    </center>';
+}
   
 function destacado() {
   global $tranfer1, $boardurl;
 
   $adsense = '<p align="center" style="margin:0px;padding:0px;"><iframe src="' . $boardurl . '/web/cw-ads.php?tamanio=300x250" width="300px" height="250px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px" marginheight="0px" marginwidth="0px">.</iframe></p>';
-  $adsense2a = '<p align="center" style="margin:0px;padding:0px;"><a href="http://www.apuntatelo.com.ar/" target="_blank" rel="nofollow"><img alt="" src="'.$tranfer1.'/publicidad/dest-apuntatelo.gif" border="0" title="Apuntatelo" /></a>&nbsp;<a href="/contactanos/"><img alt="" src="'.$tranfer1.'/publicidad/dest-anunciate.png" border="0" title="Anunciate Aqui" /></a></p>';
+  $adsense2a = '<p align="center" style="margin:0px;padding:0px;"><a href="http://www.apuntatelo.com.ar/" target="_blank" rel="nofollow"><img alt="" src="' . $tranfer1 . '/publicidad/dest-apuntatelo.gif" border="0" title="Apuntatelo" /></a>&nbsp;<a href="' . $boardurl . '/contactanos/"><img alt="" src="' . $tranfer1 . '/publicidad/dest-anunciate.png" border="0" title="Anunciate aqu&iacute;" /></a></p>';
   $adsense1a = '<p align="center" style="margin:0px;padding:0px;"><iframe src="' . $boardurl . '/web/cw-ads.php?tamanio=300x250" width="300px" height="250px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px" marginheight="0px" marginwidth="0px">.</iframe></p>';
   $destacado = '<p align="center" style="margin:0px;padding:0px;"><iframe src="' . $boardurl . '/web/cw-ads.php?tamanio=300x250" width="300px" height="250px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px" marginheight="0px" marginwidth="0px">.</iframe></p>';
-  $destacado02 = '<p align="center" style="margin:0px;padding:0px;"><a href="http://www.apuntatelo.com.ar/" target="_blank" rel="nofollow"><img alt="" src="'.$tranfer1.'/publicidad/dest-apuntatelo.gif" border="0" title="Apuntatelo" /></a>&nbsp;<a href="/contactanos/"><img alt="" src="'.$tranfer1.'/publicidad/dest-anunciate.png" border="0" title="Anunciate Aqui" /></a></p>';
-  $destacado03 = '<p align="center"><a href="/contactanos/"><img alt="" src="' . $tranfer1 . '/publicidad/dest-anunciate.png" border="0" title="Anunciate Aqui" /></a>&nbsp;<a target="_blank" href="https://publisher.smowtion.com/users/signup/casitaweb-pay" style="border:none" rel="nofollow"><img width="125" height="125" border="0" style="border:none" src="http://ads.smowtion.com/affiliate/125_125_es.gif" alt="Rentabiliza tu sitio!" /></a></p>';
+  $destacado02 = '<p align="center" style="margin:0px;padding:0px;"><a href="http://www.apuntatelo.com.ar/" target="_blank" rel="nofollow"><img alt="" src="' . $tranfer1 . '/publicidad/dest-apuntatelo.gif" border="0" title="Apunt&aacute;telo" /></a>&nbsp;<a href="' . $boardurl . '/contactanos/"><img alt="" src="' . $tranfer1 . '/publicidad/dest-anunciate.png" border="0" title="Anunciate aqu&iacute;" /></a></p>';
+  // $destacado03 = '<p align="center"><a href="/contactanos/"><img alt="" src="' . $tranfer1 . '/publicidad/dest-anunciate.png" border="0" title="Anunciate aqu&iacute;" /></a>&nbsp;<a target="_blank" href="https://publisher.smowtion.com/users/signup/casitaweb-pay" style="border:none" rel="nofollow"><img width="125" height="125" border="0" style="border:none" src="http://ads.smowtion.com/affiliate/125_125_es.gif" alt="Rentabiliza tu sitio!" /></a></p>';
   $destacado04 = '<p align="center" style="margin:0px;padding:0px;"><iframe src="' . $boardurl . '/web/cw-ads.php?tamanio=300x250" width="300px" height="250px" frameborder="0" scrolling="no" marginheight="0px" marginwidth="0px" marginheight="0px" marginwidth="0px">.</iframe></p>';
-  $destacados = array($destacado, $adsense, $adsense1a, $adsense2a, $destacado02, $destacado03, $destacado04);
+  $destacados = array($destacado, $adsense, $adsense1a, $adsense2a, $destacado02, $destacado04);
   $destacados01 = rand(0, sizeof($destacados) - 1);
 
   echo $destacados[$destacados01];
 }
 
-function actualizareliminados($id = ''){global $db_prefix,$user_info;
-if(!$user_info['is_guest']){
-$lvccct=db_query("SELECT id FROM ({$db_prefix}mensaje_personal) WHERE eliminado_de=1 AND eliminado_para=1", __FILE__, __LINE__);while($asserr=mysqli_fetch_assoc($lvccct)){db_query("DELETE FROM {$db_prefix}mensaje_personal WHERE id='{$asserr['id']}'", __FILE__, __LINE__);} $dd=true;}else{$dd=false;} return $dd;}
+function actualizareliminados($id = '') {
+  global $db_prefix, $user_info;
+ 
+  if (!$user_info['is_guest']) {
+    $request = db_query("
+      SELECT id
+      FROM {$db_prefix}mensaje_personal
+      WHERE eliminado_de = 1
+      AND eliminado_para = 1", __FILE__, __LINE__);
 
-function valida_url($url){
-$direccion=@fopen($url,"r");
-if($direccion){$resultado=true;}else{$resultado=false;}
-return $resultado;
-close($direccion);}
+    while ($asserr = mysqli_fetch_assoc($request)) {
+      db_query("
+        DELETE FROM {$db_prefix}mensaje_personal
+        WHERE id = '{$asserr['id']}'", __FILE__, __LINE__);
+    }
 
-function achicar($tipo){censorText($tipo);
-if(strlen($tipo)>33){$tipo=substr($tipo,0,30)."...";}else{$tipo=$tipo;}
-return $tipo;}
-function achicar400($tipo){
-censorText($tipo);
-if(strlen($tipo)>400){$tipo=substr($tipo,0,397)."...";}else{$tipo=$tipo;}
-return $tipo;}
+    mysqli_free_result($request);
 
-function achicars($valor){
-if(strlen($valor)>47){$valor=substr($valor,0,44)."...";}else{$valor=$valor;}
-return $valor;}
+    $dd = true;
+  } else {
+    $dd = false;
+  }
 
+  return $dd;
+}
+
+function valida_url($url) {
+  $direccion = @fopen($url, 'r');
+  if ($direccion) {
+    $resultado = true;
+  } else {
+    $resultado = false;
+  }
+
+  fclose($direccion);
+  return $resultado;
+}
+
+function achicar($tipo) {
+  censorText($tipo);
+
+  return strlen($tipo) > 33 ? substr($tipo, 0, 30) . '...' : $tipo;
+}
+
+function achicar400($tipo) {
+  censorText($tipo);
+
+  return strlen($tipo) > 400 ? substr($tipo, 0, 397) . '...' : $tipo;
+}
+
+function achicars($valor) {
+  return strlen($valor) > 47 ? substr($valor, 0, 44) . '...' : $valor;
+}
 
 // tiempo 
-function hace($valor){
-$formato_defecto = "H:i:s j-n-Y";
-$date = getEnglishDateFormat($valor);
-$ht = time() - $date->getTimestamp();
-if ($ht >= 2116800) {
-$dia = $date->format('d');
-$mes = $date->format('n');
-$ano = $date->format('Y');
-$hora = $date->format('H');
-$minuto = $date->format('i');
-$mesarray = array('', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
-$fecha = "el&nbsp;$dia&nbsp;de&nbsp;$mesarray[$mes]&nbsp;del&nbsp;$ano";}
-if($ht<30242054.045){$hc=(int)round($ht/2629743.83);
-if($hc>1){$s="es";}else{$s="";}$fecha="hace&nbsp;$hc&nbsp;mes".$s;}
-if($ht<2116800){$hc=(int)round($ht/604800);
-if($hc>1){$s="s";}else{$s="";}$fecha="hace&nbsp;$hc&nbsp;semana".$s;}
-if($ht<561600){$hc=(int)round($ht/86400);
-if($hc==1){$fecha="ayer";}
-if($hc==2){$fecha="antes&nbsp;de&nbsp;ayer";}
-if($hc>2)$fecha="hace&nbsp;$hc&nbsp;d&iacute;as";}
-if($ht<84600){$hc=(int)round($ht/3600);if($hc>1){$s="s";}else{$s="";}$fecha="hace&nbsp;$hc&nbsp;hora".$s;
-if($ht>4200 && $ht<5400){$fecha="hace m&aacute;s&nbsp;de&nbsp;una&nbsp;hora";}}
-if($ht<3570){$hc=(int)round($ht/60);if($hc>1){$s="s";}else{$s="";}$fecha="hace&nbsp;$hc&nbsp;minuto".$s;}
-if($ht<60){$fecha="hace&nbsp;$ht&nbsp;segundos";}
-if($ht<=3){$fecha="hace&nbsp;segundos";}
-return $fecha;}
+function hace($valor) {
+  $formato_defecto = "H:i:s j-n-Y";
+  $date = getEnglishDateFormat($valor);
+  $ht = time() - $date->getTimestamp();
+  if ($ht >= 2116800) {
+  $dia = $date->format('d');
+  $mes = $date->format('n');
+  $ano = $date->format('Y');
+  $hora = $date->format('H');
+  $minuto = $date->format('i');
+  $mesarray = array('', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+  $fecha = "el&nbsp;$dia&nbsp;de&nbsp;$mesarray[$mes]&nbsp;del&nbsp;$ano";}
+  if($ht<30242054.045){$hc=(int)round($ht/2629743.83);
+  if($hc>1){$s="es";}else{$s="";}$fecha="hace&nbsp;$hc&nbsp;mes".$s;}
+  if($ht<2116800){$hc=(int)round($ht/604800);
+  if($hc>1){$s="s";}else{$s="";}$fecha="hace&nbsp;$hc&nbsp;semana".$s;}
+  if($ht<561600){$hc=(int)round($ht/86400);
+  if($hc==1){$fecha="ayer";}
+  if($hc==2){$fecha="antes&nbsp;de&nbsp;ayer";}
+  if($hc>2)$fecha="hace&nbsp;$hc&nbsp;d&iacute;as";}
+  if($ht<84600){$hc=(int)round($ht/3600);if($hc>1){$s="s";}else{$s="";}$fecha="hace&nbsp;$hc&nbsp;hora".$s;
+  if($ht>4200 && $ht<5400){$fecha="hace m&aacute;s&nbsp;de&nbsp;una&nbsp;hora";}}
+  if($ht<3570){$hc=(int)round($ht/60);if($hc>1){$s="s";}else{$s="";}$fecha="hace&nbsp;$hc&nbsp;minuto".$s;}
+  if($ht<60){$fecha="hace&nbsp;$ht&nbsp;segundos";}
+  if($ht<=3){$fecha="hace&nbsp;segundos";}
+  return $fecha;
+}
 
 //Falta
 function faltan($valor){
-$ht = time()-$valor;
+  $ht = time()-$valor;
+  if($ht<84600){
+  if($ht<84600){$hc=(int)round($ht/3600); }
+  elseif($ht<3570){$hc=(int)round($ht/60);}
+  $de=24-$hc;
+  if(empty($de)){$fecha="poco";}else{$fecha="$de hs";}}
+  else{$fecha='Recargando';}
 
-if($ht<84600){
-if($ht<84600){$hc=(int)round($ht/3600); }
-elseif($ht<3570){$hc=(int)round($ht/60);}
-
-$de=24-$hc;
-
-if(empty($de)){$fecha="poco";}else{$fecha="$de hs";}}
-
-else{$fecha='Recargando';}
-
-
-return $fecha;}
+  return $fecha;
+}
 
 
 
-function relevancia($data){
+function relevancia($data) {
 $resultado=$data; 
 $resulPar1=$data*10;
 $resulPar=(int)floor($resulPar1);
@@ -684,9 +956,10 @@ if($resulPar > 99){$mostrar=100;}elseif($resulPar < 1){$mostrar=0;}else{$mostrar
 $resultado='<div class="relevancia png" title="'.$mostrar.'%"><div class="porcentajeRel png" style="width: '.$mostrar.'%;"></div></div>';
 return $resultado;}
 
-function CerrarSession(){}
+function CerrarSession() {}
 
-function VideosMuro($data){global $tranfer1; 
+function VideosMuro($data) {
+  global $tranfer1; 
 $lineas=explode('<br />',$data);
 $sinComas= str_replace(",","&cedil;",html_entity_decode($data));
 $mensaje= str_replace("<br />",",",$sinComas);       
@@ -765,13 +1038,41 @@ $count = array_slice($count, 0, 10);
 return implode(", ", array_keys($count));}
 
 
-function textarea2($ivvd,$dd=0){
-global $tranfer1,$user_info;
-if(!$dd){$stylec='style="display:none;" ';}else{$stylec='';}
-if(!$user_info['is_guest']){$resultado='<div align="center" '.$stylec.'id="b-'.$ivvd.'"><div class="muroCcs" id="comentarCC_'.$ivvd.'"><textarea title="Escribe un comentario..." onfocus="if(this.value==\'Escribe un comentario...\') this.value=\'\';foco(this);this.style.height=\'50px\';$(\'#ocultar_input_'.$ivvd.'\').css(\'display\', \'block\');" onblur="if(this.value==\'\'){this.style.height=\'15px\';$(\'#ocultar_input_'.$ivvd.'\').css(\'display\', \'none\');this.value=\'Escribe un comentario...\';}no_foco(this); " style="overflow:auto;height:15px;width:400px;font-size:11px;font-family:Arial,FreeSans;" id="textareaCC_'.$ivvd.'">Escribe un comentario...</textarea>
-<p align="right" id="ocultar_input_'.$ivvd.'" style="display:none;padding:0px;margin:0px;"><label><input class="login" value="Comentar" onclick="comentarCcmuro(\''.$ivvd.'\'); return false;" type="button" /><span id="cargandoCC_'.$ivvd.'" style="display:none;" ><img src="'.$tranfer1.'/icons/cargando.gif" width="16px" height="16px" alt="" /></span></label></p></div><div id="comentarCC2_'.$ivvd.'" style="display:none;width:416px;"></div></div>';}else{$resultado='<div align="center" '.$stylec.'id="b-'.$ivvd.'"><div class="muroCcs" id="comentarCC_'.$ivvd.'">Solo usuarios conectados. <a href="/registrarse/">REGISTRARSE</a> - <a href="javascript:irAconectarse();">CONECTARSE</a></div></div>';}
+function textarea2($ivvd, $dd = 0) {
+  global $tranfer1, $user_info, $boardurl;
 
-return $resultado;}
+  $stylec = !$dd ? 'style="display: none;" ' : '';
+
+  if (!$user_info['is_guest']) {
+    $resultado = '
+      <div align="center" ' . $stylec . 'id="b-' . $ivvd . '">
+        <div class="muroCcs" id="comentarCC_' . $ivvd . '">
+          <textarea title="Escribe un comentario..." onfocus="if(this.value == \'Escribe un comentario...\') this.value = \'\'; foco(this); this.style.height = \'50px\'; $(\'#ocultar_input_' . $ivvd . '\').css(\'display\', \'block\');" onblur="if(this.value == \'\') { this.style.height = \'15px\'; $(\'#ocultar_input_' . $ivvd . '\').css(\'display\', \'none\'); this.value = \'Escribe un comentario...\'; } no_foco(this); " style="overflow: auto; height: 15px; width: 400px; font-size: 11px; font-family: Arial, FreeSans;" id="textareaCC_' . $ivvd . '">Escribe un comentario...</textarea>
+          <p align="right" id="ocultar_input_' . $ivvd . '" style="display: none; padding: 0px; margin: 0px;">
+            <label>
+              <input class="login" value="Comentar" onclick="comentarCcmuro(\'' . $ivvd . '\'); return false;" type="button" />
+              <span id="cargandoCC_' . $ivvd . '" style="display: none;">
+                <img src="' . $tranfer1 . '/icons/cargando.gif" width="16px" height="16px" alt="" />
+              </span>
+            </label>
+          </p>
+        </div>
+        <div id="comentarCC2_' . $ivvd . '" style="display: none; width: 416px;"></div>
+      </div>';
+  } else {
+    $resultado = '
+      <div align="center" ' . $stylec . 'id="b-' . $ivvd . '">
+        <div class="muroCcs" id="comentarCC_' . $ivvd . '">
+          S&oacute;lo usuarios conectados.
+          <a href="' . $boardurl . '/registrarse/">REGISTRARSE</a>
+          -
+          <a href="javascript:irAconectarse();">CONECTARSE</a>
+        </div>
+      </div>';
+  }
+
+  return $resultado;
+}
 
 function timeforComent($que=''){
 $time=time();
@@ -830,40 +1131,46 @@ function cw_header() {
 }
 
 function getEnglishDateFormat($str_date) {
-  $months = array(
-    'Enero' => 'January',
-    'Febrero' => 'February',
-    'Marzo' => 'March',
-    'Abril' => 'April',
-    'Mayo' => 'May',
-    'Junio' => 'June',
-    'Julio' => 'July',
-    'Agosto' => 'August',
-    'Septiembre' => 'September',
-    'Octubre' => 'October',
-    'Noviembre' => 'November',
-    'Diciembre' => 'December'
-  );
+  if (intval($str_date)) {
+    $date = date('Y-m-d H:i:s', intval($str_date)); 
+    return new DateTime($date);
+  } else {
+    $months = array(
+      'Enero' => 'January',
+      'Febrero' => 'February',
+      'Marzo' => 'March',
+      'Abril' => 'April',
+      'Mayo' => 'May',
+      'Junio' => 'June',
+      'Julio' => 'July',
+      'Agosto' => 'August',
+      'Septiembre' => 'September',
+      'Octubre' => 'October',
+      'Noviembre' => 'November',
+      'Diciembre' => 'December'
+    );
 
-  $date_text = trim($str_date);
+    $date_text = trim($str_date);
 
-  // Reemplazar el nombre del mes en español con su equivalente en inglés
-  foreach ($months as $spanish => $english) {
-    if (strpos($date_text, $spanish) !== false) {
-        $date_text = str_replace($spanish, $english, $date_text);
-        break;
+    // Reemplazar el nombre del mes en español con su equivalente en inglés
+    foreach ($months as $spanish => $english) {
+      if (strpos($date_text, $spanish) !== false) {
+          $date_text = str_replace($spanish, $english, $date_text);
+          break;
+      }
     }
+
+    // Convertir la cadena en un objeto DateTime
+    // var_dump($date_text);
+    $fecha_datetime = new DateTime($date_text);
+
+    // Usar la función date() para darle formato a la fecha
+    /*
+    $fecha_formateada = $fecha_datetime->format('Y-m-d'); // Puedes cambiar el formato a tu necesidad
+    */
+
+    return $fecha_datetime;
   }
-
-  // Convertir la cadena en un objeto DateTime
-  $fecha_datetime = new DateTime($date_text);
-
-  // Usar la función date() para darle formato a la fecha
-  /*
-  $fecha_formateada = $fecha_datetime->format('Y-m-d'); // Puedes cambiar el formato a tu necesidad
-  */
-
-  return $fecha_datetime;
 }
 
 /*

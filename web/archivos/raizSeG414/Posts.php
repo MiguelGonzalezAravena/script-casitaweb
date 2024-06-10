@@ -1,7 +1,8 @@
 <?php
 //Pagina de Rodrigo Zaupa (rigo@casitaweb.net)
 if (!defined('CasitaWeb!-PorRigo'))die(base64_decode("d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv"));
-function Posts(){global $db_prefix, $context, $user_info,$user_settings;
+function Posts() {
+	global $db_prefix, $context, $user_info,$user_settings, $boardurl;
 $post=isset($_GET['post']) ? (int)$_GET['post'] : '';  
 loadTemplate('Posts');
 if(empty($context['id-post'])){post_error();}
@@ -54,8 +55,9 @@ $context['novato'] =$user_settings['ID_POST_GROUP'] == '5';
 $context['buenus'] =$user_settings['ID_POST_GROUP'] == '6';}else{
 $context['leecher'] = '1';}
 }
-function post_error($titulo = ''){
-global $tranfer1, $context, $settings, $options, $txt, $db_prefix;
+
+function post_error($titulo = '') {
+global $tranfer1, $context, $settings, $options, $txt, $db_prefix, $boardurl;
 $titulo=trim($titulo);
 if($titulo) $context['page_title']=$titulo; else $context['page_title']=$txt[18]; 
 
@@ -77,7 +79,7 @@ $tit=explode(' ',$titulo);
 $tit=array_filter($tit);
 $dc=(count($tit)-1);
 for($i=1; $i<=$dc;++$i){$n[]="palabra='".str_replace("'","",$tit[$i])."'";}
-$ff=join(" OR ",$n);
+$ff=join(" OR ", $n);
 $select=db_query("SELECT id_post FROM {$db_prefix}tags WHERE $ff GROUP BY id_post ORDER BY id_post DESC LIMIT 10", __FILE__, __LINE__);
 while($row24 = mysqli_fetch_assoc($select)){
 $request=db_query("
@@ -88,7 +90,7 @@ ORDER BY m.ID_TOPIC DESC
 LIMIT 1", __FILE__, __LINE__);
 while($row=mysqli_fetch_assoc($request)){
 echo'<tr><td style="text-align:left;" ><a rel="dc:relation" class="categoriaPost '.$row['description'].'" href="/post/'.$row['ID_TOPIC'].'/'.$row['description'].'/'.urls($row['subject']).'.html" title="'.$row['subject'].'">'.$row['subject'].'</a></td>
-<td title="'.$row['posterName'].'"><a href="/perfil/'.$row['posterName'].'">'.$row['posterName'].'</a></td>
+<td title="'.$row['posterName'].'"><a href="' . $boardurl . '/perfil/'.$row['posterName'].'">'.$row['posterName'].'</a></td>
 <td title="'.timeformat($row['posterTime']).'">'.hace($row['posterTime'],true).'</td></tr>';}
 mysqli_free_result($request);}
 mysqli_free_result($select);}
@@ -104,7 +106,7 @@ ORDER BY m.ID_TOPIC DESC
 LIMIT 10", __FILE__, __LINE__);
 while($row44=mysqli_fetch_assoc($request3)){
 echo'<tr><td style="text-align:left;" ><a rel="dc:relation" class="categoriaPost '.$row44['description'].'" href="/post/'.$row44['ID_TOPIC'].'/'.$row44['description'].'/'.urls($row44['subject']).'.html" title="'.$row44['subject'].'">'.$row44['subject'].'</a></td>
-<td title="'.$row44['posterName'].'"><a href="/perfil/'.$row44['posterName'].'">'.$row44['posterName'].'</a></td>
+<td title="'.$row44['posterName'].'"><a href="' . $boardurl . '/perfil/'.$row44['posterName'].'">'.$row44['posterName'].'</a></td>
 <td title="'.timeformat($row44['posterTime']).'">'.hace($row44['posterTime'],true).'</td></tr>';
 }
 mysqli_free_result($request3);
@@ -118,10 +120,10 @@ die();
 }
 
 
-function theme_quickreply_box()
-{	global  $modSettings, $db_prefix,$settings, $user_info,$context;
-	if (isset($settings['use_default_images']) && $settings['use_default_images'] == 'defaults' && isset($settings['default_template']))
-	{
+function theme_quickreply_box() {
+	global  $modSettings, $db_prefix,$settings, $user_info,$context;
+
+	if (isset($settings['use_default_images']) && $settings['use_default_images'] == 'defaults' && isset($settings['default_template'])) {
 		$temp1 = $settings['theme_url'];
 		$settings['theme_url'] = $settings['default_theme_url'];
 		$temp2 = $settings['images_url'];
@@ -129,6 +131,7 @@ function theme_quickreply_box()
 		$temp3 = $settings['theme_dir'];
 		$settings['theme_dir'] = $settings['default_theme_dir'];
 	}
+
 	$context['smileys'] = array(
 		'postform' => array(),
 		'popup' => array(),

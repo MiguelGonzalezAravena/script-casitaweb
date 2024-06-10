@@ -25,7 +25,7 @@ echo'<div align="center" style="-moz-border-radius: 5px;-webkit-border-radius:5p
 
 echo anuncio_728x90();
 
-echo'<br /><a href="/registrarse/" style="font-size:12px;color:#FFB600;margin-bottom:3px;"><b>REGISTRATE GRATIS Y ELIMINA ESTA PUBLICIDAD, ADEMAS TENDRAS ACCESO A TODOS LOS POSTS Y FUNCIONES</b></a></div>';}
+echo'<br /><a href="' . $boardurl . '/registrarse/" style="font-size:12px;color:#FFB600;margin-bottom:3px;"><b>REG&Iacute;STRATE GRATIS Y ELIMINA ESTA PUBLICIDAD, ADEM&Aacute;S TENDR&Aacute;S ACCESO A TODOS LOS POSTS Y FUNCIONES</b></a></div>';}
 
 echo parse_bbc(censorText($message['body']));
 
@@ -37,7 +37,7 @@ echo'</div><div id="social"></div></div>';
 
 if($context['anuncio']==1){
 if($context['user']['is_admin']){
-echo'<form action="/web/cw-postEliminar.php?id='.$context['id-post'].'" method="post" accept-charset="', $context['character_set'], '" name="causa" id="causa"><input class="login" style="font-size: 11px;" value="Editar post" title="Editar post" onclick="location.href=\'/editar-post/id-'.$context['id-post'].'\'" type="button" />&nbsp;<input class="login" style="font-size: 11px;" value="Eliminar post" title="Eliminar post" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este post?\')) return false;';if($context['id_cat']!=='142'){if($context['user_ID']<>$context['user']['id']){echo' return errorrojo2(this.form.causa.value);';}} echo'" type="submit" />'; if($context['id_cat']!=='142'){if($context['user_ID']<>$context['user']['id']){echo'&nbsp;<b>Causa:</b>&nbsp;<input type="text" onfocus="foco(this);" onblur="no_foco(this);" id="causa" name="causa" maxlength="70" style="width:135px;" /><center><label id="errors" class="size10" style="color: red;"></label></center>';}} echo'</form>';}}else{
+echo'<form action="' . $boardurl . '/web/cw-postEliminar.php?id='.$context['id-post'].'" method="post" accept-charset="', $context['character_set'], '" name="causa" id="causa"><input class="login" style="font-size: 11px;" value="Editar post" title="Editar post" onclick="location.href=\'/editar-post/id-'.$context['id-post'].'\'" type="button" />&nbsp;<input class="login" style="font-size: 11px;" value="Eliminar post" title="Eliminar post" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este post?\')) return false;';if($context['id_cat']!=='142'){if($context['user_ID']<>$context['user']['id']){echo' return errorrojo2(this.form.causa.value);';}} echo'" type="submit" />'; if($context['id_cat']!=='142'){if($context['user_ID']<>$context['user']['id']){echo'&nbsp;<b>Causa:</b>&nbsp;<input type="text" onfocus="foco(this);" onblur="no_foco(this);" id="causa" name="causa" maxlength="70" style="width:135px;" /><center><label id="errors" class="size10" style="color: red;"></label></center>';}} echo'</form>';}}else{
 echo'<!-- info del post --><div style="width:780px;margin-top:8px;">';
 
 echo'<div style="width:380px;float:left;margin-right:8px;#margin-right:8px;_margin-right:6px;">
@@ -127,7 +127,7 @@ while($row = mysqli_fetch_assoc($request)){
 if($row['cantidad']<='0'){$asndbrbjweb='';}
 elseif($row['cantidad']=='1'){$asndbrbjweb=' 1&nbsp;punto';}
 elseif($row['cantidad']>='2'){$asndbrbjweb=''.$row['cantidad'].'&nbsp;puntos';}
-$userdasd[]='<a href="/perfil/'.$row['realName'].'" title="'.$asndbrbjweb.'">'.$row['realName'].'</a>';}
+$userdasd[]='<a href="' . $boardurl . '/perfil/'.$row['realName'].'" title="'.$asndbrbjweb.'">'.$row['realName'].'</a>';}
 $skasdasdbsddd=mysqli_num_rows($request);
 mysqli_free_result($request);
 
@@ -153,7 +153,7 @@ if ($palabra != '') {
 
 
 if($context['user']['is_admin']){
-echo'<div class="hrs"></div><center><form action="/web/cw-cambio_cat-seg-684.php" method="post" accept-charset="'.$context['character_set'].'" name="cat" id="cat">'; categorias(2,$context['id_cat']); echo' <input class="login" style="font-size: 10px;" value="Cambiar cat" title="Cambiar cat" name="tipo" type="submit" /><br /><input size="10" value="" name="useradar" type="text" />&nbsp;<input class="login" style="font-size: 10px;" value="Regalar" title="regalar" name="tipo" type="submit" />
+echo'<div class="hrs"></div><center><form action="' . $boardurl . '/web/cw-cambio_cat-seg-684.php" method="post" accept-charset="'.$context['character_set'].'" name="cat" id="cat">'; categorias(2,$context['id_cat']); echo' <input class="login" style="font-size: 10px;" value="Cambiar cat" title="Cambiar cat" name="tipo" type="submit" /><br /><input size="10" value="" name="useradar" type="text" />&nbsp;<input class="login" style="font-size: 10px;" value="Regalar" title="regalar" name="tipo" type="submit" />
 <input value="'.$context['id-post'].'" name="id-seg-2451" type="hidden" /></form></center>';}
 echo'</div></div>';
 $requests=db_query("
@@ -198,7 +198,7 @@ $seg2 = $date->format('s');
 $hora2 = $date->format('H');
 $min2 = $date->format('i');
 
-echo'<b id="autor_cmnt_'.$coment['id'].'" user_comment="'.$coment['nomuser'].'" text_comment=\''.$coment['comentario2'].'\'><a href="/perfil/'.$coment['nommem'].'" style="color:#956100;">'.$coment['nomuser'].'</a></b>&nbsp;<span title="'.$diames2.'.'.$mesesano2[$mesano2].'.'.$ano2.' '.$hora2.':'.$min2.':'.$seg2.'">'.hace($coment['fecha']).'</span> dijo:</div><div style="float:right;">';
+echo'<b id="autor_cmnt_'.$coment['id'].'" user_comment="'.$coment['nomuser'].'" text_comment=\''.$coment['comentario2'].'\'><a href="' . $boardurl . '/perfil/'.$coment['nommem'].'" style="color:#956100;">'.$coment['nomuser'].'</a></b>&nbsp;<span title="'.$diames2.'.'.$mesesano2[$mesano2].'.'.$ano2.' '.$hora2.':'.$min2.':'.$seg2.'">'.hace($coment['fecha']).'</span> dijo:</div><div style="float:right;">';
 
 if($context['user']['is_logged']){echo'<a href="/web/cw-TEMPenviarMP.php?user='.$coment['nomuser'].'" title="Enviar MP a '.$coment['nomuser'].'" class="boxy"><img alt="" src="'.$tranfer1.'/icons/mensaje_para.gif" border="0" /></a>';
 if(!$context['is_locked']){echo'&#32;<a onclick="citar_comment('.$coment['id'].')" href="javascript:void(0)" title="Citar Comentario"><img alt="" src="'.$tranfer1.'/comunidades/respuesta.png" class="png" border="0" /></a>';}
@@ -235,7 +235,7 @@ echo'<br/><input class="login" type="button" id="button_add_comment" value="Envi
 </form></div>
 <div style="clear: left;"></div>
 <!-- fin comentar -->';}}
-if(!$context['user']['id']){echo'<div style="clear: left;"></div><div class="noesta-am" style="width:774px;margin-top: 5px;">Para poder comentar necesitas estar <a href="/registrarse/" style="color:#FFB600;" title="Registrarse">Registrado</a>. Si ya tenes usuario <a href="javascript:irAconectarse();" style="color:#FFB600;" title="Conectarse">Conectate!</a></div>';}
+if(!$context['user']['id']){echo'<div style="clear: left;"></div><div class="noesta-am" style="width:774px;margin-top: 5px;">Para poder comentar necesitas estar <a href="' . $boardurl . '/registrarse/" style="color:#FFB600;" title="Registrarse">registrado</a>. Si ya tienes usuario <a href="javascript:irAconectarse();" style="color:#FFB600;" title="Conectarse">&iexcl;con&eacute;ctate!</a></div>';}
 
 echo'</div></div>
 
@@ -243,7 +243,7 @@ echo'</div></div>
 
 </div>';
 
-if(!$context['user']['id']){echo'<p align="right" style="font-text:9px;"><a href="/noestilo/post/'.$context['id-post'].'">Sin estilo</a></p>';}}
+if(!$context['user']['id']){echo'<p align="right" style="font-text:9px;"><a href="' . $boardurl . '/noestilo/post/'.$context['id-post'].'">Sin estilo</a></p>';}}
 
 function template_quickreply_box(){
 global $tranfer1, $context, $settings, $options, $txt, $modSettings;
