@@ -304,7 +304,7 @@ function g_anuncio_728x90() {
 }
 
 function g_anuncio_125x125() {
-  echo'<p align="center">PUBLICIDAD</p>';
+  echo '<p align="center">PUBLICIDAD</p>';
 }
 
 function anuncio_234x60() {
@@ -402,9 +402,6 @@ function pais($valor) {
   return $valor;
 }
 
-function menuser($user) {
-  global $tranfer1, $scripturl, $context, $txt, $no_firma, $no_avatar, $db_prefix, $options, $ID_MEMBER, $modSettings, $boardurl, $memberContext, $themeUser;
-
 function sexo1($valor) {
   $valor = str_replace('1', 'Masculino', $valor);
   $valor = str_replace('2', 'Femenino', $valor);
@@ -421,114 +418,213 @@ function sexo2($valor) {
   return $valor;
 }
 
-if(!$context['user']['is_admin']){$shas=' AND ID_BOARD<>142';}else{$shas='';}
+function menuser($user) {
+  global $tranfer1, $scripturl, $context, $txt, $no_firma, $no_avatar, $db_prefix, $options, $ID_MEMBER, $modSettings, $boardurl, $memberContext, $themeUser;
 
-$context['postuser']=mysqli_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}messages WHERE ID_MEMBER='{$user}'$shas", __FILE__, __LINE__));
+  if (!$context['user']['is_admin']) {
+    $shas = ' AND ID_BOARD <> 142';
+  } else {
+    $shas = '';
+  }
 
-$userse = db_query("
-SELECT mem.ID_MEMBER,mem.memberName,mem.avatar,mem.personalText,mem.ID_POST_GROUP,mem.ID_GROUP,mem.realName,mem.usertitle,mem.gender,mem.topics,mem.signature,mem.posts,mem.memberIP
-FROM ({$db_prefix}members as mem)
-WHERE mem.ID_MEMBER='{$user}'", __FILE__, __LINE__);
-while($row = mysqli_fetch_assoc($userse)){
-  $context['memberName']=$row['memberName'];
-  $context['avatar']=$row['avatar'];
-  $context['personalText']=$row['personalText'];	
-  $context['ID_POST_GROUP']=$row['ID_POST_GROUP'];
-  $context['ID_GROUP']=$row['ID_GROUP'];
-  $context['realName']=$row['realName'];
-  $context['usertitle']=$row['usertitle'];
-  $context['gender']=$row['gender'];
-  $context['topics']=$row['topics'];
-  $context['firma']=$row['signature'];
-  $context['money']=$row['posts'];
-  $context['ip']=$row['memberIP'];
-  $context['ID_MEMBER']=$row['ID_MEMBER'];}
-mysqli_free_result($userse);		
-echo'<div class="box_140" style="float:left; margin-right:8px;width: 140px;">
-<div class="box_title" style="width: 138px;"><div class="box_txt box_140-34">Publicado por:</div>
-<div class="box_rss"><a href="/rss/post-user/'.$context['realName'].'"><div style="height: 16px; width: 16px; cursor: pointer;" class="feed png"><img alt="" src="'.$tranfer1.'/espacio.gif" class="png" height="16px" width="16px" /></div></a></div></div><div class="windowbg" style="width: 130px; padding: 4px;overflow: hidden; ">
-<center>';
-$idgrup=$context['ID_POST_GROUP'];
-$idgrup2=$context['ID_GROUP'];
-$userse2 = db_query("
-SELECT g.groupName,g.ID_GROUP
-FROM {$db_prefix}membergroups as g
-WHERE g.ID_GROUP=$idgrup", __FILE__, __LINE__);
-while($row2 = mysqli_fetch_assoc($userse2))
-{$membergropu=$row2['groupName'];}
-mysqli_free_result($userse2);		
-$userse3 = db_query("SELECT g.groupName,g.ID_GROUP
-FROM {$db_prefix}membergroups as g
-WHERE g.ID_GROUP=$idgrup2", __FILE__, __LINE__);
-while($row2 = mysqli_fetch_assoc($userse3))
-{$membergropu2=$row2['groupName'];}
-mysqli_free_result($userse3);
+  $request = db_query("
+    SELECT ID_MEMBER
+    FROM {$db_prefix}messages
+    WHERE ID_MEMBER = '{$user}'
+    $shas", __FILE__, __LINE__);
 
-$medallavr=db_query("SELECT g.ID_GROUP,g.stars FROM {$db_prefix}membergroups as g WHERE g.ID_GROUP=".(!empty($idgrup2) ? $idgrup2 : $idgrup)."", __FILE__, __LINE__);
-while($row7 = mysqli_fetch_assoc($medallavr)){$medalla=$row7['stars'];}
-mysqli_free_result($medallavr);
+  $context['postuser'] = mysqli_num_rows($request);
 
-      if ($modSettings['avatar_action_too_large'] == 'option_html_resize' || $modSettings['avatar_action_too_large'] == 'option_js_resize')
-      {
-        if (!empty($modSettings['avatar_max_width_external']))
-          $context['user']['avatar']['width'] = $modSettings['avatar_max_width_external'];
-        if (!empty($modSettings['avatar_max_height_external']))
-           $context['user']['avatar']['height'] = $modSettings['avatar_max_height_external'];
+  $userse = db_query("
+    SELECT mem.ID_MEMBER,mem.memberName,mem.avatar,mem.personalText,mem.ID_POST_GROUP,mem.ID_GROUP,mem.realName,mem.usertitle,mem.gender,mem.topics,mem.signature,mem.posts,mem.memberIP
+    FROM ({$db_prefix}members as mem)
+    WHERE mem.ID_MEMBER='{$user}'", __FILE__, __LINE__);
+
+  while ($row = mysqli_fetch_assoc($userse)) {
+    $context['memberName'] = $row['memberName'];
+    $context['avatar'] = $row['avatar'];
+    $context['personalText'] = $row['personalText'];	
+    $context['ID_POST_GROUP'] = $row['ID_POST_GROUP'];
+    $context['ID_GROUP'] = $row['ID_GROUP'];
+    $context['realName'] = $row['realName'];
+    $context['usertitle'] = $row['usertitle'];
+    $context['gender'] = $row['gender'];
+    $context['topics'] = $row['topics'];
+    $context['firma'] = $row['signature'];
+    $context['money'] = $row['posts'];
+    $context['ip'] = $row['memberIP'];
+    $context['ID_MEMBER'] = $row['ID_MEMBER'];
+  }
+
+  mysqli_free_result($userse);
+
+  echo '
+    <div class="box_140" style="float: left; margin-right: 8px; width: 140px;">
+      <div class="box_title" style="width: 138px;"><div class="box_txt box_140-34">Publicado por:</div>
+      <div class="box_rss">
+        <a href="' . $boardurl . '/rss/post-user/' . $context['realName'] . '">
+          <div style="height: 16px; width: 16px; cursor: pointer;" class="feed png">
+            <img alt="" src="'.$tranfer1.'/espacio.gif" class="png" height="16px" width="16px" />
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="windowbg" style="width: 130px; padding: 4px;overflow: hidden;">
+      <center>';
+
+  $idgrup = $context['ID_POST_GROUP'];
+  $idgrup2 = $context['ID_GROUP'];
+
+  $userse2 = db_query("
+    SELECT groupName, ID_GROUP
+    FROM {$db_prefix}membergroups
+    WHERE ID_GROUP = $idgrup", __FILE__, __LINE__);
+
+  while($row2 = mysqli_fetch_assoc($userse2)) {
+    $membergropu = $row2['groupName'];
+  }
+
+  mysqli_free_result($userse2);
+
+  $userse3 = db_query("
+    SELECT groupName, ID_GROUP
+    FROM {$db_prefix}membergroups
+    WHERE ID_GROUP = $idgrup2", __FILE__, __LINE__);
+
+  while ($row2 = mysqli_fetch_assoc($userse3)) {
+    $membergropu2 = $row2['groupName'];
+  }
+
+  mysqli_free_result($userse3);
+
+  $medallavr = db_query("
+  SELECT ID_GROUP, stars
+  FROM {$db_prefix}membergroups
+  WHERE ID_GROUP = " . (!empty($idgrup2) ? $idgrup2 : $idgrup), __FILE__, __LINE__);
+
+  while ($row7 = mysqli_fetch_assoc($medallavr)) {
+    $medalla = $row7['stars'];
+  }
+
+  mysqli_free_result($medallavr);
+
+  if ($modSettings['avatar_action_too_large'] == 'option_html_resize' || $modSettings['avatar_action_too_large'] == 'option_js_resize') {
+    if (!empty($modSettings['avatar_max_width_external'])) {
+      $context['user']['avatar']['width'] = $modSettings['avatar_max_width_external'];
+    }
+
+    if (!empty($modSettings['avatar_max_height_external'])) {
+      $context['user']['avatar']['height'] = $modSettings['avatar_max_height_external'];
+    }
+  }
+
+  if (!empty($context['avatar'])) {
+    $context['user']['avatar']['image'] = '<img src="' . $context['avatar'] . '"' . (isset($context['user']['avatar']['width']) ? ' width="' . $context['user']['avatar']['width'] . '"' : '') . (isset($context['user']['avatar']['height']) ? ' height="' . $context['user']['avatar']['height'] . '"' : '') . ' alt="" class="avatar" border="0" onerror="error_avatar(this)" />';
+  }
+
+  if ($context['avatar']) {
+    echo '
+      <div class="fondoavatar" style="overflow: hidden; width: 130px;" align="center">
+        <a href="' . $boardurl . '/perfil/' . $context['memberName'] . '" title="Ver Perfil">' . $context['user']['avatar']['image'] . '</a><br />
+        <span class="mp">' . censorText($context['personalText']) . '</span>
+      </div>';
+  } else {
+    echo '
+      <div class="fondoavatar" style="overflow: auto; width: 130px;" align="center">
+        <a href="' . $boardurl . '/perfil/' . $context['memberName'] . '" title="Ver Perfil">
+          <img src="'.$no_avatar.'" border="0" alt="Sin Avatar"  onerror="error_avatar(this)" />
+        </a><br />
+        <span class="mp">' . censorText($context['personalText']) . '</span>
+      </div>';
+  }
+
+  echo '
+    </center>
+    <br />
+    <a href="' . $boardurl . '/perfil/'.$context['memberName'].'" style="font-size: 14px; color: #FF6600;"><strong>' . $context['realName'] . '</strong></a><br />
+    <strong style="font-size: 12px; color: #747474; text-shadow: #6A5645 0px 1px 1px;">' . (!empty($membergropu2) ? $membergropu2 : $membergropu) . '</strong><br />
+    <span title="' . (!empty($membergropu2) ? $membergropu2 : $membergropu) . '">
+      <img alt="" src="' . str_replace("1#rangos", "$tranfer1/rangos", $medalla) . '" />
+    </span>
+    &nbsp;
+    <span title="' . sexo1($context['gender']) . '">'. sexo2($context['gender']) . '</span>';
+
+  if ($context['usertitle']) {
+    echo '&nbsp;<img alt="" width="16px" height="11px" title="' . pais($context['usertitle']) . '" src="' . $tranfer1 . '/icons/banderas/' . $context['usertitle'] . '.gif" />';
+  } else {
+    echo '&nbsp;<img alt="" width="16px" height="11px" src="' . $tranfer1 . '/icons/banderas/ot.gif" />';
+  }
+
+  if (!$context['user']['is_guest']) {
+    echo '&nbsp;<a href="' . $boardurl . '/web/cw-TEMPenviarMP.php?user=' . $context['memberName'] . '" title="Enviar MP a ' . $context['memberName'] . '" class="boxy" ><img alt="" src="' . $tranfer1 . '/icons/mensaje_para.gif" border="0" /></a>';
+  }
+
+  echo '
+    <br /><br />
+    <div class="hrs"></div>
+    <br />
+    <div class="fondoavatar" style="overflow: hidden; width: 130px;">';
+
+  // Marca los comentarios de los usuarios
+  if ($context['allow_admin']) {
+    $d10 = '<a href="' . $boardurl . '/perfil/' . $context['memberName'] . '/puntosp">';
+    $d2 = '</a>';
+  } else {
+    $d10 = '';
+    $d2 = '';
+  }
+
+  echo '
+    <b style="color: #FE8F47; text-shadow: #6A5645 0px 1px 1px;">PUNTOS:</b>&nbsp;' . $d10 . '<b><span id="cant_pts_post">' . ((int) $context['money']) . '</span></b>' . $d2 . '<br />
+    <b style="color: #FE8F47; text-shadow: #6A5645 0px 1px 1px;">POST:</b>&nbsp;<b><a href="' . $boardurl . '/buscador/&q=&autor=' . $context['memberName'] . '&orden=fecha&categoria=0">' . usuarioPOST($user) . '</a></b><br />
+    <b style="color: #FE8F47; text-shadow: #6A5645 0px 1px 1px;">COMENTARIOS:</b>&nbsp;<b>' . (usuarioComentariosPOST($user) + usuarioComentariosIMG($user)) . '</b></div><br />';
+
+  if ($context['user']['is_guest']) {
+    echo '
+      <div class="hrs"></div>
+      <div class="size11">
+        <br />
+        <a href="' . $boardurl . '/registrarse/" rel="nofollow" target="_blank" rel="nofollow">&iexcl;&iexcl;REG&Iacute;STRATE!!</a> es <b>&iexcl;&iexcl;GRATIS!!</b>
+      </div>';
+
+    anuncio2_120x240();
+  }
+
+  if ($context['ID_MEMBER'] <> $context['user']['id']) {
+    echo '<span class="size11">';
+
+    if ($context['ID_MEMBER'] <> 1) {
+      if ($context['allow_admin']) {
+        echo '
+          <div class="hrs"></div>
+          <b class="size11">Moderador:</b><br />
+          IP: <a target="_blank" href="http://lacnic.net/cgi-bin/lacnic/whois?query=' . $context['ip'] . '" title="IP: ' . $context['ip'] . '" rel="nofollow">' . $context['ip'] . '</a><br />
+          <a href="' . $boardurl . '/moderacion/edit-user/perfil/' . $context['ID_MEMBER'] . '" title="Administrar Usuario">ADMINISTRAR USUARIO</a><br />';
       }
-  
-if (!empty($context['avatar']))
-    $context['user']['avatar']['image'] = '<img src="'.$context['avatar'].'"' . (isset($context['user']['avatar']['width']) ? ' width="' . $context['user']['avatar']['width'] . '"' : '') . (isset($context['user']['avatar']['height']) ? ' height="' . $context['user']['avatar']['height'] . '"' : '') . ' alt="" class="avatar" border="0" onerror="error_avatar(this)" />';
+    }
 
+    if ($context['user']['is_admin']) {
+      $request = db_query("
+        SELECT ID_MEMBER
+        FROM {$db_prefix}log_online
+        WHERE ID_MEMBER = {$user}", __FILE__, __LINE__);
 
-if ($context['avatar']){
-echo '<div class="fondoavatar" style="overflow:hidden;width:130px;" align="center"><a href="/perfil/', $context['memberName'], '" title="Ver Perfil">'.$context['user']['avatar']['image'].'</a><br /><span class="mp">'.censorText($context['personalText']).'</span></div>';
+      $context['estaon'] = mysqli_num_rows($request);
+
+      if (empty($context['estaon'])) {
+        echo '<span style="color: red;">DESCONECTADO</span>';
+      } else if (!empty($context['estaon'])) {
+        echo '<span style="color: green;">CONECTADO</span>';
+      }
+    }
+
+    echo '</span>';
+  }
+
+  echo '
+      </div>
+    </div>';
 }
-else
-echo '<div class="fondoavatar" style="overflow: auto; width: 130px;" align="center"><a href="/perfil/', $context['memberName'], '" title="Ver Perfil"><img src="'.$no_avatar.'" border="0" alt="Sin Avatar"  onerror="error_avatar(this)" /></a><br /><span class="mp">'.censorText($context['personalText']).'</span></div>';
-
-echo'</center><br/>';
-
-  echo'<a href="/perfil/'.$context['memberName'].'" style="font-size:14px;color:#FF6600;"><strong>'.$context['realName'].'</strong></a><br />';
-    
-      echo '<strong style="font-size:12px;color:#747474;text-shadow: #6A5645 0px 1px 1px;">'.(!empty($membergropu2) ? $membergropu2 : $membergropu).'</strong><br />';
-      
-      echo '<span title="', (!empty($membergropu2) ? $membergropu2 : $membergropu), '"><img alt="" src="',str_replace("1#rangos", "$tranfer1/rangos", $medalla), '" /></span>';
-      
-       
-      echo '&nbsp;<span title="'. sexo1($context['gender']) . '">'. sexo2($context['gender']) . '</span>';
-      if($context['usertitle'])
-      {echo'&nbsp;<img alt="" width="16px" height="11px" title="'. pais($context['usertitle'])  . '" src="'.$tranfer1.'/icons/banderas/'.$context['usertitle'].'.gif" />';}
-            else{echo'&nbsp;<img alt="" width="16px" height="11px" src="'.$tranfer1.'/icons/banderas/ot.gif" />';}
-if(!$context['user']['is_guest']){echo'&nbsp;<a href="/web/cw-TEMPenviarMP.php?user='.$context['memberName'].'" title="Enviar MP a '.$context['memberName'].'" class="boxy" ><img alt="" src="'.$tranfer1.'/icons/mensaje_para.gif" border="0" /></a>';}
-
-echo'<br /><br /><div class="hrs"></div><br /><div class="fondoavatar" style="overflow:hidden;width:130px;">';
-
-// aca marca los comentarios de los usuarios
-
-
-if($context['allow_admin']){$d10='<a href="/perfil/'.$context['memberName'].'/puntosp">'; $d2='</a>';}
-else{$d10=''; $d2='';}
-echo '<b style="color:#FE8F47;text-shadow: #6A5645 0px 1px 1px;">PUNTOS:</b>&nbsp;'.$d10.'<b><span id="cant_pts_post">'.((int)$context['money']).'</span></b>'.$d2.'<br />
-
-<b style="color:#FE8F47;text-shadow: #6A5645 0px 1px 1px;">POST:</b>&nbsp;<b><a href="/buscador/&q=&autor='.$context['memberName'].'&orden=fecha&categoria=0">'.usuarioPOST($user).'</a></b><br />
-<b style="color:#FE8F47;text-shadow: #6A5645 0px 1px 1px;">COMENTARIOS:</b>&nbsp;<b>'.(usuarioComentariosPOST($user)+usuarioComentariosIMG($user)).'</b></div><br />';
-
-if ($context['user']['is_guest']){
-echo'<div class="hrs"></div><div class="size11"><br /><a href="/registrarse/" rel="nofollow" target="_blank" rel="nofollow">REGISTRATE!</a> es <b>GRATIS!!</b></div>';
-anuncio2_120x240();}
-
-
-if($context['ID_MEMBER']<>$context['user']['id']){
-echo'<span class="size11">';
-if($context['ID_MEMBER']<>'1'){
-if($context['allow_admin']){echo'<div class="hrs"></div><b class="size11">Moderador:</b><br />IP: <a target="_blank" href="http://lacnic.net/cgi-bin/lacnic/whois?query='.$context['ip'].'" title="IP: '.$context['ip'].'" rel="nofollow">'.$context['ip'].'</a><br /><a href="/moderacion/edit-user/perfil/',$context['ID_MEMBER'],'" title="Administrar Usuario">ADMINISTRAR USUARIO</a><br />';}}
-if ($context['user']['is_admin']){
-$context['estaon']=mysqli_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}log_online WHERE ID_MEMBER='{$user}'", __FILE__, __LINE__));
-if(empty($context['estaon'])){echo'<span style="color:red;">DESCONECTADO</span>';}
-elseif(!empty($context['estaon'])){echo'<span style="color:green;">CONECTADO</span>';}}
-echo'</span>';}
-  
-echo'</div></div>';}
 
 function nohtml($html) {
   return htmlspecialchars(trim($html));
@@ -586,7 +682,7 @@ function usuarioPOST($user) {
 function ditaruser() {
   global $context, $db_prefix, $ID_MEMBER, $boardurl;
 
-  $getid = isset($_GET['u']) ? (int) $_GET['u'] : '';
+  $getid = isset($_GET['u']) ? (int) $_GET['u'] : $ID_MEMBER;
 
   $request = db_query("
     SELECT ID_MEMBER, realName, memberIP, avatar
@@ -602,11 +698,12 @@ function ditaruser() {
 
   mysqli_free_result($request);
 
+  /*
   if ($getid == $ID_MEMBER) {
     if ($_GET['sa'] == 'cuenta') {
       die();
     } else if ($_GET['sa'] == 'perfil') {
-      die();
+      die('holi');
     } else if ($_GET['m'] == 'tyc8') {
       die();
     } else if ($_GET['m'] == 'tyc3') {
@@ -625,7 +722,7 @@ function ditaruser() {
       die();
     }
   }
-
+  */
 
   echo '
     <div style="width: 138px; float: left; margin-right: 8px;">
@@ -656,9 +753,9 @@ function ditaruser() {
 
   if ($getid) {
     if ($getid == 1) {
-      die();
+      // die('1234');
     } else if ($getid == $ID_MEMBER) {
-      die();
+      // die();
     } else if ($context['allow_admin']) {
       echo '
         <div class="hrs"></div>
@@ -800,7 +897,7 @@ function categorias($tipo, $extra = null) {
   mysqli_free_result($request);
 
   if ($tipo == 1) {
-    echo'<select style="width: 202px;" name="categoria" class="select"><option value="0" selected="selected">Todas</option>';
+    echo '<select style="width: 202px;" name="categoria" class="select"><option value="0" selected="selected">Todas</option>';
 
     foreach ($context['boards'] as $board) {
       echo '<option value="' . $board['id'] . '"' . ($_GET['categoria'] == $board['id'] ? ' selected="selected"' : '') . '>' . $board['name'] . '</option>';
@@ -833,7 +930,7 @@ function enlaces() {
       <a class="size10" href="' . $boardurl . '/enlazanos/" target="_blank" rel="nofollow">Enl&aacute;zanos en tu web</a>
     </center>';
 }
-  
+
 function destacado() {
   global $tranfer1, $boardurl;
 
@@ -852,7 +949,7 @@ function destacado() {
 
 function actualizareliminados($id = '') {
   global $db_prefix, $user_info;
- 
+
   if (!$user_info['is_guest']) {
     $request = db_query("
       SELECT id
@@ -878,6 +975,7 @@ function actualizareliminados($id = '') {
 
 function valida_url($url) {
   $direccion = @fopen($url, 'r');
+
   if ($direccion) {
     $resultado = true;
   } else {
@@ -904,139 +1002,262 @@ function achicars($valor) {
   return strlen($valor) > 47 ? substr($valor, 0, 44) . '...' : $valor;
 }
 
-// tiempo 
+// Tiempo
 function hace($valor) {
   $formato_defecto = "H:i:s j-n-Y";
   $date = getEnglishDateFormat($valor);
   $ht = time() - $date->getTimestamp();
+
   if ($ht >= 2116800) {
-  $dia = $date->format('d');
-  $mes = $date->format('n');
-  $ano = $date->format('Y');
-  $hora = $date->format('H');
-  $minuto = $date->format('i');
-  $mesarray = array('', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
-  $fecha = "el&nbsp;$dia&nbsp;de&nbsp;$mesarray[$mes]&nbsp;del&nbsp;$ano";}
-  if($ht<30242054.045){$hc=(int)round($ht/2629743.83);
-  if($hc>1){$s="es";}else{$s="";}$fecha="hace&nbsp;$hc&nbsp;mes".$s;}
-  if($ht<2116800){$hc=(int)round($ht/604800);
-  if($hc>1){$s="s";}else{$s="";}$fecha="hace&nbsp;$hc&nbsp;semana".$s;}
-  if($ht<561600){$hc=(int)round($ht/86400);
-  if($hc==1){$fecha="ayer";}
-  if($hc==2){$fecha="antes&nbsp;de&nbsp;ayer";}
-  if($hc>2)$fecha="hace&nbsp;$hc&nbsp;d&iacute;as";}
-  if($ht<84600){$hc=(int)round($ht/3600);if($hc>1){$s="s";}else{$s="";}$fecha="hace&nbsp;$hc&nbsp;hora".$s;
-  if($ht>4200 && $ht<5400){$fecha="hace m&aacute;s&nbsp;de&nbsp;una&nbsp;hora";}}
-  if($ht<3570){$hc=(int)round($ht/60);if($hc>1){$s="s";}else{$s="";}$fecha="hace&nbsp;$hc&nbsp;minuto".$s;}
-  if($ht<60){$fecha="hace&nbsp;$ht&nbsp;segundos";}
-  if($ht<=3){$fecha="hace&nbsp;segundos";}
+    $dia = $date->format('d');
+    $mes = $date->format('n');
+    $ano = $date->format('Y');
+    $hora = $date->format('H');
+    $minuto = $date->format('i');
+    $mesarray = array('', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+    $fecha = "el $dia de $mesarray[$mes] del $ano";
+  }
+
+  if ($ht < 30242054.045) {
+    $hc = (int) round($ht/2629743.83);
+
+    if ($hc > 1) {
+      $s = "es";
+    } else {
+      $s = "";
+    }
+
+    $fecha = "hace $hc mes" . $s;
+  }
+
+  if ($ht < 2116800) {
+    $hc = (int) round($ht / 604800);
+
+    if ($hc > 1) {
+      $s = "s";
+    } else {
+      $s = "";
+    }
+
+    $fecha = "hace $hc semana" . $s;
+  }
+
+  if ($ht < 561600) {
+    $hc = (int) round($ht / 86400);
+
+    if ($hc == 1) {
+      $fecha = "ayer";
+    }
+
+    if ($hc == 2) {
+      $fecha = "antes de ayer";
+    }
+
+    if ($hc > 2) {
+      $fecha = "hace $hc d&iacute;as";
+    }
+  }
+
+  if ($ht < 84600) {
+    $hc = (int) round($ht / 3600);
+
+    if ($hc > 1) {
+      $s = "s";
+    } else {
+      $s = "";
+    }
+
+    $fecha = "hace $hc hora" . $s;
+
+    if ($ht > 4200 && $ht < 5400) {
+      $fecha = "hace m&aacute;s de una hora";
+    }
+  }
+
+  if ($ht < 3570) {
+    $hc = (int) round($ht / 60);
+
+    if ($hc > 1) {
+      $s = "s";
+    } else {
+      $s = "";
+    }
+
+    $fecha = "hace $hc minuto" . $s;
+  }
+
+  if ($ht < 60) {
+    $fecha = "hace $ht segundos";
+  }
+
+  if ($ht <= 3) {
+    $fecha = "hace segundos";
+  }
+
   return $fecha;
 }
 
-//Falta
-function faltan($valor){
-  $ht = time()-$valor;
-  if($ht<84600){
-  if($ht<84600){$hc=(int)round($ht/3600); }
-  elseif($ht<3570){$hc=(int)round($ht/60);}
-  $de=24-$hc;
-  if(empty($de)){$fecha="poco";}else{$fecha="$de hs";}}
-  else{$fecha='Recargando';}
+// Falta
+function faltan($valor) {
+  $ht = time() - $valor;
+
+  if ($ht < 84600) {
+    if ($ht < 84600) {
+      $hc = (int) round($ht / 3600);
+    } else if ($ht < 3570) {
+      $hc = (int) round($ht / 60);
+    }
+
+    $de = 24 - $hc;
+
+    if (empty($de)) {
+      $fecha = "poco";
+    } else {
+      $fecha = "$de hs";
+    }
+  } else {
+    $fecha = 'Recargando';
+  }
 
   return $fecha;
 }
-
-
 
 function relevancia($data) {
-$resultado=$data; 
-$resulPar1=$data*10;
-$resulPar=(int)floor($resulPar1);
-if($resulPar > 99){$mostrar=100;}elseif($resulPar < 1){$mostrar=0;}else{$mostrar=$resulPar;}
-$resultado='<div class="relevancia png" title="'.$mostrar.'%"><div class="porcentajeRel png" style="width: '.$mostrar.'%;"></div></div>';
-return $resultado;}
+  // ¿Por qué hace esto?
+  // $resultado = $data;
+  $resulPar1 = $data * 10;
+  $resulPar = (int) floor($resulPar1);
+
+  if ($resulPar > 99) {
+    $mostrar = 100;
+  } else if ($resulPar < 1) {
+    $mostrar = 0;
+  } else {
+    $mostrar = $resulPar;
+  }
+
+  $resultado = '<div class="relevancia png" title="' . $mostrar . '%"><div class="porcentajeRel png" style="width: ' . $mostrar . '%;"></div></div>';
+
+  return $resultado;
+}
 
 function CerrarSession() {}
 
 function VideosMuro($data) {
-  global $tranfer1; 
-$lineas=explode('<br />',$data);
-$sinComas= str_replace(",","&cedil;",html_entity_decode($data));
-$mensaje= str_replace("<br />",",",$sinComas);       
-$nuLineas=count(explode(",", $mensaje));
-$site = 'www.';
-if (preg_match('#^([0-9A-Za-z-_]{11})$#i', trim($lineas[0]), $matches)){$data = $matches[1];}
-else{
-if (preg_match('#^http://((?:www|uk|fr|ie|it|jp|pl|es|nl|br|au|hk|mx|nz|de|ca)\.|)youtube\.com/(?:(?:watch|)\?v=|v/|jp\.swf\?video_id=)([0-9A-Za-z-_]{11})(?:.*?)(.*?)#i', trim($lineas[0]), $matches)){
-$site = !empty($matches[1]) ? strtolower($matches[1]) : $site;
-$xmlYT='http://gdata.youtube.com/feeds/api/videos/'.$matches[2]; 
-$ch = curl_init();
-curl_setopt ($ch, CURLOPT_URL,$xmlYT);
-curl_setopt ($ch, CURLOPT_HEADER, 0);
-curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-$page = trim(curl_exec($ch));
-$pos1=strpos($page,"<title type='text'>");
-$pos2=strpos($page,"</title>",$pos1);
-$pos1=$pos1+19;
-$titulo=substr($page,$pos1,$pos2-$pos1);
+  global $tranfer1;
 
-unset($xmlYT);
-for($i=1; $i<=$nuLineas;++$i){
+  $lineas = explode('<br />', $data);
+  $sinComas = str_replace(',', '&cedil;', html_entity_decode($data));
+  $mensaje = str_replace('<br />', ',', $sinComas);
+  $nuLineas = count(explode(',', $mensaje));
+  $site = 'www.';
 
-$lineas[$i]=isset($lineas[$i]) ? $lineas[$i] : '';
-$datad=$lineas[$i];
-$pfff[]=$datad;}
-$vas=join('<br />',$pfff);
-$data='<div class="pyv-large-thumb" id="v-'.$matches[2].'"><a class="large-thumb" title="'.$titulo.'"><img onclick="crearVyoutube(\''.$matches[2].'\');" src="http://i1.ytimg.com/vi/'.$matches[2].'/hqdefault.jpg" alt="'.$titulo.'" /></a><h3><a title="'.$titulo.'"  onclick="crearVyoutube(\''.$matches[2].'\');"><span class="title-label">'.$titulo.'</span><span class="watch-video-label">Ver este v&iacute;deo</span></a></h3></div><br />'.($vas ? '<div class="codePro1" style="margin-top:10px;">'.$vas.'</div>' : '' );
-unset($matches);}}               
-return $data;}
+  if (preg_match('#^([0-9A-Za-z-_]{11})$#i', trim($lineas[0]), $matches)) {
+    $data = $matches[1];
+  } else if (preg_match('#^http://((?:www|uk|fr|ie|it|jp|pl|es|nl|br|au|hk|mx|nz|de|ca)\.|)youtube\.com/(?:(?:watch|)\?v=|v/|jp\.swf\?video_id=)([0-9A-Za-z-_]{11})(?:.*?)(.*?)#i', trim($lineas[0]), $matches)) {
+    $site = !empty($matches[1]) ? strtolower($matches[1]) : $site;
+    $xmlYT = 'http://gdata.youtube.com/feeds/api/videos/' . $matches[2];
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $xmlYT);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $page = trim(curl_exec($ch));
+    $pos1 = strpos($page, '<title type="text">');
+    $pos2 = strpos($page, '</title>', $pos1);
+    $pos1 = $pos1 + 19;
+    $titulo = substr($page, $pos1, $pos2 - $pos1);
 
-function saberpais(){
-$_SERVER["HTTP_CLIENT_IP"]!="" ? $ip=$_SERVER["HTTP_CLIENT_IP"]:$ip=$_SERVER["REMOTE_ADDR"];
-function getCountry($ip_address){
-$url = "http://ip-to-country.webhosting.info/node/view/36";
-$inici = "src=/flag/?type=2&cc2=";
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url);
-curl_setopt($ch, CURLOPT_POST,"POST");
-curl_setopt($ch, CURLOPT_POST, 1);
-curl_setopt($ch, CURLOPT_POSTFIELDS, "ip_address=$ip_address"); 
-ob_start();
-curl_exec($ch);
-curl_close($ch);
-$cache = ob_get_contents();
-ob_end_clean();
-$resto = strstr($cache,$inici);
-$pais = substr($resto,strlen($inici),2);
-return $pais;}
-$paism = strtolower(getCountry($ip));
+    unset($xmlYT);
 
-return $paism;}
+    for ($i = 1; $i <= $nuLineas; ++$i) {
+      $lineas[$i] = isset($lineas[$i]) ? $lineas[$i] : '';
+      $datad = $lineas[$i];
+      $pfff[] = $datad;
+    }
+
+    $vas = join('<br />', $pfff);
+    $data = '
+      <div class="pyv-large-thumb" id="v-' . $matches[2] . '">
+        <a class="large-thumb" title="' . $titulo . '">
+          <img onclick="crearVyoutube(\'' . $matches[2] . '\');" src="http://i1.ytimg.com/vi/' . $matches[2] . '/hqdefault.jpg" alt="' . $titulo . '" />
+        </a>
+        <h3>
+          <a title="' . $titulo . '"  onclick="crearVyoutube(\'' . $matches[2] . '\');">
+            <span class="title-label">' . $titulo . '</span>
+            <span class="watch-video-label">Ver este v&iacute;deo</span>
+          </a>
+        </h3>
+      </div>
+      <br />
+      ' . ($vas ? '<div class="codePro1" style="margin-top: 10px;">' . $vas . '</div>' : '' );
+
+    unset($matches);
+  }
+
+  return $data;
+}
+
+function saberpais() {
+  $ip = isset($_SERVER['HTTP_CLIENT_IP']) ? $_SERVER['HTTP_CLIENT_IP'] : $_SERVER['REMOTE_ADDR'];
+  $url = 'http://ip-to-country.webhosting.info/node/view/36';
+  $inici = 'src=/flag/?type=2&cc2=';
+  $ch = curl_init();
+
+  curl_setopt($ch, CURLOPT_URL, $url);
+  curl_setopt($ch, CURLOPT_POST, 'POST');
+  curl_setopt($ch, CURLOPT_POST, 1);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, 'ip_address=' . $ip);
+  ob_start();
+  curl_exec($ch);
+  curl_close($ch);
+
+  $cache = ob_get_contents();
+
+  ob_end_clean();
+
+  $resto = strstr($cache, $inici);
+  $pais = substr($resto, strlen($inici), 2);
+  
+  return strtolower($pais);
+}
 
 function getMetaDescription($text) {
-$text = strip_tags($text);
-$text = trim($text);
-$text = substr($text, 0, 247);
-return $text."...";}
+  $text = strip_tags($text);
+  $text = trim($text);
+  $text = substr($text, 0, 247);
+
+  return $text . '...';
+}
 
 function getMetaKeywords($text) {
-// Limpiamos el texto
-$text = strip_tags($text);
-$text = strtolower($text);
-$text = trim($text);
-$text = preg_replace('/[^a-zA-Z0-9 -]/', ' ', $text);
-// extraemos las palabras
-$match = explode(" ", $text);
-$count = array();
-if(is_array($match)){
-foreach ($match as $key => $val) {
-if (strlen($val)> 3) {
-if (isset($count[$val])) {
-$count[$val]++;} else{$count[$val] = 1;}}}}
-arsort($count);
-$count = array_slice($count, 0, 10);
-return implode(", ", array_keys($count));}
+  // Limpiar texto
+  $text = strip_tags($text);
+  $text = strtolower($text);
+  $text = trim($text);
+  $text = preg_replace('/[^a-zA-Z0-9 -]/', ' ', $text);
 
+  // Extraer palabras
+  $match = explode(' ', $text);
+  $count = array();
+
+  if (is_array($match)) {
+    foreach ($match as $key => $val) {
+      if (strlen($val) > 3) {
+        if (isset($count[$val])) {
+          $count[$val]++;
+        } else {
+          $count[$val] = 1;
+        }
+      }
+    }
+  }
+
+  arsort($count);
+
+  $count = array_slice($count, 0, 10);
+
+  return implode(', ', array_keys($count));
+}
 
 function textarea2($ivvd, $dd = 0) {
   global $tranfer1, $user_info, $boardurl;
@@ -1074,14 +1295,20 @@ function textarea2($ivvd, $dd = 0) {
   return $resultado;
 }
 
-function timeforComent($que=''){
-$time=time();
+function timeforComent($que = '') {
+  $time = time();
+  $_SESSION['ultima_accionTIME'] = isset($_SESSION['ultima_accionTIME']) ? $_SESSION['ultima_accionTIME'] : '0';
 
-$_SESSION['ultima_accionTIME']=isset($_SESSION['ultima_accionTIME']) ? $_SESSION['ultima_accionTIME'] : '0';
-if($_SESSION['ultima_accionTIME'] > ($time-20) ){if(empty($que)){die('0: No es posible efectuar tantas acciones en poco tiempo.');}else{fatal_error('No es posible efectuar tantas acciones en poco tiempo.');}}
-else{ unset($_SESSION['ultima_accionTIME']); }
+  if ($_SESSION['ultima_accionTIME'] > ($time - 20)) {
+    if (empty($que)) {
+      die('0: No es posible efectuar tantas acciones en poco tiempo.');
+    } else {
+      fatal_error('No es posible efectuar tantas acciones en poco tiempo.');
+    }
+  } else {
+    unset($_SESSION['ultima_accionTIME']);
+  }
 }
-
 
 function salir() {
   global $db_prefix, $sourcedir, $ID_MEMBER, $modSettings, $user_info, $user_settings;
@@ -1109,9 +1336,10 @@ function salir() {
 }
 
 function cw_header() {
-    global $tranfer1;
-//header("Cache-Control: must-revalidate");
-//header("Expires: ".gmdate ("D, d M Y H:i:s", time() + 60*60*24*30)." GMT");
+  global $tranfer1;
+
+  // header("Cache-Control: must-revalidate");
+  // header("Expires: ".gmdate ("D, d M Y H:i:s", time() + 60*60*24*30)." GMT");
   echo '
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es">
@@ -1132,7 +1360,7 @@ function cw_header() {
 
 function getEnglishDateFormat($str_date) {
   if (intval($str_date)) {
-    $date = date('Y-m-d H:i:s', intval($str_date)); 
+    $date = date('Y-m-d H:i:s', intval($str_date));
     return new DateTime($date);
   } else {
     $months = array(
@@ -1174,148 +1402,162 @@ function getEnglishDateFormat($str_date) {
 }
 
 /*
+function flood() {}
 
-function Flood(){}
 function html2bbcode($mje) {
-//ELIMINAR HTML          
-        //Comentarios
-        $bbcode [] = '/\<!--(.*?)--\>/is';
-        $html [] = " ";
-        //Script
-        $bbcode [] = '/\<script(.*?)\>(.*?)\<\/script\>/is';
-        $html [] = " ";
-        //Style
-        $bbcode [] = '/\<style(.*?)\>(.*?)\<\/style\>/is';
-        $html [] = " ";        
-        //Head
-        $bbcode [] = '/\<head(.*?)\>(.*?)\<\/head\>/is';
-        $html [] = " ";
-//ELIMINAR HTML
+  // Eliminar HTML
+  // Comentarios
+  $bbcode [] = '/\<!--(.*?)--\>/is';
+  $html [] = " ";
 
-        //Align
-        $bbcode [] = '/\<p(.*?)style=\"text-align: (.*?);\"(.*?)\>(.*?)\<\/p\>/is';
-        $html [] = '[$2]$4[/$2]';
-        
-        //P (Salto de linea)
-        $bbcode [] = '/\<br\s*\/?\><\/p\>/is';
-        $html [] = "\n";
+  // Scripts
+  $bbcode [] = '/\<script(.*?)\>(.*?)\<\/script\>/is';
+  $html [] = " ";
 
-        //BR (Salto de linea)
-        $bbcode [] = '/\<br\s*\/?\>/is';
-        $html [] = "\n";
-        
-        //P (Salto de linea)
-        $bbcode [] = '/\<\/p\>/is';
-        $html [] = "\n";
-        
-        //HR
-        $bbcode [] = '/\<hr\s*\/?\>/is';
-        $html [] = "[hr]";
-                        
-        //Negrita
-        $bbcode [] = '/\<b\>/is';
-        $html [] = '[b]';
-        $bbcode [] = '/\<\/b\>/is';
-        $html [] = '[/b]';
-        
-        //Negrita
-        $bbcode [] = '/\<strong\>/is';
-        $html [] = '[b]';
-        $bbcode [] = '/\<\/strong\>/is';
-        $html [] = '[/b]';
-        
-        //I
-        $bbcode [] = '/\<i\>/is';
-        $html [] = '[i]';
-        $bbcode [] = '/\<\/i\>/is';
-        $html [] = '[/i]';
-        
-        //I
-        $bbcode [] = '/\<em\>/is';
-        $html [] = '[i]';
-        $bbcode [] = '/\<\/em\>/is';
-        $html [] = '[/i]';
-        
-        //S
-        $bbcode [] = '/\<strike\>/is';
-        $html [] = '[s]';
-        $bbcode [] = '/\<\/strike\>/is';
-        $html [] = '[/s]';
-        
-        //S
-        $bbcode [] = '/\<span(.*?)style=\"text-decoration: line-through;(.*?)\"(.*?)\>(.*?)\<\/span\>/is';
-        $html [] = '[s]$4[/s]';
-        
-        //U
-        $bbcode [] = '/\<u\>/is';
-        $html [] = '[u]';
-        $bbcode [] = '/\<\/u\>/is';
-        $html [] = '[/u]';
-        
-        //U
-        $bbcode [] = '/\<span(.*?)style=\"text-decoration: underline;(.*?)\"(.*?)\>(.*?)\<\/span\>/is';
-        $html [] = '[u]$4[/u]';
-        
-        //FONT
-        $bbcode [] = '/\<span(.*?)style=\"font-family: (.*?)\"(.*?)\>(.*?)\<\/span\>/is';
-        $html [] = '[font=$2]$4[/font]';
-        
-        //Color
-        $bbcode [] = '/\<span(.*?)style=\"color: (.*?);\"(.*?)\>(.*?)\<\/span\>/is';
-        $html [] = '[color=$2]$4[/color]';
-                
-        //Color2
-        $bbcode [] = '/\<font(.*?)_casitaw_style=\"color: (.*?)\"(.*?)\>(.*)\<\/font\>/is';
-        $html [] = '[color=$2]$4[/color]';
-               
-        //Color3
-        $bbcode [] = '/\<font(.*?)style=\"color: (.*?)\"(.*?)\>(.*?)\<\/font\>/is';
-        $html [] = '[color=$2]$4[/color]';
-        
-        //Size
-        $bbcode [] = '/\<span(.*?)style=\"font-size: (.*?)\"(.*?)\>(.*?)\<\/span\>/is';
-        $html [] = '[size=$2]$4[/size]';
+  // Styles
+  $bbcode [] = '/\<style(.*?)\>(.*?)\<\/style\>/is';
+  $html [] = " ";
 
-        //QUOTE
-        $bbcode [] = '/\<blockquote(.*?)\>(.*?)\<\/blockquote\>/i';
-        $html [] = '[quote]$2[/quote]';
-        //IMG
-        //IMG
-            //IMG - TAMA�O
-        $bbcode [] = '/\<img(.*?)src=\"(.*?)\"(.*?)width=\"(.*?)\"(.*?)height=\"(.*?)\"(.*?)\>/i';
-        $html [] = '[img width=$4 height=$6]$2[/img]';
-        
-        $bbcode [] = '/\<img(.*?)src=\"(.*?)\"(.*?)\>/is';
-        $html [] = '[img]$2[/img]';
-        //SWF
-        $bbcode [] = '/\<embed(.*?)src=\"(.*?)\"(.*?)\>/is';
-        $html [] = '[swf]$2[/swf]';
-        
-        //URL
-        $bbcode [] = '/\<a(.*?)href=\"(.*?)\"(.*?)\>(.*?)\<\/a\>/is';
-        $html [] = '[url=$2]$4[/url]';
-        
-        //E-mail
-        $bbcode [] = '/\<a(.*?)href=\"mailto:(.*?)\"(.*?)\>(.*?)\<\/a\>/is';
-        $html [] = '[email=$2]$4[/email]';
-        
-        $cadena=stripslashes($mje);
-        $ArmarTXT=preg_replace( $bbcode, $html, $cadena );
-        $Fin=strip_tags(trim($ArmarTXT));
-return $Fin;}
+  // Head
+  $bbcode [] = '/\<head(.*?)\>(.*?)\<\/head\>/is';
+  $html [] = " ";
 
+  // Eliminar HTML
 
-function tags(){
-global  $db_prefix;
-$result=db_query("
-SELECT count(palabra) as quantity,id
-FROM {$db_prefix}tags
-GROUP BY palabra
-ORDER BY id DESC",__FILE__, __LINE__);
-while($row=mysqli_fetch_array($result)){$tag['cantidad']=$row['quantity'];$tag['id']=$row['id'];
+  // Align
+  $bbcode [] = '/\<p(.*?)style=\"text-align: (.*?);\"(.*?)\>(.*?)\<\/p\>/is';
+  $html [] = '[$2]$4[/$2]';
 
-db_query("UPDATE {$db_prefix}tags SET cantidad='{$tag['cantidad']}' WHERE id='{$tag['id']}'",__FILE__, __LINE__);}
-mysqli_free_result($result);}
+  // P (párrafo)
+  $bbcode [] = '/\<br\s*\/?\><\/p\>/is';
+  $html [] = "\n";
+
+  // BR (salto de línea)
+  $bbcode [] = '/\<br\s*\/?\>/is';
+  $html [] = "\n";
+
+  // P (párrafo)
+  $bbcode [] = '/\<\/p\>/is';
+  $html [] = "\n";
+
+  // HR
+  $bbcode [] = '/\<hr\s*\/?\>/is';
+  $html [] = "[hr]";
+
+  // Negrita
+  $bbcode [] = '/\<b\>/is';
+  $html [] = '[b]';
+  $bbcode [] = '/\<\/b\>/is';
+  $html [] = '[/b]';
+
+  // Negrita
+  $bbcode [] = '/\<strong\>/is';
+  $html [] = '[b]';
+  $bbcode [] = '/\<\/strong\>/is';
+  $html [] = '[/b]';
+
+  // Cursiva
+  $bbcode [] = '/\<i\>/is';
+  $html [] = '[i]';
+  $bbcode [] = '/\<\/i\>/is';
+  $html [] = '[/i]';
+
+  // Cursiva
+  $bbcode [] = '/\<em\>/is';
+  $html [] = '[i]';
+  $bbcode [] = '/\<\/em\>/is';
+  $html [] = '[/i]';
+
+  // Tachado
+  $bbcode [] = '/\<strike\>/is';
+  $html [] = '[s]';
+  $bbcode [] = '/\<\/strike\>/is';
+  $html [] = '[/s]';
+
+  // Tachado
+  $bbcode [] = '/\<span(.*?)style=\"text-decoration: line-through;(.*?)\"(.*?)\>(.*?)\<\/span\>/is';
+  $html [] = '[s]$4[/s]';
+
+  // Subrayado
+  $bbcode [] = '/\<u\>/is';
+  $html [] = '[u]';
+  $bbcode [] = '/\<\/u\>/is';
+  $html [] = '[/u]';
+
+  // Subrayado
+  $bbcode [] = '/\<span(.*?)style=\"text-decoration: underline;(.*?)\"(.*?)\>(.*?)\<\/span\>/is';
+  $html [] = '[u]$4[/u]';
+
+  // Fuente
+  $bbcode [] = '/\<span(.*?)style=\"font-family: (.*?)\"(.*?)\>(.*?)\<\/span\>/is';
+  $html [] = '[font=$2]$4[/font]';
+
+  // Color 1
+  $bbcode [] = '/\<span(.*?)style=\"color: (.*?);\"(.*?)\>(.*?)\<\/span\>/is';
+  $html [] = '[color=$2]$4[/color]';
+
+  // Color 2
+  $bbcode [] = '/\<font(.*?)_casitaw_style=\"color: (.*?)\"(.*?)\>(.*)\<\/font\>/is';
+  $html [] = '[color=$2]$4[/color]';
+
+  // Color 3
+  $bbcode [] = '/\<font(.*?)style=\"color: (.*?)\"(.*?)\>(.*?)\<\/font\>/is';
+  $html [] = '[color=$2]$4[/color]';
+
+  // Tamaño
+  $bbcode [] = '/\<span(.*?)style=\"font-size: (.*?)\"(.*?)\>(.*?)\<\/span\>/is';
+  $html [] = '[size=$2]$4[/size]';
+
+  // Cita
+  $bbcode [] = '/\<blockquote(.*?)\>(.*?)\<\/blockquote\>/i';
+  $html [] = '[quote]$2[/quote]';
+
+  // Imagen
+  $bbcode [] = '/\<img(.*?)src=\"(.*?)\"(.*?)width=\"(.*?)\"(.*?)height=\"(.*?)\"(.*?)\>/i';
+  $html [] = '[img width=$4 height=$6]$2[/img]';
+  
+  $bbcode [] = '/\<img(.*?)src=\"(.*?)\"(.*?)\>/is';
+  $html [] = '[img]$2[/img]';
+
+  // SWF
+  $bbcode [] = '/\<embed(.*?)src=\"(.*?)\"(.*?)\>/is';
+  $html [] = '[swf]$2[/swf]';
+
+  // URL
+  $bbcode [] = '/\<a(.*?)href=\"(.*?)\"(.*?)\>(.*?)\<\/a\>/is';
+  $html [] = '[url=$2]$4[/url]';
+
+  // E-mail
+  $bbcode [] = '/\<a(.*?)href=\"mailto:(.*?)\"(.*?)\>(.*?)\<\/a\>/is';
+  $html [] = '[email=$2]$4[/email]';
+
+  $cadena = stripslashes($mje);
+  $ArmarTXT = preg_replace($bbcode, $html, $cadena);
+  $Fin = strip_tags(trim($ArmarTXT));
+
+  return $Fin;
+}
+
+function tags() {
+  global $db_prefix;
+
+  $result = db_query("
+    SELECT count(palabra) as quantity,id
+    FROM {$db_prefix}tags
+    GROUP BY palabra
+    ORDER BY id DESC",__FILE__, __LINE__);
+
+  while ($row = mysqli_fetch_array($result)) {
+    $tag['cantidad'] = $row['quantity'];
+    $tag['id'] = $row['id'];
+    db_query("
+      UPDATE {$db_prefix}tags
+      SET cantidad = '{$tag['cantidad']}'
+      WHERE id = '{$tag['id']}'", __FILE__, __LINE__);
+  }
+
+  mysqli_free_result($result);
+}
 */
 
 ?>

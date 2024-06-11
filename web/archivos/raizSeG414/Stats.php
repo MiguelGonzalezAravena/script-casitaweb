@@ -128,8 +128,8 @@ censorText($row_topic_views['subject']);
 			),
 			'subject' => $row_topic_views['subject'],
 			'num_views' => $row_topic_views['visitas'],
-			'href' => '/post/'.$row_topic_views['ID_TOPIC'].'/'.censorText(urls($row_topic_views['description'])).'/'.censorText(urls($row_topic_views['subject'])).'.html',
-			'link' => '<a href="/post/' . $row_topic_views['ID_TOPIC'] . '/'.censorText(urls($row_topic_views['description'])).'/'.censorText(urls($row_topic_views['subject'])).'.html">' . $row_topic_views['subject'] . '</a>'
+			'href' => '/post/'.$row_topic_views['ID_TOPIC'].'/'.urls($row_topic_views['description']).'/'.urls($row_topic_views['subject']).'.html',
+			'link' => '<a href="/post/' . $row_topic_views['ID_TOPIC'] . '/'.urls($row_topic_views['description']).'/'.urls($row_topic_views['subject']).'.html">' . $row_topic_views['subject'] . '</a>'
 		);
 
 		if ($max_num_views < $row_topic_views['visitas'])

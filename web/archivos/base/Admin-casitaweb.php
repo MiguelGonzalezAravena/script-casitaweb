@@ -1,6 +1,8 @@
 <?php
-function template_admin_above(){global $tranfer1, $context, $settings, $options, $scripturl, $txt;
-echo '<div style="margin-bottom:8px;"><div style="width: 920px;background-color:#555555;border:solid 1px #3F3F3F;">';
+function template_admin_above() {
+	global $tranfer1, $context, $settings, $options, $scripturl, $txt;
+
+	echo '<div style="margin-bottom:8px;"><div style="width: 920px;background-color:#555555;border:solid 1px #3F3F3F;">';
 foreach ($context['admin_areas'] as $section){
     echo'
     <table><tr>';

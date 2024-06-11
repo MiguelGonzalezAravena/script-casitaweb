@@ -164,7 +164,7 @@ if (empty($user_settings['ID_MEMBER'])) {
 <?php
 } else {
   echo '<li class="clientarea" id="areaClient"><a id="hdLoglink" href="' . $boardurl . '/perfil/'.$context['user']['name'].'" class="logged">'.$context['user']['name'].'</a></li>';
-  if ($user_settings['puntos_dia'] > 0) {
+  if (isset($user_settings['puntos_dia']) && $user_settings['puntos_dia'] > 0) {
     $first = '';
     echo '<li style="border-left:none;" class="puntosa"><a href="#" style="cursor:default;"><strong style="font-size:13px;color:#0B7F00;" title="Puntos disponibles, PARA VOTAR, posts e im&aacute;genes.">+<span id="puntosDD">'.$user_settings['puntos_dia'].'</span></strong></a></li>';
   } else {
@@ -187,7 +187,7 @@ if (empty($user_settings['ID_MEMBER'])) {
 
   echo '<div id="hd_loginboxx3"><div id="hd_loginbox3"><div id="notificacionesES"><div style="display: none;" id="NOT_cargando"><center><br /><img alt="" src="'.$tranfer1.'/icons/cargando.gif" width="16px" height="16px" /></center></div><div id="notificaciones_cuerpo" style="display:none;"></div></div></div><div id="hd_masNOT" align="center"><a href="' . $boardurl . '/notificaciones/">Ver m&aacute;s notificaciones.</a></div></div>';
   
-  if ($user_settings['notificacionMonitor']) {
+  if (isset($user_settings['notificacionMonitor']) && $user_settings['notificacionMonitor']) {
     // TO-DO: ¿Por qué hay doble lógica?
     if ($user_settings['notificacionMonitor']) {
       $plur = 'es';

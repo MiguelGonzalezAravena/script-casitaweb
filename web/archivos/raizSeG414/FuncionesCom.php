@@ -2,66 +2,149 @@
 //Pagina de Rodrigo Zaupa (rigo@casitaweb.net)f
 if (!defined('CasitaWeb!-PorRigo'))die(base64_decode("d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv"));
 $context['cc']='10';
-function reglas_com($das){global $db_prefix; 
-if($das=='crearc'){echo'Antes de crear una comunidad es importante que leas el <a href="/protocolo/">protocolo</a>.<br /><br />
-Al crear la comunidad vas a ser due&ntilde;o/Administrador de tal por lo tanto tendr&aacute;s todos los permisos de un Administrador.<br /><br />
-Podes crear tu propio protocolo para tu comunidad, pero siempre respetando el protocolo general.<br /><br />
-Si tenes dudas sobre las comunidades visita <a href="http://ayuda.casitaweb.net/categoria/comunidades/">este enlace</a>.';}
-elseif($das=='creart'){
-echo'Antes de crear un nuevo tema es importante que leas el <a href="/protocolo/">protocolo</a>.<br /><br />
-Al ser el creador del tema, tenes el permiso de editarlo, eliminarlo, eliminar comentarios, bloquear comentarios.<br /><br />
-Si desea que su tema este fijado en la comunidad debe comunicarse con lo(s) Administrador(es) o Moderador(es) de la comunidad ya que ellos son los &uacute;nicos capaces de fijarlo.<br /><br />
-Si tenes dudas sobre las comunidades visita <a href="http://ayuda.casitaweb.net/categoria/comunidades/">este enlace</a>.';}}
 
-function arriba($da='',$a1='',$a2='',$a3='',$a4='',$a5='',$a6=''){global $db_prefix;
-$comunidades='<li><a href="/comunidades/" title="Comunidades">Comunidades</a></li>';
+function reglas_com($das) {
+  global $db_prefix, $boardurl; 
 
-$_GET['miembros']=isset($_GET['miembros']) ? $_GET['miembros'] : ''; 
-$_GET['cat']=isset($_GET['cat']) ? $_GET['cat'] : ''; 
-$_GET['id']=isset($_GET['id']) ? $_GET['id'] : ''; 
-
-if(empty($da)){$resultado=$comunidades;}
-elseif($da=='tema'){$resultado=$comunidades. '<li><a href="'.$a1.'" title="'.$a2.'">'.$a2.'</a></li> <li><a href="'.$a3.'" title="'.$a4.'">'.$a4.'</a></li> <li id="activer">'.$a5.'</li>';}
-elseif($da=='CrearCom'){$resultado=$comunidades.'<li id="activer">Crear Comunidad</li>';}
-elseif($da=='CrearTema'){$resultado=$comunidades.'<li><a href="'.$a1.'" title="'.$a2.'">'.$a2.'</a></li> <li><a href="'.$a3.'" title="'.$a4.'">'.$a4.'</a></li> <li id="activer">Crear Tema</li>';}
-elseif($da=='EditarTema'){$resultado=$comunidades.'<li><a href="'.$a1.'" title="'.$a2.'">'.$a2.'</a></li> <li><a href="'.$a3.'" title="'.$a4.'">'.$a4.'</a></li> <li><a href="'.$a5.'" title="'.$a6.'">'.$a6.'</a></li> <li id="activer">Editar Tema</li>';}
-elseif($da=='EditarCom'){$resultado=$comunidades.'<li><a href="'.$a1.'" title="'.$a2.'">'.$a2.'</a></li> <li><a href="'.$a3.'" title="'.$a4.'">'.$a4.'</a></li>  <li id="activer">Editar Comunidad</li>';}
-elseif($da=='buscar'){$resultado=$comunidades.'<li id="activer">Buscar</li>';}
-elseif($da=='buscar'){$resultado=$comunidades.'<li id="activer">Buscar</li>';}
-elseif($da=='directorios'){$resultado=$comunidades.'<li id="activer">Directorios</li>';}
-
-$cat=str_replace("/","",seguridad($_GET['cat']));
-$id=str_replace("/","",seguridad($_GET['id']));
-if($cat){
-$rs=db_query("SELECT b.nombre FROM ({$db_prefix}comunidades_categorias AS b) WHERE b.url='$cat' LIMIT 1",__FILE__, __LINE__);while($row=mysqli_fetch_assoc($rs)){$categoria= $row['nombre'];
-if($da=='directorios'){$resultado=$comunidades.' <li><a href="/comunidades/dir/" title="Directorios">Directorios</a></li><li id="activer">'.$categoria.'</li>';}else{$resultado=$comunidades.' <li id="activer">'.$categoria.'</li>';}}
-if(!$categoria){fatal_error('Esta categor&iacute;a no existe.-');}}
-
-elseif($id){
-$rs=db_query("
-SELECT c.nombre,b.url,b.nombre as cnam,c.url AS url2,c.id
-FROM ({$db_prefix}comunidades_categorias AS b, {$db_prefix}comunidades AS c)
-WHERE c.url='$id' AND c.categoria=b.url
-LIMIT 1",__FILE__, __LINE__);
-while ($row=mysqli_fetch_assoc($rs)){
-$categoria=$row['cnam'];
-$url=$row['url'];
-$urlIDDD=$row['id'];
-$row['nombre']=nohtml($row['nombre']);
-
-if(!$_GET['miembros']){$resultado=$comunidades.' <li><a href="/comunidades/categoria/'.$row['url'].'" title="'.$row['cnam'].'">'.$row['cnam'].'</a></li> <li id="activer">'.$row['nombre'].'</li>';}
-
-elseif($_GET['miembros']=='3'){$resultado=$comunidades.' <li><a href="/comunidades/categoria/'.$row['url'].'" title="'.$row['cnam'].'">'.$row['cnam'].'</a></li> <li><a href="/comunidades/'.$row['url2'].'" title="'.$row['nombre'].'">'.$row['nombre'].'</a></li> <li id="activer">Administrar comunidad</li>';}
-
-elseif($_GET['miembros']=='8'){$resultado=$comunidades.' <li><a href="/comunidades/categoria/'.$row['url'].'" title="'.$row['cnam'].'">'.$row['cnam'].'</a></li> <li><a href="/comunidades/'.$row['url2'].'" title="'.$row['nombre'].'">'.$row['nombre'].'</a></li> <li id="activer">Denunciar comunidad</li>';}
-
-elseif($_GET['miembros']=='9'){$resultado=$comunidades.' <li><a href="/comunidades/categoria/'.$row['url'].'" title="'.$row['cnam'].'">'.$row['cnam'].'</a></li> <li><a href="/comunidades/'.$row['url2'].'" title="'.$row['nombre'].'">'.$row['nombre'].'</a></li> <li id="activer">Publicitar</li>';}
-}if(!$urlIDDD){fatal_error('Esta comunidad no existe.-');}
-
+  if ($das == 'crearc') {
+    echo '
+      Antes de crear una comunidad es importante que leas el <a href="' . $boardurl . '/protocolo/">protocolo</a>.<br /><br />
+      Al crear la comunidad vas a ser due&ntilde;o/Administrador de tal por lo tanto tendr&aacute;s todos los permisos de un Administrador.<br /><br />
+      Puedes crear tu propio protocolo para tu comunidad, pero siempre respetando el protocolo general.<br /><br />
+      Si tienes dudas sobre las comunidades visita <a href="http://ayuda.casitaweb.net/categoria/comunidades/">este enlace</a>.';
+  } else if ($das == 'creart') {
+    echo '
+      Antes de crear un nuevo tema es importante que leas el <a href="' . $boardurl . '/protocolo/">protocolo</a>.<br /><br />
+      Al ser el creador del tema, tenes el permiso de editarlo, eliminarlo, eliminar comentarios, bloquear comentarios.<br /><br />
+      Si desea que su tema este fijado en la comunidad debe comunicarse con lo(s) Administrador(es) o Moderador(es) de la comunidad ya que ellos son los &uacute;nicos capaces de fijarlo.<br /><br />
+      Si tienes dudas sobre las comunidades visita <a href="http://ayuda.casitaweb.net/categoria/comunidades/">este enlace</a>.';
+  }
 }
 
+function arriba($da = '', $a1 = '', $a2 = '', $a3 = '', $a4 = '', $a5 = '', $a6 = '') {
+  global $db_prefix, $boardurl;
 
-echo'<div style="clear: both;margin-bottom:8px;width:922px;"><div class="tagacom2"><ul>'.$resultado.'<div style="clear: both;"></div></ul></div><div style="clear: both;"></div></div>';}
+  $comunidades = '<li><a href="' . $boardurl . '/comunidades/" title="Comunidades">Comunidades</a></li>';
+
+  $_GET['miembros'] = isset($_GET['miembros']) ? $_GET['miembros'] : ''; 
+  $_GET['cat'] = isset($_GET['cat']) ? $_GET['cat'] : ''; 
+  $_GET['id'] = isset($_GET['id']) ? $_GET['id'] : ''; 
+
+  if (empty($da)) {
+    $resultado = $comunidades;
+  } else if($da == 'tema') {
+    $resultado = $comunidades . '
+      <li><a href="'.$a1.'" title="'.$a2.'">'.$a2.'</a></li>
+      <li><a href="'.$a3.'" title="'.$a4.'">'.$a4.'</a></li>
+      <li id="activer">'.$a5.'</li>';
+  } else if ($da == 'CrearCom') {
+    $resultado = $comunidades . '
+      <li id="activer">Crear Comunidad</li>';
+  } else if ($da == 'CrearTema') {
+    $resultado = $comunidades . '
+      <li><a href="'.$a1.'" title="'.$a2.'">'.$a2.'</a></li>
+      <li><a href="'.$a3.'" title="'.$a4.'">'.$a4.'</a></li>
+      <li id="activer">Crear Tema</li>';
+  } else if ($da == 'EditarTema') {
+    $resultado = $comunidades . '
+      <li><a href="'.$a1.'" title="'.$a2.'">'.$a2.'</a></li>
+      <li><a href="'.$a3.'" title="'.$a4.'">'.$a4.'</a></li>
+      <li><a href="'.$a5.'" title="'.$a6.'">'.$a6.'</a></li>
+      <li id="activer">Editar Tema</li>';
+  } else if ($da == 'EditarCom') {
+    $resultado = $comunidades . '
+      <li><a href="'.$a1.'" title="'.$a2.'">'.$a2.'</a></li>
+      <li><a href="'.$a3.'" title="'.$a4.'">'.$a4.'</a></li>
+      <li id="activer">Editar Comunidad</li>';
+  } else if($da == 'buscar') {
+    $resultado = $comunidades . '
+      <li id="activer">Buscar</li>';
+  } else if ($da == 'buscar') {
+    $resultado = $comunidades . '
+      <li id="activer">Buscar</li>';
+  } else if ($da == 'directorios') {
+    $resultado = $comunidades . '
+      <li id="activer">Directorios</li>';
+  }
+
+  $cat = str_replace('/', '', seguridad($_GET['cat']));
+  $id = str_replace('/', '', seguridad($_GET['id']));
+
+  if ($cat) {
+    $rs = db_query("
+      SELECT nombre
+      FROM {$db_prefix}comunidades_categorias
+      WHERE url = '$cat'
+      LIMIT 1", __FILE__, __LINE__);
+
+    while ($row = mysqli_fetch_assoc($rs)) {
+      $categoria = $row['nombre'];
+
+      if ($da == 'directorios') {
+        $resultado = $comunidades . '
+          <li><a href="' . $boardurl . '/comunidades/dir/" title="Directorios">Directorios</a></li>
+          <li id="activer">' . $categoria . '</li>';
+      } else {
+        $resultado = $comunidades . '
+          <li id="activer">' . $categoria . '</li>';
+      }
+    }
+
+    if (!$categoria) {
+      fatal_error('Esta categor&iacute;a no existe.-');
+    }
+  } else if ($id) {
+    $rs = db_query("
+      SELECT c.nombre, b.url, b.nombre as cnam, c.url AS url2, c.id
+      FROM {$db_prefix}comunidades_categorias AS b, {$db_prefix}comunidades AS c
+      WHERE c.url = '$id'
+      AND c.categoria = b.id
+      LIMIT 1", __FILE__, __LINE__);
+
+    while ($row = mysqli_fetch_assoc($rs)) {
+      $categoria = $row['cnam'];
+      $url = $row['url'];
+      $urlIDDD = $row['id'];
+      $row['nombre'] = nohtml($row['nombre']);
+
+      if (!$_GET['miembros']) {
+        $resultado = $comunidades . '
+          <li><a href="' . $boardurl . '/comunidades/categoria/'.$row['url'].'" title="'.$row['cnam'].'">'.$row['cnam'].'</a></li>
+          <li id="activer">' . $row['nombre'] . '</li>';
+      } else if ($_GET['miembros'] == 3) {
+        $resultado = $comunidades . '
+          <li><a href="' . $boardurl . '/comunidades/categoria/'.$row['url'].'" title="'.$row['cnam'].'">'.$row['cnam'].'</a></li>
+          <li><a href="' . $boardurl . '/comunidades/'.$row['url2'].'" title="'.$row['nombre'].'">'.$row['nombre'].'</a></li>
+          <li id="activer">Administrar comunidad</li>';
+      } else if ($_GET['miembros'] == 8) {
+        $resultado = $comunidades . '
+          <li><a href="' . $boardurl . '/comunidades/categoria/'.$row['url'].'" title="'.$row['cnam'].'">'.$row['cnam'].'</a></li>
+          <li><a href="' . $boardurl . '/comunidades/'.$row['url2'].'" title="'.$row['nombre'].'">'.$row['nombre'].'</a></li>
+          <li id="activer">Denunciar comunidad</li>';
+      } else if ($_GET['miembros'] == 9) {
+        $resultado = $comunidades . '
+          <li><a href="' . $boardurl . '/comunidades/categoria/'.$row['url'].'" title="'.$row['cnam'].'">'.$row['cnam'].'</a></li>
+          <li><a href="' . $boardurl . '/comunidades/'.$row['url2'].'" title="'.$row['nombre'].'">'.$row['nombre'].'</a></li>
+          <li id="activer">Publicitar</li>';
+      }
+    }
+    
+    if (!$urlIDDD) {
+      fatal_error('Esta comunidad no existe.-');
+    }
+  }
+
+  echo '
+    <div style="clear: both; margin-bottom: 8px; width: 922px;">
+      <div class="tagacom2">
+        <ul>
+          ' . $resultado . '
+          <div style="clear: both;"></div>
+        </ul>
+      </div>
+      <div style="clear: both;"></div>
+    </div>';
+}
 
 function paginacion($total,$pp,$st,$url) {
 if($total>$pp) {
@@ -131,25 +214,49 @@ return true;}
 
 
 
-function miembro($id){global $context,$ID_MEMBER,$db_prefix;
-if(!$context['user']['is_guest']){
-$soy=mysqli_num_rows(db_query("SELECT c.id FROM ({$db_prefix}comunidades as c,{$db_prefix}comunidades_miembros as a) WHERE a.id_user='$ID_MEMBER' AND a.id_com='$id' AND a.aprobado=1 LIMIT 1",__FILE__, __LINE__));
+function miembro($id) {
+  global $context, $ID_MEMBER, $db_prefix;
 
-if($soy){$context['miembro']='1';}
-else{$context['miembro']='0';}
+  if (!$context['user']['is_guest']) {
+    $request = db_query("
+      SELECT c.id
+      FROM {$db_prefix}comunidades AS c, {$db_prefix}comunidades_miembros AS a
+      WHERE a.id_user = $ID_MEMBER
+      AND a.id_com = $id
+      AND a.aprobado = 1
+      LIMIT 1", __FILE__, __LINE__);
 
-}else{$context['miembro']='0';}
+    $soy = mysqli_num_rows($request);
 
-return true;}
+    if ($soy) {
+      $context['miembro'] = 1;
+    } else {
+      $context['miembro'] = 0;
+    }
+  } else {
+    $context['miembro'] = 0;
+  }
 
-function eaprobacion($id_com){ global  $context,$db_prefix,$user_settings;
+  return true;
+}
 
-if(!$context['allow_admin'] && !$context['user']['is_guest']){
-$enespera=mysqli_num_rows(db_query("SELECT c.id_user FROM ({$db_prefix}comunidades_miembros AS c) 
-WHERE c.id_com='$id_com' AND c.id_user='{$user_settings['ID_MEMBER']}' AND c.aprobado=0 LIMIT 1",__FILE__, __LINE__));
-if($enespera){$dde=true;}else{$dde=false;}
-return $dde;}
+function eaprobacion($id_com) {
+  global $context, $db_prefix, $user_settings;
 
+  // TO-DO: Quitar condición !$context['allow_admin'] &&
+  if (!$context['user']['is_guest']) {
+    $request = db_query("
+      SELECT id_user
+      FROM {$db_prefix}comunidades_miembros
+      WHERE id_com = $id_com
+      AND id_user = '{$user_settings['ID_MEMBER']}'
+      AND aprobado = 0
+      LIMIT 1", __FILE__, __LINE__);
+
+    $rows = mysqli_num_rows($request);
+
+    return ($rows > 0 ? true : false);
+  }
 }
 
 //para comentar postear o nadam, 3(admins PUEEN TOOD) / 1: puee comentar y postear // 2: solo comentar // 0: NADA
@@ -195,7 +302,7 @@ if(eaprobacion($id) || (($sdas223d=='3' || $sdas223d=='4') && !$ddas224d)){
 if($user_info['is_admin'] || $user_info['is_mods']){$estan='';}else{
 if(eaprobacion($id)){$estan='<div class="noesta-am" style="width:922px;">Esperando aprobaci&oacute;n de Administrador.</div>';}
 
-else{$estan='<div class="noesta-am" style="width:922px;">Solo miembros de esta comunidad pueden acceder.<br/><a href="#"  onclick="if (!confirm(\'\xbfEstas seguro que desea unirse a esta comunidad?\')) return false; javascript:window.location.href=\'/web/cw-comunidadesUnirCom.php?id='.$sdaddd.'\'" >UNITE a esta comunidad</a>
+else{$estan='<div class="noesta-am" style="width:922px;">Solo miembros de esta comunidad pueden acceder.<br/><a href="#"  onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas unirte a esta comunidad?\')) return false; javascript:window.location.href=\'' . $boardurl . '/web/cw-comunidadesUnirCom.php?id='.$sdaddd.'\'" >UNITE a esta comunidad</a>
 </div>';}}
 }else{$estan='';}
 
@@ -217,9 +324,9 @@ while($row=mysqli_fetch_assoc($rs44)){
     
 if($ban_expirat_eliminar){
 db_query("UPDATE {$db_prefix}comunidades_miembros
-			SET ban=0, ban_razon='',ban_expirate ='' , ban_por=''
-			WHERE id='$idor'
-			LIMIT 1", __FILE__, __LINE__);}else{
+      SET ban=0, ban_razon='',ban_expirate ='' , ban_por=''
+      WHERE id='$idor'
+      LIMIT 1", __FILE__, __LINE__);}else{
 arriba();
 fatal_error('<center><b style="color:red;">Tu cuenta en esta comunidad se encuentra baneada.</b><br/>
 <b>Raz&oacute;n:</b> '.nohtml(nohtml2($ban_razon)).'<br/>
@@ -232,51 +339,51 @@ return true;}
 function textaer($dd=''){
 global $tranfer1, $context,$user_info, $settings,$db_prefix,$options, $txt, $modSettings;
 
-	loadLanguage('Post');
-	if (empty($modSettings['smiley_enable']) && $user_info['smiley_set'] != 'none')
-		$context['smileys']['postform'][] = array();
-	elseif ($user_info['smiley_set'] != 'none')
-	{
-		if (($temp = cache_get_data('posting_smileys', 480)) == null)
-		{
-			$request = db_query("
-				SELECT code, filename, description, smileyRow, hidden
-				FROM {$db_prefix}smileys
-				WHERE hidden IN (0, 2)
-				ORDER BY smileyRow, smileyOrder", __FILE__, __LINE__);
-			while ($row = mysqli_fetch_assoc($request))
-			{
-				$row['code'] = htmlspecialchars($row['code']);
-				$row['filename'] = htmlspecialchars($row['filename']);
-				$row['description'] = htmlspecialchars($row['description']);
+  loadLanguage('Post');
+  if (empty($modSettings['smiley_enable']) && $user_info['smiley_set'] != 'none')
+    $context['smileys']['postform'][] = array();
+  elseif ($user_info['smiley_set'] != 'none')
+  {
+    if (($temp = cache_get_data('posting_smileys', 480)) == null)
+    {
+      $request = db_query("
+        SELECT code, filename, description, smileyRow, hidden
+        FROM {$db_prefix}smileys
+        WHERE hidden IN (0, 2)
+        ORDER BY smileyRow, smileyOrder", __FILE__, __LINE__);
+      while ($row = mysqli_fetch_assoc($request))
+      {
+        $row['code'] = htmlspecialchars($row['code']);
+        $row['filename'] = htmlspecialchars($row['filename']);
+        $row['description'] = htmlspecialchars($row['description']);
 
-				$context['smileys'][empty($row['hidden']) ? 'postform' : 'popup'][$row['smileyRow']]['smileys'][] = $row;
-			}
-			mysqli_free_result($request);
+        $context['smileys'][empty($row['hidden']) ? 'postform' : 'popup'][$row['smileyRow']]['smileys'][] = $row;
+      }
+      mysqli_free_result($request);
 
-			cache_put_data('posting_smileys', $context['smileys'], 480);
-		}
-		else
-			$context['smileys'] = $temp;
-	}
+      cache_put_data('posting_smileys', $context['smileys'], 480);
+    }
+    else
+      $context['smileys'] = $temp;
+  }
 
-	foreach (array_keys($context['smileys']) as $location)
-	{
-		foreach ($context['smileys'][$location] as $j => $row)
-		{
-			$n = count($context['smileys'][$location][$j]['smileys']);
-			for ($i = 0; $i < $n; $i++)
-			{
-				$context['smileys'][$location][$j]['smileys'][$i]['code'] = addslashes($context['smileys'][$location][$j]['smileys'][$i]['code']);
-				$context['smileys'][$location][$j]['smileys'][$i]['js_description'] = addslashes($context['smileys'][$location][$j]['smileys'][$i]['description']);
-			}
+  foreach (array_keys($context['smileys']) as $location)
+  {
+    foreach ($context['smileys'][$location] as $j => $row)
+    {
+      $n = count($context['smileys'][$location][$j]['smileys']);
+      for ($i = 0; $i < $n; $i++)
+      {
+        $context['smileys'][$location][$j]['smileys'][$i]['code'] = addslashes($context['smileys'][$location][$j]['smileys'][$i]['code']);
+        $context['smileys'][$location][$j]['smileys'][$i]['js_description'] = addslashes($context['smileys'][$location][$j]['smileys'][$i]['description']);
+      }
 
-			$context['smileys'][$location][$j]['smileys'][$n - 1]['last'] = true;
-		}
-		if (!empty($context['smileys'][$location]))
-			$context['smileys'][$location][count($context['smileys'][$location]) - 1]['last'] = true;
-	}
-	$context['show_bbc'] = !empty($modSettings['enableBBC']) && !empty($settings['show_bbc']);
+      $context['smileys'][$location][$j]['smileys'][$n - 1]['last'] = true;
+    }
+    if (!empty($context['smileys'][$location]))
+      $context['smileys'][$location][count($context['smileys'][$location]) - 1]['last'] = true;
+  }
+  $context['show_bbc'] = !empty($modSettings['enableBBC']) && !empty($settings['show_bbc']);
 if(!$dd){echo'<textarea style="resize:none;height:70px;width:746px;" name="cuerpo_comment" id="editorCW" tabindex="1"></textarea><p align="right" style="padding:0px;margin:0px;">';}
 if(!empty($context['smileys']['postform']))
 {foreach ($context['smileys']['postform'] as $smiley_row){
@@ -288,25 +395,27 @@ if (!empty($context['smileys']['popup']))
 echo'<a href="javascript:moticonup()">[', $txt['more_smileys'], ']</a>';}}
 
 
-function sidebar($id){
-global $tranfer1, $func,$ID_MEMBER,$no_avatar, $context,$db_prefix;
-$rs=db_query("
-SELECT c.nombre,c.url,c.imagen,c.id,c.articulos,c.usuarios,c.paprobar
-FROM ({$db_prefix}comunidades_categorias AS b, {$db_prefix}comunidades AS c)
-WHERE c.url='$id' AND c.categoria=b.url",__FILE__, __LINE__);
-while ($row=mysqli_fetch_assoc($rs)){
-$cat=nohtml2(nohtml($row['nombre'])); 
-$img=nohtml($row['imagen']); 
-$caturl=nohtml($row['url']); 
-$temas=$row['articulos']; 
-$sas=$row['id'];}
+function sidebar($id) {
+  global $tranfer1, $func, $ID_MEMBER, $no_avatar, $context, $db_prefix, $boardurl;
 
-if ($img){$img2=$img;}else{$img2=$no_avatar;}
+  $rs=db_query("
+    SELECT c.nombre, c.url, c.imagen, c.id, c.articulos, c.usuarios, c.paprobar
+    FROM {$db_prefix}comunidades_categorias AS b, {$db_prefix}comunidades AS c
+    WHERE c.url = '$id'
+    AND c.categoria = b.id", __FILE__, __LINE__);
 
+  while ($row = mysqli_fetch_assoc($rs)) {
+    $cat = nohtml2(nohtml($row['nombre'])); 
+    $img = nohtml($row['imagen']); 
+    $caturl = nohtml($row['url']); 
+    $temas = $row['articulos']; 
+    $sas = $row['id'];
+  }
 
+  $img2 = $img ? $img : $no_avatar;
 
-$miembrose=mysqli_num_rows(db_query("SELECT c.id FROM ({$db_prefix}comunidades_miembros as c) WHERE c.id_com='$sas' AND c.aprobado=1",__FILE__, __LINE__));
-$paprobare=mysqli_num_rows(db_query("SELECT c.id FROM ({$db_prefix}comunidades_miembros as c) WHERE c.id_com='$sas' AND c.aprobado=0",__FILE__, __LINE__));
+  $miembrose = mysqli_num_rows(db_query("SELECT id FROM {$db_prefix}comunidades_miembros WHERE id_com = '$sas' AND aprobado = 1", __FILE__, __LINE__));
+  $paprobare = mysqli_num_rows(db_query("SELECT id FROM {$db_prefix}comunidades_miembros WHERE id_com = '$sas' AND aprobado = 0", __FILE__, __LINE__));
 
 //temas
 echo'<div style="margin-bottom:10px;width:160px;margin-right:8px;float:left;">
@@ -319,19 +428,19 @@ echo'</a></center><br/>
 <br/><br/>
 <div class="hrs"></div>
 
-<a href="/web/cw-TEMPcomMIEMBROS.php?c='.$sas.'" class="boxy" title="Miembros">'.$miembrose.' Miembros</a><br/>
+<a href="' . $boardurl . '/web/cw-TEMPcomMIEMBROS.php?c='.$sas.'" class="boxy" title="Miembros">'.$miembrose.' Miembros</a><br/>
 '.$temas.' Temas<br/>';
-if($context['permisoCom']=='1' && $paprobare){echo'<span class="pointer" style="color:#267F00;" onclick="Boxy.load(\'/web/cw-TEMPcomMIEMBROSaDm.php?c='.$sas.'\', { title:\'Miembros en lista de aprobaci&oacute;n\'})" title="Miembros en lista de aprobaci&oacute;n">'.$paprobare.' Esperando aprobaci&oacute;n</span><br/>';}
+if($context['permisoCom']=='1' && $paprobare){echo'<span class="pointer" style="color:#267F00;" onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPcomMIEMBROSaDm.php?c='.$sas.'\', { title:\'Miembros en lista de aprobaci&oacute;n\'})" title="Miembros en lista de aprobaci&oacute;n">'.$paprobare.' Esperando aprobaci&oacute;n</span><br/>';}
 
-if($context['allow_admin']){echo'<div class="hrs"></div><center><a href="/comunidades/'.$caturl.'/administrar/" style="color:red;">Administrar Comunidad</a></center>';}
+if($context['allow_admin']){echo'<div class="hrs"></div><center><a href="' . $boardurl . '/comunidades/'.$caturl.'/administrar/" style="color:red;">Administrar Comunidad</a></center>';}
 
 echo'<div class="hrs"></div><br /><center>';
 
 if(!$context['miembro']){
 if(!$context['user']['is_guest'] && !$context['permisoCom']){
-echo'<input onclick="javascript:window.location.href=\'/comunidades/'.$caturl.'/denunciar\'" alt="" class="DenCom" title="" value=" " align="top" type="submit" /><br /><br />';}
+echo'<input onclick="javascript:window.location.href=\'' . $boardurl . '/comunidades/'.$caturl.'/denunciar\'" alt="" class="DenCom" title="" value=" " align="top" type="submit" /><br /><br />';}
 if(!eaprobacion($sas)){
-echo'<input onclick="if (!confirm(\'\xbfEstas seguro que desea unirse a esta comunidad?\')) return false; javascript:window.location.href=\'/web/cw-comunidadesUnirCom.php?id='.$caturl.'\'" alt="" class="unirCom" title="" value=" " align="top" type="submit" /><br /><br />';}else{echo'<div class="noesta-am">Esperando aprobaci&oacute;n de Administrador.</div>';}
+echo'<input onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas unirte a esta comunidad?\')) return false; javascript:window.location.href=\'' . $boardurl . '/web/cw-comunidadesUnirCom.php?id='.$caturl.'\'" alt="" class="unirCom" title="" value=" " align="top" type="submit" /><br /><br />';}else{echo'<div class="noesta-am">Esperando aprobaci&oacute;n de Administrador.</div>';}
 }else{
 
 
@@ -492,11 +601,11 @@ $daasdasda=$RegistrosAEmpezar ? ($RegistrosAEmpezar+1) : '1';
 $daasdasda2=$RegistrosAEmpezar ? ($RegistrosAEmpezar+50) : '50';
 if($daasdasda2>$NroRegistros){$daasdasda4=$NroRegistros;}else{$daasdasda4=$daasdasda2;}
 echo'<table class="linksList" style="width:922px;"><thead><tr>
-					<th>&nbsp;</th>
-					<th style="text-align: left;">Mostrando <strong>'.($daasdasda).' de '.($daasdasda4).'</strong> resultados de <strong>'.$NroRegistros.'</strong></th>
-					<th>Fecha</th>
-					<th>Temas</th>
-				</tr></thead><tbody>';
+          <th>&nbsp;</th>
+          <th style="text-align: left;">Mostrando <strong>'.($daasdasda).' de '.($daasdasda4).'</strong> resultados de <strong>'.$NroRegistros.'</strong></th>
+          <th>Fecha</th>
+          <th>Temas</th>
+        </tr></thead><tbody>';
 
 while($row=mysqli_fetch_assoc($result)){
 $nombCat=$row['nombCat'];
@@ -513,14 +622,14 @@ $fecha_inicio=timeformat($row['fecha_inicio']);
 
 echo'<tr id="div_'.$id.'"'.$back.'>
 <td title="'.$nombCat.'"><img title="'.$nombCat.'" src="'.$tranfer1.'/comunidades/categorias/'.$categoria.'.png" alt="" /></td>
-					<td style="text-align: left;">';
-					
+          <td style="text-align: left;">';
+          
 if($hiddenOptios=='2' && $context['user']['is_guest']){echo'<img alt="" src="'.$tranfer1.'/comunidades/registrado.png" /> ';}
 echo'<a title="'.nohtml(nohtml2($nombre)).'" href="/comunidades/'.$url.'" class="titlePost">'.nohtml(nohtml2($nombre)).'</a></td>
 <td title="'.$fecha_inicio.'">'.$fecha_inicio.'</td>
 <td>'.$articulos.'</td>
 </tr>';}
-				echo'</tbody></table>';
+        echo'</tbody></table>';
 if($PagAct>$PagUlt){echo'';}elseif($PagAct>1 || $PagAct<$PagUlt){echo'<div class="windowbgpag" style="width:700px;">';
 if($PagAct>1) echo "<a href='/comunidades/buscar/&q=$enl&autor=$usuario&orden=$orden&buscador_tipo=c&categoria=$cat&pag=$PagAnt'>&#171; anterior</a>";
 if($PagAct<$PagUlt)  echo "<a href='/comunidades/buscar/&q=$enl&autor=$usuario&orden=$orden&buscador_tipo=c&categoria=$cat&pag=$PagSig'>siguiente &#187;</a>";
@@ -574,12 +683,12 @@ $daasdasda=$RegistrosAEmpezar ? ($RegistrosAEmpezar+1) : '1';
 $daasdasda2=$RegistrosAEmpezar ? ($RegistrosAEmpezar+50) : '50';
 if($daasdasda2>$NroRegistros){$daasdasda4=$NroRegistros;}else{$daasdasda4=$daasdasda2;}
 echo'<table class="linksList" style="width:922px;"><thead><tr>
-					<th>&nbsp;</th>
-					<th style="text-align: left;">Mostrando <strong>'.($daasdasda).' de '.($daasdasda4).'</strong> resultados de <strong>'.$NroRegistros.'</strong></th>
-					<th>Fecha</th>
-					<th>Calificaci&oacute;n</th>
-					<th>Relevancia</th>
-				</tr></thead><tbody>';
+          <th>&nbsp;</th>
+          <th style="text-align: left;">Mostrando <strong>'.($daasdasda).' de '.($daasdasda4).'</strong> resultados de <strong>'.$NroRegistros.'</strong></th>
+          <th>Fecha</th>
+          <th>Calificaci&oacute;n</th>
+          <th>Relevancia</th>
+        </tr></thead><tbody>';
 while($row=mysqli_fetch_assoc($result)){
 $nombCat=$row['nombre'];
 $categoria=$row['categoria'];

@@ -1,7 +1,7 @@
 <?php
 //Pagina echa por rigo (Rodrigo). CasitaWeb! - www.casitaweb.net.
 function partearriba($sasdde,$lugar){
-global $db_prefix,$context;
+global $db_prefix,$context, $boardurl;
 $mostrarmuros=db_query("
 SELECT m.muro,m.fecha
 FROM ({$db_prefix}muro AS m)
@@ -9,7 +9,7 @@ WHERE m.id_user='{$context['member']['id']}' AND m.tipocc=0 AND m.tipo=1
 ORDER BY m.id DESC
 LIMIT 1", __FILE__, __LINE__);
 while($mostrarmuros1=mysqli_fetch_array($mostrarmuros)){
-$mensaje=censorText(nohtml2($mostrarmuros1['muro']));
+$mensaje=nohtml2($mostrarmuros1['muro']);
 $yata=hace($mostrarmuros1['fecha']);
 echo'<div style="border-bottom:#C8C8C8 solid 1px;width:541px;padding-bottom:8px;margin-bottom:2px;"><strong style="font-size:20px;color:#D35F2C;" title="'.$context['member']['name'].'">'.$context['member']['name'].'</strong> <span style="font-size:13px;">'.$mensaje.'. <span style="color:#C0C0C0;font-size:11px;">'.$yata.'</span></span></div>';}
 mysqli_free_result($mostrarmuros);
@@ -23,10 +23,10 @@ elseif($lugar=='comunidades'){$muro='';$amist='';$Comu=' class="activado" ';$apa
 elseif($lugar=='lista-de-amigos'){$muro='';$amist=' class="activado" ';$Comu='';$apaa='';}
 
 echo'<div class="botnes" style="clear:both;height:32px;width:541px;">
-<a href="/perfil/'.$sasdde.'/muro/" title="Muro"'.$muro.'>Muro</a></li>
-<a href="/perfil/'.$sasdde.'/apariencia/" title="Apariencia"'.$apaa.'>Apariencia</a>
-<a href="/perfil/'.$sasdde.'/comunidades/" title="Comunidades"'.$Comu.'>Comunidades</a>
-<a href="/perfil/'.$sasdde.'/lista-de-amigos/" title="Amistades"'.$amist.'>Amistades</a>
+<a href="' . $boardurl . '/perfil/'.$sasdde.'/muro/" title="Muro"'.$muro.'>Muro</a></li>
+<a href="' . $boardurl . '/perfil/'.$sasdde.'/apariencia/" title="Apariencia"'.$apaa.'>Apariencia</a>
+<a href="' . $boardurl . '/perfil/'.$sasdde.'/comunidades/" title="Comunidades"'.$Comu.'>Comunidades</a>
+<a href="' . $boardurl . '/perfil/'.$sasdde.'/lista-de-amigos/" title="Amistades"'.$amist.'>Amistades</a>
 <div class="clearBoth"></div>
 </div>';}
 

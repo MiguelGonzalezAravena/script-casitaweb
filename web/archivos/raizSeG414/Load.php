@@ -758,33 +758,50 @@ $user_info['smiley_set'] = (!in_array($user_info['smiley_set'], explode(',', $mo
   $context['tabindex'] = 1;
 
 
-//ACTUALIZAR PUNTOS
-if(empty($user_info['is_guest'])){
-if(empty($user_settings['ID_GROUP'])){$grupoi=$user_settings['ID_POST_GROUP'];}else{$grupoi='0';}
-if(empty($user_settings['puntos_dia']) && $grupoi != 4){
-if(faltan($user_settings['TiempoPuntos']) == 'Recargando'){
-if(empty($user_settings['ID_GROUP'])){$grupob=$user_settings['ID_POST_GROUP'];}
-else{$grupob=$user_settings['ID_GROUP'];}
+// Actualizar puntos
+if (empty($user_info['is_guest'])) {
+  if (empty($user_settings['ID_GROUP'])) {
+    $grupoi = $user_settings['ID_POST_GROUP'];
+  } else {
+    $grupoi = 0;
+  }
 
-$request=db_query("
-SELECT g.CantidadDePuntos
-FROM ({$db_prefix}membergroups AS g)
-WHERE g.ID_GROUP='$grupob'
-LIMIT 1", __FILE__, __LINE__);
-while($row=mysqli_fetch_assoc($request)){$cp=$row['CantidadDePuntos'];}
+  if (empty($user_settings['puntos_dia']) && $grupoi != 4) {
+    if (isset($user_settings['TiempoPuntos']) && faltan($user_settings['TiempoPuntos']) == 'Recargando') {
+      if (empty($user_settings['ID_GROUP'])) {
+        $grupob = $user_settings['ID_POST_GROUP'];
+      } else {
+        $grupob = $user_settings['ID_GROUP'];
+      }
 
-if(empty($grupoi)){db_query("UPDATE {$db_prefix}members SET puntos_dia='$cp' WHERE ID_MEMBER='{$user_settings['ID_MEMBER']}' LIMIT 1",__FILE__, __LINE__);}
+      $request = db_query("
+        SELECT CantidadDePuntos
+        FROM {$db_prefix}membergroups
+        WHERE ID_GROUP = $grupob
+        LIMIT 1", __FILE__, __LINE__);
 
-else{db_query("UPDATE {$db_prefix}members SET puntos_dia='$cp' WHERE ID_MEMBER='{$user_settings['ID_MEMBER']}' LIMIT 1",__FILE__, __LINE__);}
+      while ($row = mysqli_fetch_assoc($request)) {
+        $cp = $row['CantidadDePuntos'];
+      }
 
+      if (empty($grupoi)) {
+        db_query("
+          UPDATE {$db_prefix}members
+          SET puntos_dia = '$cp'
+          WHERE ID_MEMBER = '{$user_settings['ID_MEMBER']}'
+          LIMIT 1", __FILE__, __LINE__);
+      } else {
+        db_query("
+          UPDATE {$db_prefix}members
+          SET puntos_dia = '$cp'
+          WHERE ID_MEMBER = '{$user_settings['ID_MEMBER']}'
+          LIMIT 1", __FILE__, __LINE__);
+      }
+    }
+  }
 }
-
-}}
 //FIN ACTUALIZAR PUNTOS   
-        
-        
-        
-        
+
 // DATOS POST    
 $idtop = isset($_GET['post']) ? (int) $_GET['post'] : '';
 

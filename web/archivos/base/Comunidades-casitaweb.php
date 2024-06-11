@@ -1,12 +1,15 @@
 <?php
-function template_intro(){
-global $tranfer1,$sourcedir ,$no_avatar, $ID_MEMBER,$modSettings,$no_avatar,$context,$db_prefix;
 
-arriba();
-if(!$context['comuid']){
-echo'<div style="text-align:left;"><div style="float:left;height:auto;margin-right:6px;"><div class="ultimos_postsa" style="margin-bottom:4px;">
+function template_intro() {
+  global $tranfer1, $sourcedir, $no_avatar, $ID_MEMBER, $modSettings, $context, $db_prefix, $boardurl;
 
-<div class="crear_comunidad"><a href="/crear-comunidades/"><img src="'.$tranfer1.'/comunidades/btn-crear_comunidad.png" alt="" class="png" title="Crear Comunidad"/></a></div>
+  arriba();
+
+  if (!$context['comuid']) {
+    echo '
+      <div style="text-align:left;"><div style="float:left;height:auto;margin-right:6px;"><div class="ultimos_postsa" style="margin-bottom:4px;">
+
+<div class="crear_comunidad"><a href="' . $boardurl . '/crear-comunidades/"><img src="'.$tranfer1.'/comunidades/btn-crear_comunidad.png" alt="" class="png" title="Crear Comunidad"/></a></div>
 
 <div class="box_title" style="width:378px;"><div class="box_txt ultimos_posts">&Uacute;ltimos temas</div><div class="box_rss"><div class="icon_img"><a href="/rss/ultimos-temas/"><img alt="" src="'.$tranfer1.'/icons/cwbig-v1-iconos.gif?v3.2.3" style="cursor:pointer;margin-top:-352px;display:inline;" height="895px" width="18px" /></a></div></div></div>
 <div class="windowbg" style="width:370px;padding:4px;">';
@@ -58,7 +61,7 @@ $Res=$NroRegistros%$RegistrosAMostrar;
 if($Res>0) $PagUlt=floor($PagUlt)+1;
 if($PagAct>$PagUlt){echo'<div class="noesta"><br /><br /><br /><br />Est&aacute; p&aacute;gina no existe.<br /><br /><br /><br /><br /></div>';}
 echo'</div>';
-$dadenlace=!$cat ? '/comunidades/pag-' : "/comunidades/categoria/$cat/pag-";
+$dadenlace=!$cat ? $boardurl . '/comunidades/pag-' : $boardurl . "/comunidades/categoria/$cat/pag-";
 
 if($PagAct>$PagUlt){}else{
 if($PagAct>1 || $PagAct<$PagUlt){echo'<div class="windowbgpag" style="width:378px;">';
@@ -69,17 +72,38 @@ echo'</div>';echo'</div></div>';
 echo'<div style="float:left;margin-right:8px;"><div style="margin-bottom: 8px;width: 363px;"><ul class="buscadorPlus"><li id="gb" class="activo" onclick="elegir(\'google\')">Temas</li><li id="cwb" onclick="elegir(\'casitaweb\')">Comunidades</li></ul>
 <div class="clearBoth"></div><div style="margin-top: -1px;clear:both;"><form style="margin: 0px; padding: 0px;" action="/buscar-com.php" method="get" accept-charset="'.$context['character_set'].'"><input type="text" name="q" id="q" class="ibuscador" style="height:32px;" /><input onclick="return errorrojos(this.form.q.value);" alt="" class="bbuscador png" title="Buscar" value=" " type="submit" align="top" style="height:34px;" /><input name="buscador_tipo" value="g" checked="checked" type="hidden" /></form></div></div><div class="act_comments"><div class="box_title" style="width:361px;"><div class="box_txt ultimos_comments">&Uacute;ltimas comunidades creadas</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="padding:4px;width:353px;margin-bottom:8px;">';
 
-$rs2=db_query("SELECT c.nombre,m.realName,c.url,ca.url AS categoria,ca.nombre AS nombre2, c.fecha_inicio
-FROM ({$db_prefix}comunidades AS c,{$db_prefix}comunidades_categorias AS ca, {$db_prefix}members AS m)
-WHERE c.id_user=m.ID_MEMBER AND c.categoria=ca.url AND c.bloquear=0
-ORDER BY c.id DESC
-LIMIT 5",__FILE__, __LINE__);
-while ($row=mysqli_fetch_assoc($rs2)){
-$row['nombre']=nohtml(nohtml2($row['nombre']));
-echo'
-<div class="comunidad_tema"><div><div style="float:left;margin-right:5px;"><img src="'.$tranfer1.'/comunidades/categorias/'.$row['categoria'].'.png" alt="" title="'.$row['nombre2'].'" /></div><div><a style="color:#D35F2C;font-weight:bold;font-size:13px;" href="/comunidades/'.$row['url'].'/" target="_self" title="'.$row['nombre'].'">'.$row['nombre'].'</a></div></div>
-<div class="size10">Comunidad creada por <a href="/perfil/'.$row['realName'].'" target="_self" title="'.$row['realName'].'">'.$row['realName'].'</a> | '.timeformat($row['fecha_inicio']).'</a></div></div>
-<div class="hrs"></div>';}
+$rs2 = db_query("
+  SELECT c.nombre, m.realName, c.url, ca.url AS categoria, ca.nombre AS nombre2, c.fecha_inicio
+  FROM {$db_prefix}comunidades AS c,{$db_prefix}comunidades_categorias AS ca, {$db_prefix}members AS m
+  WHERE c.id_user = m.ID_MEMBER
+  AND c.categoria = ca.id
+  AND c.bloquear = 0
+  ORDER BY c.id DESC
+  LIMIT 5", __FILE__, __LINE__);
+
+while ($row = mysqli_fetch_assoc($rs2)) {
+  $row['nombre'] = nohtml(nohtml2($row['nombre']));
+
+  echo '
+    <div class="comunidad_tema">
+      <div>
+        <div style="float: left; margin-right: 5px;">
+          <img src="' . $tranfer1 . '/comunidades/categorias/' . $row['categoria'] . '.png" alt="" title="' . $row['nombre2'] . '" />
+        </div>
+        <div>
+          <a style="color: #D35F2C; font-weight: bold; font-size: 13px;" href="' . $boardurl . '/comunidades/' . $row['url'] . '/" target="_self" title="' . $row['nombre'] . '">' . $row['nombre'] . '</a>
+        </div>
+      </div>
+      <div class="size10">
+        Comunidad creada por
+        <a href="' . $boardurl . '/perfil/' . $row['realName'] . '" target="_self" title="' . $row['realName'] . '">' . $row['realName'] . '</a>
+        |
+        ' . timeformat($row['fecha_inicio']) . '
+      </div>
+    </div>
+    <div class="hrs"></div>';
+}
+
 mysqli_free_result($rs2);
 echo'</div></div>';
 
@@ -105,7 +129,7 @@ echo'</center></div>';
 echo'</div></div>';
 echo'<div style="float:left;">';
 
-$rs=db_query("SELECT c.url,c.imagen,c.id,c.nombre,c.cred_fecha
+$rs=db_query("SELECT c.url,c.imagen,c.id,c.nombre, c.cred_fecha
 FROM ({$db_prefix}comunidades AS c)
 WHERE c.credito=100 AND c.bloquear=0
 ORDER BY RAND()
@@ -185,7 +209,7 @@ $titulo=isset($titulo) ? $titulo : '';
 if(!$titulo){echo'<div class="noesta">No hay temas fijados.</div>';}
 echo'</div>';
 if(!eaprobacion($context['ddddsaaat']) && ($context['puedo']=='1' || $context['puedo']=='3')){
-echo'<p align="right" style="padding:0px;margin:0px;"><input onclick="javascript:window.location.href=\'/comunidades/'.$context['url2222'].'/crear-tema\'" alt="" class="comCrearTema" title="" value=" " type="submit" align="top" /></p>';}
+echo'<p align="right" style="padding:0px;margin:0px;"><input onclick="javascript:window.location.href=\'' . $boardurl . '/comunidades/'.$context['url2222'].'/crear-tema\'" alt="" class="comCrearTema" title="" value=" " type="submit" align="top" /></p>';}
 
 echo'<div class="box_title" style="width:539px;margin-top:4px;"><div class="box_txt">Temas</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div><div class="windowbg" style="width:531px;padding:4px;">';
 
@@ -219,7 +243,7 @@ echo'</div></div>';
 
 
 
-elseif($_GET['miembros']=='3' && $context['allow_admin']){
+elseif($_GET['miembros'] == 3 && $context['allow_admin']){
     
 if(!$context['ddddsaaat']){
 echo'<div class="noesta" style="width:541px;margin-bottom:8px;float:left;">Esta comunidad no existe.-</div>';}else{
@@ -263,7 +287,7 @@ echo'<div style="margin-bottom:8px;float:left;">
 <div class="box_title" style="width:539px;"><div class="box_txt">Publicitar Comunidad</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div>
 <div class="windowbg" style="width:531px;padding:4px;">';
 
-echo'<ul><li>Para publicitar tu comunidadad tenes que tener 500 o m&aacute;s puntos.</li>
+echo'<ul><li>Para publicitar tu comunidadad tienes que tener 500 o m&aacute;s puntos.</li>
 <li>La publicidad vale 100 puntos.</li>
 <li>Estar&aacute; a la vista de todos durante 24HS.</li>
 
@@ -487,7 +511,7 @@ echo'</div></div>';}}
 
 //////////CREAR COMUNIDAD
 function template_crearcomunidad(){
-global $tranfer1, $func,$ID_MEMBER,$modSettings,$user_settings, $context,$sourcedir,$db_prefix;
+global $tranfer1, $func,$ID_MEMBER,$modSettings,$user_settings, $context,$sourcedir,$db_prefix, $boardurl;
 if(!$ID_MEMBER){fatal_error('Solo para usuarios registrados.-');}
 include($sourcedir.'/FuncionesCom.php');
 arriba('CrearCom');
@@ -505,10 +529,10 @@ echo'<div style="width:354px;float:left;margin-right:8px;">
 <div class="box_354" style="margin-bottom:8px;">
 <div class="box_title" style="width:352px;"><div class="box_txt box_354-34">Importante</div><div class="box_rss"><div class="icon_img"><img src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" alt="" /></div></div></div><div style="width:344px;padding:4px;" class="windowbg">'; reglas_com('crearc'); echo'</div></div>
 
-<div class="noesta-am" style="margin-bottom:8px;">Tenes '.($cantidadcom-$cuantascom).' comunidades disponibles para crear</div>
+<div class="noesta-am" style="margin-bottom:8px;">Tienes '.($cantidadcom-$cuantascom).' comunidades disponibles para crear</div>
 
 <div class="box_354"><div class="box_title" style="width:352px;"><div class="box_txt box_354-34">Destacados</div><div class="box_rss"><div class="icon_img"><img src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" alt="" /></div></div></div><div style="width:344px;padding:4px;" class="windowbg">'; anuncio_300x250(); echo'</div></div></div><div style="width:560px;float:left;"><div class="box_560"><div class="box_title" style="width: 558px;"><div class="box_txt box_560-34">Crear nueva comunidad</div><div class="box_rss"><div class="icon_img"><img src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" alt="" /></div></div></div>
-<div class="windowbg" style="width:550px;padding:4px;"><form name="add_comunidad" method="post" action="/web/cw-comunidadesCrear.php"><div class="form-container"><div class="dataL"><label for="uname">Nombre de la comunidad</label><input onfocus="foco(this);" onblur="no_foco(this);" class="c_input" value="" name="nombre" tabindex="1" datatype="text" dataname="Nombre" type="text" /></div><div class="dataR"><label for="uname" style="float:left;">Nombre corto</label><span class="gif_cargando" id="shortname" style="top:0px;float:right;display:none;"><img src="'.$tranfer1.'/icons/cargando.gif" alt="" /></span><input onfocus="foco(this);" class="c_input" value="" name="shortname" tabindex="2" onkeyup="com.crear_shortname_key(this.value)" onblur="no_foco(this);com.crear_shortname_check(this.value)" datatype="text" dataname="Nombre corto" style="width:254px;" type="text" /><div class="desform">URL de la comunidad: <br /><strong>http://casitaweb.net/comunidades/<span id="preview_shortname"></span></strong></div><span id="msg_crear_shortname"></span></div><div class="clearBoth"></div><div class="dataL"><label for="uname">Imagen</label><input onfocus="foco(this);" onblur="no_foco(this);" class="c_input" value="http://" name="imagen" tabindex="3" datatype="url" dataname="Imagen" type="text" /></div>';
+<div class="windowbg" style="width:550px;padding:4px;"><form name="add_comunidad" method="post" action="' . $boardurl . '/web/cw-comunidadesCrear.php"><div class="form-container"><div class="dataL"><label for="uname">Nombre de la comunidad</label><input onfocus="foco(this);" onblur="no_foco(this);" class="c_input" value="" name="nombre" tabindex="1" datatype="text" dataname="Nombre" type="text" /></div><div class="dataR"><label for="uname" style="float:left;">Nombre corto</label><span class="gif_cargando" id="shortname" style="top:0px;float:right;display:none;"><img src="'.$tranfer1.'/icons/cargando.gif" alt="" /></span><input onfocus="foco(this);" class="c_input" value="" name="shortname" tabindex="2" onkeyup="com.crear_shortname_key(this.value)" onblur="no_foco(this);com.crear_shortname_check(this.value)" datatype="text" dataname="Nombre corto" style="width:254px;" type="text" /><div class="desform">URL de la comunidad: <br /><strong>http://casitaweb.net/comunidades/<span id="preview_shortname"></span></strong></div><span id="msg_crear_shortname"></span></div><div class="clearBoth"></div><div class="dataL"><label for="uname">Imagen</label><input onfocus="foco(this);" onblur="no_foco(this);" class="c_input" value="http://" name="imagen" tabindex="3" datatype="url" dataname="Imagen" type="text" /></div>';
 $request=db_query("SELECT url,nombre FROM {$db_prefix}comunidades_categorias ORDER BY nombre ASC", __FILE__, __LINE__);
 
 echo'<div class="dataR"><span class="gif_cargando floatR" id="subcategoria" style="top: 0px;"></span><label for="fname">Categoria</label><select style="width:264px;margin-top:5px; height: 25px;vertical-align:middle;" name="categoria">
@@ -725,7 +749,7 @@ echo'<table style="width:922px;"><tr>';
 while ($row=mysqli_fetch_assoc($rs)){if($rowlevel < ($maxrowlevel+1))$rowlevel++; else{$rowlevel = 0;}
 echo'<td style="width:230.5px;"><a href="/comunidades/dir/'.$row['url'].'" style="color:green;font-size:17px;border-bottom: 1px dotted;">'.$row['nombre'].'</a><br /><strong style="color:orange;font-size:13px;">Comunidades: '.$row['comunidades'].'</strong></td>';
 if($rowlevel < 1){echo'</tr><tr">';}} 
-echo'</tr></table><div class="noesta-am" style="width:922px;margin-top:15px;"><a href="/crear-comunidades/">Crea tu comunidad. Es GRATIS, R&Aacute;PIDO Y FACIL</a></div>';}else{
+echo'</tr></table><div class="noesta-am" style="width:922px;margin-top:15px;"><a href="' . $boardurl . '/crear-comunidades/">Crea tu comunidad. Es GRATIS, R&Aacute;PIDO Y FACIL</a></div>';}else{
     
     
 $RegistrosAMostrar=8;

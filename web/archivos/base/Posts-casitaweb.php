@@ -37,7 +37,7 @@ echo'</div><div id="social"></div></div>';
 
 if($context['anuncio']==1){
 if($context['user']['is_admin']){
-echo'<form action="' . $boardurl . '/web/cw-postEliminar.php?id='.$context['id-post'].'" method="post" accept-charset="', $context['character_set'], '" name="causa" id="causa"><input class="login" style="font-size: 11px;" value="Editar post" title="Editar post" onclick="location.href=\'/editar-post/id-'.$context['id-post'].'\'" type="button" />&nbsp;<input class="login" style="font-size: 11px;" value="Eliminar post" title="Eliminar post" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este post?\')) return false;';if($context['id_cat']!=='142'){if($context['user_ID']<>$context['user']['id']){echo' return errorrojo2(this.form.causa.value);';}} echo'" type="submit" />'; if($context['id_cat']!=='142'){if($context['user_ID']<>$context['user']['id']){echo'&nbsp;<b>Causa:</b>&nbsp;<input type="text" onfocus="foco(this);" onblur="no_foco(this);" id="causa" name="causa" maxlength="70" style="width:135px;" /><center><label id="errors" class="size10" style="color: red;"></label></center>';}} echo'</form>';}}else{
+echo'<form action="' . $boardurl . '/web/cw-postEliminar.php?id='.$context['id-post'].'" method="post" accept-charset="', $context['character_set'], '" name="causa" id="causa"><input class="login" style="font-size: 11px;" value="Editar post" title="Editar post" onclick="location.href=\'' . $boardurl . '/editar-post/id-'.$context['id-post'].'\'" type="button" />&nbsp;<input class="login" style="font-size: 11px;" value="Eliminar post" title="Eliminar post" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este post?\')) return false;';if($context['id_cat']!=='142'){if($context['user_ID']<>$context['user']['id']){echo' return errorrojo2(this.form.causa.value);';}} echo'" type="submit" />'; if($context['id_cat']!=='142'){if($context['user_ID']<>$context['user']['id']){echo'&nbsp;<b>Causa:</b>&nbsp;<input type="text" onfocus="foco(this);" onblur="no_foco(this);" id="causa" name="causa" maxlength="70" style="width:135px;" /><center><label id="errors" class="size10" style="color: red;"></label></center>';}} echo'</form>';}}else{
 echo'<!-- info del post --><div style="width:780px;margin-top:8px;">';
 
 echo'<div style="width:380px;float:left;margin-right:8px;#margin-right:8px;_margin-right:6px;">
@@ -47,18 +47,18 @@ echo'<div style="width:380px;float:left;margin-right:8px;#margin-right:8px;_marg
 <div class="windowbg" style="width:370px;padding:4px;">
 
 <form action="/web/cw-postEliminar.php?id='.$context['id-post'].'" method="post" accept-charset="'.$context['character_set'].'" style="margin:0px;padding:0px;" name="causa" id="causa">';
-if ($context['allow_admin']){echo'<input class="login" style="font-size: 11px;" value="Editar post" title="Editar post" onclick="location.href=\'/editar-post/id-'.$context['id-post'].'\'" type="button" />&nbsp;<input class="login" style="font-size: 11px;" type="submit" value="Eliminar post" title="Eliminar post" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este post?\')) return false;';
+if ($context['allow_admin']){echo'<input class="login" style="font-size: 11px;" value="Editar post" title="Editar post" onclick="location.href=\'' . $boardurl . '/editar-post/id-'.$context['id-post'].'\'" type="button" />&nbsp;<input class="login" style="font-size: 11px;" type="submit" value="Eliminar post" title="Eliminar post" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este post?\')) return false;';
 if($context['id_cat']!=='142'){if($context['user_ID']<>$context['user']['id']){echo' return errorrojo2(this.form.causa.value);';}} echo'" />';
 if($context['id_cat']!=='142'){if($context['user_ID']<>$context['user']['id']){echo'&nbsp;<b>Causa:</b>&nbsp;<input type="text" onfocus="foco(this);" onblur="no_foco(this);" id="causa" name="causa" maxlength="70" style="width: 135px;" /><center><label id="errors" class="size10" style="color: red;"></label></center>';}}
 echo'<div class="hrs"></div>';} else{
-if($context['user_ID']==$context['user']['id'] || $context['allow_admin']){
-echo'<input class="login" style="font-size: 11px;" value="Editar post" title="Editar post" onclick="location.href=\'/editar-post/id-'.$context['id-post'].'\'" type="button" />&nbsp;<input class="login" style="font-size: 11px;" value="Eliminar post" title="Eliminar post" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este post?\')) return false; location.href=\'/web/cw-postEliminar.php?id=', $context['id-post'], '\'" type="button" />';
+if($context['user_ID']==$context['user']['id'] || $context['allow_admin']) {
+echo'<input class="login" style="font-size: 11px;" value="Editar post" title="Editar post" onclick="location.href=\'' . $boardurl . '/editar-post/id-'.$context['id-post'].'\'" type="button" />&nbsp;<input class="login" style="font-size: 11px;" value="Eliminar post" title="Eliminar post" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este post?\')) return false; location.href=\'/web/cw-postEliminar.php?id=', $context['id-post'], '\'" type="button" />';
 echo'<div class="hrs"></div>';}}
 echo'</form>';
 if(!empty($context['leecher']))
 {echo'<b class="size11"><center>Usuarios no registrados y <span title="Primer rango">turistas</span> no puede calificar.</center></b><div class="hrs"></div>';}else{
 if($context['id_cat']==45 || $context['id_cat']==132){echo'<center><b class="size11">No se permite puntuar los post de esta categor&iacute;a.</b></center><div class="hrs"></div>';}else{
-if(empty($context['pdia'])){$h=' Faltan <u style="cursor:default;">'.faltan($user_settings['TiempoPuntos']).'</u> para que se recargen tus puntos.';$f='';}else{$h='';
+if(empty($context['pdia'])) { $h=' Faltan <u style="cursor:default;">'.faltan($user_settings['TiempoPuntos']).'</u> para que se recargen tus puntos.';$f='';}else{$h='';
 $f=' (<i>'.$context['pdia'].' puntos disponibles</i>)';}
 echo'<div id="span_opciones1" class="size10"><div style="margin-bottom:2px;"><strong class="size11">Dar puntos</strong>'.$f.':</div>';
 $pts=array();
@@ -72,10 +72,10 @@ echo'</div><div class="hrs"></div>';
 
 if($context['user']['is_logged']){echo'<center><span id="span_opciones2" style="text-align: center; display: block;">
 
-<a class="Iagregar_favoritos png" href="#" onclick="add_favoritos(\''.$context['id-post'].'\'); return false;" >Agregar a Favoritos</a>&nbsp;&#124;&nbsp;<a class="Idenunciar_post boxy png" title="Denunciar '.$context['titulo'].'" href="/web/cw-denunciaTEMP.php?t=1;d=' . $context['id-post'].'">Denunciar post</a>&nbsp;&#124;&nbsp;';}
+<a class="Iagregar_favoritos png" href="#" onclick="add_favoritos(\''.$context['id-post'].'\'); return false;" >Agregar a Favoritos</a>&nbsp;&#124;&nbsp;<a class="Idenunciar_post boxy png" title="Denunciar '.$context['titulo'].'" href="' . $boardurl . '/web/cw-denunciaTEMP.php?t=1;d=' . $context['id-post'].'">Denunciar post</a>&nbsp;&#124;&nbsp;';}
 
 
-echo'<a class="Irecomendar_post png boxy" href="/web/cw-TEMPenviarPost.php?id='.$context['id-post'].'" title="Recomendar '.$context['titulo'].'">Enviar a un amigo</a>';
+echo'<a class="Irecomendar_post png boxy" href="' . $boardurl . '/web/cw-TEMPenviarPost.php?id='.$context['id-post'].'" title="Recomendar '.$context['titulo'].'">Enviar a un amigo</a>';
 
 
 if($context['user']['is_logged']){echo'</span></center>';}

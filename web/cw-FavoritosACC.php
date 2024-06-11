@@ -16,7 +16,7 @@ $limpio=(int) $topicw;
 if(!$idcc){
 $sffss=mysqli_num_rows(db_query("
 SELECT p.ID_TOPIC,p.tipo,p.ID_MEMBER
-FROM ({$db_prefix}favoritos AS p)
+FROM ({$db_prefix}bookmarks AS p)
 WHERE p.ID_TOPIC='$limpio' AND p.tipo=0 AND p.ID_MEMBER='$myser'", __FILE__, __LINE__));
 if($sffss){die('0: Este post ya est&aacute; en tus favoritos.-');}
 
@@ -29,7 +29,7 @@ if($dss3ss){die('0: No puedes agregar a favoritos tus posts.-');}}
 elseif($idcc){
 $sffss=mysqli_num_rows(db_query("
 SELECT p.ID_TOPIC,p.tipo,p.ID_MEMBER
-FROM ({$db_prefix}favoritos AS p)
+FROM ({$db_prefix}bookmarks AS p)
 WHERE p.ID_TOPIC='$limpio' AND p.tipo=1 AND p.ID_MEMBER='$myser'", __FILE__, __LINE__));
 if($sffss){die('0: Esta imagen ya est&aacute; en tus favoritos.-');}
 
@@ -47,10 +47,11 @@ WHERE p.ID_TOPIC='$limpio' AND b.ID_BOARD=p.ID_BOARD$shas", __FILE__, __LINE__);
 while($red=mysqli_fetch_array($sadasd33)){$idss=$red['ID_TOPIC'];$idMen=$red['ID_MEMBER'];$subject=$red['subject'];$description=$red['description'];}
 if(empty($idss)){die('0: El post seleccionado no existe.-');}
 $fecha=time();
-db_query("INSERT INTO {$db_prefix}favoritos (ID_MEMBER,ID_TOPIC,tipo,fecha) VALUES ('$myser','$idss','0','$fecha')",__FILE__, __LINE__);
+db_query("INSERT INTO {$db_prefix}bookmarks (ID_MEMBER,ID_TOPIC,tipo) VALUES ('$myser','$idss','0')", __FILE__, __LINE__);
 
-if($myser<>$idMen){$url='/post/'.$idss.'/'.$description.'/'.urls($subject).'.html';
-db_query("INSERT INTO {$db_prefix}notificaciones (url,que,a_quien,por_quien,fecha) VALUES ('$url','6','$idMen','$myser','$fecha')",__FILE__, __LINE__);
+if ($myser <> $idMen) {
+  $url = '/post/' . $idss . '/' . $description . '/' . urls($subject) . '.html';
+db_query("INSERT INTO {$db_prefix}notificaciones (url,que,a_quien,por_quien) VALUES ('$url','6','$idMen','$myser')", __FILE__, __LINE__);
 db_query("UPDATE {$db_prefix}members SET notificacionMonitor=notificacionMonitor+1 WHERE ID_MEMBER='$idMen' LIMIT 1", __FILE__, __LINE__);}
 
 die('1: Agregado a favoritos!');
@@ -66,9 +67,9 @@ while($red=mysqli_fetch_array($sadasd33)){$idss=$red['ID_PICTURE'];$idMen=$red['
 if(empty($idss)){die('0: La imagen seleccionada no existe.-');}
 $fecha=time();
 
-db_query("INSERT INTO {$db_prefix}favoritos (ID_MEMBER,ID_TOPIC,tipo,fecha) VALUES ('$myser','$idss','1','$fecha')",__FILE__, __LINE__);
+db_query("INSERT INTO {$db_prefix}bookmarks (ID_MEMBER,ID_TOPIC,tipo) VALUES ('$myser','$idss','1')", __FILE__, __LINE__);
 if($myser<>$idMen){$url='/imagenes/ver/'.$idss;
-db_query("INSERT INTO {$db_prefix}notificaciones (url,que,a_quien,por_quien,fecha) VALUES ('$url','7','$idMen','$myser','$fecha')",__FILE__, __LINE__);
+db_query("INSERT INTO {$db_prefix}notificaciones (url,que,a_quien,por_quien) VALUES ('$url','7','$idMen','$myser')", __FILE__, __LINE__);
 db_query("UPDATE {$db_prefix}members SET notificacionMonitor=notificacionMonitor+1 WHERE ID_MEMBER='$idMen' LIMIT 1", __FILE__, __LINE__);}
 die('1: Agregado a favoritos!');
 
@@ -77,6 +78,6 @@ die('1: Agregado a favoritos!');
 $sa=(int)$_GET['eliminar'];
 if(!empty($sa)){
 if($context['user']['is_guest']){die('Error.-');}else{
-db_query("DELETE FROM {$db_prefix}favoritos WHERE id='$sa' AND ID_MEMBER='$myser'", __FILE__, __LINE__);
+db_query("DELETE FROM {$db_prefix}bookmarks WHERE id='$sa' AND ID_MEMBER='$myser'", __FILE__, __LINE__);
 die('1: ');
 }}} ?>

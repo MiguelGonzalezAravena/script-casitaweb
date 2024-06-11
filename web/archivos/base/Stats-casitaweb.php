@@ -1,7 +1,7 @@
 <?php
 function template_main(){
 
-global $context, $settings, $options, $txt,$db_prefix, $scripturl, $modSettings,$tranfer1;
+global $context, $settings, $options, $txt,$db_prefix, $scripturl, $modSettings,$tranfer1, $boardurl;
 $contar=1;
 $saksdmpas2=1;
 $contar2=1;
@@ -21,7 +21,7 @@ $contar8=1; ?>
 <div class="box_rss"><div class="icon_img"><img alt="" src="<?php echo $tranfer1;?>/blank.gif" style="width: 16px; height: 16px;" border="0" /></div></div></div><div class="windowbg" style="width: 292px; padding: 4px;">
 
 <?php foreach($context['tcomentados'] as $total) {?>
-<span class="size11"><b><?php echo $contar9++;?> - </b> <a title="<?php echo achicar($total['subject']);?>" href="/post/<?php echo $total['id'];?>/<?php echo censorText(urls($total['description']));?>/<?php echo censorText(urls($total['subject']));?>.html"><?php echo  achicar($total['subject']);?></a> (<?php echo $total['cuenta'];?> com)</span><br />
+<span class="size11"><b><?php echo $contar9++;?> - </b> <a title="<?php echo achicar($total['subject']);?>" href="/post/<?php echo $total['id'];?>/<?php echo urls($total['description']);?>/<?php echo urls($total['subject']);?>.html"><?php echo  achicar($total['subject']);?></a> (<?php echo $total['cuenta'];?> com)</span><br />
 <?php } ?>
 
 </div></div>
@@ -31,7 +31,7 @@ $contar8=1; ?>
 <div class="box_title" style="width: 300px;"><div class="box_txt box_300-34">10 Posts m&aacute;s vistos</div>
 <div class="box_rss"><div class="icon_img"><img alt="" src="<?php echo $tranfer1;?>/blank.gif" style="width: 16px; height: 16px;" border="0" /></div></div></div><div class="windowbg" style="width: 292px; padding: 4px;">
 <?php foreach ($context['top_topics_views'] as $topic) { ?>
-<span class="size11"><b><?php echo $contar3++;?> - </b><a title="<?php echo censorText($topic['subject']);?>" href="<?php echo $topic['href'];?>"><?php echo achicar($topic['subject']);?></a> (<?php echo $topic['num_views'];?> vis)</span><br />
+<span class="size11"><b><?php echo $contar3++;?> - </b><a title="<?php echo $topic['subject'];?>" href="<?php echo $topic['href'];?>"><?php echo achicar($topic['subject']);?></a> (<?php echo $topic['num_views'];?> vis)</span><br />
 <?php } ?>
 
 </div></div>
@@ -41,7 +41,7 @@ $contar8=1; ?>
 <div class="box_rss"><div class="icon_img"><img alt="" src="<?php echo $tranfer1;?>/blank.gif" style="width: 16px; height: 16px;" border="0" /></div></div></div><div class="windowbg" style="width: 292px; padding: 4px;">
 <?php foreach ($context['postporpuntos'] as $ppp){ ?>
 
-<span class="size11"><b><?php echo $contar6++;?> - </b><a title="<?php echo censorText($ppp['titulo']);?>" href="/post/<?php echo $ppp['id'];?>/<?php echo censorText(urls($ppp['description']));?>/<?php echo censorText(urls($ppp['titulo']));?>.html"><?php echo achicar($ppp['titulo']);?></a> (<?php echo $ppp['puntos'];?> pts)</span><br />
+<span class="size11"><b><?php echo $contar6++;?> - </b><a title="<?php echo $ppp['titulo'];?>" href="/post/<?php echo $ppp['id'];?>/<?php echo urls($ppp['description']);?>/<?php echo urls($ppp['titulo']);?>.html"><?php echo achicar($ppp['titulo']);?></a> (<?php echo $ppp['puntos'];?> pts)</span><br />
 <?php } ?>
 </div></div>
 </div>
@@ -62,7 +62,7 @@ $contar8=1; ?>
 <div class="box_rss"><div class="icon_img"><img alt="" src="<?php echo $tranfer1;?>/blank.gif" style="width: 16px; height: 16px;" border="0" /></div></div></div><div class="windowbg" style="width: 292px; padding: 4px;">
 <?php foreach ($context['shop_richest'] as $row){ ?>
 
-<span class="size11"><b><?php echo $contar5++;?> - </b> <a title="<?php echo censorText($row['realName']);?>" href="/perfil/<?php echo censorText($row['realName']);?>"><?php echo censorText($row['realName']);?></a> (<?php echo $row['money'];?> pts)</span><br />
+<span class="size11"><b><?php echo $contar5++;?> - </b> <a title="<?php echo $row['realName'];?>" href="/perfil/<?php echo $row['realName'];?>"><?php echo $row['realName'];?></a> (<?php echo $row['money'];?> pts)</span><br />
 <?php }?>
 </div></div>
 
@@ -80,9 +80,9 @@ while($grup=mysqli_fetch_assoc($sers)){
 $order[$grup['realName']]=($row2["Rowsd"]+$row["Rows"]);}}}
 arsort($order);
 $e=1;
-while ((list($i,$Valor)=each($order)) and $e<=10){ ?>
+while ((list($i, $Valor) = each($order)) && $e <= 10) { ?>
 
-<span class="size11"><b><?php echo$e++;?></b> - <a href="/perfil/<?php echo $i;?>" title="<?php echo $i;?>"><?php echo $i;?></a> (<?php echo $Valor;?> com)</span><br/>
+<span class="size11"><b><?php echo$e++;?></b> - <a href="<?php echo $boardurl; ?>/perfil/<?php echo $i;?>" title="<?php echo $i;?>"><?php echo $i;?></a> (<?php echo $Valor;?> com)</span><br/>
 
 <?php } ?>
 
@@ -94,7 +94,7 @@ while ((list($i,$Valor)=each($order)) and $e<=10){ ?>
 <div class="box_title" style="width: 300px;"><div class="box_txt box_300-34">10 Im&aacute;genes m&aacute;s comentadas</div>
 <div class="box_rss"><div class="icon_img"><img alt="" src="<?php echo $tranfer1;?>/blank.gif" style="width: 16px; height: 16px;" border="0" /></div></div></div><div class="windowbg" style="width: 292px; padding: 4px;">
 <?php foreach ($context['comment-img2'] as $poster){ ?>
-<span class="size11"><b><?php echo $contar++;?> - </b><a title="<?php echo censorText($poster['title']);?>" href="/imagenes/ver/<?php echo $poster['id'];?>"><?php echo achicar($poster['title']);?></a> (<?php echo $poster['commenttotal'];?> com)</span><br />
+<span class="size11"><b><?php echo $contar++;?> - </b><a title="<?php echo $poster['title'];?>" href="/imagenes/ver/<?php echo $poster['id'];?>"><?php echo achicar($poster['title']);?></a> (<?php echo $poster['commenttotal'];?> com)</span><br />
 <?php } ?>
 
 </div></div>

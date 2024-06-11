@@ -1,10 +1,17 @@
 <?php
-function template_intro(){exit();die();}
+function template_intro() {
+  exit();
+  die();
+}
 
-function template_tyc17(){global $tranfer1, $func,$ID_MEMBER,$modSettings, $context,$db_prefix;
-ditaruser();
-$_GET['accion']=isset($_GET['accion']) ? $_GET['accion'] : '';
-if($_GET['accion']=='misnotas'){
+function template_tyc17() {
+  global $tranfer1, $func, $ID_MEMBER, $modSettings, $context, $db_prefix;
+
+  ditaruser();
+
+  $_GET['accion'] = isset($_GET['accion']) ? $_GET['accion'] : '';
+
+if ($_GET['accion'] == 'misnotas') {
 
 echo'<div style="float:left;width:776px;">';
 $RegistrosAMostrar=10;
@@ -36,9 +43,9 @@ LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
 $context['posts']=array();
 while($row=mysqli_fetch_assoc($notas)){
     $context['posts'][]=array(
-		'id' => $row['id'],
-		'titulo' => nohtml($row['titulo']),
-		'fechac' => timeformat($row['fecha_creado']));}
+    'id' => $row['id'],
+    'titulo' => nohtml($row['titulo']),
+    'fechac' => timeformat($row['fecha_creado']));}
 mysqli_free_result($notas);
 
 
@@ -107,11 +114,11 @@ function template_tyc(){global $tranfer1, $context;
 echo'<script language="JavaScript" type="text/javascript">function showr_email(comment){if(comment == \'\'){alert(\'No has escrito ningun mensaje.\');return false;}}</script>';
 echo'<div><div class="box_buscador"><div class="box_title" style="width: 920px;"><div class="box_txt box_buscadort"><center>Recomendar CasitaWeb! a tus amigos</center></div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px;height:12px;" border="0" /></div></div><div style="width:912px;padding:4px;" class="windowbg"><center>
 <form action="/web/cw-recomendarWeb.php" method="post" accept-charset="'.$context['character_set'].'">
-					<br /><font class="size11"><b>Recomendar CasitaWeb! hasta a seis amigos:</b></font><br />
-				<b class="size11">1 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email" size="28" maxlength="60" /> <b class="size11">2 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email1" size="28" maxlength="60" /><br /><b class="size11">3 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email2" size="28" maxlength="60" /> <b class="size11">4 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email3" size="28" maxlength="60" /><br /><b class="size11">5 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email4" size="28" maxlength="60" /> <b class="size11">6 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email5" size="28" maxlength="60" /><br /><br />
-					<font class="size11"><b>Asunto:</b></font><br /><input size="40" name="titulo" value="Te recomiendo CasitaWeb!" type="text" onfocus="foco(this);" onblur="no_foco(this);"><br /><br />
-					<font class="size11"><b>Mensaje:</b></font><br />
-					<textarea cols="70" rows="8" wrap="hard" tabindex="6" name="comment">Hola! Te recomiendo que le des un vistazo a CasitaWeb! 
+          <br /><font class="size11"><b>Recomendar CasitaWeb! hasta a seis amigos:</b></font><br />
+        <b class="size11">1 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email" size="28" maxlength="60" /> <b class="size11">2 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email1" size="28" maxlength="60" /><br /><b class="size11">3 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email2" size="28" maxlength="60" /> <b class="size11">4 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email3" size="28" maxlength="60" /><br /><b class="size11">5 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email4" size="28" maxlength="60" /> <b class="size11">6 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email5" size="28" maxlength="60" /><br /><br />
+          <font class="size11"><b>Asunto:</b></font><br /><input size="40" name="titulo" value="Te recomiendo CasitaWeb!" type="text" onfocus="foco(this);" onblur="no_foco(this);"><br /><br />
+          <font class="size11"><b>Mensaje:</b></font><br />
+          <textarea cols="70" rows="8" wrap="hard" tabindex="6" name="comment">Hola! Te recomiendo que le des un vistazo a CasitaWeb! 
 
 Saludos!
 
@@ -121,7 +128,7 @@ Saludos!
 captcha(1);
 echo'<br />';
 echo'<input onclick="return showr_email(this.form.comment.value);" type="submit" class="login" name="send" value="Recomendar CasitaWeb!" /></form></center></div></div></div>';}
-    	
+      
 function template_tyc1(){global $tranfer1, $context, $settings, $options, $txt, $scripturl, $modSettings,$db_prefix,$user_info, $con, $board;
 echo'<div class="box_buscador"><div class="box_title" style="width:920px;"><div class="box_txt box_buscadort"><center>Enlazanos</center></div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width:14px;height:12px;" border="0"></div></div><div class="windowbg" style="width:912px;padding:4px;">
 
@@ -190,9 +197,24 @@ echo'</div></div><div class="aparence" style="width: 922px;margin:0px;"><h3 clas
 <p style="padding:0px;margin:0px;" align="right"><i>Este protocolo es solo para el chat, para la Web en general existe otro <a href="/protocolo/">protocolo</a>.</i></p></div></div>';}
 
 
-function template_tyc3(){global $tranfer1, $modSettings;
-if(!$modSettings['requireAgreement']){fatal_error('Los T&eacute;rminos y Condiciones no estan habilitados.-',false);}
-else{echo'<div><div class="box_buscador"><div class="box_title" style="width: 920px;"><div class="box_txt box_buscadort"><center>T&eacute;rminos y Condiciones</center></div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0" /></div></div><div class="windowbg" style="width:912px;padding:4px;"><center>'.$modSettings['terminos'].'</center></div></div></div>';}}
+function template_tyc3() {
+  global $tranfer1, $modSettings;
+
+  if (!$modSettings['requireAgreement']) {
+    fatal_error('Los T&eacute;rminos y Condiciones no est&aacute;n habilitados.-', false);
+  } else {
+    echo '
+      <div>
+        <div class="box_buscador">
+          <div class="box_title" style="width: 920px;">
+            <div class="box_txt box_buscadort"><center>T&eacute;rminos y Condiciones</center></div>
+            <div class="box_rss"><img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" border="0" /></div>
+          </div>
+          <div class="windowbg" style="width: 912px; padding: 4px;"><center>' . $modSettings['terminos'] . '</center></div>
+        </div>
+      </div>';
+  }
+}
 
 
 function template_tyc5(){
@@ -287,10 +309,16 @@ echo'<div class="box_buscador"><div class="box_title" style="width: 920px;"><div
 
 //////////////////
 
-function template_tyc23(){global $context, $db_prefix;
+function template_tyc23() {
+  global $context, $db_prefix, $boardurl;
 
-ditaruser();
-$refoagr=db_query("SELECT i.* FROM ({$db_prefix}infop as i) WHERE i.id_user='{$context['user']['id']}' LIMIT 1", __FILE__, __LINE__);
+  ditaruser();
+
+  $refoagr = db_query("
+    SELECT i.*
+    FROM {$db_prefix}infop
+    WHERE id_user = '{$context['user']['id']}'
+    LIMIT 1", __FILE__, __LINE__);
 
 while($mddd=mysqli_fetch_array($refoagr)){
 $hp=$mddd['habilidades_profesionales'];
@@ -442,7 +470,7 @@ $pasoabierto3='';$pasoabierto3a=' style="display: none;"';
 $pasoabierto4='';$pasoabierto4a=' style="display: none;"';}
 
 echo'<div class="aparence" style="float:left;margin-bottom:8px;width:776px;">
-<div class="noesta-am">Al editar mi apariencia tambi&eacute;n acepto los <a href="/terminos-y-condiciones/" target="_blank">T&eacute;rminos de uso</a>.</div>
+<div class="noesta-am">Al editar mi apariencia tambi&eacute;n acepto los <a href="' . $boardurl . '/terminos-y-condiciones/" target="_blank">T&eacute;rminos de uso</a>.</div>
 
 <h3 class="titlesCom '.$pasoabierto1.'" style="width: 762px;" onclick="chgsec(this)">1. Formaci&oacute;n y trabajo</h3>
 <div class="active" id="contennnt"'.$pasoabierto1a.'>';

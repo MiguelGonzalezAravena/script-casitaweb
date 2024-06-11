@@ -1,16 +1,19 @@
 <?php
 //Pagina de Rodrigo Zaupa (rigo@casitaweb.net)
 if (!defined('CasitaWeb!-PorRigo'))die(base64_decode("d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv"));
-function template_intro(){global $context, $settings,$db_prefix, $scripturl, $txt, $return, $tranfer1;
-$myser=$context['user']['id'];
+function template_intro() {
+	global $context, $settings, $db_prefix, $scripturl, $txt, $return, $tranfer1, $boardurl;
 
-$NroRegistros=mysqli_num_rows(db_query("
+$myser = $context['user']['id'];
+$NroRegistros = mysqli_num_rows(db_query("
 SELECT f.ID_MEMBER
-FROM ({$db_prefix}messages as m, {$db_prefix}favoritos as f)
-WHERE f.tipo='0' AND m.ID_TOPIC=f.ID_TOPIC AND f.ID_MEMBER='$myser'", __FILE__, __LINE__));
+FROM {$db_prefix}messages as m, {$db_prefix}bookmarks as f
+WHERE f.tipo = '0'
+AND m.ID_TOPIC = f.ID_TOPIC
+AND f.ID_MEMBER = '$myser'", __FILE__, __LINE__));
 arsar();
 
-if($NroRegistros){
+if($NroRegistros) {
 $RegistrosAMostrar=15;
 $_GET['pag']=isset($_GET['pag']) ? $_GET['pag'] : '';
 if($_GET['pag'] < 1){$fuf=1;}else{$fuf=$_GET['pag'];}
@@ -18,7 +21,7 @@ if(isset($fuf)){$RegistrosAEmpezar=($fuf-1)*$RegistrosAMostrar;$PagAct=$fuf;}els
 
 $request=db_query("
 SELECT f.id,m.subject,c.description,m.ID_TOPIC,m.posterName,m.puntos
-FROM ({$db_prefix}messages as m, {$db_prefix}favoritos as f, {$db_prefix}boards as c)
+FROM ({$db_prefix}messages as m, {$db_prefix}bookmarks as f, {$db_prefix}boards as c)
 WHERE f.ID_MEMBER='$myser' AND f.tipo=0 AND m.ID_TOPIC=f.ID_TOPIC AND c.ID_BOARD=m.ID_BOARD
 ORDER BY f.id DESC
 LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
@@ -41,7 +44,7 @@ mysqli_free_result($request);
  
  
 if($PagAct>$PagUlt){echo'</div>
-<div style="clear: left;"></div><div class="noesta" style="width:922px;">No tenes ning&uacute;n post favorito.</div>';}else{
+<div style="clear: left;"></div><div class="noesta" style="width:922px;">No tienes ning&uacute;n post favorito.</div>';}else{
     
 echo'<table class="linksList" style="width:757px;">
 <thead align="center"><th style="text-align:left;">Posts Favoritos</th>
@@ -51,10 +54,10 @@ echo'<table class="linksList" style="width:757px;">
 <th>Eliminar</th></tr></thead><tbody>';
 foreach($context['tos'] as $dat){
 echo'<tr id="fav_'.$dat['id'].'">
-<td style="text-align:left;"><a class="categoriaPost '.$dat['description'].'"  href="/post/'.$dat['ID_TOPIC'].'/'.$dat['description'].'/'.urls($dat['subject']).'.html" title="" title="'.$dat['subject'].'">'.achicars($dat['subject']).'</a></td>
-<td title="'.$dat['posterName'].'"><a href="/perfil/'.$dat['posterName'].'">'.$dat['posterName'].'</a></td>
+<td style="text-align:left;"><a class="categoriaPost '.$dat['description'].'"  href="' . $boardurl . '/post/'.$dat['ID_TOPIC'].'/'.$dat['description'].'/'.urls($dat['subject']).'.html" title="" title="'.$dat['subject'].'">'.achicars($dat['subject']).'</a></td>
+<td title="'.$dat['posterName'].'"><a href="' . $boardurl . '/perfil/'.$dat['posterName'].'">'.$dat['posterName'].'</a></td>
 <td style="color:green;" title="'.$dat['puntos'].'">'.$dat['puntos'].'</td>
-<td><span class="pointer" title="Recomendar post" onclick="Boxy.load(\'/web/cw-TEMPenviarPost.php?id='.$dat['ID_TOPIC'].'\', {title: \'Recomendar '.$dat['subject'].'\'});"><img alt="" src="'.$tranfer1.'/icons/icono-enviar-mensaje.gif" height="16px" width="16px" /></span></td>
+<td><span class="pointer" title="Recomendar post" onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPenviarPost.php?id='.$dat['ID_TOPIC'].'\', {title: \'Recomendar '.$dat['subject'].'\'});"><img alt="" src="'.$tranfer1.'/icons/icono-enviar-mensaje.gif" height="16px" width="16px" /></span></td>
 <td><span id="imgel_'.$dat['id'].'"><span class="pointer" onclick="return del_favoritos(\''.$dat['id'].'\');" title="Eliminar favorito"><img alt="" src="'.$tranfer1.'/eliminar.gif" height="10px" width="10px"></a></span><span id="imgerr_'.$dat['id'].'" style="display:none;"></span><span id="imgerrs_'.$dat['id'].'" style="display:none;"><img alt="" src="'.$tranfer1.'/eliminar.gif" height="10px" width="10px"></span></td>
 </tr>';}
 
@@ -63,8 +66,8 @@ echo'</tbody></table><div style="clear: left;"></div>';
 echo'<div class="windowbgpag" style="width:300px;">';
 if($PagAct>$PagUlt){}elseif($PagAct>1 || $PagAct<$PagUlt){
     
-if($PagAct>1) echo "<a href='/favoritos/post/pag-$PagAnt'>&#171; anterior</a>";
-if($PagAct<$PagUlt)  echo "<a href='/favoritos/post/pag-$PagSig'>siguiente &#187;</a>";}
+if($PagAct>1) echo "<a href='$boardurl/favoritos/post/pag-$PagAnt'>&#171; anterior</a>";
+if($PagAct<$PagUlt)  echo "<a href='$boardurl/favoritos/post/pag-$PagSig'>siguiente &#187;</a>";}
 echo'</div>
 <div style="clear: both;"></div>';
 
@@ -74,7 +77,7 @@ echo'</div>
 <div class="windowbg" style="width: 147px; padding: 4px;" align="center">'; echo anuncio_160x600(); echo'</div></div></div>';}}
 
 else{echo'</div>
-<div style="clear: left;"></div><div class="noesta" style="width:922px;">No tenes ning&uacute;n post favorito.</div>';}
+<div style="clear: left;"></div><div class="noesta" style="width:922px;">No tienes ning&uacute;n post favorito.</div>';}
 }
 
 
@@ -85,7 +88,7 @@ function template_imagen(){global $context, $settings,$db_prefix, $scripturl, $t
 $myser=$context['user']['id'];
 $NroRegistros=mysqli_num_rows(db_query("
 SELECT f.ID_MEMBER,f.tipo,m.ID_PICTURE,f.ID_TOPIC
-FROM ({$db_prefix}gallery_pic as m, {$db_prefix}favoritos as f)
+FROM ({$db_prefix}gallery_pic as m, {$db_prefix}bookmarks as f)
 WHERE f.ID_MEMBER='$myser' AND f.tipo=1 AND m.ID_PICTURE=f.ID_TOPIC", __FILE__, __LINE__));
 
 arsar();
@@ -96,7 +99,7 @@ if($_GET['pag'] < 1){$fuf=1;}else{$fuf=$_GET['pag'];}
 if(isset($fuf)){$RegistrosAEmpezar=($fuf-1)*$RegistrosAMostrar;$PagAct=$fuf;}else{$RegistrosAEmpezar=0;$PagAct=1;}
 
 $request=db_query("SELECT f.id,m.ID_PICTURE,m.title
-FROM ({$db_prefix}gallery_pic as m, {$db_prefix}favoritos as f)
+FROM ({$db_prefix}gallery_pic as m, {$db_prefix}bookmarks as f)
 WHERE f.ID_MEMBER='$myser' AND f.tipo=1 AND m.ID_PICTURE=f.ID_TOPIC
 ORDER BY f.id DESC
 LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
@@ -147,8 +150,8 @@ echo'</tbody></table><div style="clear: left;"></div>';
 
 echo'<div class="windowbgpag" style="width:300px;">';
 if($PagAct>$PagUlt){}elseif($PagAct>1 || $PagAct<$PagUlt){
-if($PagAct>1) echo "<a href='/favoritos/imagen/pag-$PagAnt'>&#171; anterior</a>";
-if($PagAct<$PagUlt)  echo "<a href='/favoritos/imagen/pag-$PagSig'>siguiente &#187;</a>";}
+if($PagAct>1) echo "<a href='$boardurl/favoritos/imagen/pag-$PagAnt'>&#171; anterior</a>";
+if($PagAct<$PagUlt)  echo "<a href='$boardurl/favoritos/imagen/pag-$PagSig'>siguiente &#187;</a>";}
 echo'</div>';
 
 echo'</div>
@@ -160,8 +163,10 @@ else{echo'</div><div style="clear: left;"></div><div class="noesta" style="width
 
 
 
-function arsar(){
-echo'<div style="float:left;width:757px;margin-right:8px;">';
-echo'<div class="botnes"><a href="/favoritos/post/" title="Posts">Posts</a><a href="/favoritos/imagen/" title="Im&aacute;genes">Im&aacute;genes</a><div style="clear: both;"></div></div>';}
+function arsar() {
+	global $boardurl;
+
+	echo '<div style="float:left;width:757px;margin-right:8px;">';
+	echo '<div class="botnes"><a href="' . $boardurl . '/favoritos/post/" title="Posts">Posts</a><a href="' . $boardurl . '/favoritos/imagen/" title="Im&aacute;genes">Im&aacute;genes</a><div style="clear: both;"></div></div>';}
 
 ?>

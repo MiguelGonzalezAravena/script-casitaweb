@@ -28,23 +28,24 @@ if (!function_exists('file_get_contents'))
 	}
 }
 if (1 == 1){
-	function sha1_casitaweb($str)
-	{
-		if (function_exists('mhash') && defined('MHASH_SHA1'))
+	function sha1_casitaweb($str) {
+		if (function_exists('mhash') && defined('MHASH_SHA1')) {
 			return bin2hex(mhash(MHASH_SHA1, $str));
+		}
 
 		$nblk = (strlen($str) + 8 >> 6) + 1;
 		$blks = array_pad(array(), $nblk * 16, 0);
 
-		for ($i = 0; $i < strlen($str); $i++)
-			$blks[$i >> 2] |= ord($str{$i}) << (24 - ($i % 4) * 8);
+		for ($i = 0; $i < strlen($str); $i++) {
+			$blks[$i >> 2] |= ord($str[$i]) << (24 - ($i % 4) * 8);
+		}
 
 		$blks[$i >> 2] |= 0x80 << (24 - ($i % 4) * 8);
 
 		return sha1_core($blks, strlen($str) * 8);
 	}
-	function sha1_core($x, $len)
-	{
+
+	function sha1_core($x, $len) {
 		@$x[$len >> 5] |= 0x80 << (24 - $len % 32);
 		$x[(($len + 64 >> 9) << 4) + 15] = $len;
 

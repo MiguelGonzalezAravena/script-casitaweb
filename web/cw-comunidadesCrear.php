@@ -61,20 +61,39 @@ db_query("UPDATE {$db_prefix}comunidades
 elseif($igual && !$bloquear){fatal_error('El nombre seleccionado ya est&aacute; en uso.');}elseif(strlen($url)<5 || strlen($url)>32 ){fatal_error('El nombre debe tener entre 5 y 32 caracteres.');}}
 $imagen=trim($_POST['imagen']);
 $cat=trim($_POST['categoria']);
-if(!$cat || $cat=='-1'){fatal_error('Debes elegir una categor&iacute;a');}
-$comunidades_categorias=mysqli_num_rows(db_query("SELECT c.url FROM ({$db_prefix}comunidades_categorias AS c) WHERE c.url='$cat' LIMIT 1",__FILE__, __LINE__));
-if(!$comunidades_categorias){fatal_error('Esta categor&iacuet;a no existe.');}
-$cuantascom=mysqli_num_rows(db_query("SELECT c.id_user FROM ({$db_prefix}comunidades AS c) WHERE c.id_user='{$user_settings['ID_MEMBER']}' AND c.bloquear=0",__FILE__, __LINE__));
-if($cuantascom>$cantidadcom){
-fatal_error('Tu rango no te permite tener m&aacute;s de '.$cantidadcom.' comunidades.',false);}
 
-db_query("INSERT INTO {$db_prefix}comunidades (id_user, nombre, descripcion, acceso, permiso, aprobar, url, imagen, fecha_inicio, categoria,UserName) 
-    VALUES ('{$user_settings['ID_MEMBER']}', SUBSTRING('$nombre', 1,100), SUBSTRING('$descripcion', 1, 2500), '$acceso', '$permiso', '$aprobar', '$url', '$imagen', ".time().", '$cat','{$user_settings['realName']}')", __FILE__, __LINE__);
+if(!$cat || $cat=='-1') {
+	fatal_error('Debes elegir una categor&iacute;a');
+}
+
+$request = db_query("
+	SELECT id, url
+	FROM {$db_prefix}comunidades_categorias
+	WHERE url = '$cat'
+	LIMIT 1", __FILE__, __LINE__);
+
+$comunidades_categorias = mysqli_num_rows($request);
+$category = mysqli_fetch_assoc($request);
+$cat = $category['id'];
+
+if($comunidades_categorias == 0) {
+	fatal_error('Esta categor&iacuet;a no existe.');
+}
+
+$cuantascom=mysqli_num_rows(db_query("SELECT id_user FROM {$db_prefix}comunidades WHERE id_user = {$user_settings['ID_MEMBER']} AND bloquear = 0",__FILE__, __LINE__));
+
+if ($cuantascom>$cantidadcom) {
+	fatal_error('Tu rango no te permite tener m&aacute;s de '.$cantidadcom.' comunidades.', false);
+}
+
+db_query("
+	INSERT INTO {$db_prefix}comunidades (id_user, nombre, descripcion, acceso, permiso, aprobar, url, imagen, categoria, UserName, cred_fecha, credito)
+	VALUES ('{$user_settings['ID_MEMBER']}', SUBSTRING('$nombre', 1,100), SUBSTRING('$descripcion', 1, 2500), '$acceso', '$permiso', '$aprobar', '$url', '$imagen', '$cat','{$user_settings['realName']}', " . time() . ", 0)", __FILE__, __LINE__);
     
 $ddss = db_insert_id();
 
-db_query("INSERT INTO {$db_prefix}comunidades_miembros (id_user, id_com, fecha, rango) 
-    VALUES ('{$user_settings['ID_MEMBER']}', '$ddss', ".time().", '1')", __FILE__, __LINE__);
+db_query("INSERT INTO {$db_prefix}comunidades_miembros (id_user, id_com, rango) 
+    VALUES ('{$user_settings['ID_MEMBER']}', '$ddss', '1')", __FILE__, __LINE__);
     
 
 db_query("UPDATE {$db_prefix}comunidades_categorias
@@ -86,5 +105,6 @@ db_query("UPDATE {$db_prefix}comunidades
 			WHERE id='$ddss'
 			LIMIT 1", __FILE__, __LINE__);  
         
-Header("Location: /comunidades/$url/");exit();die(); 
+header('Location: ' . $boardurl . '/comunidades/' . $url . '/');
+
 ?>

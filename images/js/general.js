@@ -11,6 +11,8 @@ eval(function(p,a,c,k,e,r){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a
 /*REPLACE EMOTICONES*/
 eval(function(p,a,c,k,e,r){e=function(c){return c.toString(a)};if(!''.replace(/^/,String)){while(c--)r[e(c)]=k[c]||e(c);k=[function(e){return r[e]}];e=function(){return'\\w+'};c=1};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}('m n(a,b){5(7(b.8)!="9"&&b.o){4 c=b.8;c.6=c.6.p(c.6.2-1)==\' \'?a+\' \':a;c.q()}g 5(7(b.h)!="9"){4 d=b.3.i(0,b.h);4 e=b.3.i(b.r);4 f=b.j;b.3=d+a+e;5(b.k){b.l();b.k(d.2+a.2,d.2+a.2)}b.j=f}g{b.3+=a;b.l(b.3.2-1)}}',28,28,'||length|value|var|if|text|typeof|caretPos|undefined|||||||else|selectionStart|substr|scrollTop|setSelectionRange|focus|function|replaceText|createTextRange|charAt|select|selectionEnd'.split('|'),0,{}))
 
+var boardUrl = 'http://localhost/casitaweb';
+
 function crearVyoutube(u){$('#v-'+u).html('<object type="application/x-shockwave-flash" width="450px" height="240px" data="http://www.youtube.com/v/'+u+'&rel=0&autoplay=1&showsearch=0&hd=0&fs=1&showinfo=1&iv_load_policy=1&hl=0&eurl=http://casitaweb.net"><param name="src" value="http://www.youtube.com/v/'+u+'&rel=0&autoplay=1&showsearch=0&hd=0&fs=1&showinfo=1&iv_load_policy=1&hl=0&eurl=http://casitaweb.net" /><param name="wmode" value="transparent" /><param name="allowscriptaccess" value="always" /><param name="allownetworking" value="internal" /><param name="allowFullScreen" value="true" /></object>');}
 
 function boxHablar(u){$('#b-'+u).css('display','block');$('#textareaCC_'+u).focus();}
@@ -162,7 +164,7 @@ function add_favoritos(id){
 	$('#cargando_opciones2').css('display', 'none');
 	$.ajax({
 		type: 'GET',
-		url: '/web/cw-FavoritosACC.php',
+		url: boardUrl + '/web/cw-FavoritosACC.php',
 		data: 'tipo=posts&post=' + id,
 		success: function(h){
 			var original = $('#span_opciones2').html();
@@ -193,7 +195,7 @@ function add_favoritos_img(id){
 	$('#cargando_opciones2').css('display', 'none');
 	$.ajax({
 		type: 'GET',
-		url: '/web/cw-FavoritosACC.php',
+		url: boardUrl + '/web/cw-FavoritosACC.php',
 		data: 'tipo=imagen&kjas=' + id,
 		success: function(h){
 			var original = $('#span_opciones2').html();
@@ -769,7 +771,7 @@ var com = {
 		$('.gif_cargando#shortname').css('display', 'block');
 		$.ajax({
 			type: 'POST',
-			url: '/web/cw-comunidadesChekLink.php',
+			url: boardUrl + '/web/cw-comunidadesChekLink.php',
 			data: 'shortname='+encodeURIComponent(val),
 			success: function(h){
 				com.crear_shortname_check_cache[com.crear_shortname_check_cache.length] = new Array(val, h.charAt(0), h.substring(3)); //Guardo los datos de verificacion
@@ -814,7 +816,7 @@ function actualizar_comentarios_com(){
   $('#ult_comm').fadeOut('fast');
   $.ajax({
     type: 'POST',
-    url: '/web/cw-comunidadesActCom.php',
+    url: boardUrl + '/web/cw-comunidadesActCom.php',
     success: function(h){
       $('#ult_comm').html(h);
       $('#ult_comm').fadeIn('fast');
@@ -904,7 +906,7 @@ function login_ajax(donde){
 	$(el['button']).attr('disabled', 'disabled').addClass('disabled');
 	$.ajax({
 		type: 'POST',
-		url: '/web/cw-Login.php',
+		url: boardUrl + '/web/cw-Login.php',
 		cache: false,
 		data: 'nick=' + encodeURIComponent($(el['nick']).val()) + '&pass=' + encodeURIComponent($(el['pass']).val()),
 		success: function(h){
@@ -953,7 +955,7 @@ function loginSeguridad(){
 	$(el['button']).attr('disabled', 'disabled').addClass('disabled');
 	$.ajax({
 		type: 'POST',
-		url: '/web/cw-Login.php',
+		url: boardUrl + '/web/cw-Login.php',
 		cache: false,
 		data: 'nick=' + encodeURIComponent($(el['nick']).val()) + '&pass=' + encodeURIComponent($(el['pass']).val()),
 		success: function(h){
@@ -1013,7 +1015,7 @@ if($('#notificaciones_cuerpo').css('display') != 'block'){
 $("#NOT_cargando").css({'display' : 'block'});}
 	$.ajax({
 		type: 'GET',
-		url: '/web/cw-notificaciones.php',
+		url: boardUrl + '/web/cw-notificaciones.php',
 		success: function(h){		  
 		  $("#NOT_cargando").css({'display' : 'none'});
 		  $("#notificaciones_cuerpo").css({'display' : 'block'});

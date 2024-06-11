@@ -3404,7 +3404,8 @@ if ($do_header)
 
 
 
-function adminIndex($area){global $txt, $context, $scripturl, $sc, $modSettings, $user_info, $urlSep, $settings;
+function adminIndex($area) {
+  global $txt, $context, $scripturl, $sc, $modSettings, $user_info, $urlSep, $settings, $boardurl;
 if(($user_info['is_admin'] || $user_info['is_mods'])){
 loadLanguage('Admin');
 loadTemplate('Admin');
@@ -3412,21 +3413,21 @@ loadTemplate('Admin');
   $context['admin_areas']['forum'] = array(
     'title' => $txt[427],
     'areas' => array(
-      'index' => '<a href="/moderacion/">' . $txt[208] . '</a>',
-      'denuncias' => '<a href="/moderacion/denuncias/">Denuncias</a>',
-      'Anuncios' => '<span onclick="Boxy.load(\'/web/cw-TEMPanuncio.php\', {title: \'Anuncio\'});" class="pointer">Anuncio</span>',
-      'recargar' => '<span onclick="Boxy.load(\'/web/cw-TEMPrecargarPTS.php\', {title: \'Recargar puntos\'});" class="pointer">Recargar puntos</span>',
-      'vr2965' => '<a href="/moderacion/comunicacion-mod/">BatiCueva</a>',
-      'tyc9' => '<a href="/web/cw-TEMPverUcoment.php" title="Ultimos 30 comentarios escritos" class="boxy">Comentarios en posts</a>',
-      'tyc11' => '<a href="/web/cw-TEMPverUcomentIMG.php" title="Ultimos 30 comentarios escritos en imagenes" class="boxy">Comentarios en imagenes</a>',
-      'ban_members' => '<a href="/moderacion/edit-user/ban/">Historial de baneados</a>'
+      'index' => '<a href="' . $boardurl . '/moderacion/">' . $txt[208] . '</a>',
+      'denuncias' => '<a href="' . $boardurl . '/moderacion/denuncias/">Denuncias</a>',
+      'Anuncios' => '<span onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPanuncio.php\', {title: \'Anuncio\'});" class="pointer">Anuncio</span>',
+      'recargar' => '<span onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPrecargarPTS.php\', {title: \'Recargar puntos\'});" class="pointer">Recargar puntos</span>',
+      'vr2965' => '<a href="' . $boardurl . '/moderacion/comunicacion-mod/">BatiCueva</a>',
+      'tyc9' => '<a href="' . $boardurl . '/web/cw-TEMPverUcoment.php" title="Ultimos 30 comentarios escritos" class="boxy">Comentarios en posts</a>',
+      'tyc11' => '<a href="' . $boardurl . '/web/cw-TEMPverUcomentIMG.php" title="Ultimos 30 comentarios escritos en imagenes" class="boxy">Comentarios en imagenes</a>',
+      'ban_members' => '<a href="' . $boardurl . '/moderacion/edit-user/ban/">Historial de baneados</a>'
       ));
             
      $context['admin_areas']['Com'] = array(
     'title' => 'Comunidades',
     'areas' => array(
-      'ComunidadesAdm' => '<a href="/moderacion/comunidades/">Comunidades eliminadas</a>',
-      'ComunidadesAdm2' => '<a href="/moderacion/comunidades/temas/">Temas eliminados</a>',
+      'ComunidadesAdm' => '<a href="' . $boardurl . '/moderacion/comunidades/">Comunidades eliminadas</a>',
+      'ComunidadesAdm2' => '<a href="' . $boardurl . '/moderacion/comunidades/temas/">Temas eliminados</a>',
             ));
             
             
@@ -3435,14 +3436,14 @@ loadTemplate('Admin');
       'title' => 'Administraci&oacute;n',
             'areas' => array(
             'tyc200' => '<a href="' . $scripturl . '?'.$urlSep.'=manageboards">Categor&iacute;as</a>',
-            'modify_settings' => '<a href="/moderacion/web/config/">Configuraci&oacute;n de la Web</a>',
-            'tyc16' => '<a href="/web/cw-TEMPeditarTags.php" class="boxy" title="Editor Tags">Editor Tags</a>',
-            'tyc20' => '<a href="/moderacion/emoticones/">Emoticones</a>',
-      'tyc12' => '<a href="/moderacion/pms/">MP\'s</a>',
+            'modify_settings' => '<a href="' . $boardurl . '/moderacion/web/config/">Configuraci&oacute;n de la Web</a>',
+            'tyc16' => '<a href="' . $boardurl . '/web/cw-TEMPeditarTags.php" class="boxy" title="Editor Tags">Editor Tags</a>',
+            'tyc20' => '<a href="' . $boardurl . '/moderacion/emoticones/">Emoticones</a>',
+      'tyc12' => '<a href="' . $boardurl . '/moderacion/pms/">MP\'s</a>',
       'edit_groups' => '<a href="' . $scripturl . '?'.$urlSep.'=membergroups;">' . $txt[8] . '</a>',
       'view_members' => '<a href="' . $scripturl . '?'.$urlSep.'=viewmembers">' . $txt[5] . '</a>',
       'edit_permissions' => '<a href="' . $scripturl . '?'.$urlSep.'=permissions">' . $txt['edit_permissions'] . '</a>',
-            'tyc6' => '<a href="/moderacion/muro/">Muros</a>'));
+            'tyc6' => '<a href="' . $boardurl . '/moderacion/muro/">Muros</a>'));
 
   }
 

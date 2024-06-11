@@ -379,7 +379,7 @@ $dbresult = db_query("
 while($row = mysqli_fetch_assoc($dbresult)){
 		$context['img'][] = array(
 			'id' => $row['ID_PICTURE'],
-			'title' => censorText(nohtml2(nohtml($row['title']))),
+			'title' => nohtml2(nohtml($row['title'])),
             'filename' => nohtml2(nohtml($row['filename']))
             );}
 		mysqli_free_result($dbresult);
