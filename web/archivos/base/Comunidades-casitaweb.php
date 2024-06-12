@@ -7,366 +7,640 @@ function template_intro() {
 
   if (!$context['comuid']) {
     echo '
-      <div style="text-align:left;"><div style="float:left;height:auto;margin-right:6px;"><div class="ultimos_postsa" style="margin-bottom:4px;">
+      <div style="text-align:left;">
+        <div style="float:left;height:auto;margin-right:6px;">
+          <div class="ultimos_postsa" style="margin-bottom:4px;">
+            <div class="crear_comunidad">
+              <a href="' . $boardurl . '/crear-comunidades/">
+                <img src="' . $tranfer1 . '/comunidades/btn-crear_comunidad.png" alt="" class="png" title="Crear Comunidad"/>
+              </a>
+            </div>
+            <div class="box_title" style="width: 378px;">
+              <div class="box_txt ultimos_posts">&Uacute;ltimos temas</div>
+              <div class="box_rss">
+                <div class="icon_img">
+                  <a href="' . $boardurl . '/rss/ultimos-temas/">
+                    <img alt="" src="' . $tranfer1 . '/icons/cwbig-v1-iconos.gif?v3.2.3" style="cursor: pointer; margin-top: -352px; display: inline;" height="895px" width="18px" />
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="windowbg" style="width: 370px; padding: 4px;">';
 
-<div class="crear_comunidad"><a href="' . $boardurl . '/crear-comunidades/"><img src="'.$tranfer1.'/comunidades/btn-crear_comunidad.png" alt="" class="png" title="Crear Comunidad"/></a></div>
+    $RegistrosAMostrar = 20;
+    $padds = isset($_GET['pag']) ? (int) $_GET['pag'] : '';
+    $per = $padds < 1 ? '1' : $padds;
 
-<div class="box_title" style="width:378px;"><div class="box_txt ultimos_posts">&Uacute;ltimos temas</div><div class="box_rss"><div class="icon_img"><a href="/rss/ultimos-temas/"><img alt="" src="'.$tranfer1.'/icons/cwbig-v1-iconos.gif?v3.2.3" style="cursor:pointer;margin-top:-352px;display:inline;" height="895px" width="18px" /></a></div></div></div>
-<div class="windowbg" style="width:370px;padding:4px;">';
+    if (isset($per)) {
+      $RegistrosAEmpezar = ($per - 1) * $RegistrosAMostrar;
+      $PagAct = $per;
+    } else {
+      $RegistrosAEmpezar = 0;
+      $PagAct = 1;
+    }
 
-$RegistrosAMostrar=20;
-$padds=isset($_GET['pag']) ? (int)$_GET['pag'] : ''; 
-if($padds<1){$per='1';}else{$per=$padds;}
-if(isset($per)){$RegistrosAEmpezar=($per-1)*$RegistrosAMostrar;
-$PagAct=$per;}else{$RegistrosAEmpezar=0;$PagAct=1;}
-$_GET['cat']=isset($_GET['cat']) ? (int)$_GET['cat'] : ''; 
-$cat=str_replace("/","",$_GET['cat']);
+    $_GET['cat'] = isset($_GET['cat']) ? (int) $_GET['cat'] : '';
+    $cat = str_replace('/', '', $_GET['cat']);
 
-$rs=db_query("SELECT a.titulo,c.nombre,c.url as url2,a.id,m.realName,b.url,b.nombre as nomb2
-FROM ({$db_prefix}comunidades AS c)
-INNER JOIN {$db_prefix}comunidades_articulos AS a ON a.id_com=c.id AND a.eliminado=0
-INNER JOIN {$db_prefix}members AS m ON a.id_user=m.ID_MEMBER
-INNER JOIN {$db_prefix}comunidades_categorias AS b ON c.categoria=b.url AND c.acceso <> 4 AND c.bloquear=0 ".(empty($cat) ? '' : " AND b.url='$cat'")."
-ORDER BY a.id DESC
-LIMIT $RegistrosAEmpezar, $RegistrosAMostrar",__FILE__, __LINE__);
-$context['posts']=array();
-while ($row=mysqli_fetch_assoc($rs)){
-    $context['posts'][]=array(
-    'titulo' => $row['titulo'],
-    'nombre' => $row['nombre'],
-    'url2' => $row['url2'],
-    'id' => $row['id'],
-    'url' => $row['url'],
-    'nomb2' => $row['nomb2'],
-    'realName' => $row['realName']);}
-mysqli_free_result($rs);
+    $rs = db_query("
+      SELECT a.titulo, c.nombre, c.url as url2, a.id, m.realName, b.url, b.nombre as nomb2
+      FROM {$db_prefix}comunidades AS c
+      INNER JOIN {$db_prefix}comunidades_articulos AS a ON a.id_com=c.id AND a.eliminado=0
+      INNER JOIN {$db_prefix}members AS m ON a.id_user = m.ID_MEMBER
+      INNER JOIN {$db_prefix}comunidades_categorias AS b ON c.categoria = b.url
+      AND c.acceso <> 4
+      AND c.bloquear = 0
+      " . (empty($cat) ? '' : " AND b.url = '$cat'") . "
+      ORDER BY a.id DESC
+      LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
 
-foreach ($context['posts'] as $posts){
-$tit=nohtml(nohtml2($posts['titulo']));
-$posts['nombre']=nohtml(nohtml2($posts['nombre']));
-$tit2=$posts['titulo'];
-if(strlen($tit)>40){$tit3=substr($tit,0,37)."...";}else{$tit3=$tit;}
-echo'<div class="comunidad_tema"><div>
-<div style="float:left;margin-right:5px;"><img src="'.$tranfer1.'/comunidades/categorias/'.$posts['url'].'.png" alt="" title="'.$posts['nomb2'].'" class="png" /></div><div><a style="color:#D35F2C;font-weight:bold;font-size:13px;" href="/comunidades/'.$posts['url2'].'/'.$posts['id'].'/'.urls($tit2).'.html" target="_self" title="'.$tit.'">'.$tit3.'</a></div></div>
-<div class="size10">En <a href="/comunidades/'.$posts['url2'].'/" target="_self" title="'.$posts['nombre'].'">'.$posts['nombre'].'</a> por <a href="/perfil/'.$posts['realName'].'" target="_self" title="'.$posts['realName'].'">'.$posts['realName'].'</a></div></div><div class="hrs"></div>';}
+    $context['posts'] = array();
 
-$NroRegistros=mysqli_num_rows(db_query("SELECT a.id FROM ({$db_prefix}comunidades AS c, {$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades_categorias AS b) WHERE a.id_com=c.id AND c.acceso <> 4 AND a.eliminado=0 AND c.bloquear=0 AND c.categoria=b.url".(empty($cat) ? '' : " AND b.url='$cat'")."",__FILE__, __LINE__));
+    while ($row = mysqli_fetch_assoc($rs)) {
+      $context['posts'][] = array(
+        'titulo' => $row['titulo'],
+        'nombre' => $row['nombre'],
+        'url2' => $row['url2'],
+        'id' => $row['id'],
+        'url' => $row['url'],
+        'nomb2' => $row['nomb2'],
+        'realName' => $row['realName']
+      );
+    }
 
+    mysqli_free_result($rs);
 
-$PagAnt=$PagAct-1;
-$PagSig=$PagAct+1;
-$PagUlt=$NroRegistros/$RegistrosAMostrar;
-$Res=$NroRegistros%$RegistrosAMostrar;
+    foreach ($context['posts'] as $posts) {
+      $tit = nohtml(nohtml2($posts['titulo']));
+      $posts['nombre'] = nohtml(nohtml2($posts['nombre']));
+      $tit2 = $posts['titulo'];
+      $tit3 = strlen($tit) > 40 ? substr($tit, 0, 37) . '...' : $tit;
 
-if($Res>0) $PagUlt=floor($PagUlt)+1;
-if($PagAct>$PagUlt){echo'<div class="noesta"><br /><br /><br /><br />Est&aacute; p&aacute;gina no existe.<br /><br /><br /><br /><br /></div>';}
-echo'</div>';
-$dadenlace=!$cat ? $boardurl . '/comunidades/pag-' : $boardurl . "/comunidades/categoria/$cat/pag-";
-
-if($PagAct>$PagUlt){}else{
-if($PagAct>1 || $PagAct<$PagUlt){echo'<div class="windowbgpag" style="width:378px;">';
-if($PagAct>1){echo'<a href="'.$dadenlace.$PagAnt.'">&#171; anterior</a>';}
-if($PagAct<$PagUlt){echo'<a href="'.$dadenlace.$PagSig.'">siguiente &#187;</a>';}
-echo'</div>';}}
-echo'</div>';echo'</div></div>';
-echo'<div style="float:left;margin-right:8px;"><div style="margin-bottom: 8px;width: 363px;"><ul class="buscadorPlus"><li id="gb" class="activo" onclick="elegir(\'google\')">Temas</li><li id="cwb" onclick="elegir(\'casitaweb\')">Comunidades</li></ul>
-<div class="clearBoth"></div><div style="margin-top: -1px;clear:both;"><form style="margin: 0px; padding: 0px;" action="/buscar-com.php" method="get" accept-charset="'.$context['character_set'].'"><input type="text" name="q" id="q" class="ibuscador" style="height:32px;" /><input onclick="return errorrojos(this.form.q.value);" alt="" class="bbuscador png" title="Buscar" value=" " type="submit" align="top" style="height:34px;" /><input name="buscador_tipo" value="g" checked="checked" type="hidden" /></form></div></div><div class="act_comments"><div class="box_title" style="width:361px;"><div class="box_txt ultimos_comments">&Uacute;ltimas comunidades creadas</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="padding:4px;width:353px;margin-bottom:8px;">';
-
-$rs2 = db_query("
-  SELECT c.nombre, m.realName, c.url, ca.url AS categoria, ca.nombre AS nombre2, c.fecha_inicio
-  FROM {$db_prefix}comunidades AS c,{$db_prefix}comunidades_categorias AS ca, {$db_prefix}members AS m
-  WHERE c.id_user = m.ID_MEMBER
-  AND c.categoria = ca.id
-  AND c.bloquear = 0
-  ORDER BY c.id DESC
-  LIMIT 5", __FILE__, __LINE__);
-
-while ($row = mysqli_fetch_assoc($rs2)) {
-  $row['nombre'] = nohtml(nohtml2($row['nombre']));
-
-  echo '
-    <div class="comunidad_tema">
-      <div>
-        <div style="float: left; margin-right: 5px;">
-          <img src="' . $tranfer1 . '/comunidades/categorias/' . $row['categoria'] . '.png" alt="" title="' . $row['nombre2'] . '" />
+      echo '
+        <div class="comunidad_tema">
+          <div>
+            <div style="float: left; margin-right: 5px;">
+              <img src="' . $tranfer1 . '/comunidades/categorias/' . $posts['url'] . '.png" alt="" title="' . $posts['nomb2'] . '" class="png" />
+            </div>
+            <div>
+              <a style="color: #D35F2C; font-weight: bold; font-size: 13px;" href="' . $boardurl . '/comunidades/' . $posts['url2'] . '/' . $posts['id'] . '/' . urls($tit2) . '.html" target="_self" title="' . $tit . '">' . $tit3 . '</a>
+            </div>
+          </div>
+          <div class="size10">
+            En
+            <a href="' . $boardurl . '/comunidades/' . $posts['url2'] . '/" target="_self" title="' . $posts['nombre'] . '">' . $posts['nombre'] . '</a>
+            por
+            <a href="' . $boardurl . '/perfil/' . $posts['realName'] . '" target="_self" title="' . $posts['realName'] . '">' . $posts['realName'] . '</a>
+          </div>
         </div>
-        <div>
-          <a style="color: #D35F2C; font-weight: bold; font-size: 13px;" href="' . $boardurl . '/comunidades/' . $row['url'] . '/" target="_self" title="' . $row['nombre'] . '">' . $row['nombre'] . '</a>
+        <div class="hrs"></div>';
+    }
+
+    $request = db_query("
+      SELECT a.id
+      FROM {$db_prefix}comunidades AS c, {$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades_categorias AS b
+      WHERE a.id_com = c.id
+      AND c.acceso <> 4
+      AND a.eliminado = 0
+      AND c.bloquear = 0
+      AND c.categoria = b.id
+      " . (empty($cat) ? '' : " AND b.url = '$cat'"),__FILE__, __LINE__);
+
+    $NroRegistros = mysqli_num_rows($request);
+    $PagAnt = $PagAct - 1;
+    $PagSig = $PagAct + 1;
+    $PagUlt = $NroRegistros / $RegistrosAMostrar;
+    $Res = $NroRegistros % $RegistrosAMostrar;
+
+    if ($Res > 0) {
+      $PagUlt = floor($PagUlt) + 1;
+    }
+
+    if ($PagAct > $PagUlt) {
+      echo '<div class="noesta"><br /><br /><br /><br />Esta p&aacute;gina no existe.<br /><br /><br /><br /><br /></div>';
+    }
+
+    echo '</div>';
+
+    $dadenlace = !$cat ? $boardurl . '/comunidades/pag-' : $boardurl . '/comunidades/categoria/' . $cat . '/pag-';
+
+    if ($PagAct > $PagUlt) {
+
+    } else {
+      if($PagAct >1 || $PagAct < $PagUlt) {
+        echo '<div class="windowbgpag" style="width: 378px;">';
+
+        if ($PagAct > 1) {
+          echo '<a href="' . $dadenlace . $PagAnt . '">&#171; anterior</a>';
+        }
+
+        if ($PagAct < $PagUlt) {
+          echo '<a href="' . $dadenlace . $PagSig . '">siguiente &#187;</a>';
+        }
+
+        echo '</div>';
+      }
+    }
+
+    echo '</div>';
+    echo '</div></div>';
+    echo '
+      <div style="float: left; margin-right: 8px;">
+        <div style="margin-bottom: 8px; width: 363px;">
+          <ul class="buscadorPlus">
+            <li id="gb" class="activo" onclick="elegir(\'google\')">Temas</li>
+            <li id="cwb" onclick="elegir(\'casitaweb\')">Comunidades</li>
+          </ul>
+          <div class="clearBoth"></div>
+          <div style="margin-top: -1px; clear: both;">
+            <form style="margin: 0px; padding: 0px;" action="' . $boardurl . '/buscar-com.php" method="get" accept-charset="' . $context['character_set'] . '">
+              <input type="text" name="q" id="q" class="ibuscador" style="height: 32px;" />
+              <input onclick="return errorrojos(this.form.q.value);" alt="" class="bbuscador png" title="Buscar" value=" " type="submit" align="top" style="height: 34px;" />
+              <input name="buscador_tipo" value="g" checked="checked" type="hidden" />
+            </form>
+          </div>
+        </div>
+        <div class="act_comments">
+          <div class="box_title" style="width: 361px;">
+            <div class="box_txt ultimos_comments">&Uacute;ltimas comunidades creadas</div>
+            <div class="box_rss">
+              <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
+            </div>
+          </div>
+          <div class="windowbg" style="padding: 4px; width: 353px; margin-bottom: 8px;">';
+
+    $request = db_query("
+      SELECT c.nombre, m.realName, c.url, ca.url AS categoria, ca.nombre AS nombre2, c.fecha_inicio
+      FROM {$db_prefix}comunidades AS c, {$db_prefix}comunidades_categorias AS ca, {$db_prefix}members AS m
+      WHERE c.id_user = m.ID_MEMBER
+      AND c.categoria = ca.id
+      AND c.bloquear = 0
+      ORDER BY c.id DESC
+      LIMIT 5", __FILE__, __LINE__);
+
+    while ($row = mysqli_fetch_assoc($request)) {
+      $row['nombre'] = nohtml(nohtml2($row['nombre']));
+
+      echo '
+        <div class="comunidad_tema">
+          <div>
+            <div style="float: left; margin-right: 5px;">
+              <img src="' . $tranfer1 . '/comunidades/categorias/' . $row['categoria'] . '.png" alt="" title="' . $row['nombre2'] . '" />
+            </div>
+            <div>
+              <a style="color: #D35F2C; font-weight: bold; font-size: 13px;" href="' . $boardurl . '/comunidades/' . $row['url'] . '/" target="_self" title="' . $row['nombre'] . '">' . $row['nombre'] . '</a>
+            </div>
+          </div>
+          <div class="size10">
+            Comunidad creada por
+            <a href="' . $boardurl . '/perfil/' . $row['realName'] . '" target="_self" title="' . $row['realName'] . '">' . $row['realName'] . '</a>
+            |
+            ' . timeformat($row['fecha_inicio']) . '
+          </div>
+        </div>
+        <div class="hrs"></div>';
+    }
+
+    mysqli_free_result($request);
+
+    echo '
+        </div>
+      </div>';
+
+    echo '
+      <div class="act_comments">
+        <div class="box_title" style="width: 361px;">
+          <div class="box_txt ultimos_comments">&Uacute;ltimos comentarios</div>
+          <div class="box_rss">
+            <div style="height: 16px; width: 16px; cursor: pointer;" class="actualizarComents png">
+              <img alt="Actualizar" onclick="actualizar_comentarios_com(); return false;" src="' . $tranfer1 . '/espacio.png" class="png" height="16px" width="16px" />
+            </div>
+          </div>
+        </div>
+        <div class="windowbg" style="padding: 4px; width: 353px; margin-bottom: 8px;">
+          <span id="ult_comm">';
+
+    $request = db_query("
+      SELECT m.realName, t.titulo, t.id, co.url
+      FROM {$db_prefix}comunidades_comentarios AS c, {$db_prefix}members AS m, {$db_prefix}comunidades_articulos AS t, {$db_prefix}comunidades AS co
+      WHERE c.id_user = m.ID_MEMBER
+      AND c.id_tema = t.id
+      AND t.id_com = co.id
+      AND co.bloquear = 0
+      AND t.eliminado = 0
+      AND co.acceso <> 4
+      ORDER BY c.id DESC
+      LIMIT 10", __FILE__, __LINE__);
+
+    $rows = mysqli_num_rows($request);
+
+    if ($rows == 0) {
+      echo '<div class="noesta-am">No existen comentarios.</div>';
+    } else {
+      while ($row = mysqli_fetch_assoc($request)) {
+        $ddddsxx = nohtml(nohtml2($row['titulo']));
+        $ddaa = $row['titulo'];
+        echo '<font class="size11"><b><a href="/perfil/'.$row['realName'].'" target="_self" title="'.$row['realName'].'">'.$row['realName'].'</a></b> - <a href="/comunidades/'.$row['url'].'/'.$row['id'].'/'.urls($ddaa).'.html" target="_self" title="'.$ddddsxx.'">'.$ddddsxx.'</a></font><br style="margin: 0px; padding: 0px;">';
+      }
+    }
+
+    mysqli_free_result($request);
+
+    echo '
+          </span>
+        </div>
+      </div>';
+
+    echo '
+      <div class="act_comments">
+        <div class="box_title" style="width: 361px;">
+          <div class="box_txt ultimos_comments">Destacados</div>
+          <div class="box_rss">
+            <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
+          </div>
+        </div>
+        <div class="windowbg" style="padding: 4px; width: 353px; margin-bottom: 8px;">
+          <center>';
+
+    destacado();
+
+    echo '
+              </center>
+            </div>
+          </div>
+        </div>
+      <div style="float: left;">';
+
+    $request = db_query("
+      SELECT url, imagen, id, nombre, cred_fecha
+      FROM {$db_prefix}comunidades
+      WHERE credito = 100
+      AND bloquear = 0
+      ORDER BY RAND()
+      LIMIT 1", __FILE__, __LINE__);
+
+    while ($row = mysqli_fetch_assoc($request)) {
+      $img_Destacao = nohtml(nohtml2($row['imagen']));
+      $url_Destacao = $row['url'];
+      $nombre_Destacao = nohtml(nohtml2($row['nombre']));
+      $id_Destacao = $row['id'];
+      $fecha_Destacao = $row['cred_fecha'] + 86400;
+
+      if (time() > $fecha_Destacao) {
+        db_query("
+          UPDATE {$db_prefix}comunidades
+          SET credito = 0
+          WHERE id = '$id_Destacao'
+          LIMIT 1", __FILE__, __LINE__);
+      }
+    }
+
+    mysqli_free_result($request);
+    $img_Destacao = isset($img_Destacao) ? $img_Destacao : ''; 
+    $id_Destacao = isset($id_Destacao) ? $id_Destacao : ''; 
+
+    if ($img_Destacao) {
+      $img2 = $img_Destacao;
+    } else {
+      $img2 = $no_avatar;
+    }
+
+    if ($id_Destacao) {
+      echo '
+        <div class="img_aletat">
+          <div class="box_title" style="width: 163px;">
+            <div class="box_txt img_aletat">Destacados</div>
+            <div class="box_rss">
+              <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16pw; height: 16px;" border="0" />
+            </div>
+          </div>
+          <div class="windowbg" style="padding: 4px; width: 155px; margin-bottom: 8px;">
+            <center>
+              <a href="' . $boardurl . '/comunidades/' . $url_Destacao . '/" title="' . $nombre_Destacao . '">
+                <img src="' . $img2 . '" width="120px" height="120px" alt="" class="avatar" title="' . $nombre_Destacao . '" onerror="error_avatar(this)" />
+              </a>
+              <br />
+              <div class="hrs"></div>
+              <a href="' . $boardurl . '/comunidades/' . $url_Destacao . '/" title="' . $nombre_Destacao . '">
+                <b class="size15">' . $nombre_Destacao . '</b>
+              </a>
+            </center>
+          </div>
+        </div>';
+    }
+
+    echo '
+      <div class="MenuCascada" style="margin-bottom: 8px;">
+        <div style="width: 165px;">
+          <div>
+            <a href="' . $boardurl . '/comunidades/dir">Directorios</a>
+          </div>
         </div>
       </div>
-      <div class="size10">
-        Comunidad creada por
-        <a href="' . $boardurl . '/perfil/' . $row['realName'] . '" target="_self" title="' . $row['realName'] . '">' . $row['realName'] . '</a>
-        |
-        ' . timeformat($row['fecha_inicio']) . '
-      </div>
-    </div>
-    <div class="hrs"></div>';
+      <div class="img_aletat">
+        <div class="box_title" style="width: 163px;">
+          <div class="box_txt img_aletat">Publicidad</div>
+          <div class="box_rss">
+            <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
+          </div>
+        </div>
+        <div class="windowbg" style="padding: 4px; width: 155px; margin-bottom: 8px;">
+          <center>';
+
+    anuncio_160x600();
+
+    echo '
+            </center>
+          </div>
+        </div>
+      </div>';
+  } else {
+    // COMUNIDAD
+    if (entrar($context['ddddsaaat'])) {
+      echo entrar($context['ddddsaaat']);
+    } else {
+      $context['ComUeliminado'] = isset($context['ComUeliminado']) ? $context['ComUeliminado'] : '';
+
+      echo $context['ComUeliminado'];
+
+      sidebar($context['url2222']);
+
+      if (!$_GET['miembros']) {
+        echo '
+          <div style="margin-bottom: 8px; float: left;">
+            <div class="box_title" style="width: 539px;">
+              <div class="box_txt">' . $context['nombrecat'] . '</div>
+              <div class="box_rss">
+                <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" border="0" />
+              </div>
+            </div>
+            <div class="windowbg" style="width: 531px; padding: 4px;">
+              <table>
+                <tr>
+                  <td valign="top" style="padding: 4px; font-size: 13px;">
+                    <b>Descripci&oacute;n:</b>
+                  </td>
+                  <td style="padding: 4px; width: 360px; white-space: pre-wrap; overflow: hidden; display: block; height: 100%; background-color: #FFF; border: solid 1px #D5CCC3;">' . $context['descecat'] . '</td>
+                </tr>
+                <tr>
+                  <td valign="top" style="padding: 4px; font-size: 13px;">
+                    <b>Categor&iacute;a:</b>
+                  </td>
+                  <td style="padding: 4px;">
+                    <a href="' . $boardurl . '/comunidades/categoria/' . $context['caturl'] . '">' . $context['cat'] . '</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td valign="top" style="padding: 4px; font-size: 13px;">
+                    <b>Comunidad creada el:</b>
+                  </td>
+                  <td style="padding: 4px;" title="' . $context['fecha'] . '">' . $context['fecha'] . '</td>
+                </tr>
+                <tr>
+                  <td valign="top" style="padding: 4px; font-size: 13px;">
+                    <b>Due&ntilde;o:</b>
+                  </td>
+                  <td style="padding: 4px;" title="' . $context['UserName'] . '">
+                    <a href="' . $boardurl . '/perfil/' . $context['UserName'] . '">' . $context['UserName'] . '</a>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="box_title" style="width: 539px; margin-top: 8px;">
+              <div class="box_txt">Temas Fijados</div>
+              <div class="box_rss">
+                <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" border="0" />
+              </div>
+            </div>
+            <div class="windowbg" style="width: 531px; padding: 4px; margin-bottom: 4px;">';
+
+        $rs = db_query("
+          SELECT a.titulo, m.realName, c.url, a.id
+          FROM {$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades AS c, {$db_prefix}members AS m
+          WHERE c.url = '{$context['url2222']}'
+          AND c.id = a.id_com
+          AND a.stiky = 1
+          AND m.ID_MEMBER = a.id_user
+          AND a.eliminado = 0", __FILE__, __LINE__);
+
+        while ($row = mysqli_fetch_assoc($rs)) {
+          $titulo = nohtml(nohtml2($row['titulo']));
+          $titulo2 = $titulo;
+          $ids = $row['id'];
+          $url = nohtml($row['url']);
+          $realname = $row['realName'];
+
+          echo '
+            <div class="comunidad_tema">
+              <div>
+                <div style="float: left; margin-right: 5px;">
+                  <img src="' . $tranfer1 . '/comunidades/temas_fijo.png" alt="" title="' . $titulo . '" />
+                </div>
+                <div>
+                  <a style="color: #D35F2C; font-weight: bold; font-size: 13px;" href="' . $boardurl . '/comunidades/' . $url . '/' . $ids . '/' . urls($titulo2) . '.html" target="_self" title="' . $titulo . '">' . $titulo . '</a>
+                </div>
+              </div>
+              <div class="size10">
+                Por
+                <a href="' . $boardurl . '/perfil/' . $realname . '" target="_self" title="' . $realname . '">' . $realname . '</a>
+              </div>
+            </div>
+            <div class="hrs"></div>';
+        }
+
+        $titulo = isset($titulo) ? $titulo : '';
+
+        if (!$titulo) {
+          echo '<div class="noesta">No hay temas fijados.</div>';
+        }
+
+        echo '</div>';
+
+        if (!eaprobacion($context['ddddsaaat']) && ($context['puedo'] == 1 || $context['puedo'] == 3)) {
+          echo '
+            <p align="right" style="padding: 0px; margin: 0px;">
+              <input onclick="javascript:window.location.href=\'' . $boardurl . '/comunidades/' . $context['url2222'] . '/crear-tema\'" alt="" class="comCrearTema" title="" value=" " type="submit" align="top" />
+            </p>';
+        }
+
+        echo '
+          <div class="box_title" style="width: 539px; margin-top: 4px;">
+            <div class="box_txt">Temas</div>
+            <div class="box_rss">
+              <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" border="0" />
+            </div>
+          </div>
+          <div class="windowbg" style="width: 531px; padding: 4px;">';
+
+        $_GET['st'] = isset($_GET['st']) ? $_GET['st'] : '';
+
+        if ($_GET['st'] < 1) {
+          $das = '0';
+        } else {
+          $das = $_GET['st'];
+        }
+
+        if (isset($das)) {
+          $st = (int) $das;
+        } else {
+          $st = 0;
+        }
+
+        $pp=10;
+        $total=mysqli_num_rows(db_query("SELECT a.titulo FROM ({$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades AS c, {$db_prefix}members AS m) WHERE c.url='{$context['url2222']}' AND c.id=a.id_com AND m.ID_MEMBER=a.id_user AND a.eliminado=0",__FILE__, __LINE__));
+        $rs44=db_query("
+        SELECT a.titulo,a.id,c.url,m.realName
+        FROM ({$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades AS c, {$db_prefix}members AS m)
+        WHERE c.url='{$context['url2222']}' AND c.id=a.id_com AND m.ID_MEMBER=a.id_user AND a.eliminado=0
+        ORDER BY a.id DESC
+        LIMIT $st,$pp",__FILE__, __LINE__);
+        while ($row=mysqli_fetch_assoc($rs44)){
+        $titulo=nohtml(nohtml2($row['titulo']));
+        $titulo2=$row['titulo'];
+        $ids=$row['id'];
+        $url=nohtml($row['url']);
+        $realname=$row['realName'];
+        echo'<div class="comunidad_tema"><div>
+        <div style="float:left;margin-right:5px;"><img src="'.$tranfer1.'/comunidades/temas.png" alt="" title="'.$titulo.'" /></div><div><a style="color:#D35F2C;font-weight:bold;font-size:13px;" href="/comunidades/'.$url.'/'.$ids.'/'.urls($titulo2).'.html" target="_self" title="'.$titulo.'">'.$titulo.'</a></div></div>
+        <div class="size10">Por <a href="/perfil/'.$realname.'" target="_self" title="'.$realname.'">'.$realname.'</a></div></div>
+        <div class="hrs"></div>';}
+        if(!$titulo){echo'<div class="noesta">No hay temas creados.</div>';}
+        echo'</div><div style="width:541px;">';
+        echo paginacion($total, $pp, $st, '/comunidades/'.$context['url2222'].'/pag-');
+        echo'</div></div>';
+
+      }
+
+
+
+      elseif($_GET['miembros'] == 3 && $context['allow_admin']){
+          
+      if(!$context['ddddsaaat']){
+      echo'<div class="noesta" style="width:541px;margin-bottom:8px;float:left;">Esta comunidad no existe.-</div>';}else{
+
+      echo'<div style="margin-bottom:8px;float:left;">
+      <div class="box_title" style="width:539px;"><div class="box_txt">Administrar Comunidad</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div>
+      <div class="windowbg" style="width:531px;padding:4px;">';
+
+      echo'<form style="margin: 0px; padding: 0px;" action="/web/cw-comunidadesAdmCom.php" method="POST" accept-charset="'.$context['character_set'].'"><table>
+
+      <tr><td style="width:100px;"><b>Comunidad:</b></td> <td>'.$context['nombrecat'].'</td></tr></table><div class="hrs"></div>';
+
+      if(!$context['ivvvaar']){
+      echo'<table><tr><td style="width:100px;"><b>Eliminar:</b></td> <td><input name="eliminar" type="checkbox" /><br /></td></tr><tr><td style="width:100px;"><b>Raz&oacute;n:</b></td> <td><input onfocus="foco(this);" onblur="no_foco(this);" title="Raz&oacute;n" value="" type="text" name="razon" /></td></tr></table>';}else{
+      echo'<table><tr><td style="width:100px;"><b>Restaurar Comunidad:</b></td> <td><input name="restaur" type="checkbox" /><br /></td></tr></table>';}
+      echo'<div class="hrs"></div>
+      <p style="margin:0px;margin:0px;" align="right"><input alt="" class="login" title="Aceptar" value="Aceptar" type="submit" /></p>
+      <input name="comun" value="'.$context['ddddsaaat'].'" type="hidden" /></form></center>';
+      echo'</div><div class="clearBoth"></div></div>';}}elseif($_GET['miembros']=='8'){
+      if(!$context['user']['is_guest'] && !$context['permisoCom']){    
+      echo'<div style="margin-bottom:8px;float:left;">
+      <div class="box_title" style="width:539px;"><div class="box_txt">Denunciar Comunidad</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div>
+      <div class="windowbg" style="width:531px;padding:4px;">';
+      echo'<form style="margin: 0px; padding: 0px;" action="/web/cw-comunidadesDen.php" method="POST" accept-charset="'.$context['character_set'].'">';
+      echo'<table>
+      <tr><td style="width:100px;"><b>Comunidad:</b></td><td> '.$context['nombrecat'].'</td></tr>
+      <tr><td style="width:100px;"><b>Raz&oacute;n:</b></td><td> <input value="" type="text" name="razon" onfocus="foco(this);" onblur="no_foco(this);" style="width:300px;" /> </td></tr>
+      <tr><td style="width:100px;"><b>Comentario:</b></td><td> <textarea onfocus="foco(this);" onblur="no_foco(this);" style="width:300px;" name="comentario"></textarea></td></tr>
+      </table>
+      <input type="hidden" value="'.$context['ddddsaaat'].'" name="comu" />
+      <p align="right" style="padding:0px;margin:0px;"><input type="submit" class="login" value="Enviar" name="enviar" /></p>';
+      echo'</form>
+
+      </div><div class="clearBoth"></div></div>';
+
+      }else{echo'<div class="noesta" style="width:541px;margin-bottom:8px;float:left;">No podes denunciar esta comunidad.-</div>';}
+
+      }elseif($_GET['miembros']=='9'){
+      if($context['permisoCom']==1){    
+      echo'<div style="margin-bottom:8px;float:left;">
+      <div class="box_title" style="width:539px;"><div class="box_txt">Publicitar Comunidad</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div>
+      <div class="windowbg" style="width:531px;padding:4px;">';
+
+      echo'<ul><li>Para publicitar tu comunidadad tienes que tener 500 o m&aacute;s puntos.</li>
+      <li>La publicidad vale 100 puntos.</li>
+      <li>Estar&aacute; a la vista de todos durante 24HS.</li>
+
+      <form style="margin: 0px; padding: 0px;" action="/web/cw-comunidadesPublicitar.php" method="POST" accept-charset="'.$context['character_set'].'">
+      <input type="hidden" value="'.$context['ddddsaaat'].'" name="id" />
+      <p align="right" style="padding:0px;margin:0px;"><input type="submit" class="login" value="Publicitar" name="enviar" /></p>';
+      echo'</form>
+
+      </div><div class="clearBoth"></div></div>';
+
+      }else{echo'<div class="noesta" style="width:541px;margin-bottom:8px;float:left;">No podes publicitar esta comunidad.-</div>';}
+
+      }
+
+      else{echo'<div class="noesta" style="width:541px;margin-bottom:8px;float:left;">Accion no conocida.-</div>';}
+      /////////////////////////////////////////////////////////////////////////////////////
+      /////////////////////////////////////////////////////////////////////////////////////
+      /////////////////////////////////////////////////////////////////////////////////////
+      /////////////////////////////////////////////////////////////////////////////////////
+      /////////////////////////////////////////////////////////////////////////////////////
+      /////////////////////////////////////////////////////////////////////////////////////
+      echo'<div style="float:left;margin-bottom:8px;margin-left:8px;">';
+
+      echo'<div style="margin-bottom:8px;"><div class="box_title" style="width:201px;"><div class="box_txt box_perfil2-36">&Uacute;ltimos comentarios</div><div class="box_rss"><img src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" alt="" /></div></div><div class="windowbg" style="width:193px;padding:4px;"><span id="ult_comm">';
+      $rs44=db_query("
+      SELECT m.realName,a.titulo,c.id,c.id_tema,co.url
+      FROM ({$db_prefix}members AS m,{$db_prefix}comunidades_comentarios as c,{$db_prefix}comunidades as co,{$db_prefix}comunidades_articulos as a)
+      WHERE c.id_com='{$context['ddddsaaat']}' AND a.id=c.id_tema AND c.id_user=m.ID_MEMBER AND c.id_com=co.id AND a.eliminado=0
+      ORDER BY c.id DESC
+      LIMIT 10",__FILE__, __LINE__);
+      while ($row=mysqli_fetch_assoc($rs44)){
+      $realnames=$row['realName'];
+      $titledsd2=$row['titulo'];
+      if(strlen($titledsd2)>20){$valor=substr($titledsd2,0,17)."...";}
+      else{$valor=$titledsd2;}
+      echo'<font class="size11"><b><a href="/perfil/'.$realnames.'" title="'.$realnames.'">'.$realnames.'</a></b> - <a title="'.$titledsd2.'" href="/comunidades/'.$row['url'].'/'.$row['id_tema'].'/'.urls($titledsd2).'.html#comentarios">'.nohtml(nohtml2($valor)).'</a></font><br style="margin: 0px; padding: 0px;">';}
+      $realnames=isset($realnames) ? $realnames : '';
+      if(!$realnames)echo'<div class="noesta">No hay nuevos comentarios.</div>';
+      echo'</span></div></div>';
+
+      echo'<div style="margin-bottom:8px;"><div class="box_title" style="width:201px;"><div class="box_txt box_perfil2-36">&Uacute;ltimos Miembros</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div>
+      <div class="windowbg" style="width:193px;padding:4px;">';
+      $rs44=db_query("SELECT m.realName,c.fecha
+      FROM ({$db_prefix}members AS m, {$db_prefix}comunidades_miembros as c)
+      WHERE c.id_com='{$context['ddddsaaat']}' AND c.id_user=m.ID_MEMBER AND c.aprobado=1
+      ORDER BY c.id DESC
+      LIMIT 10",__FILE__, __LINE__);
+      while ($row=mysqli_fetch_assoc($rs44)){
+      $realnames=$row['realName'];
+      $fechav=hace($row['fecha']);
+      echo'<font class="size11"><b><a href="/perfil/'.$realnames.'" title="'.$realnames.'">'.$realnames.'</a></b> - '.$fechav.' </font><br style="margin: 0px; padding: 0px;">';}
+      if(!$realnames)echo'<div class="noesta">No hay nuevos miembros.</div>';
+      echo'</div></div>';
+
+      $rs=db_query("SELECT c.url,c.imagen,c.id,c.nombre,c.cred_fecha
+      FROM ({$db_prefix}comunidades AS c)
+      WHERE c.credito=100 AND c.bloquear=0
+      ORDER BY RAND()
+      LIMIT 1",__FILE__, __LINE__);
+      while ($row=mysqli_fetch_assoc($rs)){
+      $img_Destacao=nohtml(nohtml2($row['imagen']));
+      $url_Destacao=$row['url'];
+      $nombre_Destacao=nohtml(nohtml2($row['nombre']));
+      $id_Destacao=$row['id'];
+      $fecha_Destacao=$row['cred_fecha']+86400;
+      if(time() > $fecha_Destacao){db_query("UPDATE {$db_prefix}comunidades SET credito=0 WHERE id='$id_Destacao' LIMIT 1", __FILE__, __LINE__);}}
+      mysqli_free_result($rs);
+      $img_Destacao=isset($img_Destacao) ? $img_Destacao : ''; 
+      $id_Destacao=isset($id_Destacao) ? $id_Destacao : ''; 
+      if ($img_Destacao){$img2=$img_Destacao;}else{$img2=$no_avatar;}
+      if($id_Destacao) {
+        echo'<div style="margin-bottom:8px;"><div class="box_title" style="width:201px;"><div class="box_txt box_perfil2-36">Destacados</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div>
+        <div class="windowbg" style="width:193px;padding:4px;"><center>';
+        echo'<a href="/comunidades/'.$url_Destacao.'/" title="'.$nombre_Destacao.'"><img src="'.$img2.'" width="120px" height="120px" alt="" class="avatar" title="'.$nombre_Destacao.'" onerror="error_avatar(this)" /></a>
+        <br /><div class="hrs"></div>
+        <a href="/comunidades/'.$url_Destacao.'/" title="'.$nombre_Destacao.'"><b class="size15">'.$nombre_Destacao.'</b></a>';
+        echo'</center></div></div>';
+      }
+
+      echo'</div>';
+    }
+  }
 }
-
-mysqli_free_result($rs2);
-echo'</div></div>';
-
-
-echo'<div class="act_comments"><div class="box_title" style="width:361px;"><div class="box_txt ultimos_comments">&Uacute;ltimos comentarios</div><div class="box_rss"><div style="height: 16px; width: 16px; cursor: pointer;" class="actualizarComents png"><img alt="Actualizar" onclick="actualizar_comentarios_com(); return false;" src="'.$tranfer1.'/espacio.png" class="png" height="16px" width="16px" /></div></div></div>
-<div class="windowbg" style="padding:4px;width:353px;margin-bottom:8px;"><span id="ult_comm">';
-$rs2=db_query("SELECT m.realName,t.titulo,t.id,co.url
-FROM ({$db_prefix}comunidades_comentarios AS c, {$db_prefix}members AS m, {$db_prefix}comunidades_articulos AS t, {$db_prefix}comunidades AS co)
-WHERE c.id_user=m.ID_MEMBER AND c.id_tema=t.id AND t.id_com=co.id AND co.bloquear=0 AND t.eliminado=0 AND co.acceso <> 4
-ORDER BY c.id DESC
-LIMIT 10",__FILE__, __LINE__);
-while ($row=mysqli_fetch_assoc($rs2)){
-$ddddsxx=nohtml(nohtml2($row['titulo']));
-$ddaa=$row['titulo'];
-echo'<font class="size11"><b><a href="/perfil/'.$row['realName'].'" target="_self" title="'.$row['realName'].'">'.$row['realName'].'</a></b> - <a href="/comunidades/'.$row['url'].'/'.$row['id'].'/'.urls($ddaa).'.html" target="_self" title="'.$ddddsxx.'">'.$ddddsxx.'</a></font><br style="margin: 0px; padding: 0px;">';}
-mysqli_free_result($rs2);
-echo'</span></div></div>';
-
-
-echo'<div class="act_comments"><div class="box_title" style="width:361px;"><div class="box_txt ultimos_comments">Destacados</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="padding:4px;width:353px;margin-bottom:8px;"><center>';
-destacado();
-echo'</center></div>';
-echo'</div></div>';
-echo'<div style="float:left;">';
-
-$rs=db_query("SELECT c.url,c.imagen,c.id,c.nombre, c.cred_fecha
-FROM ({$db_prefix}comunidades AS c)
-WHERE c.credito=100 AND c.bloquear=0
-ORDER BY RAND()
-LIMIT 1",__FILE__, __LINE__);
-while ($row=mysqli_fetch_assoc($rs)){
-$img_Destacao=nohtml(nohtml2($row['imagen']));
-$url_Destacao=$row['url'];
-$nombre_Destacao=nohtml(nohtml2($row['nombre']));
-$id_Destacao=$row['id'];
-$fecha_Destacao=$row['cred_fecha']+86400;
-if(time() > $fecha_Destacao){db_query("UPDATE {$db_prefix}comunidades SET credito=0 WHERE id='$id_Destacao' LIMIT 1", __FILE__, __LINE__);}}
-mysqli_free_result($rs);
-$img_Destacao=isset($img_Destacao) ? $img_Destacao : ''; 
-$id_Destacao=isset($id_Destacao) ? $id_Destacao : ''; 
-if($img_Destacao){$img2=$img_Destacao;}else{$img2=$no_avatar;}
-
-if($id_Destacao){
-echo'<div class="img_aletat">
-<div class="box_title" style="width: 163px;"><div class="box_txt img_aletat">Destacados</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" /></div></div>
-<div class="windowbg" style="padding:4px;width:155px;margin-bottom:8px;"><center>';
-echo'<a href="/comunidades/'.$url_Destacao.'/" title="'.$nombre_Destacao.'"><img src="'.$img2.'" width="120px" height="120px" alt="" class="avatar" title="'.$nombre_Destacao.'" onerror="error_avatar(this)" /></a>
-<br /><div class="hrs"></div>
-<a href="/comunidades/'.$url_Destacao.'/" title="'.$nombre_Destacao.'"><b class="size15">'.$nombre_Destacao.'</b></a>';  echo'</center></div></div>';}
-
-
-
-echo'<div class="MenuCascada" style="margin-bottom:8px;">
-<div style="width: 165px;">
-<div><a href="/comunidades/dir">Directorios</a></div>
-</div>
-</div>
-
-<div class="img_aletat"><div class="box_title" style="width: 163px;"><div class="box_txt img_aletat">Publicidad</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="padding:4px;width:155px;margin-bottom:8px;"><center>';
-anuncio_160x600();
-echo'</center></div></div>';
-
-echo'</div>';
-
-
-}else{
-       
-// COMUNIDAD
-if(entrar($context['ddddsaaat'])){echo entrar($context['ddddsaaat']);}else{
-$context['ComUeliminado']=isset($context['ComUeliminado']) ? $context['ComUeliminado'] : '';
-echo $context['ComUeliminado'];
-sidebar($context['url2222']);
-
-if(!$_GET['miembros']){
-echo'<div style="margin-bottom:8px;float:left;"><div class="box_title" style="width:539px;"><div class="box_txt">'.$context['nombrecat'].'</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div><div class="windowbg" style="width:531px;padding:4px;">';
-echo'<table>
-
-<tr><td valign="top" style="padding:4px;font-size:13px;"><b>Descripci&oacute;n:</b></td> <td style="padding:4px;width:360px;white-space:pre-wrap;overflow:hidden;display:block;height:100%;background-color:#FFF;border: solid 1px #D5CCC3;">'.$context['descecat'].'</td></tr>
-
-<tr><td valign="top" style="padding:4px;font-size:13px;"><b>Categor&iacute;a:</b></td> <td  style="padding:4px;"><a href="/comunidades/categoria/'.$context['caturl'].'">'.$context['cat'].'</td></tr>
-
-<tr><td valign="top" style="padding:4px;font-size:13px;"><b>Comunidad creada el:</b></td> <td  style="padding:4px;" title="'.$context['fecha'].'">'.$context['fecha'].'</td></tr>
-
-<tr><td valign="top" style="padding:4px;font-size:13px;"><b>Due&ntilde;o:</b></td> <td  style="padding:4px;" title="'.$context['UserName'].'"><a href="/perfil/'.$context['UserName'].'">'.$context['UserName'].'</a></td></tr>
-</table></div>';
- 
-
-echo'<div class="box_title" style="width:539px;margin-top:8px;"><div class="box_txt">Temas Fijados</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div><div class="windowbg" style="width:531px;padding:4px;margin-bottom:4px;">';
-$rs=db_query("
-SELECT a.titulo,m.realName,c.url,a.id
-FROM ({$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades AS c, {$db_prefix}members AS m)
-WHERE c.url='{$context['url2222']}' AND c.id=a.id_com AND a.stiky=1 AND m.ID_MEMBER=a.id_user AND a.eliminado=0",__FILE__, __LINE__);
-while ($row=mysqli_fetch_assoc($rs)){
-$titulo=nohtml(nohtml2($row['titulo']));
-$titulo2=$titulo;
-$ids=$row['id'];
-$url=nohtml($row['url']);
-$realname=$row['realName'];
-echo'<div class="comunidad_tema"><div>
-
-<div style="float:left;margin-right:5px;"><img src="'.$tranfer1.'/comunidades/temas_fijo.png" alt="" title="'.$titulo.'" /></div><div><a style="color:#D35F2C;font-weight:bold;font-size:13px;" href="/comunidades/'.$url.'/'.$ids.'/'.urls($titulo2).'.html" target="_self" title="'.$titulo.'">'.$titulo.'</a></div></div><div class="size10">Por <a href="/perfil/'.$realname.'" target="_self" title="'.$realname.'">'.$realname.'</a></div></div><div class="hrs"></div>';}
-$titulo=isset($titulo) ? $titulo : '';
-if(!$titulo){echo'<div class="noesta">No hay temas fijados.</div>';}
-echo'</div>';
-if(!eaprobacion($context['ddddsaaat']) && ($context['puedo']=='1' || $context['puedo']=='3')){
-echo'<p align="right" style="padding:0px;margin:0px;"><input onclick="javascript:window.location.href=\'' . $boardurl . '/comunidades/'.$context['url2222'].'/crear-tema\'" alt="" class="comCrearTema" title="" value=" " type="submit" align="top" /></p>';}
-
-echo'<div class="box_title" style="width:539px;margin-top:4px;"><div class="box_txt">Temas</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div><div class="windowbg" style="width:531px;padding:4px;">';
-
-$_GET['st']=isset($_GET['st']) ? $_GET['st'] : ''; 
-if($_GET['st']<1){$das='0';}else{$das=$_GET['st'];}
-if(isset($das)){$st=(int)$das;}else{$st=0;}
-$pp=10;
-$total=mysqli_num_rows(db_query("SELECT a.titulo FROM ({$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades AS c, {$db_prefix}members AS m) WHERE c.url='{$context['url2222']}' AND c.id=a.id_com AND m.ID_MEMBER=a.id_user AND a.eliminado=0",__FILE__, __LINE__));
-$rs44=db_query("
-SELECT a.titulo,a.id,c.url,m.realName
-FROM ({$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades AS c, {$db_prefix}members AS m)
-WHERE c.url='{$context['url2222']}' AND c.id=a.id_com AND m.ID_MEMBER=a.id_user AND a.eliminado=0
-ORDER BY a.id DESC
-LIMIT $st,$pp",__FILE__, __LINE__);
-while ($row=mysqli_fetch_assoc($rs44)){
-$titulo=nohtml(nohtml2($row['titulo']));
-$titulo2=$row['titulo'];
-$ids=$row['id'];
-$url=nohtml($row['url']);
-$realname=$row['realName'];
-echo'<div class="comunidad_tema"><div>
-<div style="float:left;margin-right:5px;"><img src="'.$tranfer1.'/comunidades/temas.png" alt="" title="'.$titulo.'" /></div><div><a style="color:#D35F2C;font-weight:bold;font-size:13px;" href="/comunidades/'.$url.'/'.$ids.'/'.urls($titulo2).'.html" target="_self" title="'.$titulo.'">'.$titulo.'</a></div></div>
-<div class="size10">Por <a href="/perfil/'.$realname.'" target="_self" title="'.$realname.'">'.$realname.'</a></div></div>
-<div class="hrs"></div>';}
-if(!$titulo){echo'<div class="noesta">No hay temas creados.</div>';}
-echo'</div><div style="width:541px;">';
-echo paginacion($total, $pp, $st, '/comunidades/'.$context['url2222'].'/pag-');
-echo'</div></div>';
-
-}
-
-
-
-elseif($_GET['miembros'] == 3 && $context['allow_admin']){
-    
-if(!$context['ddddsaaat']){
-echo'<div class="noesta" style="width:541px;margin-bottom:8px;float:left;">Esta comunidad no existe.-</div>';}else{
-
-echo'<div style="margin-bottom:8px;float:left;">
-<div class="box_title" style="width:539px;"><div class="box_txt">Administrar Comunidad</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div>
-<div class="windowbg" style="width:531px;padding:4px;">';
-
-echo'<form style="margin: 0px; padding: 0px;" action="/web/cw-comunidadesAdmCom.php" method="POST" accept-charset="'.$context['character_set'].'"><table>
-
-<tr><td style="width:100px;"><b>Comunidad:</b></td> <td>'.$context['nombrecat'].'</td></tr></table><div class="hrs"></div>';
-
-if(!$context['ivvvaar']){
-echo'<table><tr><td style="width:100px;"><b>Eliminar:</b></td> <td><input name="eliminar" type="checkbox" /><br /></td></tr><tr><td style="width:100px;"><b>Raz&oacute;n:</b></td> <td><input onfocus="foco(this);" onblur="no_foco(this);" title="Raz&oacute;n" value="" type="text" name="razon" /></td></tr></table>';}else{
-echo'<table><tr><td style="width:100px;"><b>Restaurar Comunidad:</b></td> <td><input name="restaur" type="checkbox" /><br /></td></tr></table>';}
-echo'<div class="hrs"></div>
-<p style="margin:0px;margin:0px;" align="right"><input alt="" class="login" title="Aceptar" value="Aceptar" type="submit" /></p>
-<input name="comun" value="'.$context['ddddsaaat'].'" type="hidden" /></form></center>';
-echo'</div><div class="clearBoth"></div></div>';}}elseif($_GET['miembros']=='8'){
-if(!$context['user']['is_guest'] && !$context['permisoCom']){    
-echo'<div style="margin-bottom:8px;float:left;">
-<div class="box_title" style="width:539px;"><div class="box_txt">Denunciar Comunidad</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div>
-<div class="windowbg" style="width:531px;padding:4px;">';
-echo'<form style="margin: 0px; padding: 0px;" action="/web/cw-comunidadesDen.php" method="POST" accept-charset="'.$context['character_set'].'">';
-echo'<table>
-<tr><td style="width:100px;"><b>Comunidad:</b></td><td> '.$context['nombrecat'].'</td></tr>
-<tr><td style="width:100px;"><b>Raz&oacute;n:</b></td><td> <input value="" type="text" name="razon" onfocus="foco(this);" onblur="no_foco(this);" style="width:300px;" /> </td></tr>
-<tr><td style="width:100px;"><b>Comentario:</b></td><td> <textarea onfocus="foco(this);" onblur="no_foco(this);" style="width:300px;" name="comentario"></textarea></td></tr>
-</table>
-<input type="hidden" value="'.$context['ddddsaaat'].'" name="comu" />
-<p align="right" style="padding:0px;margin:0px;"><input type="submit" class="login" value="Enviar" name="enviar" /></p>';
-echo'</form>
-
-</div><div class="clearBoth"></div></div>';
-
-}else{echo'<div class="noesta" style="width:541px;margin-bottom:8px;float:left;">No podes denunciar esta comunidad.-</div>';}
-
-}elseif($_GET['miembros']=='9'){
-if($context['permisoCom']==1){    
-echo'<div style="margin-bottom:8px;float:left;">
-<div class="box_title" style="width:539px;"><div class="box_txt">Publicitar Comunidad</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div>
-<div class="windowbg" style="width:531px;padding:4px;">';
-
-echo'<ul><li>Para publicitar tu comunidadad tienes que tener 500 o m&aacute;s puntos.</li>
-<li>La publicidad vale 100 puntos.</li>
-<li>Estar&aacute; a la vista de todos durante 24HS.</li>
-
-<form style="margin: 0px; padding: 0px;" action="/web/cw-comunidadesPublicitar.php" method="POST" accept-charset="'.$context['character_set'].'">
-<input type="hidden" value="'.$context['ddddsaaat'].'" name="id" />
-<p align="right" style="padding:0px;margin:0px;"><input type="submit" class="login" value="Publicitar" name="enviar" /></p>';
-echo'</form>
-
-</div><div class="clearBoth"></div></div>';
-
-}else{echo'<div class="noesta" style="width:541px;margin-bottom:8px;float:left;">No podes publicitar esta comunidad.-</div>';}
-
-}
-
-else{echo'<div class="noesta" style="width:541px;margin-bottom:8px;float:left;">Accion no conocida.-</div>';}
-/////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////
-echo'<div style="float:left;margin-bottom:8px;margin-left:8px;">';
-
-echo'<div style="margin-bottom:8px;"><div class="box_title" style="width:201px;"><div class="box_txt box_perfil2-36">&Uacute;ltimos comentarios</div><div class="box_rss"><img src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" alt="" /></div></div><div class="windowbg" style="width:193px;padding:4px;"><span id="ult_comm">';
-$rs44=db_query("
-SELECT m.realName,a.titulo,c.id,c.id_tema,co.url
-FROM ({$db_prefix}members AS m,{$db_prefix}comunidades_comentarios as c,{$db_prefix}comunidades as co,{$db_prefix}comunidades_articulos as a)
-WHERE c.id_com='{$context['ddddsaaat']}' AND a.id=c.id_tema AND c.id_user=m.ID_MEMBER AND c.id_com=co.id AND a.eliminado=0
-ORDER BY c.id DESC
-LIMIT 10",__FILE__, __LINE__);
-while ($row=mysqli_fetch_assoc($rs44)){
-$realnames=$row['realName'];
-$titledsd2=$row['titulo'];
-if(strlen($titledsd2)>20){$valor=substr($titledsd2,0,17)."...";}
-else{$valor=$titledsd2;}
-echo'<font class="size11"><b><a href="/perfil/'.$realnames.'" title="'.$realnames.'">'.$realnames.'</a></b> - <a title="'.$titledsd2.'" href="/comunidades/'.$row['url'].'/'.$row['id_tema'].'/'.urls($titledsd2).'.html#comentarios">'.nohtml(nohtml2($valor)).'</a></font><br style="margin: 0px; padding: 0px;">';}
-$realnames=isset($realnames) ? $realnames : '';
-if(!$realnames)echo'<div class="noesta">No hay nuevos comentarios.</div>';
-echo'</span></div></div>';
-
-echo'<div style="margin-bottom:8px;"><div class="box_title" style="width:201px;"><div class="box_txt box_perfil2-36">&Uacute;ltimos Miembros</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div>
-<div class="windowbg" style="width:193px;padding:4px;">';
-$rs44=db_query("SELECT m.realName,c.fecha
-FROM ({$db_prefix}members AS m, {$db_prefix}comunidades_miembros as c)
-WHERE c.id_com='{$context['ddddsaaat']}' AND c.id_user=m.ID_MEMBER AND c.aprobado=1
-ORDER BY c.id DESC
-LIMIT 10",__FILE__, __LINE__);
-while ($row=mysqli_fetch_assoc($rs44)){
-$realnames=$row['realName'];
-$fechav=hace($row['fecha']);
-echo'<font class="size11"><b><a href="/perfil/'.$realnames.'" title="'.$realnames.'">'.$realnames.'</a></b> - '.$fechav.' </font><br style="margin: 0px; padding: 0px;">';}
-if(!$realnames)echo'<div class="noesta">No hay nuevos miembros.</div>';
-echo'</div></div>';
-
-$rs=db_query("SELECT c.url,c.imagen,c.id,c.nombre,c.cred_fecha
-FROM ({$db_prefix}comunidades AS c)
-WHERE c.credito=100 AND c.bloquear=0
-ORDER BY RAND()
-LIMIT 1",__FILE__, __LINE__);
-while ($row=mysqli_fetch_assoc($rs)){
-$img_Destacao=nohtml(nohtml2($row['imagen']));
-$url_Destacao=$row['url'];
-$nombre_Destacao=nohtml(nohtml2($row['nombre']));
-$id_Destacao=$row['id'];
-$fecha_Destacao=$row['cred_fecha']+86400;
-if(time() > $fecha_Destacao){db_query("UPDATE {$db_prefix}comunidades SET credito=0 WHERE id='$id_Destacao' LIMIT 1", __FILE__, __LINE__);}}
-mysqli_free_result($rs);
-$img_Destacao=isset($img_Destacao) ? $img_Destacao : ''; 
-$id_Destacao=isset($id_Destacao) ? $id_Destacao : ''; 
-if ($img_Destacao){$img2=$img_Destacao;}else{$img2=$no_avatar;}
-if($id_Destacao){
-echo'<div style="margin-bottom:8px;"><div class="box_title" style="width:201px;"><div class="box_txt box_perfil2-36">Destacados</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div>
-<div class="windowbg" style="width:193px;padding:4px;"><center>';
-echo'<a href="/comunidades/'.$url_Destacao.'/" title="'.$nombre_Destacao.'"><img src="'.$img2.'" width="120px" height="120px" alt="" class="avatar" title="'.$nombre_Destacao.'" onerror="error_avatar(this)" /></a>
-<br /><div class="hrs"></div>
-<a href="/comunidades/'.$url_Destacao.'/" title="'.$nombre_Destacao.'"><b class="size15">'.$nombre_Destacao.'</b></a>';
-echo'</center></div></div>';
-}
-echo'</div>';}}}
 
 
 

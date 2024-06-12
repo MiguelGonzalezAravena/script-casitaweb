@@ -32,6 +32,7 @@ function Comunidades() {
 
   if ($context['current_page']== 'ecomunidad') {
     is_not_guest();
+
     $id = seguridad($_GET['comun']);
 
     if (empty($id)) {
@@ -41,8 +42,8 @@ function Comunidades() {
     $rs = db_query("
       SELECT c.id, c.nombre, c.descripcion, c.acceso, c.permiso, c.url, c.imagen, c.categoria, c.aprobar, ca.url AS urlCat, ca.nombre AS nombreCat
       FROM {$db_prefix}comunidades AS c, {$db_prefix}comunidades_categorias AS ca
-      WHERE c.url='$id'
-      AND c.categoria=ca.url
+      WHERE c.url = '$id'
+      AND c.categoria = ca.url
       LIMIT 1", __FILE__, __LINE__);
 
     while ($row = mysqli_fetch_assoc($rs)) {
@@ -60,22 +61,29 @@ function Comunidades() {
     }
 
     $context['page_title'] = 'Editar comunidad';
-    $context['COMediTidvb']=isset($context['COMediTidvb']) ?  $context['COMediTidvb'] : '';
-    if(empty($context['COMediTidvb'])){fatal_error('Debes seleccionar una comunidad.');}
+    $context['COMediTidvb'] = isset($context['COMediTidvb']) ?  $context['COMediTidvb'] : '';
+    if (empty($context['COMediTidvb'])) {
+      fatal_error('Debes seleccionar una comunidad.');
+    }
 
-    include($sourcedir.'/FuncionesCom.php');
+    require_once($sourcedir . '/FuncionesCom.php');
     permisios($context['COMediTidvb']);
-    if(empty($context['permisoCom'])){fatal_error('No tenes permiso para editar esta comunidad.');}
-  } else if($context['current_page']== 'articulo') {
-    $context['coMid']=(int)$_GET['tema'];
 
-    if(empty($_SESSION['idddd'][$context['coMid']])){
-        db_query("
-          UPDATE {$db_prefix}comunidades_articulos
-          SET visitas=visitas+1
-          WHERE id='{$context['coMid']}'
-          LIMIT 1", __FILE__, __LINE__);
-    $_SESSION['idddd'][$context['coMid']]='1';}
+    if (empty($context['permisoCom'])) {
+      fatal_error('No tenes permiso para editar esta comunidad.');
+    }
+  } else if($context['current_page']== 'articulo') {
+    $context['coMid']= isset($_GET['tema']) ? (int) $_GET['tema'] : 0;
+
+    if (empty($_SESSION['idddd'][$context['coMid']])) {
+      db_query("
+        UPDATE {$db_prefix}comunidades_articulos
+        SET visitas = visitas+1
+        WHERE id = '{$context['coMid']}'
+        LIMIT 1", __FILE__, __LINE__);
+
+      $_SESSION['idddd'][$context['coMid']] = '1';
+   }
 
     $rs44=db_query("
     SELECT a.titulo,a.cuerpo,a.calificacion,a.visitas,c.nombre,c.url,a.nocoment,a.stiky, a.eliminado,b.url as url2,
