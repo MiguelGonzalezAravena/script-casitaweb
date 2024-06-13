@@ -185,7 +185,7 @@ function notificacionQUE($que = '', $url = '', $extra = '', $boton = '') {
   }
 }
 
-function notificacionAGREGAR($us, $q, $f = '', $urlExtra = '') {
+function notificacionAGREGAR($us, $q, $f = 0, $urlExtra = '') {
   global $user_settings, $db_prefix, $boardurl;
 
   if (empty($urlExtra)) {
@@ -199,8 +199,8 @@ function notificacionAGREGAR($us, $q, $f = '', $urlExtra = '') {
   if ($us <> $user_settings['ID_MEMBER']) {
     $date = time();
     db_query("
-      INSERT INTO {$db_prefix}notificaciones (url, que, a_quien, por_quien, fecha, extra)
-      VALUES ('$urlFinal', '$q', $us, {$user_settings['ID_MEMBER']}, '$date', '$f')", __FILE__, __LINE__);
+      INSERT INTO {$db_prefix}notificaciones (url, que, a_quien, por_quien, extra)
+      VALUES ('$urlFinal', $q, $us, {$user_settings['ID_MEMBER']}, $f)", __FILE__, __LINE__);
 
     db_query("
       UPDATE {$db_prefix}members
@@ -237,7 +237,7 @@ function signosyletras($valor) {
 }
 
 function seguridad($variable) {
-  return htmlentities(addslashes(trim($variable)), ENT_QUOTES, 'UTF-8');
+  return htmlentities(trim($variable), ENT_QUOTES, 'UTF-8');
 }
 
 function anuncio_300x250() {

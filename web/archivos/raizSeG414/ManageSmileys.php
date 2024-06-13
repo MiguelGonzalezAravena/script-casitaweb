@@ -1,7 +1,11 @@
 <?php
 //Pagina de Rodrigo Zaupa (rigo@casitaweb.net)
-if (!defined('CasitaWeb!-PorRigo'))die(base64_decode("d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv"));
-function ManageSmileys(){global $context, $txt, $scripturl, $modSettings;
+if (!defined('CasitaWeb!-PorRigo')) {
+	die(base64_decode('d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv'));
+}
+
+function ManageSmileys() {
+	global $context, $txt, $scripturl, $modSettings, $boardurl;
 
 	isAllowedTo('manage_smileys');
 	adminIndex('manage_smileys');
@@ -29,28 +33,31 @@ function ManageSmileys(){global $context, $txt, $scripturl, $modSettings;
 			'addsmiley' => array(
 				'title' => $txt['smileys_add'],
 				'description' => $txt['smiley_addsmiley_explain'],
-				'href' => '/moderacion/emoticones/addsmiley',
+				'href' => $boardurl . '/moderacion/emoticones/addsmiley',
 			),
 			'editsmileys' => array(
 				'title' => $txt['smileys_edit'],
 				'description' => $txt['smiley_editsmileys_explain'],
-				'href' => '/moderacion/emoticones/editsmileys',
+				'href' => $boardurl . '/moderacion/emoticones/editsmileys',
 			),
 			'setorder' => array(
 				'title' => $txt['smileys_set_order'],
 				'description' => $txt['smiley_setorder_explain'],
-				'href' => '/moderacion/emoticones/setorder',
+				'href' => $boardurl . '/moderacion/emoticones/setorder',
 			),
 
 		),
 	);
 
-	if (isset($context['admin_tabs']['tabs'][$context['sub_action']]))
+	if (isset($context['admin_tabs']['tabs'][$context['sub_action']])) {
 		$context['admin_tabs']['tabs'][$context['sub_action']]['is_selected'] = true;
-	if (empty($modSettings['messageIcons_enable']))
+	}
+
+	if (empty($modSettings['messageIcons_enable'])) {
 		unset($context['admin_tabs']['tabs']['editicons']);
-	if (empty($modSettings['smiley_enable']))
-	{
+	}
+
+	if (empty($modSettings['smiley_enable'])) {
 		unset($context['admin_tabs']['tabs']['addsmiley']);
 		unset($context['admin_tabs']['tabs']['editsmileys']);
 		unset($context['admin_tabs']['tabs']['setorder']);
@@ -59,28 +66,28 @@ function ManageSmileys(){global $context, $txt, $scripturl, $modSettings;
 	$subActions[$_REQUEST['sa']]();
 }
 
-function EditSmileySettings(){}
+function EditSmileySettings() {}
 
-function EditSmileySets()
-{
+function EditSmileySets() {
 	global $modSettings, $context, $settings, $db_prefix, $txt, $boarddir;
 
 	// Set the right tab to be selected.
 	$context['admin_tabs']['tabs']['editsets']['is_selected'] = true;
 
 	// They must've been submitted a form.
-	if (isset($_POST['sc']))
-	{
+	if (isset($_POST['sc'])) {
 		checkSession();
 
 		// Delete selected smiley sets.
-		if (!empty($_POST['delete']) && !empty($_POST['smiley_set']))
-		{
+		if (!empty($_POST['delete']) && !empty($_POST['smiley_set'])) {
 			$set_paths = explode(',', $modSettings['smiley_sets_known']);
 			$set_names = explode("\n", $modSettings['smiley_sets_names']);
-			foreach ($_POST['smiley_set'] as $id => $val)
-				if (isset($set_paths[$id], $set_names[$id]) && !empty($id))
+
+			foreach ($_POST['smiley_set'] as $id => $val) {
+				if (isset($set_paths[$id], $set_names[$id]) && !empty($id)) {
 					unset($set_paths[$id], $set_names[$id]);
+				}
+			}
 
 			updateSettings(array(
 				'smiley_sets_known' => addslashes(implode(',', $set_paths)),
@@ -92,8 +99,9 @@ function EditSmileySets()
 			cache_put_data('posting_smileys', null, 480);
 		}
 		// Add a new smiley set.
-		elseif (!empty($_POST['add']))
+		elseif (!empty($_POST['add'])) {
 			$context['sub_action'] = 'modifyset';
+		}
 		// Create or modify a smiley set.
 		elseif (isset($_POST['set']))
 		{
@@ -101,10 +109,10 @@ function EditSmileySets()
 			$set_names = explode("\n", $modSettings['smiley_sets_names']);
 
 			// Create a new smiley set.
-			if ($_POST['set'] == -1 && isset($_POST['smiley_sets_path']))
-			{
-				if (in_array($_POST['smiley_sets_path'], $set_paths))
+			if ($_POST['set'] == -1 && isset($_POST['smiley_sets_path'])) {
+				if (in_array($_POST['smiley_sets_path'], $set_paths)) {
 					fatal_lang_error('smiley_set_already_exists');
+				}
 
 				updateSettings(array(
 					'smiley_sets_known' => addslashes($modSettings['smiley_sets_known']) . ',' . $_POST['smiley_sets_path'],
@@ -116,15 +124,18 @@ function EditSmileySets()
 			else
 			{
 				// Make sure the smiley set exists.
-				if (!isset($set_paths[$_POST['set']]) || !isset($set_names[$_POST['set']]))
+				if (!isset($set_paths[$_POST['set']]) || !isset($set_names[$_POST['set']])) {
 					fatal_lang_error('smiley_set_not_found');
+				}
 
 				// Make sure the path is not yet used by another smileyset.
-				if (in_array($_POST['smiley_sets_path'], $set_paths) && $_POST['smiley_sets_path'] != $set_paths[$_POST['set']])
+				if (in_array($_POST['smiley_sets_path'], $set_paths) && $_POST['smiley_sets_path'] != $set_paths[$_POST['set']]) {
 					fatal_lang_error('smiley_set_path_already_used');
+				}
 
 				$set_paths[$_POST['set']] = stripslashes($_POST['smiley_sets_path']);
 				$set_names[$_POST['set']] = stripslashes($_POST['smiley_sets_name']);
+
 				updateSettings(array(
 					'smiley_sets_known' => addslashes(implode(',', $set_paths)),
 					'smiley_sets_names' => addslashes(implode("\n", $set_names)),
@@ -133,8 +144,9 @@ function EditSmileySets()
 			}
 
 			// The user might have checked to also import smileys.
-			if (!empty($_POST['smiley_sets_import']))
+			if (!empty($_POST['smiley_sets_import'])) {
 				ImportSmileys($_POST['smiley_sets_path']);
+			}
 
 			cache_put_data('parsing_smileys', null, 480);
 			cache_put_data('posting_smileys', null, 480);
@@ -230,8 +242,7 @@ function EditSmileySets()
 	}
 }
 
-function AddSmiley()
-{
+function AddSmiley() {
 	global $modSettings, $context, $settings, $db_prefix, $txt, $boarddir;
 
 
@@ -296,8 +307,7 @@ function AddSmiley()
 
 }
 
-function EditSmileys()
-{
+function EditSmileys() {
 	global $modSettings, $context, $settings, $db_prefix, $txt, $boarddir;
 
 	// Force the correct tab to be displayed.
@@ -447,13 +457,13 @@ function EditSmileys()
 		$context['current_smiley']['filename'] = htmlspecialchars($context['current_smiley']['filename']);
 		$context['current_smiley']['description'] = htmlspecialchars($context['current_smiley']['description']);
 
-		if (isset($context['filenames'][strtolower($context['current_smiley']['filename'])]))
+		if (isset($context['filenames'][strtolower($context['current_smiley']['filename'])])) {
 			$context['filenames'][strtolower($context['current_smiley']['filename'])]['selected'] = true;
+		}
 	}
 }
 
-function EditSmileyOrder()
-{
+function EditSmileyOrder() {
 	global $modSettings, $context, $settings, $db_prefix, $txt, $boarddir;
 
 	// Move smileys to another position.
@@ -574,9 +584,8 @@ function EditSmileyOrder()
 	cache_put_data('posting_smileys', null, 480);
 }
 
-function InstallSmileySet(){}
-
-function ImportSmileys($smileyPath){}
-function EditMessageIcons(){}
+function InstallSmileySet() {}
+function ImportSmileys($smileyPath) {}
+function EditMessageIcons() {}
 
 ?>

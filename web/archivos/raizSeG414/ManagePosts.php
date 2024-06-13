@@ -1,7 +1,8 @@
 <?php
 //Pagina de Rodrigo Zaupa (rigo@casitaweb.net)
 if (!defined('CasitaWeb!-PorRigo'))die(base64_decode("d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv"));
-function ManagePostSettings(){global $context, $txt, $scripturl,$ID_MEMBER;
+function ManagePostSettings() {
+	global $context, $txt, $scripturl, $ID_MEMBER, $boardurl;
 if($ID_MEMBER=='1'){
 	adminIndex('posts_and_topics');
 $_GET['sa']=str_replace("/","",$_GET['sa']);
@@ -25,20 +26,20 @@ $_GET['sa']=str_replace("/","",$_GET['sa']);
 		$context['admin_tabs']['tabs'][] = array(
 			'title' => 'Configuraci&oacute;n general',
 			'description' => $txt['manageposts_bbc_settings_description'],
-			'href' => '/moderacion/web/config/',
+			'href' => $boardurl . '/moderacion/web/config/',
 			'is_selected' => $_GET['sa'] == 'config',
 		);
         	$context['admin_tabs']['tabs'][] = array(
 			'title' => $txt['manageposts_bbc_settings'],
 			'description' => $txt['manageposts_bbc_settings_description'],
-			'href' => '/moderacion/web/bbc/',
+			'href' => $boardurl . '/moderacion/web/bbc/',
 			'is_selected' => $_GET['sa'] == 'bbc',
 		);
                 
 		$context['admin_tabs']['tabs'][] = array(
 			'title' => $txt[135],
 			'description' => $txt[141],
-			'href' => '/moderacion/web/censor/',
+			'href' => $boardurl . '/moderacion/web/censor/',
 			'is_selected' => $_GET['sa'] == 'censor',
 			'is_last' => !allowedTo('admin_forum'),
 		);

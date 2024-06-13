@@ -1,7 +1,7 @@
 <?php
 //pagina de Rodrigo Zaupa (rigo@casitaweb.net)
 if (!defined('CasitaWeb!-PorRigo'))die(base64_decode("d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv"));
-function acciones(){global $db_prefix, $context, $user_settings,$user_info, $txt;
+function acciones(){global $db_prefix, $context, $user_settings,$user_info, $txt, $boardurl;
 
 if(!$user_info['is_guest']){
 $context['idgrup']=$user_settings['ID_POST_GROUP'];
@@ -59,20 +59,20 @@ $context['admin_tabs'] = array(
 		$context['admin_tabs']['tabs'][] = array(
 			'title' => 'Inicio' ,
 			'description' => '',
-			'href' => '/moderacion/comunicacion-mod/',
+			'href' => $boardurl . '/moderacion/comunicacion-mod/',
 			'is_selected' => $_GET['inicio'] == '1234',
 		);
 		$context['admin_tabs']['tabs'][] = array(
 			'title' => 'Agregar post' ,
 			'description' => 'Esto es una secci&oacute;n donde los moderadores del sitio casitaweb.net van a poder comunicarse entre ellos, atravez de posts y comentarios que son ocultos para todo publico.',
-			'href' => '/moderacion/comunicacion-mod/post/agregar/',
+			'href' => $boardurl . '/moderacion/comunicacion-mod/post/agregar/',
 			'is_selected' => $_GET['post-agregar'] == '1447',
 		);
 if ($_GET['id'])
 		$context['admin_tabs']['tabs'][] = array(
 			'title' => 'post ID:'.$_GET['id'].'' ,
 			'description' => 'Esto es una seccion donde los moderadores del sitio casitaweb.net van a poder comunicarse entre ellos, atravez de posts y comentarios que son ocultos para todo publico.',
-			'href' => '/moderacion/comunicacion-mod/post/'.$_GET['id'].'',
+			'href' => $boardurl . '/moderacion/comunicacion-mod/post/'.$_GET['id'].'',
 			'is_selected' => $_GET['id'],
 		);
         

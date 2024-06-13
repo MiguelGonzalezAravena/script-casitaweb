@@ -181,8 +181,9 @@ function template_modifysmiley()
 	// ]]></script>';
 }
 
-function template_addsmiley(){global $context, $settings, $options, $scripturl, $txt,$tranfer1, $modSettings;
-echo'<form action="/moderacion/emoticones/addsmiley" method="post" accept-charset="', $context['character_set'], '" name="smileyForm" id="smileyForm" enctype="multipart/form-data">
+function template_addsmiley() {
+	global $context, $settings, $options, $scripturl, $txt,$tranfer1, $modSettings, $boardurl;
+	echo'<form action="' . $boardurl . '/moderacion/emoticones/addsmiley" method="post" accept-charset="', $context['character_set'], '" name="smileyForm" id="smileyForm" enctype="multipart/form-data">
 		<table border="0" cellspacing="0" cellpadding="4" align="center" width="80%" class="tborder">
 			<tr class="titlebg">
 				<td colspan="2">', $txt['smileys_add_method'], ':</td>
@@ -192,8 +193,10 @@ echo'<form action="/moderacion/emoticones/addsmiley" method="post" accept-charse
 					<b><label for="smiley_filename">', $txt['smileys_filename'], '</label>: </b>
 				</td>
 				<td style="padding-bottom: 2ex;" width="60%">';
-	if (empty($context['filenames']))
-	echo'<input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="smiley_filename" value="', $context['current_smiley']['filename'], '" onchange="selectMethod(\'existing\');" />';
+	if (empty($context['filenames'])) {
+		/* value="' . $context['current_smiley']['filename'] . '" */
+		echo '<input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="smiley_filename" value="" onchange="selectMethod(\'existing\');" />';
+	}
 	echo'</td></tr>';
 	echo'</table><br />
 		<table width="80%" cellpadding="4" cellspacing="0" border="0" align="center" class="tborder">

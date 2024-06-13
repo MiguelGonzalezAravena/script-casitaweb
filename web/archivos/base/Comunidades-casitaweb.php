@@ -1010,18 +1010,19 @@ El permiso seleccionado se le asignar&aacute; autom&aacute;ticamente al usuario 
 
 
 ///DIRECTORIOS--------------------------------
-function template_directorios(){global $sourcedir,$context,$no_avatar,$db_prefix;
+function template_directorios() {
+  global $sourcedir,$context,$no_avatar,$db_prefix, $boardurl;
 include($sourcedir.'/FuncionesCom.php');
 arriba('directorios');
 $cat=str_replace('/','',trim($_GET['cat']));
 if(!$cat){
 $maxrowlevel=2;$rowlevel=0;
 $rs=db_query("
-SELECT ca.nombre,ca.comunidades,ca.url
-FROM ({$db_prefix}comunidades_categorias AS ca)",__FILE__, __LINE__);
+SELECT nombre, comunidades, url
+FROM {$db_prefix}comunidades_categorias", __FILE__, __LINE__);
 echo'<table style="width:922px;"><tr>';
 while ($row=mysqli_fetch_assoc($rs)){if($rowlevel < ($maxrowlevel+1))$rowlevel++; else{$rowlevel = 0;}
-echo'<td style="width:230.5px;"><a href="/comunidades/dir/'.$row['url'].'" style="color:green;font-size:17px;border-bottom: 1px dotted;">'.$row['nombre'].'</a><br /><strong style="color:orange;font-size:13px;">Comunidades: '.$row['comunidades'].'</strong></td>';
+echo'<td style="width:230.5px;"><a href="' . $boardurl . '/comunidades/dir/'.$row['url'].'" style="color:green;font-size:17px;border-bottom: 1px dotted;">'.$row['nombre'].'</a><br /><strong style="color:orange;font-size:13px;">Comunidades: '.$row['comunidades'].'</strong></td>';
 if($rowlevel < 1){echo'</tr><tr">';}} 
 echo'</tr></table><div class="noesta-am" style="width:922px;margin-top:15px;"><a href="' . $boardurl . '/crear-comunidades/">Crea tu comunidad. Es GRATIS, R&Aacute;PIDO Y FACIL</a></div>';}else{
     

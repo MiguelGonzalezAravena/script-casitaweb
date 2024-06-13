@@ -1,5 +1,7 @@
 <?php
-function template_main(){ global $context,$db_prefix, $tranfer1,$user_settings,$no_avatar; ?>    
+
+function template_main() {
+  global $context,$db_prefix, $tranfer1,$user_settings,$no_avatar; ?>
 <div style="width:794px;float:left;">
 <div class="title-w"><h3>Notificaciones</h3></div>
 <?php
@@ -39,7 +41,7 @@ mysqli_free_result($datosmem);
 
 
 $dac=isset($dac) ? $dac : '';
-if(empty($dac)){echo'<div class="noesta">No tenes nuevas notificaciones.</div>';}
+if(empty($dac)){echo'<div class="noesta">No tienes nuevas notificaciones.</div>';}
 
 $d=db_query("
 SELECT id

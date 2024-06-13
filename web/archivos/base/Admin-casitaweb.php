@@ -53,7 +53,7 @@ if (!empty($settings['use_tabs'])){
 }
 function template_admin_below(){}
 
-function template_admin(){global $tranfer1, $context, $settings, $options, $scripturl,$sourcedir,$glee, $txt, $modSettings;
+function template_admin(){global $tranfer1, $context, $settings, $options, $scripturl,$sourcedir,$glee, $txt, $modSettings, $boardurl;
 $_POST['a_radio']=isset($_POST['a_radio']) ? $_POST['a_radio'] : ''; 
 if($_POST['a_radio']){updateSettings(array('radio' => (int) $_POST['radio']));
 Header("Location: /moderacion/");exit();die();}
@@ -77,7 +77,7 @@ else{logipADM(); echo $dataMOstrar2;}}else{logipADM(); echo $dataMOstrar2;}
 echo'<div class="box_757"><div class="box_title" style="width: 920px;"><div class="box_txt box_757-34"><center>', $txt[208], '</center></div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 16px; height: 16px;" border="0" /></div></div></div>
 
 <div style="width:912px;padding:4px;" class="windowbg">
-<center><form action="/moderacion/" method="post" accept-charset="'.$context['character_set'].'" name="actualizar_radio" id="actualizar_radio" enctype="multipart/form-data" style="margin: 0;">
+<center><form action="' . $boardurl . '/moderacion/" method="post" accept-charset="'.$context['character_set'].'" name="actualizar_radio" id="actualizar_radio" enctype="multipart/form-data" style="margin: 0;">
 Radio:
 <select style="width: 150px;" tabindex="1" name="radio" class="select">
 <option'; if($modSettings['radio']==='0'){echo' selected="selected"';} echo' value="0">Ninguna</option>
@@ -85,7 +85,7 @@ Radio:
 <option'; if($modSettings['radio']==='2'){echo' selected="selected"';} echo' value="2">Perdidos en babylon!</option></select> - <input class="login" style="font-size: 11px;" value="Guardar" title="Guardar" type="submit" tabindex="2" />
  
 <input type="hidden" name="sc" value="'.$context['session_id'].'" />
-<input type="hidden" name="a_radio" value="1" /></form></center><div style="font-size: 0.85em; padding-top: 1ex;"><p align="center"><img alt="CasitaWeb!" border="0" title="CasitaWeb!" src="/logos/casitaweb-banner-10.png" /></p><p align="center">'.$txt[18].'</p><div class="hrs"></div><center><b class="size17">Importante para moderar</b><div class="hrs"></div></center>- Todo contenido que se comenta en: comunicaciones de moderador o las normas que estan en esta hoja, no decirlo en publico. tampoco decir quien esta baneado y quien no. (<b>NO SACAR CAPTURAS Y DIFUNDIRLAS</b>)<div class="hrs"></div><b class="size12">Sobre el ban:</b><br /><table style="margin:0px;padding:0px;" width="100%" align="center" valign="top"><tr valign="top"><td valign="top" style="border:1px solid #7C7C7C;background:#D0D0D0;" width="200px">Motivos</td><td valign="top" style="border:1px solid #7C7C7C;background:#D0D0D0;" width="200px">Cantidad de d&iacute;as</td><td valign="top" style="border:1px solid #7C7C7C;background:#D0D0D0;" width="200px">Captura de pantalla</td></tr>
+<input type="hidden" name="a_radio" value="1" /></form></center><div style="font-size: 0.85em; padding-top: 1ex;"><p align="center"><img alt="CasitaWeb!" border="0" title="CasitaWeb!" src="' . $boardurl . '/logos/casitaweb-banner-10.png" /></p><p align="center">'.$txt[18].'</p><div class="hrs"></div><center><b class="size17">Importante para moderar</b><div class="hrs"></div></center>- Todo contenido que se comenta en: comunicaciones de moderador o las normas que estan en esta hoja, no decirlo en publico. tampoco decir quien esta baneado y quien no. (<b>NO SACAR CAPTURAS Y DIFUNDIRLAS</b>)<div class="hrs"></div><b class="size12">Sobre el ban:</b><br /><table style="margin:0px;padding:0px;" width="100%" align="center" valign="top"><tr valign="top"><td valign="top" style="border:1px solid #7C7C7C;background:#D0D0D0;" width="200px">Motivos</td><td valign="top" style="border:1px solid #7C7C7C;background:#D0D0D0;" width="200px">Cantidad de d&iacute;as</td><td valign="top" style="border:1px solid #7C7C7C;background:#D0D0D0;" width="200px">Captura de pantalla</td></tr>
 <tr valign="top"><td valign="top" style="border:1px solid #7C7C7C;;">Spam en comentarios y MP.</td><td valign="top" style="border:1px solid #7C7C7C;">* 15 d&iacute;as p/user conocido. Caso contrario, de por vida.<br/>* User recurrente, de por vida.</td><td valign="top" style="border:1px solid #7C7C7C;">No es necesario.-</td></tr>
 <tr valign="top"><td valign="top" style="border:1px solid #7C7C7C;">Insultos o Comentarios fuera de lugar (<span title="adj. y s. Que siente odio u hostilidad hacia los extranjeros." alt="adj. y s. Que siente odio u hostilidad hacia los extranjeros." style="color:#FF9400;">Xen&oacute;fobos</span>, Discriminatorios, etc).</td><td valign="top" style="border:1px solid #7C7C7C;">* 5 d&iacute;as p/usuario conocido. Caso contrario, de por vida.<br/>* Usuario recurrente, de por vida.</td><td valign="top" style="border:1px solid #7C7C7C;">Si es necesario.-</td></tr>
 <tr valign="top"><td valign="top" style="border:1px solid #7C7C7C;">Insultos/Ataques/Burlas entre Usuarios en comentarios, MP o Muro.</td><td style="border:1px solid #7C7C7C;">* 10 d&iacute;as p/usuario<br/>Caso contrario, de por vida.<br/>* Usuario recurrente, de por vida.</td><td valign="top" style="border:1px solid #7C7C7C;">Si es necesario.-</td></tr>
@@ -104,13 +104,14 @@ Radio:
 * No se pueden desuspender usuarios que suspendi&oacute; otro moderador salvo que el moderador que suspendio les de el permiso y llegen a un acuerdo en com&uacute;n.</span>
 <div class="hrs"></div>
 <center><b class="size16">NOSOTROS DAMOS EL EJEMPLO, QUE SEA EL MEJOR.</b></center><br /><br /><center><b class="size9">Los que hacemos esta hermosa Web:</b><br /><span class="size11"><img alt="" src="'.$tranfer1.'/rangos/padre.gif" title="Administrador" /> ', implode(' <img alt="" src="'.$tranfer1.'/rangos/padre.gif" title="Administrador" /> ', $context['administrators']);
-foreach($context['moderadores'] as $mod){echo' <img lt="" src="'.$tranfer1.'/rangos/hermano_mayor.gif" title="Moderador/a" /> <a href="/perfil/'.$mod['realName'].'" title="'.$mod['realName'].'">'.$mod['realName'].'</a>';} echo'</center></div></div>';}
+foreach($context['moderadores'] as $mod){echo' <img lt="" src="'.$tranfer1.'/rangos/hermano_mayor.gif" title="Moderador/a" /> <a href="' . $boardurl . '/perfil/'.$mod['realName'].'" title="'.$mod['realName'].'">'.$mod['realName'].'</a>';} echo'</center></div></div>';}
 
 
 
-function template_modify_settings(){global $tranfer1, $context, $settings, $options, $scripturl, $txt, $modSettings;
+function template_modify_settings() {
+	global $tranfer1, $context, $settings, $options, $scripturl, $txt, $modSettings, $boardurl;
 
-echo'<form action="/moderacion/web/config/" method="post" accept-charset="'.$context['character_set'].'">
+echo'<form action="' . $boardurl . '/moderacion/web/config/" method="post" accept-charset="'.$context['character_set'].'">
 <div class="box_757" style="float:left;margin-bottom:8px;">
 <div class="box_title" style="width: 920px;"><div class="box_txt box_757-34"><center>Configuraci&oacute;n de la Web</center></div<div class="box_rss"><img src="'.$tranfer1.'/blank.gif" style="width: 16px; height: 16px;" border="0" alt="" /></div></div><div class="windowbg" style="width:744px;padding:4px;">
 
@@ -136,10 +137,10 @@ echo'<tr class="windowbg"><th align="right"><label for="search_results_per_page_
 	</form>';
 }
 
-function template_edit_censored(){global $tranfer1, $context, $settings, $options, $scripturl, $txt, $modSettings;
+function template_edit_censored(){global $tranfer1, $context, $settings, $options, $scripturl, $txt, $modSettings, $boardurl;
 echo'
 
-<form action="/moderacion/web/censor/" method="post" accept-charset="', $context['character_set'], '">
+<form action="' . $boardurl . '/moderacion/web/censor/" method="post" accept-charset="', $context['character_set'], '">
 <div class="box_757" style="float:left;margin-bottom:8px;">
 <div class="box_title" style="width: 752px;"><div class="box_txt box_757-34"><center>Censor Text</center></div<div class="box_rss"><img src="'.$tranfer1.'/blank.gif" style="width: 16px; height: 16px;" border="0" alt="" /></div></div><div class="windowbg" style="width:744px;padding:4px;">
 
@@ -206,7 +207,7 @@ echo'
 		</form>';
 }
 
-function template_edit_bbc_settings(){global $tranfer1, $context, $settings, $options, $txt, $scripturl, $modSettings;
+function template_edit_bbc_settings(){global $tranfer1, $context, $settings, $options, $txt, $scripturl, $modSettings, $boardurl;
 echo '
 	<script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
 		function toggleBBCDisabled(disable)
@@ -222,7 +223,7 @@ echo '
 		}
 	// ]]></script>
 
-	<form action="/moderacion/web/bbc/" method="post" accept-charset="', $context['character_set'], '" name="bbcForm" id="bbcForm" onsubmit="toggleBBCDisabled(false);">
+	<form action="' . $boardurl . '/moderacion/web/bbc/" method="post" accept-charset="', $context['character_set'], '" name="bbcForm" id="bbcForm" onsubmit="toggleBBCDisabled(false);">
 		<table border="0" cellspacing="0" cellpadding="4" align="center" width="80%" class="tborder">
 			<tr class="titlebg">
 				<td colspan="2">', $txt['manageposts_bbc_settings_title'], '</td>

@@ -1,5 +1,5 @@
 <?php
-function template_view_members(){global $context, $settings, $options, $txt, $scripturl;
+function template_view_members(){global $context, $settings, $options, $txt, $scripturl, $boardurl;
 echo'<table border="0" width="100%" cellspacing="1" cellpadding="4" class="windowbg" align="center">
 <tr class="titlebg">';
 	foreach ($context['columns'] as $column){
@@ -22,7 +22,7 @@ echo'<table border="0" width="100%" cellspacing="1" cellpadding="4" class="windo
 					', $member['id'], '
 				</td>
 				<td>
-					<a href="', $member['href'], '">', $member['name'], '</a> - <a style="color:red;" class="size11" href="/moderacion/edit-user/perfil/',$member['id'],'">Administrar</a>
+					<a href="', $member['href'], '">', $member['name'], '</a> - <a style="color:red;" class="size11" href="' . $boardurl . '/moderacion/edit-user/perfil/',$member['id'],'">Administrar</a>
 				</td>
 				<td>
 					<a href="mailto:', $member['email'], '">', $member['email'], '</a>

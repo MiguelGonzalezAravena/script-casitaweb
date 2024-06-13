@@ -30,27 +30,27 @@ if($('#user').val() == ''){$('#user').focus(); return false;}
 $('#cargandoBoxyc').css('display','none');
 $('#cargandoBoxy').css('display','block');
 $.ajax({
-		type: 'POST',
-		url: '/web/cw-recargarPts.php',
-		cache: false,
-		data: 'user=' +  encodeURIComponent($('#user').val()),
-		success: function(h){
-		  $('#cargandoBoxy').css('display','none');
+    type: 'POST',
+    url: '/web/cw-recargarPts.php',
+    cache: false,
+    data: 'user=' +  encodeURIComponent($('#user').val()),
+    success: function(h){
+      $('#cargandoBoxy').css('display','none');
           $('#cargandoBoxyc').css('display','block');
           $('#contenidoRE').remove();
-				if(h.charAt(0)==0){ //Datos incorrectos
-					$('#resultadoRE').addClass('noesta');
-					$('#resultadoRE').html(h.substring(3)).fadeIn('fast');
-				} else
-				if(h.charAt(0)==1){ //OK				
-					$('#resultadoRE').removeClass('noesta');
-					$('#resultadoRE').addClass('noesta-ve');
-					$('#resultadoRE').html(h.substring(3)).fadeIn('fast');}			
-		},
-		error: function(){
-		  Boxy.alert("Error, volver a intentar...", null, {title: 'Alerta'});
-		}
-	});
+        if(h.charAt(0)==0){ //Datos incorrectos
+          $('#resultadoRE').addClass('noesta');
+          $('#resultadoRE').html(h.substring(3)).fadeIn('fast');
+        } else
+        if(h.charAt(0)==1){ //OK				
+          $('#resultadoRE').removeClass('noesta');
+          $('#resultadoRE').addClass('noesta-ve');
+          $('#resultadoRE').html(h.substring(3)).fadeIn('fast');}			
+    },
+    error: function(){
+      Boxy.alert("Error, volver a intentar...", null, {title: 'Alerta'});
+    }
+  });
 }
 
 </script>
@@ -128,7 +128,7 @@ if($asfff==200)echo'<br />';
 }
 echo'</center></div></div>';}
 
-	
+  
 function template_tyc999(){
 global $tranfer1, $context, $settings, $db_prefix,$sourcedir,$ID_MEMBER, $options, $txt,$modSettings, $scripturl;
 
@@ -139,10 +139,10 @@ $pasda=seguridad($_GET['palabra']);
 
 if($pasda){
 $request = db_query("SELECT b.ID_BOARD, b.name, b.childLevel FROM {$db_prefix}boards AS b", __FILE__, __LINE__);
-	$context['boards'] = array();
-	while ($row = mysqli_fetch_assoc($request))
-		$context['boards'][] = array('id' => $row['ID_BOARD'], 'name' => $row['name']);
-	mysqli_free_result($request);
+  $context['boards'] = array();
+  while ($row = mysqli_fetch_assoc($request))
+    $context['boards'][] = array('id' => $row['ID_BOARD'], 'name' => $row['name']);
+  mysqli_free_result($request);
  $RegistrosAMostrar=$modSettings['search_results_per_page'];
  $_GET['pag']=isset($_GET['pag']) ? $_GET['pag'] : '';
  if($_GET['pag'] < 1){$dud=1;}else{$dud=$_GET['pag'];}
@@ -161,13 +161,13 @@ LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
 $context['tags'] = array();
 while ($row = mysqli_fetch_assoc($request))
 {$context['tags'][] = array(
-		    'subject' => $row['subject'],
-		    'id' => $row['ID_TOPIC'],
-		    'hiddenOption' => $row['hiddenOption'],
-		    'puntos' => $row['puntos'],
-		    'posterTime' => $row['posterTime'],
-		    'description' => $row['description']
-			);}
+        'subject' => $row['subject'],
+        'id' => $row['ID_TOPIC'],
+        'hiddenOption' => $row['hiddenOption'],
+        'puntos' => $row['puntos'],
+        'posterTime' => $row['posterTime'],
+        'description' => $row['description']
+      );}
 mysqli_free_result($request);
 //div grande
 
@@ -240,13 +240,13 @@ LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
 $context['tags'] = array();
 while ($row = mysqli_fetch_assoc($request))
 {$context['tags'][] = array(
-		    'subject' => $row['subject'],
-		    'id' => $row['ID_TOPIC'],
-		    'hiddenOption' => $row['hiddenOption'],
-		    'puntos' => $row['puntos'],
-		    'posterTime' => $row['posterTime'],
-		    'description' => $row['description']
-			);}
+        'subject' => $row['subject'],
+        'id' => $row['ID_TOPIC'],
+        'hiddenOption' => $row['hiddenOption'],
+        'puntos' => $row['puntos'],
+        'posterTime' => $row['posterTime'],
+        'description' => $row['description']
+      );}
 mysqli_free_result($request);
 
 //div grande
@@ -296,9 +296,9 @@ mysqli_free_result($request);
 
 echo'<div><div class="box_buscador"><div class="box_title" style="width: 920px;"><div class="box_txt box_buscadort"><center>Recomendar a tus amigos</center></div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width:14px;height:12px;" border="0" /></div></div><div style="width:912px;padding:4px;" class="windowbg"><center>
 <form action="/web/cw-EnviarImgMail.php" method="post" accept-charset="'.$context['character_set'].'"><br /><font class="size11"><b>Recomendarle esta imagen hasta a seis amigos:</b></font><br /><b class="size11">1 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email" size="28" maxlength="60" /> <b class="size11">2 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email1" size="28" maxlength="60" /><br /><b class="size11">3 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email2" size="28" maxlength="60" /> <b class="size11">4 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email3" size="28" maxlength="60" /><br /><b class="size11">5 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email4" size="28" maxlength="60" /> <b class="size11">6 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email5" size="28" maxlength="60" /><br /><br />
-					<font class="size11"><b>Asunto:</b></font><br /><input size="40" name="titulo" value="'.$row['title'].'" type="text" onfocus="foco(this);" onblur="no_foco(this);"><br /><br />
-					<font class="size11"><b>Mensaje:</b></font><br />
-					<textarea onfocus="foco(this);" onblur="no_foco(this);" cols="70" rows="8" wrap="hard" tabindex="6" name="comment">Hola! Te recomiendo que veas esta imagen! 
+          <font class="size11"><b>Asunto:</b></font><br /><input size="40" name="titulo" value="'.$row['title'].'" type="text" onfocus="foco(this);" onblur="no_foco(this);"><br /><br />
+          <font class="size11"><b>Mensaje:</b></font><br />
+          <textarea onfocus="foco(this);" onblur="no_foco(this);" cols="70" rows="8" wrap="hard" tabindex="6" name="comment">Hola! Te recomiendo que veas esta imagen! 
 
 Saludos!
 
@@ -315,54 +315,54 @@ function template_tyc6(){global $tranfer1, $context;
 $ok=isset($_GET['ok']) ? $_GET['ok'] : '';  
 if($ok=='ok'){fatal_error('Muchas gracias, el mensaje se ha enviado correctamente.-',false,'&#161;Mensaje enviado!');}else{
 echo'<script>function error(nombre,email,comentario,code){
-	if(nombre == \'\'){document.getElementById(\'nombre\').innerHTML=\'<br /><font class="size10" style="color: red;">Debes agregar tu nombre y apellido.</font>\'; return false;}
-	if(email == \'\'){document.getElementById(\'errorr\').innerHTML=\'<br /><font class="size10" style="color: red;">Debes agregar tu e-mail.</font>\'; return false;}
-	if(comentario == \'\'){document.getElementById(\'comentario\').innerHTML=\'<font class="size10" style="color: red;"><br />Debes agregar el comentario.</font>\'; return false;}
-	if(code == \'\'){document.getElementById(\'visual_verification_code\').innerHTML=\'<font class="size10" style="color: red;"><br />Debes insertar el codigo.</font>\'; return false;}
-	
-	}</script>';
+  if(nombre == \'\'){document.getElementById(\'nombre\').innerHTML=\'<br /><font class="size10" style="color: red;">Debes agregar tu nombre y apellido.</font>\'; return false;}
+  if(email == \'\'){document.getElementById(\'errorr\').innerHTML=\'<br /><font class="size10" style="color: red;">Debes agregar tu e-mail.</font>\'; return false;}
+  if(comentario == \'\'){document.getElementById(\'comentario\').innerHTML=\'<font class="size10" style="color: red;"><br />Debes agregar el comentario.</font>\'; return false;}
+  if(code == \'\'){document.getElementById(\'visual_verification_code\').innerHTML=\'<font class="size10" style="color: red;"><br />Debes insertar el codigo.</font>\'; return false;}
+  
+  }</script>';
     
 echo'<div><form action="/web/cw-Contactar.php" method="post" accept-charset="'.$context['character_set'].'"><div class="box_buscador">
 <div class="box_title" style="width: 920px;"><div class="box_txt box_buscadort"><center>Contacto</center></div>
 <div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0" /></div></div><div class="windowbg" style="width:912px;padding:4px;"><center>
- 	        <b class="size11">* Su nombre y apellido:</b>
-			<br />
-			<input style="width:184px;" name="nombre" tabindex="1" type="text" onfocus="foco(this);" onblur="no_foco(this);" /><label id="nombre"></label>
-			<br />
-			<b class="size11">* E-mail:</b>
-			<br />
-    		<input style="width:184px;" name="email" tabindex="2" type="text" onfocus="foco(this);" onblur="no_foco(this);" /><label id="errorr"></label>
-			<br />
-			<b class="size11">Empresa:</b>
-			<br />
-			<input style="width:184px;" name="empresa" tabindex="3" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
-			<br />			
-			<b class="size11">Tel&eacute;fono:</b>
-			<br />
-			<input style="width:184px;" name="tel" value="" tabindex="4" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
-			<br />
-	        <b class="size11">Motivo:</b>
-			<br />
-			<select tabindex="5" style="width:85px;" class="select" name="motivo">
-			<option value="Publicidad">Publicidad</option>
-			<option value="Sugerencias">Sugerencias</option>
-			<option value="Peticiones">Peticiones</option>
-    		<option value="Errores">Errores</option>
-	    	<option value="Otros">Otros</option>
-			</select>
-		    <br />
-			<b class="size11">Horarios de contacto:</b>
-			<br />
-			<input tabindex="6" style="width:134px;" name="hc" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
-			<br />
-			<b class="size11">* Comentarios:</b>
-			<br />
-			<textarea onfocus="foco(this);" onblur="no_foco(this);" name="comentario" style="width:249px;" cols="40" rows="5" tabindex="7"></textarea><label id="comentario"></label><br />';
-			echo'<b class="size11">* C&oacute;digo de la im&aacute;gen</b><br />';
+           <b class="size11">* Su nombre y apellido:</b>
+      <br />
+      <input style="width:184px;" name="nombre" tabindex="1" type="text" onfocus="foco(this);" onblur="no_foco(this);" /><label id="nombre"></label>
+      <br />
+      <b class="size11">* E-mail:</b>
+      <br />
+        <input style="width:184px;" name="email" tabindex="2" type="text" onfocus="foco(this);" onblur="no_foco(this);" /><label id="errorr"></label>
+      <br />
+      <b class="size11">Empresa:</b>
+      <br />
+      <input style="width:184px;" name="empresa" tabindex="3" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
+      <br />			
+      <b class="size11">Tel&eacute;fono:</b>
+      <br />
+      <input style="width:184px;" name="tel" value="" tabindex="4" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
+      <br />
+          <b class="size11">Motivo:</b>
+      <br />
+      <select tabindex="5" style="width:85px;" class="select" name="motivo">
+      <option value="Publicidad">Publicidad</option>
+      <option value="Sugerencias">Sugerencias</option>
+      <option value="Peticiones">Peticiones</option>
+        <option value="Errores">Errores</option>
+        <option value="Otros">Otros</option>
+      </select>
+        <br />
+      <b class="size11">Horarios de contacto:</b>
+      <br />
+      <input tabindex="6" style="width:134px;" name="hc" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
+      <br />
+      <b class="size11">* Comentarios:</b>
+      <br />
+      <textarea onfocus="foco(this);" onblur="no_foco(this);" name="comentario" style="width:249px;" cols="40" rows="5" tabindex="7"></textarea><label id="comentario"></label><br />';
+      echo'<b class="size11">* C&oacute;digo de la im&aacute;gen</b><br />';
             captcha(1);
             echo'<label id="visual_verification_code"></label><br />';
             echo'<font class="size11" style="color: red;">* Campos obligatorios</font><br />
-	      	<input class="login" onclick="return error(this.form.nombre.value,this.form.email.value,this.form.comentario.value,this.form.code);" name="enviar" value="Enviar" type="submit" />
+          <input class="login" onclick="return error(this.form.nombre.value,this.form.email.value,this.form.comentario.value,this.form.code);" name="enviar" value="Enviar" type="submit" />
 <br /><span class="size9">- Su IP ('.$_SERVER['REMOTE_ADDR'].') Ser&aacute; almacenada en nuestra base de datos por razones de seguridad.</span>
 </center></div></div></form></div>';}}
 
@@ -391,11 +391,11 @@ echo'<script type="text/javascript">
   alto[\'7\']=300;
   function actualizar_preview(noselect){
     document.getElementById("cantidad").value = parseInt(document.getElementById("cantidad").value);
-  	if (isNaN(document.getElementById("cantidad").value)) {
-		  document.getElementById("cantidad").value="";
+    if (isNaN(document.getElementById("cantidad").value)) {
+      document.getElementById("cantidad").value="";
       alert("Debe ingresar un valor numerico en el campo cantidad de posts listados");
-		  return;
-	  }
+      return;
+    }
     if (!document.getElementById("cantidad").value){
       alert("Debe ingresar un valor en el campo cantidad de posts listados");
       document.getElementById("cantidad").focus();
@@ -458,14 +458,14 @@ echo'<div><div class="box_buscador">
 <tr style="padding:0px;margin:0px;">
 <td align="center" style="padding:0px;margin:0px;" class="windowbg">
     <b>Categor&iacute;a:</b><br /><select id="cat" onchange="actualizar_preview();">
-	<option value="" selected="selected">Todas</option>';
+  <option value="" selected="selected">Todas</option>';
 while($row = mysqli_fetch_assoc($rs)){
-	echo'<option value="'.$row['ID_BOARD'].'">'.$row['name'].'</option>';}
-	mysqli_free_result($rs);
-	echo'</select>
-	<br/><b>Cantidad:</b><br /><input size="4" maxlength="2" id="cantidad" value="20" onchange="actualizar_preview();" type="text" onfocus="foco(this);" onblur="no_foco(this);"> <span class="smalltext">(max 50 - min 5)</span>
+  echo'<option value="'.$row['ID_BOARD'].'">'.$row['name'].'</option>';}
+  mysqli_free_result($rs);
+  echo'</select>
+  <br/><b>Cantidad:</b><br /><input size="4" maxlength="2" id="cantidad" value="20" onchange="actualizar_preview();" type="text" onfocus="foco(this);" onblur="no_foco(this);"> <span class="smalltext">(max 50 - min 5)</span>
    <br/><b>Tama&ntilde;o:</b><br />
-	<select id="tamano" onchange="actualizar_preview();">
+  <select id="tamano" onchange="actualizar_preview();">
               <option value="0">350 x 100</option>
               <option value="2">200 x 250</option>
               <option value="1">200 x 200</option>
@@ -485,180 +485,334 @@ while($row = mysqli_fetch_assoc($rs)){
   <script type="text/javascript">actualizar_preview(1);</script></td></table>
    
    </div>';}
-			
-function template_vr2965(){
-global $tranfer1, $context, $settings, $options, $txt, $scripturl, $modSettings;
-global $db_prefix, $user_info, $scripturl, $modSettings, $board;
-if($context['allow_admin']){
-$getid=(int)$_GET['id'];
+      
+function template_vr2965() {
+  global $tranfer1, $context, $settings, $options, $txt, $scripturl, $modSettings, $db_prefix, $user_info, $board, $boardurl;
 
-$context['comentarios_mod']=mysqli_num_rows(db_query("
-SELECT id_post
-FROM ({$db_prefix}comentarios_mod)
-WHERE id_post='{$getid}'", __FILE__, __LINE__));
+  $getid = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+  $_GET['inicio'] = isset($_GET['inicio']) ? $_GET['inicio'] : '';
+  $_GET['post-agregar'] = isset($_GET['post-agregar']) ? $_GET['post-agregar'] : '';
+  $page = isset($_GET['pag']) ? (int) $_GET['pag'] : 1;
+  $width_column_1 = '461px';
 
-$mcerrado=db_query("
-SELECT id_user,cerrado
-FROM ({$db_prefix}comunicacion)
-WHERE id_contenido='{$getid}'
-LIMIT 1", __FILE__, __LINE__);
-while($cerrado=mysqli_fetch_array($mcerrado)){
-$cerrar=$cerrado['cerrado'];
-$id_user=$cerrado['id_user'];}
-$_GET['inicio']=isset($_GET['inicio']) ? $_GET['inicio'] : '';
+  if ($context['allow_admin']) {
+    $request = db_query("
+      SELECT id_post
+      FROM {$db_prefix}comentarios_mod
+      WHERE id_post = $getid", __FILE__, __LINE__);
 
-if($_GET['inicio'] !== '1234'){
+    $context['comentarios_mod'] = mysqli_num_rows($request);
+
+    mysqli_free_result($request);
     
-echo'<div style="width:912px;padding:4px;" class="windowbg">';}
+    $request = db_query("
+      SELECT id_user, cerrado
+      FROM {$db_prefix}comunicacion
+      WHERE id_contenido = $getid
+      LIMIT 1", __FILE__, __LINE__);
 
-$_GET['post-agregar']=isset($_GET['post-agregar']) ? $_GET['post-agregar'] : '';
-if($_GET['post-agregar']=='1447'){
+    while ($row = mysqli_fetch_array($request)) {
+      $cerrar = $row['cerrado'];
+      $id_user = $row['id_user'];
+    }
 
-echo'<form action="/web/cw-ComunicacionAdm-AGR.php" method="post" accept-charset="'.$context['character_set'].'" name="agregarp">';
-theme_quickreply_box();
-echo'</form>';}
+    if ($_GET['inicio'] !== '1234') {
+      echo '<div style="width: 912px; padding: 4px;" class="windowbg">';
+    }
 
-if($getid){
-    
-$Resultado=db_query("
-SELECT c.id_contenido,c.id_user,u.ID_MEMBER,c.id_contenido,u.realName,c.titulo,c.texto
-FROM ({$db_prefix}comunicacion as c,{$db_prefix}members as u)
-WHERE c.id_contenido='$getid' AND c.id_user=u.ID_MEMBER
-LIMIT 1",__FILE__, __LINE__);
-while($MostrarFila=mysqli_fetch_array($Resultado)){
-    
-echo"<b class='size11'>Titulo:</b>&nbsp;<span title='", censorText($MostrarFila['titulo']), "'>",censorText($MostrarFila['titulo']), "</span> - <span class='size11'>ID: <a href='/moderacion/comunicacion-mod/post/".$MostrarFila['id_contenido']."'>".$MostrarFila['id_contenido']."</a></span> - <span class='size11'>COM: <a href='/moderacion/comunicacion-mod/post/".$MostrarFila['id_contenido']."#comentarios'>".$context['comentarios_mod']."</a></span>";
-if($context['user']['is_admin']){echo' - <span class="size11">[<b><a href="/web/cw-ComunicacionAdm-EliPost.php?post='.$MostrarFila['id_contenido'].'" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este post?\')) return false;">X</a></b>]</span>';}elseif($context['user']['id']==$id_user){echo' - <span class="size11">[<b><a href="/moderacion/comunicacion-mod/post/eliminar/'.$MostrarFila['id_contenido'].'" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este post?\')) return false;">X</a></b>]</span>';}
+    if ($_GET['post-agregar'] == '1447') {
+      echo '<form action="' . $boardurl . '/web/cw-ComunicacionAdm-AGR.php" method="post" accept-charset="' . $context['character_set'] . '" name="agregarp">';
+      theme_quickreply_box();
+      echo '</form>';
+    }
 
-echo"<br />
-<b class='size11'>Por:</b>&nbsp;<a href='/perfil/".$MostrarFila['realName']."' title='",$MostrarFila['realName'], "'>",$MostrarFila['realName'], "</a><br /><div class='hrs'></div>
-<div style='width:910px;'>
-<div class='post-contenido'>
-".str_replace('http://linkoculto.net/index.php?l=','',parse_bbc($MostrarFila['texto']))."
-</div>
+    if ($getid) {
+      $request = db_query("
+        SELECT c.id_contenido, c.id_user, u.ID_MEMBER, c.id_contenido, u.realName, c.titulo, c.texto
+        FROM {$db_prefix}comunicacion AS c, {$db_prefix}members AS u
+        WHERE c.id_contenido = $getid
+        AND c.id_user = u.ID_MEMBER
+        LIMIT 1", __FILE__, __LINE__);
 
-</div></div>";}
+      while ($row = mysqli_fetch_array($request)) {
+        echo '
+          <b class="size11">Titulo:</b>
+          <span title="' . censorText($row['titulo']) . '">' . censorText($row['titulo']) . '</span>
+          -
+          <span class="size11">
+            ID:
+            <a href="' . $boardurl . '/moderacion/comunicacion-mod/post/' . $row['id_contenido'] . '">' . $row['id_contenido'] . '</a>
+          </span>
+          -
+          <span class="size11">
+            COM:
+            <a href="' . $boardurl . '/moderacion/comunicacion-mod/post/' . $row['id_contenido'] . '#comentarios">' . $context['comentarios_mod'] . '</a>
+          </span>';
+
+        if ($context['user']['is_admin']) {
+          echo '
+            -
+            <span class="size11">
+              [
+                <b>
+                  <a href="' . $boardurl . '/web/cw-ComunicacionAdm-EliPost.php?post=' . $row['id_contenido'] . '" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este post?\')) return false;">X</a></b>]</span>';}elseif($context['user']['id']==$id_user){echo' - <span class="size11">[<b><a href="' . $boardurl . '/moderacion/comunicacion-mod/post/eliminar/'.$row['id_contenido'].'" onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas eliminar este post?\')) return false;">X</a>
+                </b>
+              ]
+            </span>';
+        }
+
+        echo '
+          <br />
+          <b class="size11">
+            Por:
+          </b>
+          <a href="' . $boardurl . '/perfil/' . $row['realName'] . '" title="' . $row['realName'] . '">' . $row['realName'] . '</a>
+          <br />
+          <div class="hrs"></div>
+          <div style="width: 910px;">
+            <div class="post-contenido">
+              ' . str_replace('http://linkoculto.net/index.php?l=', '', parse_bbc($row['texto'])) . '
+            </div>
+          </div>
+        </div>';
+      }
+    }
+
+    if ($_GET['inicio'] == '1234') {
+      $RegistrosAMostrar = 15;
+      $dud = $page < 1 ? 1 : $page;
+
+      if (isset($dud)) {
+        $RegistrosAEmpezar = ($dud - 1) * $RegistrosAMostrar;
+        $PagAct = $dud;
+      } else {
+        $RegistrosAEmpezar = 0;
+        $PagAct = 1;
+      }
+
+      $request = db_query("
+        SELECT c.titulo, c.id_contenido, u.realName
+        FROM {$db_prefix}comunicacion AS c, {$db_prefix}members AS u
+        WHERE c.id_user = u.ID_MEMBER
+        ORDER BY c.id_contenido DESC
+        LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
+
+      echo '
+        <div style="float: left; margin-right: 10px;">
+          <table class="linksList" style="width: ' . $width_column_1 . ';">
+            <thead align="center">
+              <tr>
+                <th>&nbsp</th>
+                <th>Post</th>
+                <th>Por</th>
+              </tr>
+            </thead>
+            <tbody>';
+
+      while ($row = mysqli_fetch_array($request)) {
+        echo '
+          <tr>
+            <td>
+              <div class="icon_img" style="float: left; margin-right: 2px;">
+                <img alt="" src="' . $tranfer1 . '/icons/cwbig-v1-iconos.gif?v3.2.3" style="margin-top: -559px; display: inline;" />
+              </div>
+            </td>
+            <td>
+              <a href="' . $boardurl . '/moderacion/comunicacion-mod/post/' . $row['id_contenido'] . '">' . $row['titulo'] . '</a>
+            </td>
+            <td>
+              <a href="' . $boardurl . '/perfil/' . $row['realName'] . '">' . $row['realName'] . '</a>
+            </td>
+          </tr>';
+      }
+
+      echo '
+          </tbody>
+        </table>';
+
+      $request = db_query("
+        SELECT id_contenido
+        FROM {$db_prefix}comunicacion", __FILE__, __LINE__);
+
+      $NroRegistros = mysqli_num_rows($request);
+      
+      $PagAnt = $PagAct - 1;
+      $PagSig = $PagAct + 1;
+      $PagUlt = $NroRegistros / $RegistrosAMostrar;
+      $Res = $NroRegistros % $RegistrosAMostrar;
+
+      if ($PagAct > 1 || $PagAct < $PagUlt) {
+        echo '<div class="windowbgpag" style="width: ' . $width_column_1 . '; float: left;">';
+
+        if ($Res > 0) {
+          $PagUlt = floor($PagUlt) + 1;
+        }
+
+        if ($PagAct > 1) {
+          echo '<a href="' . $boardurl . '/moderacion/comunicacion-mod/pag-' . $PagAnt . '" style="float: left;">&#171; anterior</a>';
+        }
+
+        if ($PagAct < $PagUlt) {
+          echo '<a href="' . $boardurl . '/moderacion/comunicacion-mod/pag-' . $PagSig . '" style="float: left;">siguiente &#187;</a>';
+        }
+
+        echo '
+          </div>
+          <div class="clearBoth"></div>';
+      }
+
+      echo '
+        </div>
+        <div style="width: 200px; float: left;">
+          <table class="linksList" style="width: 448px;">
+            <thead align="center">
+              <tr>
+                <th>&nbsp</th>
+                <th>Post Comentado</th>
+                <th>Por</th>
+              </tr>
+            </thead>
+            <tbody>';
+
+      $request = db_query("
+      SELECT u.realName, cm.id_post, c.titulo
+      FROM {$db_prefix}comunicacion AS c, {$db_prefix}comentarios_mod AS cm, {$db_prefix}members AS u
+      WHERE c.id_contenido = cm.id_post
+      AND cm.id_user = u.ID_MEMBER
+      ORDER BY cm.id DESC
+      LIMIT 15", __FILE__, __LINE__);
+
+      while ($row = mysqli_fetch_array($request)) {
+        echo '
+          <tr>
+            <td><img src="' . $tranfer1 . '/comunidades/respuesta.png" alt="" /></td>
+            <td><a href="' . $boardurl . '/moderacion/comunicacion-mod/post/' . $row['id_post'] . '">' . $row['titulo'] . '</a></td>
+            <td><a href="' . $boardurl . '/perfil/' . $row['realName'] . '" title="' . $row['realName'] . '">' . $row['realName'] . '</a></td>
+          </tr>';
+      }
+
+      echo '
+            </tbody>
+          </table>
+        </div>';
+    }
+
+    if ($getid) {
+      echo '
+        <div style="margin-bottom: 8px; margin-top: 8px;">
+          <b style="font-size: 14px;">Comentarios (<span id="nrocoment">' . $context['comentarios_mod'] . '</span>)</b>';
+
+      $request = db_query("
+        SELECT c.id, c.comentario, m.realName
+        FROM {$db_prefix}comentarios_mod AS c, {$db_prefix}members AS m
+        WHERE c.id_post = $getid
+        AND c.id_user = m.ID_MEMBER
+        ORDER BY c.id ASC", __FILE__, __LINE__);
+
+      while ($row = mysqli_fetch_array($request)) {
+        $row['comentario'] = censorText($row['comentario']);
+
+        echo '
+          <div id="cmt_' . $row['id'] . '" class="Coment" style="width: 922px;">
+            <span class="size12">
+              <div class="User-Coment">
+                <div style="float: left;">
+                  <b id="autor_cmnt_' . $row['id'] . '" user_comment="' . $row['realName'] . '" text_comment=\'' . $row['comentario'] . '\'>
+                    <a href="' . $boardurl . '/perfil/' . $row['realName'] . '" style="color: #956100;">' . $row['realName'] . '</a>
+                  </b>
+                  dijo:
+                </div>
+                <div style="float: right;">
+                  <a href="' . $boardurl . '/mensajes/a/' . $row['realName'] . '" title="Enviar MP a: ' . $row['realName'] . '">
+                    <img alt="" src="' . $tranfer1 . '/icons/mensaje_para.gif" border="0" />
+                  </a>';
+
+        if (!$cerrar) {
+          echo '<a onclick="citar_comment(' . $row['id'] . ')" href="javascript:void(0)" title="Citar Comentario"><img alt="" src="' . $tranfer1 . '/comunidades/respuesta.png" class="png" border="0" /></a>';
+        }
+
+        if ($id_user == $context['user']['id'] || $context['user']['is_admin']) {
+          echo '<a href="' . $boardurl . '/web/cw-ComunicacionAdm-EliCom.php?id=' . $row['id'] . '&post=' . $getid . '" title="Eliminar Comentario"><img alt="" src="' . $tranfer1 . '/comunidades/eliminar.png" class="png" border="0" /></a>';
+        }
+
+        echo '
+                </div>
+              </div>
+              <div class="cuerpo-Coment">
+                <div style="white-space: pre-wrap; overflow: hidden; display: block;">
+                  ' . str_replace('http://linkoculto.net/index.php?l=', '', parse_bbc($row['comentario'])) . '
+                </div>
+              </div> 
+            </span>
+          </div>';
+      }
+
+      if (!$context['comentarios_mod']) {
+        echo '
+          <div class="noesta" style="width: 922px;">Este post no tiene comentarios.</div>
+          <div class="clearBoth"></div>';
+      }
+
+      if($cerrar) {
+        echo '
+          <div class="noesta" style="width: 922px;">Este post est&aacute; cerrado, por lo tanto no se permiten nuevos comentarios.</div>
+          <div class="clearBoth"></div>';
+      }
+
+      echo '</div>';
+    }
+
+    if ($getid && !$cerrar) {
+      echo '
+        <script type="text/javascript">
+          function errorrojo(cuerpo_comment) {
+            if (cuerpo_comment == \'\') {
+              document.getElementById(\'error\').innerHTML = \'\';
+              return false;
+            }
+          }
+        </script>
+        <div style="clear: left;"></div>
+        <div style="margin-bottom: 3px;" id="comentar" name="comentar">
+          <b style="font-size: 14px;">Agregar un nuevo comentario</b>
+        </div>
+        <div class="post-com coment-user" style="width: 922px;">
+          <div style="clear: left; margin-bottom: 2px"></div>
+          <form action="' . $boardurl . '/web/cw-ComunicacionAdm-Coment.php" method="post" accept-charset="' . $context['character_set'] . '" name="enviar">
+            <textarea style="resize: none; height: 70px; width: 916px;" id="editorCW" name="cuerpo_comment" tabindex="1"></textarea>
+            <p align="right" style="margin: 0px; padding: 0px;">';
+
+      $request = db_query("
+        SELECT description, filename, code
+        FROM {$db_prefix}smileys
+        WHERE hidden = 0
+        ORDER BY ID_SMILEY ASC", __FILE__, __LINE__);
+
+      while ($row = mysqli_fetch_assoc($request)) {
+        echo '
+          <span class="pointer" onclick="replaceText(\' ' . $row['code'] . '\', document.forms.enviar.cuerpo_comment); return false;">
+            <img class="png" src="' . $tranfer1 . '/emoticones/' . $row['filename'] . '" align="bottom" alt="" title="' . $row['description'] . '" />
+          </span> ';
+      }
+
+      mysqli_free_result($request);
+
+      echo '<a href="javascript:moticonup()">[m&aacute;s]</a>
+              <br />
+              <input class="login" name="post" id="post" value="Enviar Comentario" onclick="return errorrojo(this.form.cuerpo_comment.value);" tabindex="2" type="submit" />
+              <input name="id_post" value="' . $getid . '" type="hidden" />
+            </p>
+            <div style="clear: left;"></div>
+          </form>
+        </div>
+        <div style="clear: left; margin-bottom: 5px;"></div>';
+    }
+  } else {
+    die('');
+  }
 }
 
-
-if($_GET['inicio']=='1234'){
-$RegistrosAMostrar=15; 
-if($_GET['pag'] < 1){$dud=1;}else{$dud=$_GET['pag'];}
-if(isset($dud)){$RegistrosAEmpezar=($dud-1)*$RegistrosAMostrar;$PagAct=$dud;}else{$RegistrosAEmpezar=0;$PagAct=1;}
-
-$Resultado=db_query("SELECT c.titulo,c.id_contenido,u.realName
-                         FROM ({$db_prefix}comunicacion as c, {$db_prefix}members as u)
-                         WHERE c.id_user=u.ID_MEMBER
-						 ORDER BY c.id_contenido DESC
-						 LIMIT $RegistrosAEmpezar, $RegistrosAMostrar",__FILE__, __LINE__);
-echo'<div style="float:left;margin-right:10px;">
-<table class="linksList" style="width:461px;">
-<thead align="center">
-<tr><th>&nbsp</th>
-<th>Post</th><th>Por</th></tr></thead>
-<tbody>';
-while($MostrarFila=mysqli_fetch_array($Resultado)){
-echo'<tr><td><div class="icon_img" style="float:left;margin-right:2px;"><img alt="" src="'.$tranfer1.'/icons/cwbig-v1-iconos.gif?v3.2.3" style="margin-top:-559px;display:inline;" /></div></td>
-<td><a href="/moderacion/comunicacion-mod/post/'.$MostrarFila['id_contenido'].'">'.$MostrarFila['titulo'].'</a></td>
-<td><a href="/perfil/'.$MostrarFila['realName'].'">'.$MostrarFila['realName'].'</a></td></tr>';}
-echo'</tbody></table>';
-
- $NroRegistros=mysqli_num_rows(db_query("SELECT id_contenido FROM {$db_prefix}comunicacion",__FILE__, __LINE__));
- 
- $PagAnt=$PagAct-1;
- $PagSig=$PagAct+1;
- $PagUlt=$NroRegistros/$RegistrosAMostrar;
- $Res=$NroRegistros%$RegistrosAMostrar;
- if($PagAct>1 || $PagAct<$PagUlt){
- echo'<div class="windowbgpag" style="width:100px;float:left;">';
- if($Res>0) $PagUlt=floor($PagUlt)+1;
- if($PagAct>1){echo'<a href="/moderacion/comunicacion-mod/pag-'.$PagAnt.'">&#171; anterior</a>';}
- if($PagAct<$PagUlt){echo'<a href="/moderacion/comunicacion-mod/pag-'.$PagSig.'">siguiente &#187;</a>';}
-echo'</div><div class="clearBoth"></div>';}
-
-echo'</div>
-<div style="width:448px;">
-<table class="linksList" style="width:448px;">
-<thead align="center">
-<th>&nbsp</th>
-<th>Post Comentado</th>
-<th>Por</th></tr></thead>
-<tbody>';
-$Resultado=db_query("
-SELECT u.realName,cm.id_post,c.titulo
-FROM ({$db_prefix}comunicacion as c,{$db_prefix}comentarios_mod as cm,{$db_prefix}members as u)
-WHERE c.id_contenido=cm.id_post AND cm.id_user=u.ID_MEMBER
-ORDER BY cm.id DESC
-LIMIT 15",__FILE__, __LINE__);
-while($MostrarFila=mysqli_fetch_array($Resultado)){
-echo'
-<tr><td><img src="'.$tranfer1.'/comunidades/respuesta.png" alt="" /></td>
-<td><a href="/moderacion/comunicacion-mod/post/'.$MostrarFila['id_post'].'">'.$MostrarFila['titulo'].'</a></td>
-<td><a href="/perfil/'.$MostrarFila['realName'].'" title="'.$MostrarFila['realName'].'">'.$MostrarFila['realName'].'</a></td></tr>';}
-echo'</tbody></table></div>';}
-
-
-if($getid){
-    
-echo'<div style="margin-bottom:8px;margin-top:8px;">
-<b style="font-size: 14px;">Comentarios (<span id="nrocoment">'.$context['comentarios_mod'].'</span>)</b>'; 
-
-
-$Resultado=db_query("SELECT c.id,c.comentario,m.realName
-                         FROM ({$db_prefix}comentarios_mod as c, {$db_prefix}members as m)
-						 WHERE c.id_post='$getid' AND c.id_user = m.ID_MEMBER
-						 ORDER BY c.id ASC ",__FILE__, __LINE__);
-while($MostrarFila=mysqli_fetch_array($Resultado)){
-$MostrarFila['comentario']=censorText($MostrarFila['comentario']);
-echo'<div id="cmt_'.$MostrarFila['id'].'" class="Coment" style="width:922px;">
-<span class="size12"><div class="User-Coment">
-<div style="float:left;">';
-
-
-echo'<b id="autor_cmnt_'.$MostrarFila['id'].'" user_comment="'.$MostrarFila['realName'].'" text_comment=\''.$MostrarFila['comentario'].'\'><a href="/perfil/'.$MostrarFila['realName'].'" style="color:#956100;">'.$MostrarFila['realName'].'</a></b> dijo:</div><div style="float:right;">';
-
-echo'<a  href="/mensajes/a/'.$MostrarFila['realName'].'" title="Enviar MP a: '.$MostrarFila['realName'].'"><img alt="" src="'.$tranfer1.'/icons/mensaje_para.gif" border="0" /></a>';
-if(!$cerrar){echo' <a onclick="citar_comment('.$MostrarFila['id'].')" href="javascript:void(0)" title="Citar Comentario"><img alt="" src="'.$tranfer1.'/comunidades/respuesta.png" class="png" border="0" /></a>';}
-if($id_user==$context['user']['id'] || $context['user']['is_admin']){echo' <a href="/web/cw-ComunicacionAdm-EliCom.php?id='.$MostrarFila['id'].'&post='.$getid.'" title="Eliminar Comentario"><img alt="" src="'.$tranfer1.'/comunidades/eliminar.png" class="png" border="0" /></a>';}
-
-echo'</div></div> <div class="cuerpo-Coment"><div style="white-space: pre-wrap; overflow: hidden; display: block;">'.str_replace('http://linkoculto.net/index.php?l=','',parse_bbc($MostrarFila['comentario'])).'</div></div> 
-
-</span></div>';}
-if(!$context['comentarios_mod']){echo'<div class="noesta" style="width:922px;">Este post no tiene comentarios.</div><div class="clearBoth"></div>';
-}
-
-if($cerrar){echo'<div class="noesta" style="width:922px;">Este post esta cerrado, por lo tanto no se permiten nuevos comentarios.</div><div class="clearBoth"></div>';}
-
-echo'</div>';}
-
-if($getid && !$cerrar){
-echo'<script type="text/javascript">function errorrojo(cuerpo_comment){
-if(cuerpo_comment == \'\'){document.getElementById(\'error\').innerHTML=\'\'; return false;}}</script>
-<div style="clear: left;"></div>
-<div style="margin-bottom:3px;" id="comentar" name="comentar"><b style="font-size: 14px;">Agregar un nuevo comentario</b></div>
-<div class="post-com coment-user" style="width:922px;">
-<div style="clear: left;margin-bottom:2px"></div><form action="/web/cw-ComunicacionAdm-Coment.php" method="post" accept-charset="'.$context['character_set'].'" name="enviar">
-
-<textarea style="resize: none; height: 70px; width: 916px;" id="editorCW" name="cuerpo_comment" tabindex="1"></textarea><p align="right" style="margin:0px;padding:0px;">';
-
-$existe=db_query("
-SELECT description,filename,code
-FROM ({$db_prefix}smileys)
-WHERE hidden=0
-ORDER BY ID_SMILEY ASC",__FILE__, __LINE__);
-while($row = mysqli_fetch_assoc($existe)){
-echo'<span class="pointer" onclick="replaceText(\' '.$row['code'].'\', document.forms.enviar.cuerpo_comment); return false;"><img class="png" src="'.$tranfer1.'/emoticones/'.$row['filename'].'" align="bottom" alt="" title="', $row['description'], '" /></span> ';}
-
-mysqli_free_result($existe);
-echo ' <a href="javascript:moticonup()">[m&aacute;s]</a>';
-echo'<br /><input class="login" name="post" id="post" value="Enviar Comentario" onclick="return errorrojo(this.form.cuerpo_comment.value);" tabindex="2" type="submit" /><input name="id_post" value="'.(int)$getid.'" type="hidden" /></p><div style="clear: left;"></div>';
-echo'</form></div>
-<div style="clear: left;margin-bottom: 5px;"></div>';}
-
-}
-else{die('');}}
-
-function template_denuncias(){
+function template_denuncias() {
 global $tranfer1, $context, $db_prefix;
 if($context['allow_admin']){
 
@@ -667,27 +821,27 @@ $NroRegistros=mysqli_num_rows(db_query("SELECT id_denuncia FROM {$db_prefix}denu
 <script type="text/javascript">
 function actuarDenuncia(a,id,den,ident){ $('#cargando_'+id).css('display','block');
 $.ajax({
-		type: 'GET',
-		url: '/web/cw-denunciaAdm'+ a +'.php',
-		cache: false,
-		data: 'id=' + id + '&den=' + den + '&ident=' +  ident,
-		success: function(h){
-		  $('#cargando_'+id).css('display','none');
+    type: 'GET',
+    url: '/web/cw-denunciaAdm'+ a +'.php',
+    cache: false,
+    data: 'id=' + id + '&den=' + den + '&ident=' +  ident,
+    success: function(h){
+      $('#cargando_'+id).css('display','none');
           $('#contentv_'+id).remove();
           $('#resultado_'+id).css('display','block');
-				if(h.charAt(0)==0){ //Datos incorrectos
-					$('#resultado_'+id).addClass('noesta');
-					$('#resultado_'+id).html(h.substring(3)).show();
-				} else
-				if(h.charAt(0)==1){ //OK				
-					$('#resultado_'+id).removeClass('noesta');
-					$('#resultado_'+id).addClass('noesta-ve');
-					$('#resultado_'+id).html(h.substring(3)).show();}			
-		},
-		error: function(){
-		  Boxy.alert("Error, volver a intentar...", null, {title: 'Alerta'});
-		}
-	});
+        if(h.charAt(0)==0){ //Datos incorrectos
+          $('#resultado_'+id).addClass('noesta');
+          $('#resultado_'+id).html(h.substring(3)).show();
+        } else
+        if(h.charAt(0)==1){ //OK				
+          $('#resultado_'+id).removeClass('noesta');
+          $('#resultado_'+id).addClass('noesta-ve');
+          $('#resultado_'+id).html(h.substring(3)).show();}			
+    },
+    error: function(){
+      Boxy.alert("Error, volver a intentar...", null, {title: 'Alerta'});
+    }
+  });
 }
 </script>
 <?php echo'<div style="width: 922px;"><div class="box_title"><div class="box_txt box_buscadort"><center>Denuncias de posts, im&aacute;genes, usuarios y Comunidades</center></div></div></div>

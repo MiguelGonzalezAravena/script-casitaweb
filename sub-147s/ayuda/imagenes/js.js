@@ -74,7 +74,10 @@ mySettings = {
 		{name:'Code', key:'', openWith:'[code]', closeWith:'[/code]'},
 	]
 };
-function moticonup(){var winpops=window.open("/emoticones/","","width=255px,height=500px,scrollbars");}
+function moticonup() {
+	var winpops = window.open(boardUrl + '/emoticones/', '', 'width=255px,height=500px,scrollbars');
+}
+
 //Botones comentarios
 mySettings_cmt = {
 	nameSpace: "markitcomment",

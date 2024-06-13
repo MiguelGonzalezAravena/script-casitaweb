@@ -30,8 +30,8 @@ echo'<div class="botnes" style="clear:both;height:32px;width:541px;">
 <div class="clearBoth"></div>
 </div>';}
 
-function template_summary(){
-global $context,$tranfer1, $user_info, $no_avatar, $db_prefix, $txt, $user_settings;
+function template_summary() {
+	global $context,$tranfer1, $user_info, $no_avatar, $db_prefix, $txt, $user_settings, $boardurl;
 
 $lugar=str_replace('/','',$_GET['lugar']);
 if($lugar==='1' || $lugar=='apariencia'){$tipo='1';}
@@ -99,9 +99,11 @@ $request352=db_query("
 SELECT realName
 FROM {$db_prefix}members
 WHERE ID_MEMBER='{$context['notes']}'", __FILE__, __LINE__);
-while($rows=mysqli_fetch_assoc($request352)){$nameesss=$rows['realName'];}
+$row = mysqli_fetch_assoc($request352);
+$moderator = isset($row['realName']) ? $row['realName'] : '';
+
 mysqli_free_result($request352);
-echo'<div class="noesta" style="margin-bottom:8px;">CUENTA BANEADA!!!<br /><b>Raz&oacute;n:</b> '.$context['reason'].' | <b>El d&iacute;a:</b> '.timeformat($context['fecha']).'<br /><b>Por:</b> <a href="/perfil/'.$nameesss.'" title="'.$nameesss.'">'.$nameesss.'</a> | <b>Expira:</b> '.$context['expira'].'</div>';}
+echo'<div class="noesta" style="margin-bottom:8px;">CUENTA BANEADA!!!<br /><b>Raz&oacute;n:</b> '.$context['reason'].' | <b>El d&iacute;a:</b> '.timeformat($context['fecha']).'<br /><b>Por:</b> ' . ($moderator == '' ? ' - ' : '<a href="' . $boardurl . '/perfil/'.$moderator.'" title="'.$moderator.'">'.$moderator.'</a>') . ' | <b>Expira:</b> '.$context['expira'].'</div>';}
 }
 
 if($lugar == 'amigos-en-comun'){
