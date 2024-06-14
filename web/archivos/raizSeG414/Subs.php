@@ -3418,8 +3418,8 @@ loadTemplate('Admin');
       'Anuncios' => '<span onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPanuncio.php\', {title: \'Anuncio\'});" class="pointer">Anuncio</span>',
       'recargar' => '<span onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPrecargarPTS.php\', {title: \'Recargar puntos\'});" class="pointer">Recargar puntos</span>',
       'vr2965' => '<a href="' . $boardurl . '/moderacion/comunicacion-mod/">BatiCueva</a>',
-      'tyc9' => '<a href="' . $boardurl . '/web/cw-TEMPverUcoment.php" title="Ultimos 30 comentarios escritos" class="boxy">Comentarios en posts</a>',
-      'tyc11' => '<a href="' . $boardurl . '/web/cw-TEMPverUcomentIMG.php" title="Ultimos 30 comentarios escritos en imagenes" class="boxy">Comentarios en imagenes</a>',
+      'tyc9' => '<a href="' . $boardurl . '/web/cw-TEMPverUcoment.php" title="&Uacute;ltimos 30 comentarios escritos" class="boxy">Comentarios en posts</a>',
+      'tyc11' => '<a href="' . $boardurl . '/web/cw-TEMPverUcomentIMG.php" title="&Uacute;ltimos 30 comentarios escritos en im&aacute;genes" class="boxy">Comentarios en im&aacute;genes</a>',
       'ban_members' => '<a href="' . $boardurl . '/moderacion/edit-user/ban/">Historial de baneados</a>'
       ));
             
@@ -3434,12 +3434,12 @@ loadTemplate('Admin');
   if ($context['user']['is_admin']){
     $context['admin_areas']['config'] = array(
       'title' => 'Administraci&oacute;n',
-            'areas' => array(
-            'tyc200' => '<a href="' . $scripturl . '?'.$urlSep.'=manageboards">Categor&iacute;as</a>',
-            'modify_settings' => '<a href="' . $boardurl . '/moderacion/web/config/">Configuraci&oacute;n de la Web</a>',
-            'tyc16' => '<a href="' . $boardurl . '/web/cw-TEMPeditarTags.php" class="boxy" title="Editor Tags">Editor Tags</a>',
-            'tyc20' => '<a href="' . $boardurl . '/moderacion/emoticones/">Emoticones</a>',
-      'tyc12' => '<a href="' . $boardurl . '/moderacion/pms/">MP\'s</a>',
+      'areas' => array(
+      'tyc200' => '<a href="' . $scripturl . '?'.$urlSep.'=manageboards">Categor&iacute;as</a>',
+      'modify_settings' => '<a href="' . $boardurl . '/moderacion/web/config/">Configuraci&oacute;n de la web</a>',
+      'tyc16' => '<a href="' . $boardurl . '/web/cw-TEMPeditarTags.php" class="boxy" title="Editor tags">Editor tags</a>',
+      'tyc20' => '<a href="' . $boardurl . '/moderacion/emoticones/">Emoticones</a>',
+      'tyc12' => '<a href="' . $boardurl . '/moderacion/pms/">Mensajes privados</a>',
       'edit_groups' => '<a href="' . $scripturl . '?'.$urlSep.'=membergroups;">' . $txt[8] . '</a>',
       'view_members' => '<a href="' . $scripturl . '?'.$urlSep.'=viewmembers">' . $txt[5] . '</a>',
       'edit_permissions' => '<a href="' . $scripturl . '?'.$urlSep.'=permissions">' . $txt['edit_permissions'] . '</a>',

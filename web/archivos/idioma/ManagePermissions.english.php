@@ -217,7 +217,7 @@ $txt['permissionhelp_thank_you_post_show'] = 'Muestra la lista de los que dijero
 $txt['permissionname_thank_you_post_post'] = 'Da Gracias en un post';
 $txt['permissionhelp_thank_you_post_post'] = 'Con esto se le da permiso al usuario para dar Gracias a cada post en las secciones autorizadas';
 $txt['permissionname_thank_you_post_lock'] = 'Cerrar Gracias de post';
-$txt['permissionhelp_thank_you_post_lock'] = 'Cerrar un “Gracias”, as&iacute; nadie podr&aacute; agregar ninguno m&aacute;s';
+$txt['permissionhelp_thank_you_post_lock'] = 'Cerrar un ï¿½Graciasï¿½, as&iacute; nadie podr&aacute; agregar ninguno m&aacute;s';
 $txt['permissionname_thank_you_post_lock_own'] = 'Gracias propio';
 $txt['permissionname_thank_you_post_lock_any'] = 'Cualquier Gracias';
 $txt['permissionname_thank_you_post_delete'] = 'Borrar la lista de agradecimientos por post';
@@ -229,11 +229,11 @@ $txt['permissionhelp_thank_you_post_delete_mem'] = 'Borrar publicador de post de
 $txt['permissionname_thank_you_post_delete_mem_own'] = 'Propio miembro';
 $txt['permissionname_thank_you_post_delete_mem_any'] = 'Cualquier miembro';
 $txt['permissionname_thank_you_post_lock_all'] = 'Cerrar/Abrir Gracias en el tema';
-$txt['permissionhelp_thank_you_post_lock_all'] = 'Cerrar/Abrir toda opción de "Gracias" en el tema así nadie puede crear o comenzar uno nuevo.';
+$txt['permissionhelp_thank_you_post_lock_all'] = 'Cerrar/Abrir toda opciï¿½n de "Gracias" en el tema asï¿½ nadie puede crear o comenzar uno nuevo.';
 $txt['permissionname_thank_you_post_lock_all_own'] = 'Due&ntilde;o del tema';
 $txt['permissionname_thank_you_post_lock_all_any'] = 'Cualquier Post';
 $txt['permissionname_thank_you_post_unlock_all'] = 'Abrir todos los post de Gracias por mensajes';
-$txt['permissionhelp_thank_you_post_unlock_all'] = 'Abrir cada uno de los "Gracias" por post, puedes usar esto despu&eacute;s de haber movido el tema desde el basurero de regreso a una sección normal, o por alguna otra raz&oacute;n';
+$txt['permissionhelp_thank_you_post_unlock_all'] = 'Abrir cada uno de los "Gracias" por post, puedes usar esto despu&eacute;s de haber movido el tema desde el basurero de regreso a una secciï¿½n normal, o por alguna otra raz&oacute;n';
 
 $txt['permissiongroup_shop'] = 'Puntos';
 
@@ -246,5 +246,9 @@ $txt['permissionname_shop_bank'] = 'Bank';
 $txt['permissionname_shop_trade'] = 'Trade Centre';
 
 $txt['permissionhelp_shop_main'] = 'If this option is unticked, the user will not be able to use the shop at all. If you want to disable access to only a particular section of the shop, use the permissions below this one.';
+
+$txt['permissionicon'] = '';
+$txt['permissionname_hide_post_own'] = 'Que es esto?';
+$txt['permissionname_hide_post_any'] = 'Que es esto 2?';
 
 ?>

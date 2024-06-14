@@ -1,7 +1,7 @@
 <?php
-function template_main(){global $context, $settings, $options, $scripturl, $txt;
+function template_main(){global $context, $settings, $options, $scripturl, $txt, $urlSep;
 echo'<div class="tborder">
-			<form action="' . $scripturl . '?cw1=membergroups;sa=add;generalgroup" method="post" accept-charset="', $context['character_set'], '" style="margin: 0;">
+			<form action="' . $scripturl . '?' . $urlSep . '=membergroups;sa=add;generalgroup" method="post" accept-charset="', $context['character_set'], '" style="margin: 0;">
 				<table width="100%" cellpadding="2" cellspacing="1" border="0">
 					<tr class="titlebg"><td colspan="4" style="padding: 4px;">Rangos epeciales</td></tr>
 					<tr style="background:#FFC703;border-bottom:3px solid #BF8A01;font-size:11px;">
@@ -17,7 +17,7 @@ echo'<div class="tborder">
 						<td class="windowbg2">', empty($group['color']) ? ( $group['can_search'] ? $group['link'] : $group['name'] ) : '<span style="color: ' . $group['color'] . '">' . ( $group['can_search'] ? $group['link'] : $group['name']) . '</span>', $group['id'] == 1 ? ' ' : ($group['id'] == 3 ? ' ' : ''), '</td>
 						<td class="windowbg2" align="center">', $group['stars'], '</td>
 						<td class="windowbg" align="center">', $group['num_members'], '</td>
-						<td class="windowbg2" align="center"><a href="' . $scripturl . '?cw1=membergroups;sa=edit;group=' . $group['id'] . '">' . $txt['membergroups_modify'] . '</a></td>
+						<td class="windowbg2" align="center"><a href="' . $scripturl . '?' . $urlSep . '=membergroups;sa=edit;group=' . $group['id'] . '">' . $txt['membergroups_modify'] . '</a></td>
 					</tr>';
 	}
 
@@ -34,7 +34,7 @@ echo'<div class="tborder">
 			</form>
 		</div><br />
 		<div class="tborder">
-			<form action="' . $scripturl . '?cw1=membergroups;sa=add" method="post" accept-charset="', $context['character_set'], '" style="margin: 0;">
+			<form action="' . $scripturl . '?' . $urlSep . '=membergroups;sa=add" method="post" accept-charset="', $context['character_set'], '" style="margin: 0;">
 				<table width="100%" border="0" cellpadding="2" cellspacing="1">
 					<tr class="titlebg"><td colspan="5" style="padding: 4px;">Rangos por conteo de puntos</td></tr>
 					<tr style="background:#FFC703;border-bottom:3px solid #BF8A01;font-size:11px;">
@@ -52,7 +52,7 @@ echo'<div class="tborder">
 						<td class="windowbg2" align="center">', $group['stars'], '</td>
 						<td class="windowbg" align="center">', $group['num_members'], '</td>
 						<td class="windowbg" align="center">', $group['min_posts'], '</td>
-						<td class="windowbg2" align="center"><a href="' . $scripturl . '?cw1=membergroups;sa=edit;group=' . $group['id'] . '">' . $txt['membergroups_modify'] . '</a></td>
+						<td class="windowbg2" align="center"><a href="' . $scripturl . '?' . $urlSep . '=membergroups;sa=edit;group=' . $group['id'] . '">' . $txt['membergroups_modify'] . '</a></td>
 					</tr>';
 	}
 
@@ -71,10 +71,10 @@ echo'<div class="tborder">
 
 function template_new_group()
 {
-	global $tranfer1, $context, $settings, $options, $scripturl, $txt, $modSettings;
+	global $tranfer1, $context, $settings, $options, $scripturl, $txt, $modSettings, $urlSep;
 
 	echo '
-		<form action="', $scripturl, '?cw1=membergroups;sa=add" method="post" accept-charset="', $context['character_set'], '">
+		<form action="', $scripturl, '?' . $urlSep . '=membergroups;sa=add" method="post" accept-charset="', $context['character_set'], '">
 			<table width="90%" cellpadding="4" cellspacing="0" border="0" class="tborder" align="center">
 				<tr class="titlebg">
 					<td colspan="2" align="center">', $txt['membergroups_new_group'], '</td>
@@ -179,10 +179,10 @@ function template_new_group()
 
 function template_edit_group()
 {
-	global $tranfer1,$context, $settings, $options, $scripturl, $txt;
+	global $tranfer1,$context, $settings, $options, $scripturl, $txt, $urlSep;
 
 	echo '
-		<form action="', $scripturl, '?cw1=membergroups;sa=edit;group=', $context['group']['id'], '" method="post" accept-charset="', $context['character_set'], '" name="groupForm" id="groupForm">
+		<form action="', $scripturl, '?' . $urlSep . '=membergroups;sa=edit;group=', $context['group']['id'], '" method="post" accept-charset="', $context['character_set'], '" name="groupForm" id="groupForm">
 			<table width="95%" border="0" cellspacing="0" cellpadding="3" class="tborder" align="center">
 				<tr class="titlebg">
 					<td colspan="2" align="center">Editar rango - ', $context['group']['name'], '</td>
@@ -261,10 +261,10 @@ function template_edit_group()
 
 function template_group_members()
 {
-	global $context, $settings, $options, $scripturl, $txt;
+	global $context, $settings, $options, $scripturl, $txt, $urlSep;
 
 	echo '
-		<form action="', $scripturl, '?cw1=membergroups;sa=members;group=', $context['group']['id'], '" method="post" accept-charset="', $context['character_set'], '">
+		<form action="', $scripturl, '?' . $urlSep . '=membergroups;sa=members;group=', $context['group']['id'], '" method="post" accept-charset="', $context['character_set'], '">
 			<table width="90%" cellpadding="4" cellspacing="1" border="0" class="bordercolor" align="center">
 				<tr class="titlebg">
 					<td colspan="6" align="left">', $context['page_title'], '</td>
@@ -273,11 +273,11 @@ function template_group_members()
 					<td colspan="6" align="left">', $txt[139], ': ', $context['page_index'], '</td>
 				</tr>
 				<tr class="titlebg">
-					<td><a href="', $scripturl, '?cw1=membergroups;sa=members;start=', $context['start'], ';sort=name', $context['sort_by'] == 'name' && $context['sort_direction'] == 'up' ? ';desc' : '', ';group=', $context['group']['id'], '">', $txt[68], $context['sort_by'] == 'name' ? ' <img src="' . $settings['images_url'] . '/sort_' . $context['sort_direction'] . '.gif" alt="" />' : '', '</a></td>
-					<td><a href="', $scripturl, '?cw1=membergroups;sa=members;start=', $context['start'], ';sort=email', $context['sort_by'] == 'email' && $context['sort_direction'] == 'up' ? ';desc' : '', ';group=', $context['group']['id'], '">', $txt[69], $context['sort_by'] == 'email' ? ' <img src="' . $settings['images_url'] . '/sort_' . $context['sort_direction'] . '.gif" alt="" />' : '', '</a></td>
-					<td><a href="', $scripturl, '?cw1=membergroups;sa=members;start=', $context['start'], ';sort=active', $context['sort_by'] == 'active' && $context['sort_direction'] == 'up' ? ';desc' : '', ';group=', $context['group']['id'], '">', $txt['attachment_manager_last_active'], $context['sort_by'] == 'active' ? ' <img src="' . $settings['images_url'] . '/sort_' . $context['sort_direction'] . '.gif" alt="" />' : '', '</a></td>
-					<td><a href="', $scripturl, '?cw1=membergroups;sa=members;start=', $context['start'], ';sort=registered', $context['sort_by'] == 'registered' && $context['sort_direction'] == 'up' ? ';desc' : '', ';group=', $context['group']['id'], '">', $txt[233], $context['sort_by'] == 'registered' ? ' <img src="' . $settings['images_url'] . '/sort_' . $context['sort_direction'] . '.gif" alt="" />' : '', '</a></td>
-					<td', empty($context['group']['assignable']) ? ' colspan="2"' : '', '><a href="', $scripturl, '?cw1=membergroups;sa=members;start=', $context['start'], ';sort=posts', $context['sort_by'] == 'posts' && $context['sort_direction'] == 'up' ? ';desc' : '', ';group=', $context['group']['id'], '">', $txt[21], $context['sort_by'] == 'posts' ? ' <img src="' . $settings['images_url'] . '/sort_' . $context['sort_direction'] . '.gif" alt="" />' : '', '</a></td>';
+					<td><a href="', $scripturl, '?' . $urlSep . '=membergroups;sa=members;start=', $context['start'], ';sort=name', $context['sort_by'] == 'name' && $context['sort_direction'] == 'up' ? ';desc' : '', ';group=', $context['group']['id'], '">', $txt[68], $context['sort_by'] == 'name' ? ' <img src="' . $settings['images_url'] . '/sort_' . $context['sort_direction'] . '.gif" alt="" />' : '', '</a></td>
+					<td><a href="', $scripturl, '?' . $urlSep . '=membergroups;sa=members;start=', $context['start'], ';sort=email', $context['sort_by'] == 'email' && $context['sort_direction'] == 'up' ? ';desc' : '', ';group=', $context['group']['id'], '">', $txt[69], $context['sort_by'] == 'email' ? ' <img src="' . $settings['images_url'] . '/sort_' . $context['sort_direction'] . '.gif" alt="" />' : '', '</a></td>
+					<td><a href="', $scripturl, '?' . $urlSep . '=membergroups;sa=members;start=', $context['start'], ';sort=active', $context['sort_by'] == 'active' && $context['sort_direction'] == 'up' ? ';desc' : '', ';group=', $context['group']['id'], '">', $txt['attachment_manager_last_active'], $context['sort_by'] == 'active' ? ' <img src="' . $settings['images_url'] . '/sort_' . $context['sort_direction'] . '.gif" alt="" />' : '', '</a></td>
+					<td><a href="', $scripturl, '?' . $urlSep . '=membergroups;sa=members;start=', $context['start'], ';sort=registered', $context['sort_by'] == 'registered' && $context['sort_direction'] == 'up' ? ';desc' : '', ';group=', $context['group']['id'], '">', $txt[233], $context['sort_by'] == 'registered' ? ' <img src="' . $settings['images_url'] . '/sort_' . $context['sort_direction'] . '.gif" alt="" />' : '', '</a></td>
+					<td', empty($context['group']['assignable']) ? ' colspan="2"' : '', '><a href="', $scripturl, '?' . $urlSep . '=membergroups;sa=members;start=', $context['start'], ';sort=posts', $context['sort_by'] == 'posts' && $context['sort_direction'] == 'up' ? ';desc' : '', ';group=', $context['group']['id'], '">', $txt[21], $context['sort_by'] == 'posts' ? ' <img src="' . $settings['images_url'] . '/sort_' . $context['sort_direction'] . '.gif" alt="" />' : '', '</a></td>';
 	if (!empty($context['group']['assignable']))
 		echo '
 					<td width="4%" align="center"><input type="checkbox" class="check" onclick="invertAll(this, this.form);" /></td>';
@@ -326,7 +326,7 @@ function template_group_members()
 					<td align="right" width="50%"><b>', $txt['membergroups_members_add_desc'], ':</b></td>
 					<td align="left">
 						<input type="text" name="toAdd" id="toAdd" size="30" />
-						<a href="', $scripturl, '?cw1=findmember;input=toAdd;quote;sesc=', $context['session_id'], '" onclick="return reqWin(this.href, 350, 400);"><img src="', $settings['images_url'], '/icons/assist.gif" alt="', $txt['find_members'], '" /></a>
+						<a href="', $scripturl, '?' . $urlSep . '=findmember;input=toAdd;quote;sesc=', $context['session_id'], '" onclick="return reqWin(this.href, 350, 400);"><img src="', $settings['images_url'], '/icons/assist.gif" alt="', $txt['find_members'], '" /></a>
 					</td>
 				</tr><tr class="windowbg2">
 					<td colspan="2" align="center">
@@ -343,10 +343,10 @@ function template_group_members()
 
 function template_membergroup_settings()
 {
-	global $context, $settings, $options, $scripturl, $txt, $modSettings;
+	global $context, $settings, $options, $scripturl, $txt, $modSettings, $urlSep;
 
 	echo '
-	<form action="', $scripturl, '?cw1=membergroups;sa=settings" method="post" accept-charset="', $context['character_set'], '">
+	<form action="', $scripturl, '?' . $urlSep . '=membergroups;sa=settings" method="post" accept-charset="', $context['character_set'], '">
 		<table border="0" cellspacing="0" cellpadding="4" align="center" width="80%" class="tborder">
 			<tr class="titlebg">
 				<td colspan="2">', $txt['membergroups_settings'], '</td>

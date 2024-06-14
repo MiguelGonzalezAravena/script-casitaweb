@@ -64,4 +64,6 @@ $txt['recycle_board'] = 'Categor&iacute;a para guardar los posts reciclados';
 $txt['mboards_select_destination'] = 'Selecciona la categor&iacute;a destino \'<b>%1$s</b>\'';
 $txt['mboards_cancel_moving'] = 'Cancelar traslado';
 $txt['mboards_move'] = 'mover';
+
+$txt['mboards_groups_post_group'] = 'This group is a post group.';
 ?>

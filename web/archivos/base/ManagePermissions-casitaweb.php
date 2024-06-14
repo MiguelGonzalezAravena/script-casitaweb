@@ -1,6 +1,8 @@
 <?php
-function template_permission_index(){global $context, $settings, $options, $scripturl, $txt, $modSettings;
-echo'<form action="' . $scripturl . '?cw1=permissions;sa=quick" method="post" accept-charset="', $context['character_set'], '" name="permissionForm" id="permissionForm">
+function template_permission_index() {
+	global $context, $settings, $options, $scripturl, $txt, $modSettings, $urlSep;
+
+echo'<form action="' . $scripturl . '?' . $urlSep . '=permissions;sa=quick" method="post" accept-charset="', $context['character_set'], '" name="permissionForm" id="permissionForm">
 			<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tborder">';
 	if (!empty($context['board']))
 		echo '
@@ -57,7 +59,7 @@ echo'<form action="' . $scripturl . '?cw1=permissions;sa=quick" method="post" ac
 	}
 
 		echo '
-					<td class="windowbg2" align="center">', $group['allow_modify'] ? '<a href="' . $scripturl . '?cw1=permissions;sa=modify;group=' . $group['id'] . (empty($context['board']) ? '' : ';boardid=' . $context['board']['id']) . '">' . $txt['permissions_modify'] . '</a>' : '', '</td>
+					<td class="windowbg2" align="center">', $group['allow_modify'] ? '<a href="' . $scripturl . '?' . $urlSep . '=permissions;sa=modify;group=' . $group['id'] . (empty($context['board']) ? '' : ';boardid=' . $context['board']['id']) . '">' . $txt['permissions_modify'] . '</a>' : '', '</td>
 					<td class="windowbg" align="center">', $group['allow_modify'] ? '<input type="checkbox" name="group[]" value="' . $group['id'] . '" class="check" />' : '', '</td>
 				</tr>';
 	}
@@ -170,9 +172,8 @@ echo'<form action="' . $scripturl . '?cw1=permissions;sa=quick" method="post" ac
 		</form>';
 }
 
-function template_by_board()
-{
-	global $context, $settings, $options, $scripturl, $txt, $modSettings;
+function template_by_board() {
+	global $context, $settings, $options, $scripturl, $txt, $modSettings, $urlSep;
 
 	echo '
 			<table width="100%" border="0" cellpadding="4" cellspacing="1" class="tborder" style="margin-top: 2ex;">
@@ -185,18 +186,18 @@ function template_by_board()
 			echo '
 				<tr class="windowbg2">
 					<td align="left" class="windowbg">
-						<b><a', $board['use_local_permissions'] ? ' href="' . $scripturl . '?cw1=permissions;boardid=' . $board['id'] . '"' : '', ' name="', $board['id'], '"> ', str_repeat('-', $board['child_level']), ' ' . $board['name'] . '</a></b>', empty($modSettings['permission_enable_by_board']) ? '' : ' (' . ($board['use_local_permissions'] ? $txt['permissions_local'] : $txt['permissions_global']) . ')', '
+						<b><a', $board['use_local_permissions'] ? ' href="' . $scripturl . '?' . $urlSep . '=permissions;boardid=' . $board['id'] . '"' : '', ' name="', $board['id'], '"> ', str_repeat('-', $board['child_level']), ' ' . $board['name'] . '</a></b>', empty($modSettings['permission_enable_by_board']) ? '' : ' (' . ($board['use_local_permissions'] ? $txt['permissions_local'] : $txt['permissions_global']) . ')', '
 					</td>';
 		if (empty($modSettings['permission_enable_by_board']))
 			echo '
-					<td align="center" style="font-weight: ', $board['permission_mode'] == 'normal' ? 'bold' : 'normal', ';"><a href="', $scripturl, '?cw1=permissions;sa=board;mode=0;boardid=', $board['id'], ';sesc=', $context['session_id'], '#', $board['id'], '">', $txt['permission_mode_normal'], '</a></td>
-					<td align="center" style="font-weight: ', $board['permission_mode'] == 'no_polls' ? 'bold' : 'normal', ';"><a href="', $scripturl, '?cw1=permissions;sa=board;mode=2;boardid=', $board['id'], ';sesc=', $context['session_id'], '#', $board['id'], '">', $txt['permission_mode_no_polls'], '</a></td>
-					<td align="center" style="font-weight: ', $board['permission_mode'] == 'reply_only' ? 'bold' : 'normal', ';"><a href="', $scripturl, '?cw1=permissions;sa=board;mode=3;boardid=', $board['id'], ';sesc=', $context['session_id'], '#', $board['id'], '">', $txt['permission_mode_reply_only'], '</a></td>
-					<td align="center" style="font-weight: ', $board['permission_mode'] == 'read_only' ? 'bold' : 'normal', ';"><a href="', $scripturl, '?cw1=permissions;sa=board;mode=4;boardid=', $board['id'], ';sesc=', $context['session_id'], '#', $board['id'], '">', $txt['permission_mode_read_only'], '</a></td>';
+					<td align="center" style="font-weight: ', $board['permission_mode'] == 'normal' ? 'bold' : 'normal', ';"><a href="', $scripturl, '?' . $urlSep . '=permissions;sa=board;mode=0;boardid=', $board['id'], ';sesc=', $context['session_id'], '#', $board['id'], '">', $txt['permission_mode_normal'], '</a></td>
+					<td align="center" style="font-weight: ', $board['permission_mode'] == 'no_polls' ? 'bold' : 'normal', ';"><a href="', $scripturl, '?' . $urlSep . '=permissions;sa=board;mode=2;boardid=', $board['id'], ';sesc=', $context['session_id'], '#', $board['id'], '">', $txt['permission_mode_no_polls'], '</a></td>
+					<td align="center" style="font-weight: ', $board['permission_mode'] == 'reply_only' ? 'bold' : 'normal', ';"><a href="', $scripturl, '?' . $urlSep . '=permissions;sa=board;mode=3;boardid=', $board['id'], ';sesc=', $context['session_id'], '#', $board['id'], '">', $txt['permission_mode_reply_only'], '</a></td>
+					<td align="center" style="font-weight: ', $board['permission_mode'] == 'read_only' ? 'bold' : 'normal', ';"><a href="', $scripturl, '?' . $urlSep . '=permissions;sa=board;mode=4;boardid=', $board['id'], ';sesc=', $context['session_id'], '#', $board['id'], '">', $txt['permission_mode_read_only'], '</a></td>';
 		else
 			echo '
-					<td colspan="2" align="center" style="font-weight: ', $board['use_local_permissions'] ? 'normal' : 'bold', ';"><a href="', $scripturl, '?cw1=permissions;sa=switch;to=global;boardid=', $board['id'], ';sesc=', $context['session_id'], '#', $board['id'], '">', $txt['permissions_global'], '</a></td>
-					<td colspan="2" align="center" style="font-weight: ', $board['use_local_permissions'] ? 'bold' : 'normal', ';"><a href="', $scripturl, '?cw1=permissions;sa=switch;to=local;boardid=', $board['id'], ';sesc=', $context['session_id'], '#', $board['id'], '">', $txt['permissions_local'], '</a></td>';
+					<td colspan="2" align="center" style="font-weight: ', $board['use_local_permissions'] ? 'normal' : 'bold', ';"><a href="', $scripturl, '?' . $urlSep . '=permissions;sa=switch;to=global;boardid=', $board['id'], ';sesc=', $context['session_id'], '#', $board['id'], '">', $txt['permissions_global'], '</a></td>
+					<td colspan="2" align="center" style="font-weight: ', $board['use_local_permissions'] ? 'bold' : 'normal', ';"><a href="', $scripturl, '?' . $urlSep . '=permissions;sa=switch;to=local;boardid=', $board['id'], ';sesc=', $context['session_id'], '#', $board['id'], '">', $txt['permissions_local'], '</a></td>';
 		echo '
 				</tr>';
 	}
@@ -205,9 +206,8 @@ function template_by_board()
 			</table>';
 }
 
-function template_modify_group()
-{
-	global $context, $settings, $options, $scripturl, $txt, $modSettings;
+function template_modify_group() {
+	global $context, $settings, $options, $scripturl, $txt, $modSettings, $urlSep;
 
 	echo '
 		<script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
@@ -221,7 +221,7 @@ function template_modify_group()
 					return true;
 			}
 		// ]]></script>
-		<form action="', $scripturl, '?cw1=permissions;sa=modify2;group=', $context['group']['id'], ';boardid=', $context['board']['id'], '" method="post" accept-charset="', $context['character_set'], '" name="permissionForm" id="permissionForm" onsubmit="return warnAboutDeny();">
+		<form action="', $scripturl, '?' . $urlSep . '=permissions;sa=modify2;group=', $context['group']['id'], ';boardid=', $context['board']['id'], '" method="post" accept-charset="', $context['character_set'], '" name="permissionForm" id="permissionForm" onsubmit="return warnAboutDeny();">
 			<table width="100%" cellpadding="4" cellspacing="0" border="0" class="tborder">';
 	if (!empty($modSettings['permission_enable_deny']) && $context['group']['id'] != -1)
 		echo '
@@ -353,12 +353,11 @@ function template_modify_group()
 		</form>';
 }
 
-function template_general_permission_settings()
-{
-	global $context, $settings, $options, $scripturl, $txt, $modSettings;
+function template_general_permission_settings() {
+	global $context, $settings, $options, $scripturl, $txt, $modSettings, $urlSep;
 
 	echo '
-	<form action="', $scripturl, '?cw1=permissions;sa=settings" method="post" accept-charset="', $context['character_set'], '">
+	<form action="', $scripturl, '?' . $urlSep . '=permissions;sa=settings" method="post" accept-charset="', $context['character_set'], '">
 		<table border="0" cellspacing="0" cellpadding="4" align="center" width="80%" class="tborder">
 			<tr class="titlebg">
 				<td colspan="2">', $txt['permission_settings_title'], '</td>

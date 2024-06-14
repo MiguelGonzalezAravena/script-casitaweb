@@ -1,10 +1,11 @@
 <?php
-function template_main()
-{global $context, $settings, $options, $scripturl, $txt, $modSettings;
+function template_main() {
+	global $context, $settings, $options, $scripturl, $txt, $modSettings, $urlSep;
+
 echo'<div class="box_757"><div class="box_title" style="width: 752px;"><div class="box_txt box_757-34"><center>Categor&iacute;as</center></div><div class="box_rss"><img alt="" src="/Themes/default/images/blank.gif" style="width16px;height:16px;" border="0" /></div></div></div>
 <div class="windowbg" style="width:752px">
 <table>';
-if(!empty($context['move_board'])){echo'<tr height="30"><td><center><b class"size11" style="color:red;">', $context['move_title'], ' [<a href="', $scripturl, '?cw1=manageboards">', $txt['mboards_cancel_moving'], '</a>]</b></center></td></tr>';}
+if(!empty($context['move_board'])){echo'<tr height="30"><td><center><b class"size11" style="color:red;">', $context['move_title'], ' [<a href="', $scripturl, '?' . $urlSep . '=manageboards">', $txt['mboards_cancel_moving'], '</a>]</b></center></td></tr>';}
 			
 	foreach ($context['categories'] as $category)
 	{
@@ -18,7 +19,7 @@ foreach ($category['boards'] as $board)
 		{
 			$alternate = !$alternate;
 
-			echo '<tr><td>'.$board['name'].'<div class="link_resultado_opc"><a href="', $scripturl, '?cw1=manageboards;move=', $board['id'], '">', $txt['mboards_move'], '</a> | <a href="', $scripturl, '?cw1=manageboards;sa=board;boardid=', $board['id'], '">', $txt['mboards_modify'], '</a></div>
+			echo '<tr><td>'.$board['name'].'<div class="link_resultado_opc"><a href="', $scripturl, '?' . $urlSep . '=manageboards;move=', $board['id'], '">', $txt['mboards_move'], '</a> | <a href="', $scripturl, '?' . $urlSep . '=manageboards;sa=board;boardid=', $board['id'], '">', $txt['mboards_modify'], '</a></div>
             </td>
 								
 							</tr>';
@@ -45,15 +46,14 @@ foreach ($category['boards'] as $board)
 function template_modify_category(){}
 function template_modify_board()
 {
-	global $context, $settings, $options, $tranfer1, $scripturl, $txt, $modSettings;
+	global $context, $settings, $options, $tranfer1, $scripturl, $txt, $modSettings, $urlSep;
 	echo '
-<form action="', $scripturl, '?cw1=manageboards;sa=board2" method="post" accept-charset="', $context['character_set'], '">
+<form action="', $scripturl, '?' . $urlSep . '=manageboards;sa=board2" method="post" accept-charset="', $context['character_set'], '">
 	<input type="hidden" name="boardid" value="', $context['board']['id'], '" />
 	<table border="0" width="757px" cellspacing="0" cellpadding="0" align="center"><tr><td><div class="box_757"><div class="box_title" style="width: 757px;"><div class="box_txt box_757-34"><center>Modificar categor&iacute;a</center></div><div class="box_rss"><img src="'.$tranfer1.'/images/blank.gif" style="width: 16px; height: 16px;" border="0"></div></div></div><table border="0" width="100%" cellspacing="1" cellpadding="4" class="windowbg">
 					<td valign="top">
 						<table border="0" width="100%" cellspacing="0" cellpadding="2">';
-	if ((isset($context['board']['is_new']) && count($context['board_order']) > 0) || count($context['board_order']) > 1)
-	{
+	if (isset($context['board']['is_new'])) {
 		echo '
 								<td>
 									<b class="size11">', $txt[43], '</b><br /><br />
@@ -144,9 +144,9 @@ echo '<select id="order" name="placement" onchange="this.form.boardOrder.disable
 // A template used when a user is deleting a board with child boards in it - to see what they want to do with them.
 function template_confirm_board_delete()
 {
-	global $context, $settings, $options, $scripturl, $txt;
+	global $context, $settings, $options, $scripturl, $txt, $urlSep;
 echo '
-<form action="', $scripturl, '?cw1=manageboards;sa=board2" method="post" accept-charset="', $context['character_set'], '">
+<form action="', $scripturl, '?' . $urlSep . '=manageboards;sa=board2" method="post" accept-charset="', $context['character_set'], '">
 	<input type="hidden" name="boardid" value="', $context['board']['id'], '" />
 
 	<table width="600" cellpadding="4" cellspacing="0" border="0" align="center" class="tborder">
@@ -201,13 +201,13 @@ echo '
 
 function template_modify_general_settings()
 {
-	global $context, $settings, $options, $scripturl, $txt, $modSettings;
+	global $context, $settings, $options, $scripturl, $txt, $modSettings, $tranfer1, $urlSep;
 
 	echo '
-	<form action="', $scripturl, '?cw1=manageboards;sa=settings" method="post" accept-charset="', $context['character_set'], '">
+	<form action="', $scripturl, '?' . $urlSep . '=manageboards;sa=settings" method="post" accept-charset="', $context['character_set'], '">
 
 <div class="box_757"><div class="box_title" style="width: 757px;"><div class="box_txt box_757-34"><center>Configuraci&oacute;n</center></div>
-<div class="box_rss"><img src="http://casitaweb.net/Themes/default/images/blank.gif" style="width: 16px; height: 16px;" border="0"></div></div></div>
+<div class="box_rss"><img src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0"></div></div></div>
 		<table border="0" cellspacing="0" cellpadding="4" align="center" width="757px;" class="windowbg">';
 	if ($context['can_change_permissions'])
 	{
@@ -233,9 +233,11 @@ function template_modify_general_settings()
 					<input type="hidden" name="recycle_board" value="', empty($modSettings['recycle_board']) ? '0' : $modSettings['recycle_board'], '" />
 					<select name="recycle_board" id="recycle_board_select">
 						<option></option>';
+
+						var_dump($context['boards']);
 	foreach ($context['boards'] as $board)
 		echo '
-						<option value="', $board['id'], '"', $board['is_recycle'] ? ' selected="selected"' : '', '>', $board['category']['name'], ' - ', $board['name'], '</option>';
+						<option value="', $board['id'], '"', $board['is_recycle'] ? ' selected="selected"' : '', '>', $board['name'], '</option>';
 	echo '
 					</select>
 					<script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[

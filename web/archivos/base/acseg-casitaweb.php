@@ -69,67 +69,198 @@ echo'<div class="clearBoth"></div></div>';
 echo'</div>';
 }else{die();}}
 
-function template_tyc12(){global $tranfer1, $context,$db_prefix, $txt,$scripturl, $modSettings;
-if($context['user']['name']=='rigo'||$context['user']['id']=='1'){
+// Moderación de mensajes privados
+function template_tyc12() {
+  global $tranfer1, $context, $db_prefix, $txt, $scripturl, $modSettings, $boardurl;
 
-echo'<div class="box_757"><div class="box_title" style="width: 752px;"><div class="box_txt box_757-34"><center>Mp\'s</center></div><div class="box_rss"><img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" /></div></div></div><div style="width:744px;padding:4px;" class="windowbg"><form action="/web/cw-EliminarPMSADM.php" method="post" accept-charset="'.$context['character_set'].'" name="coments" id="coments">';
+  if ($context['user']['name'] == 'rigo' || $context['user']['id'] == 1) {
+    echo '
+      <div class="box_757">
+        <div class="box_title" style="width: 752px;">
+          <div class="box_txt box_757-34"><center>Mensajes privados</center>
+        </div>
+        <div class="box_rss">
+          <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
+        </div>
+      </div>
+    </div>
+    <div style="width: 744px; padding:4px;" class="windowbg">
+      <form action="' . $boardurl . '/web/cw-EliminarPMSADM.php" method="post" accept-charset="' . $context['character_set'] . '" name="coments" id="coments">';
 
-$RegistrosAMostrar=10;
-if($_GET['pag-11sdasd'] < 1){$oagvv=1;}else{$oagvv=$_GET['pag-11sdasd'];}
-if(isset($oagvv)){$RegistrosAEmpezar=($oagvv-1)*$RegistrosAMostrar;
-$PagAct=$oagvv;}else{$RegistrosAEmpezar=0;$PagAct=1;}
-$Resultado=db_query("
-SELECT pm.id,pm.titulo,pm.name_de,pm.mensaje,pm.id_para
-FROM ({$db_prefix}mensaje_personal as pm)
-ORDER BY pm.id DESC
-LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
-while($MostrarFila2=mysqli_fetch_array($Resultado)){
-$datosmem=db_query("
-SELECT realName
-FROM {$db_prefix}members
-WHERE ID_MEMBER='{$MostrarFila2['id_para']}'
-LIMIT 1", __FILE__, __LINE__);
-while($data=mysqli_fetch_assoc($datosmem)){$nick=$data['realName'];}
+    $RegistrosAMostrar = 10;
+    $pag = isset($_GET['pag-11sdasd']) ? (int) $_GET['pag-11sdasd'] : 0;
+    $oagvv = $pag < 1 ? 1 : $pag;
 
-echo'<input type="checkbox" name="campos['.$MostrarFila2['id'].']" /><br/><b>Por:</b> <a href="/perfil/'.$MostrarFila2['name_de'].'" title="'.$MostrarFila2['name_de'].'">'.$MostrarFila2['name_de'].'</a><br/><b>A:</b> <a href="/perfil/'.$nick.'" title="'.$nick.'">'.$nick.'</a><br/><b>Asunto:</b> '.censorText($MostrarFila2['titulo']).'<br/><b>Mensaje:</b><br/>'.censorText(parse_bbc(str_replace("<br/>","\n",$MostrarFila2['mensaje']))).'<div class="hrs"></div>';
+    if(isset($oagvv)) {
+      $RegistrosAEmpezar = ($oagvv - 1) * $RegistrosAMostrar;
+      $PagAct = $oagvv;
+    } else {
+      $RegistrosAEmpezar = 0;
+      $PagAct = 1;
+    }
+
+    $request = db_query("
+      SELECT id, titulo, name_de, mensaje, id_para
+      FROM {$db_prefix}mensaje_personal
+      ORDER BY id DESC
+      LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
+
+    while ($row = mysqli_fetch_array($request)) {
+      $datosmem = db_query("
+        SELECT realName
+        FROM {$db_prefix}members
+        WHERE ID_MEMBER = {$row['id_para']}
+        LIMIT 1", __FILE__, __LINE__);
+
+      $data = mysqli_fetch_assoc($datosmem);
+      $nick = $data['realName'];
+
+      echo '
+        <input type="checkbox" name="campos[' . $row['id'] . ']" />
+        <br />
+        <b>Por:</b>
+        <a href="' . $boardurl . '/perfil/' . $row['name_de'] . '" title="' . $row['name_de'] . '">' . $row['name_de'] . '</a>
+        <br />
+        <b>A:</b>
+        <a href="' . $boardurl . '/perfil/' . $nick . '" title="' . $nick . '">' . $nick . '</a>
+        <br />
+        <b>Asunto:</b>
+        ' . censorText($row['titulo']) . '
+        <br />
+        <b>Mensaje:</b>
+        <br />
+        ' . censorText(parse_bbc(str_replace('<br/>', "\n", $row['mensaje']))) . '
+        <div class="hrs"></div>';
+    }
+
+    $request = db_query("
+      SELECT id
+      FROM {$db_prefix}mensaje_personal", __FILE__, __LINE__);
+
+    $NroRegistros = mysqli_num_rows($request);
+    $PagAnt = $PagAct - 1;
+    $PagSig = $PagAct + 1;
+    $PagUlt = $NroRegistros / $RegistrosAMostrar;
+    $Res = $NroRegistros % $RegistrosAMostrar;
+    if ($Res > 0) {
+      $PagUlt = floor($PagUlt) + 1;
+    }
+
+    if ($PagAct > $PagUlt) {
+      echo '<div class="noesta">Est&aacute; p&aacute;gina no existe.</div>';
+    }
+
+    echo '
+          <br />
+          <b>Cantidad de mensajes:</b>
+          ' . $NroRegistros . '
+          <br />
+          <span class="size10">Comentarios seleccionados:</span>
+          <input class="login" style="font-size: 9px;" type="submit" value="Eliminar" />
+          <input value="' . $PagAct . '" name="pag" type="hidden" />
+        </form>
+      </div>';
+
+    if ($PagAct < $PagUlt) {
+      echo '<div class="windowbgpag" style="width: 698px;">';
+
+      if ($PagAct > 1) {
+        echo '<a href="' . $boardurl . '/moderacion/pms/pag-' . $PagAnt . '">&#171; anterior</a>';
+      }
+
+      if ($PagAct < $PagUlt) {
+        echo '<a href="' . $boardurl . '/moderacion/pms/pag-' . $PagSig . '">siguiente &#187;</a>';
+      }
+
+      echo '
+        </div>
+        <div class="clearBoth"></div>';
+    }
+  } else {
+    fatal_error('No puedes estar ac&aacute;.');
+  }
 }
-$NroRegistros=mysqli_num_rows(db_query("SELECT id FROM {$db_prefix}mensaje_personal", __FILE__, __LINE__));
- $PagAnt=$PagAct-1;
- $PagSig=$PagAct+1;
- $PagUlt=$NroRegistros/$RegistrosAMostrar;
- $Res=$NroRegistros%$RegistrosAMostrar;
-if($Res>0) $PagUlt=floor($PagUlt)+1;
 
-if($PagAct>$PagUlt){echo'<div class="noesta">Est&aacute; p&aacute;gina no existe.</div>';}else{}	
-echo'<br/><b>Cantidad de mensajes:</b> '.$NroRegistros.'<br/><span class="size10">Comentarios Seleccionados:</span> <input class="login" style="font-size: 9px;" type="submit" value="Eliminar" />
-<input value="'.$PagAct.'" name="pag" type="hidden" /></form></div>';
-if($PagAct<$PagUlt){echo'<div class="windowbgpag" style="width:698px;">';
-if($PagAct>1)echo "<a href='/moderacion/pms/pag-$PagAnt'>&#171; anterior</a>";
- if($PagAct<$PagUlt)  echo "<a href='/moderacion/pms/pag-$PagSig'>siguiente &#187;</a>";
-echo'</div><div class="clearBoth"></div>';}
-
-}else{fatal_error('No podes estar aca.');}}
-
+// Recomendar
 function template_tyc() {
-  global $tranfer1, $context, $mbname;
-echo'<script language="JavaScript" type="text/javascript">function showr_email(comment){if(comment == \'\'){alert(\'No has escrito ningun mensaje.\');return false;}}</script>';
-echo'<div><div class="box_buscador"><div class="box_title" style="width: 920px;"><div class="box_txt box_buscadort"><center>Recomendar ' . $mbname . ' a tus amigos</center></div><div class="box_rss"><img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 14px;height:12px;" border="0" /></div></div><div style="width:912px;padding:4px;" class="windowbg"><center>
-<form action="/web/cw-recomendarWeb.php" method="post" accept-charset="'.$context['character_set'].'">
-          <br /><font class="size11"><b>Recomendar ' . $mbname . ' hasta a seis amigos:</b></font><br />
-        <b class="size11">1 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email" size="28" maxlength="60" /> <b class="size11">2 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email1" size="28" maxlength="60" /><br /><b class="size11">3 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email2" size="28" maxlength="60" /> <b class="size11">4 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email3" size="28" maxlength="60" /><br /><b class="size11">5 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email4" size="28" maxlength="60" /> <b class="size11">6 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email5" size="28" maxlength="60" /><br /><br />
-          <font class="size11"><b>Asunto:</b></font><br /><input size="40" name="titulo" value="Te recomiendo ' . $mbname . '" type="text" onfocus="foco(this);" onblur="no_foco(this);"><br /><br />
-          <font class="size11"><b>Mensaje:</b></font><br />
-          <textarea cols="70" rows="8" wrap="hard" tabindex="6" name="comment">Hola! Te recomiendo que le des un vistazo a ' . $mbname . ' 
+  global $tranfer1, $context, $mbname, $boardurl;
+
+  echo '
+    <script type="text/javascript">
+      function showr_email(comment) {
+        if (comment == \'\') {
+          alert(\'No has escrito ning&uacute;n mensaje.\');
+          return false;
+        }
+      }
+    </script>
+    <div>
+      <div class="box_buscador">
+        <div class="box_title" style="width: 920px;">
+          <div class="box_txt box_buscadort">
+            <center>Recomendar ' . $mbname . ' a tus amigos</center>
+          </div>
+          <div class="box_rss">
+            <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" border="0" />
+          </div>
+        </div>
+        <div style="width: 912px; padding: 4px;" class="windowbg">
+          <center>
+            <form action="' . $boardurl . '/web/cw-recomendarWeb.php" method="post" accept-charset="' . $context['character_set'] . '">
+              <br />
+              <font class="size11">
+                <b>Recomendar ' . $mbname . ' hasta a seis amigos:</b>
+              </font>
+              <br />
+              <b class="size11">1 - </b>
+              <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email" size="28" maxlength="60" />
+              <b class="size11">2 - </b>
+              <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email1" size="28" maxlength="60" />
+              <br />
+              <b class="size11">3 - </b>
+              <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email2" size="28" maxlength="60" />
+              <b class="size11">4 - </b>
+              <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email3" size="28" maxlength="60" />
+              <br />
+              <b class="size11">5 - </b>
+              <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email4" size="28" maxlength="60" />
+              <b class="size11">6 - </b>
+              <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email5" size="28" maxlength="60" />
+              <br /><br />
+              <font class="size11">
+                <b>Asunto:</b>
+              </font>
+              <br />
+              <input size="40" name="titulo" value="Te recomiendo ' . $mbname . '" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
+              <br /><br />
+              <font class="size11">
+                <b>Mensaje:</b>
+              </font>
+              <br />
+              <textarea cols="70" rows="8" wrap="hard" tabindex="6" name="comment">Hola! Te recomiendo que le des un vistazo a ' . $mbname . ' 
 
 Saludos!
 
 '.$context['user']['name'].'</textarea>
+                <br /><br />
+                <font class="size11">
+                  <strong>C&oacute;digo de la imagen:</strong>
+                </font>
+                <br />';
 
-<br /><br /><font class="size11"><strong>C&oacute;digo de la im&aacute;gen:</strong></font><br />';
-captcha(1);
-echo'<br />';
-echo'<input onclick="return showr_email(this.form.comment.value);" type="submit" class="login" name="send" value="Recomendar ' . $mbname . '" /></form></center></div></div></div>';}
-      
+  captcha(1);
+
+  echo '
+            <br />
+            <input onclick="return showr_email(this.form.comment.value);" type="submit" class="login" name="send" value="Recomendar ' . $mbname . '" />
+          </form>
+        </center>
+        </div>
+      </div>
+    </div>';
+}
+
+// Enlázanos
 function template_tyc1() {
   global $tranfer1, $context, $settings, $options, $txt, $scripturl, $modSettings, $db_prefix, $user_info, $con, $board, $boardurl, $mbname;
 
@@ -211,7 +342,8 @@ function template_tyc1() {
       </div>
     </div>';
 }
- 
+
+// Chat
 function template_tyc2() {
   global $tranfer1, $modSettings, $boardurl, $mbname;
 
@@ -317,6 +449,7 @@ function template_tyc2() {
     </div>';
 }
 
+// Términos y condiciones
 function template_tyc3() {
   global $tranfer1, $modSettings;
 
@@ -342,7 +475,7 @@ function template_tyc3() {
   }
 }
 
-
+// Protocolo
 function template_tyc5() {
   global $tranfer1, $mbname;
 
@@ -478,8 +611,7 @@ function template_tyc5() {
     </div>';
 }
 
-//////////////////
-
+// Editar apariencia
 function template_tyc23() {
   global $context, $db_prefix, $boardurl;
 
@@ -538,180 +670,57 @@ function template_tyc23() {
 
   mysqli_free_result($request);
 
-if(!$estudios) {
-  $texto = '';
-}
+  if ($pasos == 1) {
+    $pasoabierto2='';$pasoabierto2a=' style="display: none;"';
+    $pasoabierto3='';$pasoabierto3a=' style="display: none;"';
+    $pasoabierto4='';$pasoabierto4a=' style="display: none;"';
+    $pasoabierto1='titlesCom2';$pasoabierto1a='';
+  } else if ($pasos == 2) {
+    $pasoabierto1='';$pasoabierto1a=' style="display: none;"';
+    $pasoabierto3='';$pasoabierto3a=' style="display: none;"';
+    $pasoabierto4='';$pasoabierto4a=' style="display: none;"';
+    $pasoabierto2='titlesCom2';$pasoabierto2a='';
+  } else if ($pasos == 3) {
+    $pasoabierto1='';$pasoabierto1a=' style="display: none;"';
+    $pasoabierto2='';$pasoabierto2a=' style="display: none;"';
+    $pasoabierto4='';$pasoabierto4a=' style="display: none;"';
+    $pasoabierto3='titlesCom2';$pasoabierto3a='';
+  } else if ($pasos == 4) {
+    $pasoabierto1='';$pasoabierto1a=' style="display: none;"';
+    $pasoabierto2='';$pasoabierto2a=' style="display: none;"';
+    $pasoabierto3='';$pasoabierto3a=' style="display: none;"';
+    $pasoabierto4='titlesCom2';$pasoabierto4a='';
+  } else {
+    $pasoabierto1='';$pasoabierto1a=' style="display: none;"';
+    $pasoabierto2='';$pasoabierto2a=' style="display: none;"';
+    $pasoabierto3='';$pasoabierto3a=' style="display: none;"';
+    $pasoabierto4='';$pasoabierto4a=' style="display: none;"';
+  }
 
-if ($estudios == 'Sin Estudios') {
-  $texto = 'sin';
-}
+  echo '
+    <div class="aparence" style="float: left; margin-bottom: 8px; width: 776px;">
+      <div class="noesta-am">
+        Al editar mi apariencia tambi&eacute;n acepto los
+        <a href="' . $boardurl . '/terminos-y-condiciones/" target="_blank">T&eacute;rminos de uso</a>.
+      </div>
+      <h3 class="titlesCom '.$pasoabierto1.'" style="width: 762px;" onclick="chgsec(this)">1. Formaci&oacute;n y trabajo</h3>
+      <div class="active" id="contennnt"'.$pasoabierto1a.'>';
 
-if ($estudios == 'Primario completo') {
-  $texto = 'pri';
-}
+  echo '
+    <form action="' . $boardurl . '/accion-apariencia/paso1/" method="post" accept-charset="' . $context['character_set'] . '" enctype="multipart/form-data">
+      <table cellpadding="4" width="100%">
+        <tbody>
+          <tr>
+            <td align="right" valign="top" width="23%">
+              <b>Estudios:</b>
+            </td>
+            <td width="40%">
+              <select id="estudios" name="estudios">';
 
-if ($estudios == 'Secundario en curso') {
-  $texto = 'sec_curso';
-}
+  foreach ($allEstudios as $key => $value) {
+    echo '<option value="' . $key . '"' . ($key == $estudios ? ' selected="selected"' : '') . '>' . $value . '</option>';
+  }
 
-if ($estudios == 'Secundario completo') {
-  $texto = 'sec_completo';
-}
-
-if ($estudios == 'Terciario en curso') {
-  $texto = 'ter_curso';
-}
-
-if ($estudios == 'Universitario en curso') {
-  $texto = 'univ_curso';
-}
-
-if ($estudios == 'Universitario completo') {
-  $texto = 'univ_completo';
-}
-
-if ($estudios == 'Terciario completo') {
-  $texto = 'ter_completo';
-}
-
-if ($estudios == 'Post-grado en curso') {
-  $texto = 'post_curso';
-}
-
-if ($estudios == 'Post-grado completo') {
-  $texto = 'post_completo';
-}
-
-if(!$ingresos){$texto2='';}
-if($ingresos=='Sin ingresos'){$texto2='sin';}
-if($ingresos=='Bajos'){$texto2='bajos';}
-if($ingresos=='Intermedios'){$texto2='intermedios';}
-if($ingresos=='Altos'){$texto2='altos';}
-
-if(!$me_gustaria){$texto3='';}
-elseif($me_gustaria=='Hacer Amigos'){$texto3='hacer_amigos';}
-elseif($me_gustaria=='Conocer gente con mis intereses'){$texto3='conocer_gente_con_mis_intereses';}
-elseif($me_gustaria=='Conocer gente para hacer negocios'){$texto3='conocer_gente_para_hacer_negocios';}
-elseif($me_gustaria=='Encontrar pareja'){$texto3='encontrar_pareja';}
-elseif($me_gustaria=='De todo'){$texto3='de_todo';}
-else{$texto3='';}
-
-if(!$en_el_amor_estoy){$texto4='';}
-elseif($en_el_amor_estoy=='Soltero/a'){$texto4='soltero';}
-elseif($en_el_amor_estoy=='De novio/a'){$texto4='novio';}
-elseif($en_el_amor_estoy=='Casado/a'){$texto4='casado';}
-elseif($en_el_amor_estoy=='Divorciado/a'){$texto4='divorciado';}
-elseif($en_el_amor_estoy=='Viudo/a'){$texto4='viudo';}
-elseif($en_el_amor_estoy=='En algo...'){$texto4='algo';}
-else{$texto4='';}
-
-if(!$hijos){$texto5='';}
-elseif($hijos=='No tengo'){$texto5='no';}
-elseif($hijos=='Alg&uacute;n d&iacute;a'){$texto5='algun_dia';}
-elseif($hijos=='No son lo m&iacute;o'){$texto5='no_quiero';}
-elseif($hijos=='Tengo, vivo con ellos'){$texto5='viven_conmigo';}
-elseif($hijos=='Tengo, no vivo con ellos'){$texto5='no_viven_conmigo';}
-else{$texto5='';}
-
-
-if(!$fumo){$texto7='';}
-elseif($fumo=='No'){$texto7='no';}
-elseif($fumo=='Casualmente'){$texto7='casualmente';}
-elseif($fumo=='Socialmente'){$texto7='socialmente';}
-elseif($fumo=='Regularmente'){$texto7='regularmente';}
-elseif($fumo=='Mucho'){$texto7='mucho';}else{$texto7='';}
-
-if($tomo_alcohol==''){$texto8='';}
-elseif($tomo_alcohol=='No'){$texto8='no';}
-elseif($tomo_alcohol=='Casualmente'){$texto8='casualmente';}
-elseif($tomo_alcohol=='Socialmente'){$texto8='socialmente';}
-elseif($tomo_alcohol=='Regularmente'){$texto8='regularmente';}
-elseif($tomo_alcohol=='Mucho'){$texto8='mucho';}else{$texto8='';}
-
-if(!$color_de_pelo){$texto9='';}
-elseif($color_de_pelo=='Negro'){$texto9='negro';}
-elseif($color_de_pelo=='Casta&ntilde;o oscuro'){$texto9='castano_oscuro';}
-elseif($color_de_pelo=='Casta&ntilde;o claro'){$texto9='castano_claro';}
-elseif($color_de_pelo=='Rubio'){$texto9='rubio';}
-elseif($color_de_pelo=='Pelirrojo'){$texto9='pelirrojo';}
-elseif($color_de_pelo=='Gris'){$texto9='gris';}
-elseif($color_de_pelo=='Canoso'){$texto9='canoso';}
-elseif($color_de_pelo=='Te&ntilde;ido'){$texto9='tenido';}
-elseif($color_de_pelo=='Rapado'){$texto9='rapado';}
-elseif($color_de_pelo=='Calvo'){$texto9='calvo';}else{$texto9='';}
-
-if(!$color_de_ojos){$texto10='';}
-elseif($color_de_ojos=='Negros'){$texto10='negros';}
-elseif($color_de_ojos=='Marrones'){$texto10='marrones';}
-elseif($color_de_ojos=='Celestes'){$texto10='celestes';}
-elseif($color_de_ojos=='Verdes'){$texto10='verdes';}
-elseif($color_de_ojos=='Grises'){$texto10='grises';}else{$texto10='';}
-
-if(!$mi_dieta_es){$texto6='';}
-elseif($mi_dieta_es=='Vegetariana'){$texto6='vegetariana';}
-elseif($mi_dieta_es=='Lacto Vegetariana'){$texto6='lacto_vegetariana';}
-elseif($mi_dieta_es=='Org&aacute;nica'){$texto6='organica';}
-elseif($mi_dieta_es=='De todo'){$texto6='de_todo';}
-elseif($mi_dieta_es=='Comida basura'){$texto6='comida_basura';}else{$texto6='';}
-
-if(!$complexion){$texto11='';}
-elseif($complexion=='Delgado/a'){$texto11='delgado';}
-elseif($complexion=='Atl&eacute;tico'){$texto11='atletico';}
-elseif($complexion=='Normal'){$texto11='normal';}
-elseif($complexion=='Algunos kilos de m&aacute;s'){$texto11='kilos_de_mas';}	
-elseif($complexion=='Corpulento/a'){$texto11='corpulento';}else{$texto11='';}
-
-if($pasos=='1'){
-$pasoabierto2='';$pasoabierto2a=' style="display: none;"';
-$pasoabierto3='';$pasoabierto3a=' style="display: none;"';
-$pasoabierto4='';$pasoabierto4a=' style="display: none;"';
-$pasoabierto1='titlesCom2';$pasoabierto1a='';}
-elseif($pasos=='2'){
-$pasoabierto1='';$pasoabierto1a=' style="display: none;"';
-$pasoabierto3='';$pasoabierto3a=' style="display: none;"';
-$pasoabierto4='';$pasoabierto4a=' style="display: none;"';
-$pasoabierto2='titlesCom2';$pasoabierto2a='';}
-elseif($pasos=='3'){
-$pasoabierto1='';$pasoabierto1a=' style="display: none;"';
-$pasoabierto2='';$pasoabierto2a=' style="display: none;"';
-$pasoabierto4='';$pasoabierto4a=' style="display: none;"';
-$pasoabierto3='titlesCom2';$pasoabierto3a='';}
-elseif($pasos=='4'){
-$pasoabierto1='';$pasoabierto1a=' style="display: none;"';
-$pasoabierto2='';$pasoabierto2a=' style="display: none;"';
-$pasoabierto3='';$pasoabierto3a=' style="display: none;"';
-$pasoabierto4='titlesCom2';$pasoabierto4a='';}
-else{
-$pasoabierto1='';$pasoabierto1a=' style="display: none;"';
-$pasoabierto2='';$pasoabierto2a=' style="display: none;"';
-$pasoabierto3='';$pasoabierto3a=' style="display: none;"';
-$pasoabierto4='';$pasoabierto4a=' style="display: none;"';}
-
-echo'<div class="aparence" style="float: left; margin-bottom: 8px; width: 776px;">
-<div class="noesta-am">Al editar mi apariencia tambi&eacute;n acepto los <a href="' . $boardurl . '/terminos-y-condiciones/" target="_blank">T&eacute;rminos de uso</a>.</div>
-
-<h3 class="titlesCom '.$pasoabierto1.'" style="width: 762px;" onclick="chgsec(this)">1. Formaci&oacute;n y trabajo</h3>
-<div class="active" id="contennnt"'.$pasoabierto1a.'>';
-
-$texto = isset($texto) ? $texto : '';
-$texto2 = isset($texto2) ? $texto2 : '';
-$texto3 = isset($texto3) ? $texto3 : '';
-$prof = isset($prof) ? $prof : '';
-
-echo '
-  <form action="' . $boardurl . '/accion-apariencia/paso1/" method="post" accept-charset="' . $context['character_set'] . '" enctype="multipart/form-data">
-    <table cellpadding="4" width="100%">
-      <tbody>
-        <tr>
-          <td align="right" valign="top" width="23%">
-            <b>Estudios:</b>
-          </td>
-          <td width="40%">
-            <select id="estudios" name="estudios">';
-
-foreach ($allEstudios as $key => $value) {
-  echo '<option value="' . $key . '"' . ($key == $estudios ? ' selected="selected"' : '') . '>' . $value . '</option>';
-}
   echo '
             </select>
           </td>
@@ -738,10 +747,11 @@ foreach ($allEstudios as $key => $value) {
           </td>
           <td>
             <select id="ingresos" name="ingresos">';
-foreach ($allIngresos as $key => $value) {
-  echo '<option value="' . $key . '"' . ($key == $ingresos ? ' selected="selected"' : '') . '>' . $value . '</option>';
-}
-            
+
+  foreach ($allIngresos as $key => $value) {
+    echo '<option value="' . $key . '"' . ($key == $ingresos ? ' selected="selected"' : '') . '>' . $value . '</option>';
+  }
+
   echo '
                 </select>
               </td>
@@ -785,6 +795,7 @@ foreach ($allIngresos as $key => $value) {
               <td width="40%">
                 <table width="100%" border="0">
                   <tbody>';
+
   foreach ($allMeGustarias as $key => $value) {
     echo '
       <tr>
@@ -795,7 +806,6 @@ foreach ($allIngresos as $key => $value) {
           </label>
         </td>
       </tr>';
-
   }
 
   echo '

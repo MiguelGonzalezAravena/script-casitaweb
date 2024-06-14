@@ -337,12 +337,22 @@ function getBoardTree()
 	global $db_prefix, $cat_tree, $boards, $boardList, $txt, $modSettings;
 
 	// Getting all the board and category information you'd ever wanted.
-	$request = db_query("
+  /* Antigua query
+  	$request = db_query("
 		SELECT
 			b.ID_BOARD, b.ID_PARENT, b.name AS bName, b.description, b.childLevel,
 			b.boardOrder, b.countPosts, b.memberGroups, b.ID_THEME, b.override_theme, b.countMoney, b.permission_mode
-		FROM {$db_prefix}boards AS b
+		FROM {$db_prefix}boards
 		ORDER BY b.childLevel, b.boardOrder", __FILE__, __LINE__);
+
+  */
+  $request = db_query("
+    SELECT
+      ID_BOARD, ID_PARENT, name AS bName, description, childLevel,
+      boardOrder, countPosts, memberGroups, ID_THEME, override_theme, countMoney, permission_mode
+    FROM {$db_prefix}boards
+    ORDER BY childLevel, boardOrder", __FILE__, __LINE__);
+
 	$cat_tree = array();
 	$boards = array();
 	$last_board_order = 0;
@@ -353,9 +363,9 @@ function getBoardTree()
 			$cat_tree[1] = array(
 				'node' => array(
 					'id' => 1,
-					'name' => $row['cName'],
-					'order' => $row['catOrder'],
-					'canCollapse' => $row['canCollapse']
+					'name' => '',
+					'order' => '',
+					'canCollapse' => ''
 				),
 				'is_first' => empty($cat_tree),
 				'last_board_order' => $last_board_order,

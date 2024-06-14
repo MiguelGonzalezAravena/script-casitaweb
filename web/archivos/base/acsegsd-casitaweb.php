@@ -1,9 +1,17 @@
 <?php
-function template_manual_above(){}
-function template_manual_below(){}
-function template_intro(){exit();die();}
 
-function template_tyc3(){global $tranfer1, $context, $db_prefix, $modSettings;
+function template_manual_above() {}
+function template_manual_below() {}
+
+function template_intro() {
+  exit();
+  die();
+}
+
+// Editar firma
+function template_tyc3() {
+  global $tranfer1, $context, $db_prefix, $modSettings;
+
 if($context['user']['is_guest']){fatal_error('Vos no podes estar aca.');}
 $Activo=substr($modSettings['signature_settings'], 0, 1) == 1;
 if($Activo){    
@@ -53,41 +61,133 @@ echo'<center><input onclick="return comprobar(this.form.firma.value);" type="sub
 
 function template_tyc4(){}
 
+// Moderación de muros
+function template_tyc6() {
+  global $tranfer1, $context, $settings, $sourcedir, $options, $txt, $scripturl, $db_prefix, $modSettings, $boardurl;
 
-function template_tyc6(){
-global $tranfer1, $context, $settings,$sourcedir, $options, $txt, $scripturl, $db_prefix, $modSettings;
-if($context['user']['name']=='rigo'||$context['user']['id']=='1'){
-echo'<div class="box_757"><div class="box_title" style="width: 752px;"><div class="box_txt box_757-34"><center>Muros</center></div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 16px; height: 16px;" border="0" /></div></div></div><div style="width:744px;padding:4px;" class="windowbg">';
-$RegistrosAMostrar=25;
+  if ($context['user']['name'] == 'rigo' || $context['user']['id'] == 1) {
+    echo '
+      <div class="box_757">
+        <div class="box_title" style="width: 752px;">
+          <div class="box_txt box_757-34">
+            <center>Muros</center>
+          </div>
+          <div class="box_rss">
+            <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
+          </div>
+        </div>
+      </div>
+      <div style="width: 744px; padding: 4px;" class="windowbg">';
 
-if($_GET['pag-seg-157'] < 0){$dud=1;}else{$dud=$_GET['pag-seg-157'];}
-if(isset($dud)){$RegistrosAEmpezar=($dud-1)*$RegistrosAMostrar;
-$PagAct=$dud;}else{$RegistrosAEmpezar=0;$PagAct=1;}
-$Resultado=db_query("SELECT pm.id,pm.id_user,pm.de,pm.muro,pm.tipo FROM ({$db_prefix}muro as pm) ORDER BY pm.id DESC LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
-while($MostrarFila2=mysqli_fetch_array($Resultado)){
-echo'<div id="muro-'.$MostrarFila2['id'].'">';
+    $RegistrosAMostrar = 25;
+    $pag = isset($_GET['pag-seg-157']) ? (int) $_GET['pag-seg-157'] : 1;
 
-$datosmem=db_query("SELECT realName FROM ({$db_prefix}members) WHERE ID_MEMBER='{$MostrarFila2['id_user']}' LIMIT 1", __FILE__, __LINE__);while($data=mysqli_fetch_assoc($datosmem)){$nick=$data['realName'];}
-$datosmem2=db_query("SELECT realName FROM ({$db_prefix}members) WHERE ID_MEMBER='{$MostrarFila2['de']}' LIMIT 1", __FILE__, __LINE__);while($data4=mysqli_fetch_assoc($datosmem2)){$nick3=$data4['realName'];}
+    if ($pag < 0) {
+      $dud = 1;
+    } else {
+      $dud = $pag;
+    }
 
-if($MostrarFila2['tipo']=='0'){echo'<img src="'.$tranfer1.'/icons/bullet-verde.gif" alt="Escrito" title="Escrito" />';}elseif($MostrarFila2['tipo']=='1'){echo'<img src="'.$tranfer1.'/icons/bullet-rojo.gif" alt="Esta haciendo..." title="Esta haciendo..." />';}else{echo'<b style="color:red;"><i>Tipo de muro no conocido ||| </i></b>';}
+    if(isset($dud)) {
+      $RegistrosAEmpezar = ($dud - 1) * $RegistrosAMostrar;
+      $PagAct = $dud;
+    } else {
+      $RegistrosAEmpezar = 0;
+      $PagAct = 1;
+    }
 
-echo' - <a onclick="if (!confirm(\'\xbfEstas seguro que deseas borrar este mensaje?\')) return false; del_coment_muro(\''.$MostrarFila2['id'].'\'); return false;" href="#" title="Eliminar Mensaje"><img alt="Eliminar Mensaje" src="'.$tranfer1.'/eliminar.gif" width="8px" height="8px"></a><br/><b>Por:</b> <a href="/perfil/'.$nick3.'" title="'.$nick3.'">'.$nick3.'</a><br/><b>A:</b> <a href="/perfil/'.$nick.'" title="'.$nick.'">'.$nick.'</a><br/><b>Mensaje:</b><br/>'.censorText(parse_bbc(str_replace("<br/>","\n",$MostrarFila2['muro']))).'<div class="hrs"></div></div>';}
+    $request = db_query("
+      SELECT id, id_user, de, muro, tipo
+      FROM {$db_prefix}muro
+      ORDER BY id DESC
+      LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
 
-$NroRegistros=mysqli_num_rows(db_query("SELECT id FROM {$db_prefix}muro", __FILE__, __LINE__));
- $PagAnt=$PagAct-1;
- $PagSig=$PagAct+1;
- $PagUlt=$NroRegistros/$RegistrosAMostrar;
- $Res=$NroRegistros%$RegistrosAMostrar;
-if($Res>0) $PagUlt=floor($PagUlt)+1;
-if($PagAct>$PagUlt){}else{echo'<br/><b>Cantidad de escritos:</b> '.$NroRegistros.'<br/></div>';}
+    while ($row = mysqli_fetch_array($request)) {
+      echo '<div id="muro-' . $row['id'] . '">';
 
-if($PagAct>$PagUlt){echo'<b class="size11">Est&aacute; p&aacute;gina no existe.</b><div class="hrs"></div></div>';}else{
-echo'<div class="windowbgpag" style="width:747px;padding:4px;"><center><font size="2">';
-if($PagAct>1) echo "<a href='/moderacion/muro/pag-$PagAnt'>< anterior</a>";
-if($PagAct<$PagUlt)  echo "<a href='/moderacion/muro/pag-$PagSig'>siguiente ></a>";	
-echo'</font></center></div>';}
-}else{falta_error('No podes estar aca.');}}
+      $nick = getUsername($row['id_user']);
+      $nick3 = getUsername($row['de']);
 
+      if ($row['tipo'] == 0) {
+        echo '<img src="' . $tranfer1 . '/icons/bullet-verde.gif" alt="Escrito" title="Escrito" />';
+      } else if ($row['tipo'] == 1) {
+        echo '<img src="' . $tranfer1 . '/icons/bullet-rojo.gif" alt="Est&aacute; haciendo..." title="Est&aacute; haciendo..." />';
+      } else {
+        echo '<b style="color: red;"><i>Tipo de muro no conocido ||| </i></b>';
+      }
+
+      echo '
+          -
+          <a onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas borrar este mensaje?\')) return false; del_coment_muro(\'' . $row['id'] . '\'); return false;" href="#" title="Eliminar mensaje">
+            <img alt="Eliminar Mensaje" src="' . $tranfer1 . '/eliminar.gif" width="8px" height="8px" />
+          </a>
+          <br />
+          <b>Por:</b>
+          <a href="' . $boardurl . '/perfil/' . $nick3 . '" title="' . $nick3 . '">' . $nick3 . '</a>
+          <br />
+          <b>A:</b>
+          <a href="' . $boardurl . '/perfil/' . $nick . '" title="' . $nick . '">' . $nick . '</a>
+          <br />
+          <b>Mensaje:</b>
+          <br />
+          ' . censorText(parse_bbc(str_replace('<br/>', "\n", $row['muro']))) . '
+          <div class="hrs"></div>
+        </div>';
+    }
+
+    $request = db_query("
+      SELECT id
+      FROM {$db_prefix}muro", __FILE__, __LINE__);
+
+    $NroRegistros = mysqli_num_rows($request);
+    $PagAnt = $PagAct - 1;
+    $PagSig = $PagAct + 1;
+    $PagUlt = $NroRegistros / $RegistrosAMostrar;
+    $Res = $NroRegistros % $RegistrosAMostrar;
+
+    if ($Res > 0) {
+      $PagUlt = floor($PagUlt) + 1;
+    }
+
+    if ($PagAct > $PagUlt) {
+      // ¿Qué se hace aquí?
+    } else {
+      echo '
+          <br />
+          <b>Cantidad de escritos:</b>
+          ' . $NroRegistros . '
+          <br />
+        </div>';
+    }
+
+    if ($PagAct > $PagUlt) {
+      echo '
+          <div class="noesta">
+            <b class="size11">Esta p&aacute;gina no existe.</b>
+          </div>
+        </div>';
+    } else {
+      echo '
+        <div class="windowbgpag" style="width: 747px; padding: 4px;">
+          <center>
+            <font size="2">';
+
+      if ($PagAct > 1) {
+        echo `<a href="$boardurl/moderacion/muro/pag-$PagAnt">< anterior</a>`;
+      }
+
+      if ($PagAct < $PagUlt) {
+        echo `<a href="$boardurl/moderacion/muro/pag-$PagSig">siguiente ></a>`;
+      }
+
+      echo '
+            </font>
+          </center>
+        </div>';
+    }
+  } else {
+    fatal_error('No puedes estar ac&aacute;.');
+  }
+}
 
 ?>

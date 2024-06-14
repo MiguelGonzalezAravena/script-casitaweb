@@ -6,7 +6,7 @@ if (!defined('CasitaWeb!-PorRigo')) {
 
 function Admin() {
   global $sourcedir, $db_prefix, $forum_version, $txt, $scripturl, $context, $modSettings;
-  global $user_info, $_PHPA, $boardurl;
+  global $user_info, $_PHPA, $boardurl, $urlSep;
 
   isAllowedTo(array('admin_forum', 'manage_permissions', 'moderate_forum', 'manage_membergroups', 'manage_bans', 'send_mail', 'edit_news', 'manage_boards', 'manage_smileys', 'manage_attachments'));
   adminIndex('index');
@@ -60,8 +60,8 @@ function Admin() {
     }
 
     $context['quick_admin_tasks'][] = array(
-      'href' => $scripturl . '?cw1=' . $task[1],
-      'link' => '<a href="' . $scripturl . '?cw1=' . $task[1] . '">' . $txt[$task[2]] . '</a>',
+      'href' => $scripturl . '?' . $urlSep . '=' . $task[1],
+      'link' => '<a href="' . $scripturl . '?' . $urlSep . '=' . $task[1] . '">' . $txt[$task[2]] . '</a>',
       'title' => $txt[$task[2]],
       'description' => $txt[$task[3]],
       'is_last' => false

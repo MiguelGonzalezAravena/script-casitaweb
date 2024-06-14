@@ -1631,6 +1631,26 @@ function getAlcoholes($mode = '') {
   }
 }
 
+function getUsername($id) {
+  global $db_prefix;
+
+  $request = db_query("
+    SELECT realName
+    FROM {$db_prefix}members
+    WHERE ID_MEMBER = $id
+    LIMIT 1", __FILE__, __LINE__);
+
+  $rows = mysqli_num_rows($request);
+
+  if ($rows == 0) {
+    return '';
+  } else {
+    $row = mysqli_fetch_assoc($request);
+
+    return $row['realName'];
+  }
+}
+
 /*
 function flood() {}
 
