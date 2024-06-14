@@ -109,8 +109,7 @@ mysqli_free_result($request); ?></div>
 <ul class="servicenav">
 <li class="comunidadesc"><a href="<?php echo $boardurl; ?>/comunidades/" class="comuCC">Comunidades</a>
 <?php
-/*
-// TO-DO: Falta tabla comunidades_articulos
+
 $cincoMiN = time() - 600;
 $request = db_query("
   SELECT id
@@ -119,11 +118,10 @@ $request = db_query("
   AND eliminado = 0", __FILE__, __LINE__);
 
 $rows = mysqli_num_rows($request);
-$plur = $rows > 0 's' : '';
+$plur = $rows > 0 ? 's' : '';
 
-  echo '<div id="Sfvc" title="' . $rows . ' tema' . $plur . ' nuevo' . $plur . ' (&uacute;ltimos 10 Minutos)">' . $rows . '</div>';
-}
-  */
+echo '<div id="Sfvc" title="' . $rows . ' tema' . $plur . ' nuevo' . $plur . ' (&uacute;ltimos 10 minutos)">' . $rows . '</div>';
+
 ?>
 </li>
 

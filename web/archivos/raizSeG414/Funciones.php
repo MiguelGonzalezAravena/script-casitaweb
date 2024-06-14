@@ -10,7 +10,7 @@ function tiempo1($fecha) {
   $hora2 = date('H', $fecha);
   $min2 = date('i', $fecha);
 
-  echo $diames2 . '.' . $mesesano2[$mesano2] . '.' . $ano2 . ' a las ' . $hora2 . ':' . $min2 . ':' . $seg2;
+  return $diames2 . '.' . $mesesano2[$mesano2] . '.' . $ano2 . ' a las ' . $hora2 . ':' . $min2 . ':' . $seg2;
 }
 
 function tiempo2($fecha) {
@@ -23,7 +23,7 @@ function tiempo2($fecha) {
   $hora2 = date('H', $fecha);
   $min2 = date('i', $fecha);
 
-  echo $diames2 . '-' . $mesesano2[$mesano2] . '-' . $ano2 . ' ' . $hora2 . ':' . $min2 . ':' . $seg2;
+  return $diames2 . '-' . $mesesano2[$mesano2] . '-' . $ano2 . ' ' . $hora2 . ':' . $min2 . ':' . $seg2;
 }
 
 function PostAccionado($title = '', $mje = '', $url = '', $btn = '') {
@@ -947,7 +947,7 @@ function destacado() {
   echo $destacados[$destacados01];
 }
 
-function actualizareliminados($id = '') {
+function updateMensajesEliminados($id = '') {
   global $db_prefix, $user_info;
 
   if (!$user_info['is_guest']) {
@@ -957,10 +957,10 @@ function actualizareliminados($id = '') {
       WHERE eliminado_de = 1
       AND eliminado_para = 1", __FILE__, __LINE__);
 
-    while ($asserr = mysqli_fetch_assoc($request)) {
+    while ($row = mysqli_fetch_assoc($request)) {
       db_query("
         DELETE FROM {$db_prefix}mensaje_personal
-        WHERE id = '{$asserr['id']}'", __FILE__, __LINE__);
+        WHERE id = {$row['id']}", __FILE__, __LINE__);
     }
 
     mysqli_free_result($request);
@@ -1359,10 +1359,26 @@ function cw_header() {
 }
 
 function getEnglishDateFormat($str_date) {
-  if (intval($str_date)) {
-    $date = date('Y-m-d H:i:s', intval($str_date));
-    return new DateTime($date);
-  } else {
+  // Formato 1: 2024-06-14 12:16:15
+  $pattern1 = '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/';
+
+  // Formato 2: 1660338149
+  $pattern2 = '/^\d{10}$/';
+
+  // Formato 3: 
+  $pattern3 = '/^(Enero|Febrero|Marzo|Abril|Mayo|Junio|Julio|Agosto|Septiembre|Octubre|Noviembre|Diciembre) \d{1,2}, \d{4}, \d{2}:\d{2}:\d{2}$/';
+
+  if (preg_match($pattern1, $str_date)) {
+    return new DateTime($str_date);
+  }
+
+  if (preg_match($pattern2, $str_date)) {
+    // $date = date('Y-m-d H:i:s', intval($str_date));
+    // return new DateTime($date);
+    return new DateTime('@' . $str_date);
+  }
+
+  if (preg_match($pattern3, $str_date)) {
     $months = array(
       'Enero' => 'January',
       'Febrero' => 'February',
@@ -1389,15 +1405,7 @@ function getEnglishDateFormat($str_date) {
     }
 
     // Convertir la cadena en un objeto DateTime
-    // var_dump($date_text);
-    $fecha_datetime = new DateTime($date_text);
-
-    // Usar la función date() para darle formato a la fecha
-    /*
-    $fecha_formateada = $fecha_datetime->format('Y-m-d'); // Puedes cambiar el formato a tu necesidad
-    */
-
-    return $fecha_datetime;
+    return new DateTime($date_text);
   }
 }
 

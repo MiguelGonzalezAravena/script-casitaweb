@@ -234,7 +234,7 @@ function template_modify_general_settings()
 					<select name="recycle_board" id="recycle_board_select">
 						<option></option>';
 
-						var_dump($context['boards']);
+						//var_dump($context['boards']);
 	foreach ($context['boards'] as $board)
 		echo '
 						<option value="', $board['id'], '"', $board['is_recycle'] ? ' selected="selected"' : '', '>', $board['name'], '</option>';

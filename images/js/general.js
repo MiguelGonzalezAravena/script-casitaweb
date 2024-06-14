@@ -300,35 +300,50 @@ $.ajax({
 }
 
 //Enviar MP
-function enviarMP(tipo,id){
-if($('#titulo').val() == ''){$('#titulo').focus(); return false;}
-if($('.mensaje').val() == ''){$('.mensaje').focus(); return false;}
-if(tipo == 1){ name=$('#para').val();}else{ name=id;}
-$('#cargandoBoxyc').css('display','none');
-$('#cargandoBoxy').css('display','block');
-$.ajax({
-    type: 'POST',
-    url: '/web/cw-redactarMp.php',
-    cache: false,
-    data: 'mensaje=' +  encodeURIComponent($('.mensaje').val()) + '&para=' + name + '&titulo=' +  encodeURIComponent($('#titulo').val()),
-    success: function(h){
-      $('#cargandoBoxy').css('display','none');
-          $('#cargandoBoxyc').css('display','block');
-          $('#contenidomp').remove();
-          $('#resultadomp').css('display','block');
-        if(h.charAt(0)==0){ //Datos incorrectos
+function enviarMP(tipo, id) {
+  if ($('#titulo').val() == '') {
+    $('#titulo').focus();
+    return false;
+  }
+
+  if ($('.mensaje').val() == '') {
+    $('.mensaje').focus();
+    return false;
+  }
+
+  if (tipo == 1) {
+    var name = $('#para').val();
+  } else {
+    var name = id;
+  }
+
+  $('#cargandoBoxyc').css('display', 'none');
+  $('#cargandoBoxy').css('display', 'block');
+
+  $.ajax({
+      type: 'POST',
+      url: boardUrl + '/web/cw-redactarMp.php',
+      cache: false,
+      data: 'mensaje=' +  encodeURIComponent($('.mensaje').val()) + '&para=' + name + '&titulo=' +  encodeURIComponent($('#titulo').val()),
+      success: function(h) {
+        $('#cargandoBoxy').css('display','none');
+        $('#cargandoBoxyc').css('display','block');
+        $('#contenidomp').remove();
+        $('#resultadomp').css('display','block');
+
+        if (h.charAt(0) == 0) { //Datos incorrectos
           $('#resultadomp').addClass('noesta');
           $('#resultadomp').html(h.substring(3)).fadeIn('fast');
-        } else
-        if(h.charAt(0)==1){ //OK				
+        } else if (h.charAt(0) == 1) { //OK				
           $('#resultadomp').removeClass('noesta');
           $('#resultadomp').addClass('noesta-ve');
-          $('#resultadomp').html(h.substring(3)).fadeIn('fast');}			
-    },
-    error: function(){
-      Boxy.alert("Error, volver a intentar...", null, {title: 'Alerta'});
-    }
-  });
+          $('#resultadomp').html(h.substring(3)).fadeIn('fast');
+        }
+      },
+      error: function() {
+        Boxy.alert("Error, volver a intentar...", null, { title: 'Alerta' });
+      }
+    });
 }
 
 //Recomendar POST
