@@ -229,28 +229,42 @@ if ($modSettings['news']) {
  
 <?php
 function template_main_below() {
-  global $tranfer1, $context, $txt, $boardurl;
-?>
-<div class="clearfix"></div> </div></div>
-<div id="pie"> <?php echo' &copy; ' . date('Y');echo' <a href="' . $boardurl . '/" title="casitaweb.net">casitaweb.net</a> | <a href="' . $boardurl . '/protocolo/" title="Protocolo">Protocolo</a> | <a href="' . $boardurl . '/enlazanos/" title="Enlazanos">Enlazanos</a> | <a href="' . $boardurl . '/widget/" title="Widget">Widget</a> | <a href="' . $boardurl . '/contactanos/" title="Contacto">Contacto</a> | <a href="' . $boardurl . '/recomendar/" title="Recomendar CasitaWeb!">Recomendar CasitaWeb!</a> | <a href="' . $boardurl . '/mapa-del-sitio/" title="Mapa del sitio">Mapa del sitio</a><div style="clear:both"></div></div></div></div>'; ?>
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-2833411-5']);
-  _gaq.push(['_setLocalRemoteServerMode']);
-  _gaq.push(['_trackPageview']);
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-</script>
-<?php echo'<span id="flotadorUP" class="png" onclick="ira_CasitaWebNET(); return false;">&uarr;</span></body></html>';
+  global $tranfer1, $context, $txt, $boardurl, $mbname;
+
+  echo '
+                <div class="clearfix"></div>
+              </div>
+            </div>
+            <div id="pie">
+              &copy;
+              ' . date('Y') . '
+              <a href="' . $boardurl . '/" title="' . $mbname . '">' . $mbname . '</a>
+              |
+              <a href="' . $boardurl . '/protocolo/" title="Protocolo">Protocolo</a>
+              |
+              <a href="' . $boardurl . '/enlazanos/" title="Enl&aacute;zanos">Enl&aacute;zanos</a>
+              |
+              <a href="' . $boardurl . '/widget/" title="Widget">Widget</a>
+              |
+              <a href="' . $boardurl . '/contactanos/" title="Contacto">Contacto</a>
+              |
+              <a href="' . $boardurl . '/recomendar/" title="Recomendar ' . $mbname . '">Recomendar ' . $mbname . '</a>
+              |
+              <a href="' . $boardurl . '/mapa-del-sitio/" title="Mapa del sitio">Mapa del sitio</a>
+              <div style="clear:both"></div>
+            </div>
+          </div>
+        </div>
+        <span id="flotadorUP" class="png" onclick="ira_CasitaWebNET(); return false;">&uarr;</span>
+      </body>
+    </html>';
 }
 
-function template_menu(){}
-function template_button_strip(){}
-function theme_linktree2(){}
-function theme_linktree3(){}
-function theme_newestlink(){}
-function theme_linktree(){}
+function template_menu() {}
+function template_button_strip() {}
+function theme_linktree2() {}
+function theme_linktree3() {}
+function theme_newestlink() {}
+function theme_linktree() {}
+
 ?>

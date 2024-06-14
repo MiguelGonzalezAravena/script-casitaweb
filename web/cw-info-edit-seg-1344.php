@@ -181,188 +181,252 @@ if (in_array($tipo, [1, 2, 3, 4])) {
     }
   } else if ($tipo == 3) {
     // Paso 3
-if($rows > 0) {
+    // Registro existente
+    if ($rows > 0) {
+      if (strlen($altura) >= 4) {
+        fatal_error('No puede haber m&aacute;s de 3 n&uacute;meros en tu altura.');
+      }
 
+      db_query("
+        UPDATE {$db_prefix}infop
+        SET altura = '$altura'
+        WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
 
+      if (strlen($peso) >= 4) {
+        fatal_error('No puede haber m&aacute;s de 3 n&uacute;meros en tu peso.');
+      }
 
-if(strlen($altura)>=4){fatal_error('No puede haber m&aacute;s de 3 numeros en tu altura.-');}
-db_query("UPDATE {$db_prefix}infop SET altura='$altura' WHERE id_user=$ID_MEMBER", __FILE__, __LINE__);
+      db_query("
+        UPDATE {$db_prefix}infop
+        SET peso = '$peso'
+        WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
 
-if(strlen($peso)>=4){fatal_error('No puede haber m&aacute;s de 3 numeros en tu peso.-');}
-db_query("UPDATE {$db_prefix}infop SET peso='$peso' WHERE id_user=$ID_MEMBER", __FILE__, __LINE__);
+      if (!in_array($fumo, getFumos('keys'))) {
+        fatal_error('Debes seleccionar una opci&oacute;n de fumador que exista.');
+      }
 
+      db_query("
+        UPDATE {$db_prefix}infop
+        SET fumo = '$fumo'
+        WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
 
-if(empty($fumo) || $fumo=='no' || $fumo=='casualmente' || $fumo=='socialmente' || $fumo=='regularmente' || $fumo=='mucho'){
-if(empty($fumo)){$texto7='';}
-elseif($fumo=='no'){$texto7='No';}
-elseif($fumo=='casualmente'){$texto7='Casualmente';}
-elseif($fumo=='socialmente'){$texto7='Socialmente';}
-elseif($fumo=='regularmente'){$texto7='Regularmente';}
-elseif($fumo=='mucho'){$texto7='Mucho';}else{$texto7='';}}else{fatal_error('Hubo un error, intentar nuevamente.');}
-db_query("UPDATE {$db_prefix}infop SET fumo='$texto7' WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
+      if (!in_array($tomo_alcohol, getAlcoholes('keys'))) {
+        fatal_error('Debes seleccionar una opci&oacute;n de alcoholes que exista.');
+      }
 
+      db_query("
+        UPDATE {$db_prefix}infop
+        SET tomo_alcohol = '$tomo_alcohol'
+        WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
 
-if(empty($tomo_alcohol) || $tomo_alcohol=='no' || $tomo_alcohol=='casualmente' || $tomo_alcohol=='socialmente' || $tomo_alcohol=='regularmente' || $tomo_alcohol=='mucho'){
-if(empty($tomo_alcohol)){$texto8='';}
-elseif($tomo_alcohol=='no'){$texto8='No';}
-elseif($tomo_alcohol=='casualmente'){$texto8='Casualmente';}
-elseif($tomo_alcohol=='socialmente'){$texto8='Socialmente';}
-elseif($tomo_alcohol=='regularmente'){$texto8='Regularmente';}
-elseif($tomo_alcohol=='mucho'){$texto8='Mucho';}else{$texto8='';}}else{fatal_error('Hubo un error, intentar nuevamente.');}
-db_query("UPDATE {$db_prefix}infop SET tomo_alcohol='$texto8' WHERE id_user=$ID_MEMBER", __FILE__, __LINE__);
+      if (!in_array($color_de_pelo, getColoresPelo('keys'))) {
+        fatal_error('Debes seleccionar una opci&oacute;n de color de pelo que exista.');
+      }
 
+      db_query("
+        UPDATE {$db_prefix}infop
+        SET color_de_pelo = '$color_de_pelo'
+        WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
 
-if(empty($color_de_pelo) || $color_de_pelo=='negro' || $color_de_pelo=='castano_oscuro' || $color_de_pelo=='castano_claro' || $color_de_pelo=='rubio' || $color_de_pelo=='pelirrojo' || $color_de_pelo=='gris' || $color_de_pelo=='canoso' || $color_de_pelo=='tenido' || $color_de_pelo=='rapado' || $color_de_pelo=='calvo'){
-if(empty($color_de_pelo)){$texto3='';}
-elseif($color_de_pelo=='negro'){$texto3='Negro';}
-elseif($color_de_pelo=='castano_oscuro'){$texto3='Casta&ntilde;o oscuro';}
-elseif($color_de_pelo=='castano_claro'){$texto3='Casta&ntilde;o claro';}
-elseif($color_de_pelo=='rubio'){$texto3='Rubio';}
-elseif($color_de_pelo=='pelirrojo'){$texto3='Pelirrojo';}
-elseif($color_de_pelo=='gris'){$texto3='Gris';}
-elseif($color_de_pelo=='canoso'){$texto3='Canoso';}
-elseif($color_de_pelo=='tenido'){$texto3='Te&ntilde;ido';}
-elseif($color_de_pelo=='rapado'){$texto3='Rapado';}
-elseif($color_de_pelo=='calvo'){$texto3='Calvo';}else{$texto3='';}} else {fatal_error('Hubo un error, intentar nuevamente.');}
-db_query("UPDATE {$db_prefix}infop SET color_de_pelo='$texto3' WHERE id_user=$ID_MEMBER", __FILE__, __LINE__);
+      if (!in_array($color_de_ojos, getColoresOjos('keys'))) {
+        fatal_error('Debes seleccionar una opci&oacute;n de color de ojos que exista.');
+      }
 
+      db_query("
+        UPDATE {$db_prefix}infop
+        SET color_de_ojos = '$color_de_ojos'
+        WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
 
-if(empty($color_de_ojos) || $color_de_ojos=='negros' || $color_de_ojos=='marrones' || $color_de_ojos=='celestes' || $color_de_ojos=='verdes' || $color_de_ojos=='grises'){
-if(empty($color_de_ojos)){$texto4='';}
-elseif($color_de_ojos=='negros'){$texto4='Negros';}
-elseif($color_de_ojos=='marrones'){$texto4='Marrones';}
-elseif($color_de_ojos=='celestes'){$texto4='Celestes';}
-elseif($color_de_ojos=='verdes'){$texto4='Verdes';}
-elseif($color_de_ojos=='grises'){$texto4='Grises';}else{$texto4='';}}else{fatal_error('Hubo un error, intentar nuevamente.-');}
-db_query("UPDATE {$db_prefix}infop SET color_de_ojos='$texto4' WHERE id_user=$ID_MEMBER", __FILE__, __LINE__);
+      if (!in_array($mi_dieta_es, getDietas('keys'))) {
+        fatal_error('Debes seleccionar una opci&oacute;n de dieta que exista.');
+      }
 
+      db_query("
+        UPDATE {$db_prefix}infop
+        SET mi_dieta_es = '$mi_dieta_es'
+        WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
 
+      if (!in_array($complexion, getComplexiones('keys'))) {
+        fatal_error('Debes seleccionar una opci&oacute;n de complexi&oacute;n que exista.');
+      }
 
-if(empty($mi_dieta_es) || $mi_dieta_es=='vegetariana' || $mi_dieta_es=='lacto_vegetariana' || $mi_dieta_es=='organica' || $mi_dieta_es=='de_todo' || $mi_dieta_es=='comida_basura'){
-if(empty($mi_dieta_es)){$texto6='';}
-elseif($mi_dieta_es=='vegetariana'){$texto6='Vegetariana';}
-elseif($mi_dieta_es=='lacto_vegetariana'){$texto6='Lacto Vegetariana';}
-elseif($mi_dieta_es=='organica'){$texto6='Org&aacute;nica';}
-elseif($mi_dieta_es=='de_todo'){$texto6='De todo';}
-elseif($mi_dieta_es=='comida_basura'){$texto6='Comida basura';}else{$texto6='';}}else{fatal_error('Hubo un error, intentar nuevamente.-');}
-db_query("UPDATE {$db_prefix}infop SET mi_dieta_es='$texto6' WHERE id_user=$ID_MEMBER", __FILE__, __LINE__);
+      db_query("
+        UPDATE {$db_prefix}infop
+        SET complexion = '$complexion'
+        WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
 
-
-if(empty($complexion) || $complexion=='delgado' || $complexion=='atletico' || $complexion=='normal' || $complexion=='kilos_de_mas' || $complexion=='corpulento'){
-if(empty($complexion)){$texto5='';}
-elseif($complexion=='delgado'){$texto5='Delgado/a';}
-elseif($complexion=='atletico'){$texto5='tl&eacute;tico';}
-elseif($complexion=='normal'){$texto5='Normal';}
-elseif($complexion=='kilos_de_mas'){$texto5='Algunos kilos de m&aacute;s';}
-elseif($complexion=='corpulento'){$texto5='Corpulento/a';}else{$texto5='';}}else{fatal_error('Hubo un error, intentar nuevamente.-');}
-db_query("UPDATE {$db_prefix}infop SET complexion='$texto5' WHERE id_user=$ID_MEMBER", __FILE__, __LINE__);
-
-Header("Location: $boardurl/editar-apariencia/paso4/");exit();die();}
-
-else{
-if(strlen($altura)>=4){fatal_error('No puede haber m&aacute;s de 3 numeros en tu altura.-');}
-if(strlen($peso)>=4){fatal_error('No puede haber m&aacute;s de 3 numeros en tu peso.-');}
-
-if(empty($fumo) || $fumo=='no' || $fumo=='casualmente' || $fumo=='socialmente' || $fumo=='regularmente' || $fumo=='mucho'){
-if(empty($fumo)){$texto7='';}
-elseif($fumo=='no'){$texto7='No';}
-elseif($fumo=='casualmente'){$texto7='Casualmente';}
-elseif($fumo=='socialmente'){$texto7='Socialmente';}
-elseif($fumo=='regularmente'){$texto7='Regularmente';}
-elseif($fumo=='mucho'){$texto7='Mucho';}else{$texto7='';}}else{fatal_error('Hubo un error, intentar nuevamente.-');}
-
-if(empty($tomo_alcohol) || $tomo_alcohol=='no' || $tomo_alcohol=='casualmente' || $tomo_alcohol=='socialmente' || $tomo_alcohol=='regularmente' || $tomo_alcohol=='mucho'){
-if(empty($tomo_alcohol)){$texto8='';}
-elseif($tomo_alcohol=='no'){$texto8='No';}
-elseif($tomo_alcohol=='casualmente'){$texto8='Casualmente';}
-elseif($tomo_alcohol=='socialmente'){$texto8='Socialmente';}
-elseif($tomo_alcohol=='regularmente'){$texto8='Regularmente';}
-elseif($tomo_alcohol=='mucho'){$texto8='Mucho';}else{$texto8='';}}else{fatal_error('Hubo un error, intentar nuevamente.-');}
-
-if(empty($color_de_pelo) || $color_de_pelo=='negro' || $color_de_pelo=='castano_oscuro' || $color_de_pelo=='castano_claro' || $color_de_pelo=='rubio' || $color_de_pelo=='pelirrojo' || $color_de_pelo=='gris' || $color_de_pelo=='canoso' || $color_de_pelo=='tenido' || $color_de_pelo=='rapado' || $color_de_pelo=='calvo'){
-if(empty($color_de_pelo)){$texto3='';}
-elseif($color_de_pelo=='negro'){$texto3='Negro';}
-elseif($color_de_pelo=='castano_oscuro'){$texto3='Casta&ntilde;o oscuro';}
-elseif($color_de_pelo=='castano_claro'){$texto3='Casta&ntilde;o claro';}
-elseif($color_de_pelo=='rubio'){$texto3='Rubio';}
-elseif($color_de_pelo=='pelirrojo'){$texto3='Pelirrojo';}
-elseif($color_de_pelo=='gris'){$texto3='Gris';}
-elseif($color_de_pelo=='canoso'){$texto3='Canoso';}
-elseif($color_de_pelo=='tenido'){$texto3='Te&ntilde;ido';}
-elseif($color_de_pelo=='rapado'){$texto3='Rapado';}
-elseif($color_de_pelo=='calvo'){$texto3='Calvo';}else{$texto3='';}}else{fatal_error('Hubo un error, intentar nuevamente.-');}
-
-if(empty($color_de_ojos) || $color_de_ojos=='negros' || $color_de_ojos=='marrones' || $color_de_ojos=='celestes' || $color_de_ojos=='verdes' || $color_de_ojos=='grises'){
-if(empty($color_de_ojos)){$texto4='';}
-elseif($color_de_ojos=='negros'){$texto4='Negros';}
-elseif($color_de_ojos=='marrones'){$texto4='Marrones';}
-elseif($color_de_ojos=='celestes'){$texto4='Celestes';}
-elseif($color_de_ojos=='verdes'){$texto4='Verdes';}
-elseif($color_de_ojos=='grises'){$texto4='Grises';}else{$texto4='';}}else{fatal_error('Hubo un error, intentar nuevamente.-');}
-
-if(empty($mi_dieta_es) || $mi_dieta_es=='vegetariana' || $mi_dieta_es=='lacto_vegetariana' || $mi_dieta_es=='organica' || $mi_dieta_es=='de_todo' || $mi_dieta_es=='comida_basura'){
-if(empty($mi_dieta_es)){$texto6='';}
-elseif($mi_dieta_es=='vegetariana'){$texto6='Vegetariana';}
-elseif($mi_dieta_es=='lacto_vegetariana'){$texto6='Lacto Vegetariana';}
-elseif($mi_dieta_es=='organica'){$texto6='Org&aacute;nica';}
-elseif($mi_dieta_es=='de_todo'){$texto6='De todo';}
-elseif($mi_dieta_es=='comida_basura'){$texto6='Comida basura';}else{$texto6='';}}else{fatal_error('Hubo un error, intentar nuevamente.-');}
-
-if(empty($complexion) || $complexion=='delgado' || $complexion=='atletico' || $complexion=='normal' || $complexion=='kilos_de_mas' || $complexion=='corpulento'){
-if(empty($complexion)){$texto5='';}
-elseif($complexion=='delgado'){$texto5='Delgado/a';}
-elseif($complexion=='atletico'){$texto5='tl&eacute;tico';}
-elseif($complexion=='normal'){$texto5='Normal';}
-elseif($complexion=='kilos_de_mas'){$texto5='Algunos kilos de m&aacute;s';}
-elseif($complexion=='corpulento'){$texto5='Corpulento/a';}else{$texto5='';}}else{fatal_error('Hubo un error, intentar nuevamente.-');}
-
-db_query("INSERT INTO {$db_prefix}infop
-(altura,peso,mi_dieta_es,fumo,tomo_alcohol,complexion,color_de_pelo,color_de_ojos,id_user)
-VALUES ('$altura','$peso','$texto6','$texto7','$texto8','$texto5','$texto3','$texto4',$ID_MEMBER)", __FILE__, __LINE__);
-  header("Location: $boardurl/editar-apariencia/paso4/");
-}
-} else if ($tipo=='4') {
-    if($rows > 0) {
-      if(strlen($_POST['series_tv_favoritas'])>=501){fatal_error('No puedes escribir m&aacute;s de 500 (Quinientas) letras.-');}
-      if(strlen($_POST['musica_favorita'])>=501){fatal_error('No puedes escribir m&aacute;s de 500 (Quinientas) letras.-');}
-      if(strlen($_POST['deportes_y_equipos_favoritos'])>=501){fatal_error('No puedes escribir m&aacute;s de 500 (Quinientas) letras.-');}
-      if(strlen($_POST['libros_favoritos'])>=501){fatal_error('No puedes escribir m&aacute;s de 500 (Quinientas) letras.-');}
-      if(strlen($_POST['peliculas_favoritas'])>=501){fatal_error('No puedes escribir m&aacute;s de 500 (Quinientas) letras.-');}
-      if(strlen($_POST['comida_favorita'])>=501){fatal_error('No puedes escribir m&aacute;s de 500 (Quinientas) letras.-');}
-      if(strlen($_POST['mis_heroes_son'])>=501){fatal_error('No puedes escribir m&aacute;s de 500 (Quinientas) letras.-');}
-      if(strlen($_POST['mis_intereses'])>=501){fatal_error('No puedes escribir m&aacute;s de 500 (Quinientas) letras.-');}
-      if(strlen($_POST['hobbies'])>=501){fatal_error('No puedes escribir m&aacute;s de 500 (Quinientas) letras.-');}
-
-      db_query("UPDATE {$db_prefix}infop SET mis_intereses='$mis_intereses' WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
-      db_query("UPDATE {$db_prefix}infop SET hobbies='$hobbies' WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
-      db_query("UPDATE {$db_prefix}infop SET series_de_tv_favorita='$series_tv_favoritas' WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
-      db_query("UPDATE {$db_prefix}infop SET musica_favorita='$musica_favorita' WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
-      db_query("UPDATE {$db_prefix}infop SET deportes_y_equipos_favoritos='$deportes_y_equipos_favoritos' WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
-      db_query("UPDATE {$db_prefix}infop SET libros_favoritos='$libros_favoritos' WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
-      db_query("UPDATE {$db_prefix}infop SET peliculas_favoritas='$peliculas_favoritas' WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
-      db_query("UPDATE {$db_prefix}infop SET comida_favorita='$comida_favorita' WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
-      db_query("UPDATE {$db_prefix}infop SET mis_heroes_son='$mis_heroes_son' WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
-
-      header("Location: $boardurl/editar-apariencia/");
+      header('Location: ' . $boardurl . '/editar-apariencia/paso4/');
     } else {
-      if(strlen($_POST['series_tv_favoritas'])>=501){fatal_error('No puedes escribir m&aacute;s de 500 (Quinientas) letras.-');}
-      if(strlen($_POST['musica_favorita'])>=501){fatal_error('No puedes escribir m&aacute;s de 500 (Quinientas) letras.-');}
-      if(strlen($_POST['deportes_y_equipos_favoritos'])>=501){fatal_error('No puedes escribir m&aacute;s de 500 (Quinientas) letras.-');}
-      if(strlen($_POST['libros_favoritos'])>=501){fatal_error('No puedes escribir m&aacute;s de 500 (Quinientas) letras.-');}
-      if(strlen($_POST['peliculas_favoritas'])>=501){fatal_error('No puedes escribir m&aacute;s de 500 (Quinientas) letras.-');}
-      if(strlen($_POST['comida_favorita'])>=501){fatal_error('No puedes escribir m&aacute;s de 500 (Quinientas) letras.-');}
-      if(strlen($_POST['mis_heroes_son'])>=501){fatal_error('No puedes escribir m&aacute;s de 500 (Quinientas) letras.-');}
-      if(strlen($_POST['mis_intereses'])>=501){fatal_error('No puedes escribir m&aacute;s de 500 (Quinientas) letras.-');}
-      if(strlen($_POST['hobbies'])>=501){fatal_error('No puedes escribir m&aacute;s de 500 (Quinientas) letras.-');}
+      // Sin registros
+      if (strlen($altura) >= 4) {
+        fatal_error('No puede haber m&aacute;s de 3 n&uacute;meros en tu altura.');
+      }
+
+      if (strlen($peso) >= 4) {
+        fatal_error('No puede haber m&aacute;s de 3 n&uacute;meros en tu peso.-');
+      }
+
+      if (!in_array($fumo, getFumos('keys'))) {
+        fatal_error('Debes seleccionar una opci&oacute;n de fumador que exista.');
+      }
+
+      if (!in_array($tomo_alcohol, getAlcoholes('keys'))) {
+        fatal_error('Debes seleccionar una opci&oacute;n de alcoholes que exista.');
+      }
+
+      if (!in_array($color_de_pelo, getColoresPelo('keys'))) {
+        fatal_error('Debes seleccionar una opci&oacute;n de color de pelo que exista.');
+      }
+
+      if (!in_array($color_de_ojos, getColoresOjos('keys'))) {
+        fatal_error('Debes seleccionar una opci&oacute;n de color de ojos que exista.');
+      }
+
+      if (!in_array($mi_dieta_es, getDietas('keys'))) {
+        fatal_error('Debes seleccionar una opci&oacute;n de dieta que exista.');
+      }
+
+      if (!in_array($complexion, getComplexiones('keys'))) {
+        fatal_error('Debes seleccionar una opci&oacute;n de complexi&oacute;n que exista.');
+      }
+
+      db_query("
+        INSERT INTO {$db_prefix}infop (altura, peso, mi_dieta_es, fumo, tomo_alcohol, complexion, color_de_pelo, color_de_ojos, id_user)
+        VALUES ('$altura', '$peso', '$mi_dieta_es', '$fumo', '$tomo_alcohol', '$complexion', '$color_de_pelo', '$color_de_ojos', $ID_MEMBER)", __FILE__, __LINE__);
+
+      header('Location: ' . $boardurl . '/editar-apariencia/paso4/');
+    }
+  } else if ($tipo == 4) {
+    // Paso 4
+    // Registro existente
+    if ($rows > 0) {
+      if (strlen($series_tv_favoritas) >= 501) {
+        fatal_error('No puedes escribir m&aacute;s de 500 letras.');
+      }
+
+      if (strlen($musica_favorita) >= 501) {
+        fatal_error('No puedes escribir m&aacute;s de 500 letras.');
+      }
+
+      if (strlen($deportes_y_equipos_favoritos) >= 501) {
+        fatal_error('No puedes escribir m&aacute;s de 500 letras.');
+      }
+
+      if (strlen($libros_favoritos) >= 501) {
+        fatal_error('No puedes escribir m&aacute;s de 500 letras.');
+      }
+
+      if (strlen($peliculas_favoritas) >= 501) {
+        fatal_error('No puedes escribir m&aacute;s de 500 letras.');
+      }
+
+      if (strlen($comida_favorita) >= 501) {
+        fatal_error('No puedes escribir m&aacute;s de 500 letras.');
+      }
+
+      if (strlen($mis_heroes_son) >= 501) {
+        fatal_error('No puedes escribir m&aacute;s de 500 letras.');
+      }
+
+      if (strlen($mis_intereses) >= 501) {
+        fatal_error('No puedes escribir m&aacute;s de 500 letras.');
+      }
+
+      if (strlen($hobbies) >= 501) {
+        fatal_error('No puedes escribir m&aacute;s de 500 letras.');
+      }
+
+      db_query("
+        UPDATE {$db_prefix}infop
+        SET mis_intereses = '$mis_intereses'
+        WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
+
+      db_query("
+        UPDATE {$db_prefix}infop
+        SET hobbies = '$hobbies'
+        WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
+
+      db_query("
+        UPDATE {$db_prefix}infop
+        SET series_de_tv_favorita = '$series_tv_favoritas'
+        WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
+
+      db_query("
+        UPDATE {$db_prefix}infop
+        SET musica_favorita = '$musica_favorita'
+        WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
+
+      db_query("
+        UPDATE {$db_prefix}infop
+        SET deportes_y_equipos_favoritos = '$deportes_y_equipos_favoritos'
+        WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
+
+      db_query("
+        UPDATE {$db_prefix}infop
+        SET libros_favoritos = '$libros_favoritos'
+        WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
+
+      db_query("
+        UPDATE {$db_prefix}infop
+        SET peliculas_favoritas = '$peliculas_favoritas'
+        WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
+
+      db_query("
+        UPDATE {$db_prefix}infop
+        SET comida_favorita = '$comida_favorita'
+        WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
+
+      db_query("
+        UPDATE {$db_prefix}infop
+        SET mis_heroes_son = '$mis_heroes_son'
+        WHERE id_user = $ID_MEMBER", __FILE__, __LINE__);
+
+
+      header('Location: ' . $boardurl . '/editar-apariencia/');
+    } else {
+      if (strlen($series_tv_favoritas) >= 501) {
+        fatal_error('No puedes escribir m&aacute;s de 500 letras.');
+      }
+
+      if (strlen($musica_favorita) >= 501) {
+        fatal_error('No puedes escribir m&aacute;s de 500 letras.');
+      }
+
+      if (strlen($deportes_y_equipos_favoritos) >= 501) {
+        fatal_error('No puedes escribir m&aacute;s de 500 letras.');
+      }
+
+      if (strlen($libros_favoritos) >= 501) {
+        fatal_error('No puedes escribir m&aacute;s de 500 letras.');
+      }
+
+      if (strlen($peliculas_favoritas) >= 501) {
+        fatal_error('No puedes escribir m&aacute;s de 500 letras.');
+      }
+
+      if (strlen($comida_favorita) >= 501) {
+        fatal_error('No puedes escribir m&aacute;s de 500 letras.');
+      }
+
+      if (strlen($mis_heroes_son) >= 501) {
+        fatal_error('No puedes escribir m&aacute;s de 500 letras.');
+      }
+
+      if (strlen($mis_intereses) >= 501) {
+        fatal_error('No puedes escribir m&aacute;s de 500 letras.');
+      }
+
+      if (strlen($hobbies) >= 501) {
+        fatal_error('No puedes escribir m&aacute;s de 500 letras.');
+      }
 
       db_query("
         INSERT INTO {$db_prefix}infop (mis_intereses, hobbies, series_de_tv_favorita, musica_favorita, deportes_y_equipos_favoritos, libros_favoritos, peliculas_favoritas, comida_favorita, mis_heroes_son, id_user)
         VALUES ('$mis_intereses', '$hobbies', '$series_tv_favoritas', '$musica_favorita', '$deportes_y_equipos_favoritos', '$libros_favoritos', '$peliculas_favoritas', '$comida_favorita', '$mis_heroes_son', $ID_MEMBER)", __FILE__, __LINE__);
 
-      header("Location: $boardurl/editar-apariencia/");
+      header('Location: ' . $boardurl . '/editar-apariencia/');
     }
   }
-
 } else {
   fatal_error('No puedes estar ac&aacute;');
 }

@@ -8,8 +8,8 @@ global $sourcedir, $boardurl;
 require_once($sourcedir . '/Subs-Auth.php');
 require_once($sourcedir . '/LogInOut.php');
 
-$userlimpio = seguridad($_POST['nick']);
-$passrlimpio = seguridad($_POST['pass']);
+$userlimpio = isset($_POST['nick']) ? seguridad($_POST['nick']) : '';
+$passrlimpio = isset($_POST['pass']) ? seguridad($_POST['pass']) : '';
 
 if (!$user_info['is_guest']) {
   die('0: <div class="noesta">Ya iniciastes sesi&oacute;n.</div>');
@@ -74,8 +74,16 @@ if ($user_settings['passwd'] != $sha_passwd) {
     $other_passwords[] = $passrlimpio;
     $other_passwords[] = crypt(md5($passrlimpio), md5($passrlimpio));
 
-    if (strlen($user_settings['passwd']) == 64 && function_exists('mhash') && defined('MHASH_SHA256')) {
-      $other_passwords[] = bin2hex(mhash(MHASH_SHA256, $passrlimpio));
+    // Antigua encriptación
+    // if (strlen($user_settings['passwd']) == 64 && function_exists('mhash') && defined('MHASH_SHA256')) {
+
+    // Nueva encriptación
+    if (strlen($user_settings['passwd']) == 64) {
+      // Antigua encriptación
+      // $other_passwords[] = bin2hex(mhash(MHASH_SHA256, $passrlimpio));
+
+      // Nueva encriptación para PHP 8
+      $other_passwords[] = bin2hex(hash('sha256', $passrlimpio, true));
     }
   } else if (strlen($user_settings['passwd']) == 32) {
     $other_passwords[] = md5(md5($passrlimpio) . $user_settings['passwordSalt']);
