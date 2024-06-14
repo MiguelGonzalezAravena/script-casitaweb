@@ -1,7 +1,10 @@
 <?php
 //Pagina de Rodrigo Zaupa (rigo@casitaweb.net)f
-if (!defined('CasitaWeb!-PorRigo'))die(base64_decode("d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv"));
-$context['cc']='10';
+if (!defined('CasitaWeb!-PorRigo')) {
+  die(base64_decode('d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv'));
+}
+
+$context['cc'] = 10;
 
 function reglas_com($das) {
   global $db_prefix, $boardurl; 
@@ -259,55 +262,114 @@ function eaprobacion($id_com) {
   }
 }
 
-//para comentar postear o nadam, 3(admins PUEEN TOOD) / 1: puee comentar y postear // 2: solo comentar // 0: NADA
-function acces($id){
-global $context,$user_info,$settings,$db_prefix,$ID_MEMBER, $txt, $modSettings;
-if($user_info['is_guest']){$context['puedo']='0';}else{
-$rs44=db_query("
-SELECT a.rango,c.permiso
-FROM ({$db_prefix}comunidades as c,{$db_prefix}comunidades_miembros as a)
-WHERE a.id_user='$ID_MEMBER' AND a.id_com='$id' AND a.id_com=c.id
-LIMIT 1",__FILE__, __LINE__);
-while ($row=mysqli_fetch_assoc($rs44)){
-if($row['rango']=='1'){$context['puedo']='3';}
-elseif($row['rango']=='2'){$context['puedo']='1';}
-elseif($row['rango']=='5'){$context['puedo']='1';}
-elseif($row['rango']=='3'){$context['puedo']='1';}
-elseif($row['rango']=='4'){$context['puedo']='0';}
-elseif(!$row['rango']){
-if($row['permiso']=='3'){$context['puedo']='1';}
-elseif($row['permiso']=='2'){$context['puedo']='2';}
-else{$context['puedo']='0';}}
-$da=$row['permiso'];}
-$da=isset($da) ? $da : ''; 
-if(!$da){$context['puedo']='0';}}
-return true;}
+// Para comentar, postear:
+/*
+  3: Administradores (Pueden hacer y deshacer)
+  1: Pueden comentar y crear temas
+  2: Sólo comentar
+  0: No pueden hacer nada
+*/
+function acces($id) {
+  global $context, $user_info, $settings, $db_prefix, $ID_MEMBER, $txt, $modSettings;
 
-function entrar($id,$t=''){global $user_info,$db_prefix,$ID_MEMBER;
-$rs44=db_query("
-SELECT c.acceso,c.url
-FROM ({$db_prefix}comunidades as c)
-WHERE c.id='$id'
-LIMIT 1",__FILE__, __LINE__);
-while ($row=mysqli_fetch_assoc($rs44)){$sdas223d=$row['acceso'];$sdaddd=$row['url'];}
-if($user_info['is_guest'] && ($sdas223d=='2' || $sdas223d=='3')){is_not_guest('','header');}
-else{
-$rs4ee4=db_query("
-SELECT c.id
-FROM ({$db_prefix}comunidades_miembros as c)
-WHERE c.id_com='$id' AND c.id_user='$ID_MEMBER' AND c.aprobado=1
-LIMIT 1",__FILE__, __LINE__);
-while ($row=mysqli_fetch_assoc($rs4ee4)){$ddas224d=$row['id'];}
-if(eaprobacion($id) || (($sdas223d=='3' || $sdas223d=='4') && !$ddas224d)){
-if($user_info['is_admin'] || $user_info['is_mods']){$estan='';}else{
-if(eaprobacion($id)){$estan='<div class="noesta-am" style="width:922px;">Esperando aprobaci&oacute;n de Administrador.</div>';}
+  if ($user_info['is_guest']) {
+    $context['puedo'] = 0;
+  } else {
+    $request = db_query("
+      SELECT a.rango, c.permiso
+      FROM {$db_prefix}comunidades as c,{$db_prefix}comunidades_miembros as a
+      WHERE a.id_com = c.id
+      AND a.id_com = $id
+      AND a.id_user = $ID_MEMBER
+      LIMIT 1", __FILE__, __LINE__);
 
-else{$estan='<div class="noesta-am" style="width:922px;">Solo miembros de esta comunidad pueden acceder.<br/><a href="#"  onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas unirte a esta comunidad?\')) return false; javascript:window.location.href=\'' . $boardurl . '/web/cw-comunidadesUnirCom.php?id='.$sdaddd.'\'" >UNITE a esta comunidad</a>
-</div>';}}
-}else{$estan='';}
+    while ($row = mysqli_fetch_assoc($request)) {
+      if ($row['rango'] == 1) {
+        $context['puedo'] = 3;
+      } else if ($row['rango'] == 2) {
+        $context['puedo'] = 1;
+      } else if ($row['rango'] == 5) {
+        $context['puedo'] = 1;
+      } else if ($row['rango'] == 3) {
+        $context['puedo'] = 1;
+      } else if ($row['rango'] == 4) {
+        $context['puedo'] = 0;
+      } else if (!$row['rango']) {
+        if ($row['permiso'] == 3) {
+          $context['puedo'] = 1;
+        } else if ($row['permiso'] == 2) {
+          $context['puedo'] = 2;
+        } else {
+          $context['puedo'] = 0;
+        }
+      }
 
+      $permiso = $row['permiso'];
+    }
+
+    $permiso = isset($permiso) ? $permiso : '';
+
+    if (!$permiso) {
+      $context['puedo'] = 0;
+    }
+  }
+
+  return true;
 }
-return $estan;}
+
+function entrar($id, $t = '') {
+  global $user_info, $db_prefix, $ID_MEMBER, $boardurl;
+
+  $request = db_query("
+    SELECT acceso, url
+    FROM {$db_prefix}comunidades
+    WHERE id = $id
+    LIMIT 1", __FILE__, __LINE__);
+
+  $row = mysqli_fetch_assoc($request);
+  $acceso = $row['acceso'];
+  $url = $row['url'];
+
+  mysqli_free_result($request);
+
+  if ($user_info['is_guest'] && ($acceso == 2 || $acceso == 3)) {
+    is_not_guest('', 'header');
+  } else {
+    $request = db_query("
+      SELECT id
+      FROM {$db_prefix}comunidades_miembros
+      WHERE id_com = $id
+      AND id_user = $ID_MEMBER
+      AND aprobado = 1
+      LIMIT 1", __FILE__, __LINE__);
+
+    $row = mysqli_fetch_assoc($request);
+    $id_miembro = $row['id'];
+
+    mysqli_free_result($request);
+
+    if (eaprobacion($id) || (($acceso == 3 || $acceso == 4) && !$id_miembro)) {
+      if ($user_info['is_admin'] || $user_info['is_mods']) {
+        $estan = '';
+      } else {
+        if (eaprobacion($id)) {
+          $estan = '<div class="noesta-am" style="width: 922px;">Esperando aprobaci&oacute;n de Administrador.</div>';
+        } else {
+          $estan = '
+            <div class="noesta-am" style="width: 922px;">
+              S&oacute;lo miembros de esta comunidad pueden acceder.
+              <br />
+              <a href="#"  onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas unirte a esta comunidad?\')) return false; javascript:window.location.href=\'' . $boardurl . '/web/cw-comunidadesUnirCom.php?id=' . $url . '\'" >UNETE a esta comunidad</a>
+            </div>';
+        }
+      }
+    } else {
+      $estan = '';
+    }
+  }
+
+  return $estan;
+}
 
 function baneadoo($id){global $user_info,$ID_MEMBER,$db_prefix;
 $rs44=db_query("
@@ -398,117 +460,202 @@ echo'<a href="javascript:moticonup()">[', $txt['more_smileys'], ']</a>';}}
 function sidebar($id) {
   global $tranfer1, $func, $ID_MEMBER, $no_avatar, $context, $db_prefix, $boardurl;
 
-  $rs=db_query("
+  $request = db_query("
     SELECT c.nombre, c.url, c.imagen, c.id, c.articulos, c.usuarios, c.paprobar
     FROM {$db_prefix}comunidades_categorias AS b, {$db_prefix}comunidades AS c
     WHERE c.url = '$id'
     AND c.categoria = b.id", __FILE__, __LINE__);
 
-  while ($row = mysqli_fetch_assoc($rs)) {
+  while ($row = mysqli_fetch_assoc($request)) {
     $cat = nohtml2(nohtml($row['nombre'])); 
     $img = nohtml($row['imagen']); 
     $caturl = nohtml($row['url']); 
     $temas = $row['articulos']; 
-    $sas = $row['id'];
+    $id_comunidad = $row['id'];
   }
 
   $img2 = $img ? $img : $no_avatar;
 
-  $miembrose = mysqli_num_rows(db_query("SELECT id FROM {$db_prefix}comunidades_miembros WHERE id_com = '$sas' AND aprobado = 1", __FILE__, __LINE__));
-  $paprobare = mysqli_num_rows(db_query("SELECT id FROM {$db_prefix}comunidades_miembros WHERE id_com = '$sas' AND aprobado = 0", __FILE__, __LINE__));
+  $request = db_query("
+    SELECT id
+    FROM {$db_prefix}comunidades_miembros
+    WHERE id_com = $id_comunidad
+    AND aprobado = 1", __FILE__, __LINE__);
 
-//temas
-echo'<div style="margin-bottom:10px;width:160px;margin-right:8px;float:left;">
-<div class="box_title" style="width:160px;"><div class="box_txt box_perfil-36">Comunidad</div>
-<div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="width:152px;padding:4px;"><center><a href="/comunidades/'.$caturl.'/">';
+  $miembrose = mysqli_num_rows($request);
 
-echo'<img src="'.$img2.'" width="120px" height="120px" alt="" class="avatar" title="Logo de la comunidad" onerror="error_avatar(this)" />';
-echo'</a></center><br/>
-<a href="/comunidades/'.$caturl.'/" title="'.$cat.'"><b class="size15">'.$cat.'</b></a>
-<br/><br/>
-<div class="hrs"></div>
+  $request = db_query("
+    SELECT id
+    FROM {$db_prefix}comunidades_miembros
+    WHERE id_com = $id_comunidad
+    AND aprobado = 0", __FILE__, __LINE__);
 
-<a href="' . $boardurl . '/web/cw-TEMPcomMIEMBROS.php?c='.$sas.'" class="boxy" title="Miembros">'.$miembrose.' Miembros</a><br/>
-'.$temas.' Temas<br/>';
-if($context['permisoCom']=='1' && $paprobare){echo'<span class="pointer" style="color:#267F00;" onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPcomMIEMBROSaDm.php?c='.$sas.'\', { title:\'Miembros en lista de aprobaci&oacute;n\'})" title="Miembros en lista de aprobaci&oacute;n">'.$paprobare.' Esperando aprobaci&oacute;n</span><br/>';}
+  $paprobare = mysqli_num_rows($request);
 
-if($context['allow_admin']){echo'<div class="hrs"></div><center><a href="' . $boardurl . '/comunidades/'.$caturl.'/administrar/" style="color:red;">Administrar Comunidad</a></center>';}
+  // Temas
+  echo '
+    <div style="margin-bottom: 10px; width: 160px; margin-right: 8px; float: left;">
+      <div class="box_title" style="width: 160px;"><div class="box_txt box_perfil-36">Comunidad</div>
+      <div class="box_rss">
+        <img alt="" src="'.$tranfer1.'/blank.gif" style="width: 16px; height: 16px;" border="0" />
+      </div>
+    </div>
+    <div class="windowbg" style="width: 152px; padding: 4px;">
+      <center>
+        <a href="' . $boardurl . '/comunidades/' . $caturl . '/">
+          <img src="' . $img2 . '" width="120px" height="120px" alt="" class="avatar" title="Logo de la comunidad" onerror="error_avatar(this)" />
+        </a>
+      </center>
+      <br />
+      <a href="' . $boardurl . '/comunidades/' . $caturl . '/" title="' . $cat . '">
+        <b class="size15">' . $cat . '</b>
+      </a>
+      <br /><br />
+      <div class="hrs"></div>
+      <a href="' . $boardurl . '/web/cw-TEMPcomMIEMBROS.php?c=' . $id_comunidad . '" class="boxy" title="Miembros">' . $miembrose . ' Miembros</a>
+      <br />
+      ' . $temas . ' Temas
+      <br />
+      ' . ($context['permisoCom'] == 1 && $paprobare ? '<span class="pointer" style="color: #267F00;" onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPcomMIEMBROSaDm.php?c=' . $id_comunidad . '\', { title:\'Miembros en lista de aprobaci&oacute;n\'})" title="Miembros en lista de aprobaci&oacute;n">' . $paprobare . ' Esperando aprobaci&oacute;n</span><br />' : '') . '
+      ' . ($context['allow_admin'] ? '<div class="hrs"></div><center><a href="' . $boardurl . '/comunidades/' . $caturl . '/administrar/" style="color: red;">Administrar Comunidad</a></center>' : '') . '
+      <div class="hrs"></div>
+      <br />
+      <center>';
 
-echo'<div class="hrs"></div><br /><center>';
+  if (!$context['miembro']) {
+    if (!$context['user']['is_guest'] && !$context['permisoCom']) {
+      echo '<input onclick="javascript:window.location.href=\'' . $boardurl . '/comunidades/' . $caturl . '/denunciar\'" alt="" class="DenCom" title="" value=" " align="top" type="submit" /><br /><br />';
+    }
 
-if(!$context['miembro']){
-if(!$context['user']['is_guest'] && !$context['permisoCom']){
-echo'<input onclick="javascript:window.location.href=\'' . $boardurl . '/comunidades/'.$caturl.'/denunciar\'" alt="" class="DenCom" title="" value=" " align="top" type="submit" /><br /><br />';}
-if(!eaprobacion($sas)){
-echo'<input onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas unirte a esta comunidad?\')) return false; javascript:window.location.href=\'' . $boardurl . '/web/cw-comunidadesUnirCom.php?id='.$caturl.'\'" alt="" class="unirCom" title="" value=" " align="top" type="submit" /><br /><br />';}else{echo'<div class="noesta-am">Esperando aprobaci&oacute;n de Administrador.</div>';}
-}else{
+    if (!eaprobacion($id_comunidad)) {
+      echo '<input onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas unirte a esta comunidad?\')) return false; javascript:window.location.href=\'' . $boardurl . '/web/cw-comunidadesUnirCom.php?id=' . $caturl . '\'" alt="" class="unirCom" title="" value=" " align="top" type="submit" /><br /><br />';
+    } else {
+      echo '<div class="noesta-am">Esperando aprobaci&oacute;n de Administrador.</div>';
+    }
+  } else {
+    if ($context['permisoCom'] == 1) {
+      echo '
+        <input onclick="javascript:window.location.href=\'' . $boardurl . '/comunidades/'.$caturl.'/publicitar\'" alt="" class="PublCom" title="" value=" " align="top" type="submit" />
+        <br /><br />
+        <input onclick="javascript:window.location.href=\'' . $boardurl . '/comunidades/'.$caturl.'/editar\'" alt="" class="EdiCom" title="" value=" " align="top" type="submit" />
+        <br /><br />
+        <input onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas ELIMINAR esta comunidad?\')) return false; javascript:window.location.href=\'' . $boardurl . '/web/cw-comunidadesEliComu.php?id='.$caturl.'\'" alt="" class="EliCom" title="" value=" " align="top" type="submit" />
+        <br /><br />';
+    }
 
+    echo '
+      <input onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas abandonar esta comunidad?\')) return false; javascript:window.location.href=\'' . $boardurl . '/web/cw-comunidadesAbanCom.php?id='.$caturl.'\'" alt="" class="AbandCom" title="" value=" " align="top" type="submit" />
+      <br /><br />
+      <div class="hrs"></div>';
 
-if($context['permisoCom']=='1'){
-echo'<input onclick="javascript:window.location.href=\'/comunidades/'.$caturl.'/publicitar\'" alt="" class="PublCom" title="" value=" " align="top" type="submit" /><br /><br />
+    $request = db_query("
+      SELECT rango
+      FROM {$db_prefix}comunidades_miembros
+      WHERE id_user = $ID_MEMBER
+      AND id_com = $id_comunidad
+      LIMIT 1", __FILE__, __LINE__);
 
-<input onclick="javascript:window.location.href=\'/comunidades/'.$caturl.'/editar\'" alt="" class="EdiCom" title="" value=" " align="top" type="submit" /><br /><br />
+    while ($row = mysqli_fetch_assoc($request)) {
+      $id_rango = $row['rango'];
+    }
 
-<input onclick="if (!confirm(\'\xbfEstas seguro que desea ELIMINAR esta comunidad?\')) return false; javascript:window.location.href=\'/web/cw-comunidadesEliComu.php?id='.$caturl.'\'" alt="" class="EliCom" title="" value=" " align="top" type="submit" /><br /><br />';}
+    echo ranguearIMG($id_rango, $id_comunidad) . ' ' . ranguear($id_rango, $id_comunidad);
+  }
 
-echo'<input onclick="if (!confirm(\'\xbfEstas seguro que desea abandonar esta comunidad?\')) return false; javascript:window.location.href=\'/web/cw-comunidadesAbanCom.php?id='.$caturl.'\'" alt="" class="AbandCom" title="" value=" " align="top" type="submit" /><br /><br /><div class="hrs"></div> ';
+  echo '
+      </center>
+    </div>';
 
-$rs444=db_query("SELECT rango
-FROM ({$db_prefix}comunidades_miembros)
-WHERE id_user='$ID_MEMBER' AND id_com='$sas'
-LIMIT 1",__FILE__, __LINE__);
-while ($row3=mysqli_fetch_assoc($rs444)){$dsdass=$row3['rango'];}
-echo ranguearIMG($dsdass,$sas).' '.ranguear($dsdass,$sas);}
+  anuncio1_120x240();
 
-echo'</center></div>';
-anuncio1_120x240();
-
-echo'</div>';}
-function ranguear($id,$com){ global $db_prefix;
-if($id=='1'){$sccb='Administrador';}
-elseif($id=='2'){$sccb='Comentador';}
-elseif($id=='3'){$sccb='Posteador';}
-elseif($id=='4'){$sccb='Visitante';}
-elseif($id=='5'){$sccb='Moderador';}
-elseif(!$id){
-$rs44=db_query("
-SELECT permiso
-FROM ({$db_prefix}comunidades)
-WHERE id='$com'
-LIMIT 1",__FILE__, __LINE__);
-while ($row=mysqli_fetch_assoc($rs44)){
-if($row['permiso']=='2'){$sccb='Comentador';}
-elseif($row['permiso']=='3'){$sccb='Posteador';}
-elseif($row['permiso']=='4'){$sccb='Visitante';}}}
-return $sccb;}
-
-function ranguearIMG($id,$com){ global $db_prefix,$tranfer1;
-if($id=='1'){$sccb='<img src="'.$tranfer1.'/comunidades/admin.png" alt="" title="Administrador" />';}
-if($id=='5'){$sccb='<img src="'.$tranfer1.'/comunidades/mod.png" alt="" title="Moderador" />';}
-elseif($id=='2'){$sccb='<img src="'.$tranfer1.'/comunidades/comentador.png" alt="" title="Comentador" />';}
-elseif($id=='3'){$sccb='<img src="'.$tranfer1.'/comunidades/posteador.png" alt="" title="Posteador" />';}
-elseif($id=='4'){$sccb='<img src="'.$tranfer1.'/comunidades/comentador.png" alt="" title="Visitante" />';}
-elseif(!$id){
-$rs44=db_query("
-SELECT permiso
-FROM ({$db_prefix}comunidades)
-WHERE id='$com'
-LIMIT 1",__FILE__, __LINE__);
-while ($row=mysqli_fetch_assoc($rs44)){
-if($row['permiso']=='2'){$sccb='<img src="'.$tranfer1.'/comunidades/comentador.png" alt="" title="Comentador" />';}
-elseif($row['permiso']=='3'){$sccb='<img src="'.$tranfer1.'/comunidades/posteador.png" alt="" title="Posteador" />';}
-elseif($row['permiso']=='4'){$sccb='<img src="'.$tranfer1.'/comunidades/comentador.png" alt="" title="Visitante" />';}
-}}
-return $sccb;}
-
-function sex($valor,$d=''){global $tranfer1;
-if(!$d){
-$valor = str_replace("1", "<img src=\"".$tranfer1."/Male.gif\" alt=\"\" title=\"Masculino\" border=\"0\"> Masculino", $valor);
-$valor = str_replace("2", "<img src=\"".$tranfer1."/Female.gif\" alt=\"\" title=\"Femenino\" border=\"0\"> Femenino", $valor);}else{
-$valor = str_replace("1", "Masculino", $valor);
-$valor = str_replace("2", "Femenino", $valor);    
+  echo '</div>';
 }
-;return $valor;}
+
+function ranguear($id, $com) {
+  global $db_prefix;
+
+  if ($id == '1') {
+    $sccb = 'Administrador';
+  } else if ($id == '2') {
+    $sccb = 'Comentador';
+  } else if ($id == '3') {
+    $sccb = 'Posteador';
+  } else if ($id == '4') {
+    $sccb = 'Visitante';
+  } else if ($id == '5') {
+    $sccb = 'Moderador';
+  } else if (!$id) {
+    $request = db_query("
+      SELECT permiso
+      FROM {$db_prefix}comunidades
+      WHERE id = '$com'
+      LIMIT 1", __FILE__, __LINE__);
+
+    while ($row = mysqli_fetch_assoc($request)) {
+      if ($row['permiso'] == '2') {
+        $sccb = 'Comentador';
+      } else if ($row['permiso'] == '3') {
+        $sccb = 'Posteador';
+      } else if ($row['permiso'] == '4') {
+        $sccb = 'Visitante';
+      }
+    }
+
+    mysqli_free_result($request);
+  }
+
+  return $sccb;
+}
+
+function ranguearIMG($id, $com) {
+  global $db_prefix, $tranfer1;
+
+  if ($id == '1') {
+    $sccb = '<img src="' . $tranfer1 . '/comunidades/admin.png" alt="" title="Administrador" />';
+  }
+
+  if ($id == '5') {
+    $sccb = '<img src="' . $tranfer1 . '/comunidades/mod.png" alt="" title="Moderador" />';
+  } else if ($id == '2') {
+    $sccb = '<img src="' . $tranfer1 . '/comunidades/comentador.png" alt="" title="Comentador" />';
+  } else if ($id == '3') {
+    $sccb = '<img src="' . $tranfer1 . '/comunidades/posteador.png" alt="" title="Posteador" />';
+  } else if ($id == '4') {
+    $sccb = '<img src="' . $tranfer1 . '/comunidades/comentador.png" alt="" title="Visitante" />';
+  } else if (!$id) {
+    $request = db_query("
+      SELECT permiso
+      FROM {$db_prefix}comunidades
+      WHERE id = '$com'
+      LIMIT 1", __FILE__, __LINE__);
+
+    while ($row = mysqli_fetch_assoc($request)) {
+      if ($row['permiso'] == '2') {
+        $sccb = '<img src="' . $tranfer1 . '/comunidades/comentador.png" alt="" title="Comentador" />';
+      } else if ($row['permiso'] == '3') {
+        $sccb = '<img src="' . $tranfer1 . '/comunidades/posteador.png" alt="" title="Posteador" />';
+      } else if ($row['permiso'] == '4') {
+        $sccb = '<img src="' . $tranfer1 . '/comunidades/comentador.png" alt="" title="Visitante" />';
+      }
+    }
+  }
+
+  return $sccb;
+}
+
+function sex($valor, $d = '') {
+  global $tranfer1;
+
+  if(!$d) {
+    $valor = str_replace('1', '<img src="' . $tranfer1 . '/Male.gif" alt="" title="Masculino" border="0" /> Masculino', $valor);
+    $valor = str_replace('2', '<img src="' . $tranfer1 . '/Female.gif" alt="" title="Femenino" border="0" /> Femenino', $valor);
+  } else {
+    $valor = str_replace('1', 'Masculino', $valor);
+    $valor = str_replace('2', 'Femenino', $valor);    
+  }
+
+  return $valor;
+}
 
 
 function bloqueado($id){ global $modSettings,$db_prefix,$user_info,$context,$tranfer1;
@@ -528,20 +675,10 @@ elseif(!$bloquear_porr){fatal_error('<b style="color:red;">Esta comunidad esta e
 
 return;}
 
+function resultados($tipo) {
+  global $modSettings, $db_prefix, $context, $ID_MEMBER, $tranfer1;
 
-
-
-
-
-
-
-
-
-
-
-
-function resultados($tipo){ global $modSettings,$db_prefix,$context,$ID_MEMBER,$tranfer1;
-//COMUNIDADES
+  // Comunidades
 
 
 if($tipo=='c'){

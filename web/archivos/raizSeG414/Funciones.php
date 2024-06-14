@@ -1401,6 +1401,236 @@ function getEnglishDateFormat($str_date) {
   }
 }
 
+function getEstudios($mode = '') {
+  $estudios = [
+    '' => 'Sin respuesta',
+    'sin' => 'Sin estudios',
+    'sec_curso' => 'Secundario en curso',
+    'sec_completo' => 'Secundario completo',
+    'ter_curso' => 'Terciario en curso',
+    'ter_completo' => 'Terciario completo',
+    'univ_curso' => 'Universitario en curso',
+    'univ_completo' => 'Universitario completo',
+    'post_curso' => 'Post-grado en curso',
+    'post_completo' => 'Post-grado completo',
+  ];
+
+  switch ($mode) {
+    case 'keys':
+      return array_keys($estudios);
+    case 'values':
+      return array_values($estudios);
+    default:
+      return $estudios;
+  }
+}
+
+function getIngresos($mode = '') {
+  $ingresos = [
+    '' => 'Sin respuesta',
+    'sin' => 'Sin ingresos',
+    'bajos' => 'Bajos',
+    'intermedios' => 'Intermedios',
+    'altos' => 'Altos',
+  ];
+
+  switch ($mode) {
+    case 'keys':
+      return array_keys($ingresos);
+    case 'values':
+      return array_values($ingresos);
+    default:
+      return $ingresos;
+  }
+}
+
+function getMeGustarias($mode = '') {
+  $me_gustaria = [
+    '' => 'Sin respuesta',
+    'hacer_amigos' => 'Hacer amigos',
+    'conocer_gente_con_mis_intereses' => 'Conocer gente con mis intereses',
+    'conocer_gente_para_hacer_negocios' => 'Conocer gente para hacer negocios',
+    'encontrar_pareja' => 'Encontrar pareja',
+    'de_todo' => 'De todo',
+  ];
+
+  switch ($mode) {
+    case 'keys':
+      return array_keys($me_gustaria);
+    case 'values':
+      return array_values($me_gustaria);
+    default:
+      return $me_gustaria;
+  }
+}
+
+function getEstados($mode = '') {
+  $estados = [
+    '' => 'Sin respuesta',
+    'soltero' => 'Soltero(a)',
+    'novio' => 'De novio(a)',
+    'casado' => 'Casado(a)',
+    'divorciado' => 'Divorciado(a)',
+    'viudo' => 'Viudo(a)',
+    'algo' => 'En algo...',
+  ];
+
+  switch ($mode) {
+    case 'keys':
+      return array_keys($estados);
+    case 'values':
+      return array_values($estados);
+    default:
+      return $estados;
+  }
+}
+
+function getHijos($mode = '') {
+  $hijos = [
+    '' => 'Sin respuesta',
+    'no' => 'No tengo',
+    'algun_dia' => 'Alg&uacute;n d&iacute;a',
+    'no_quiero' => 'No son lo m&iacute;o',
+    'viven_conmigo' => 'Tengo, vivo con ellos',
+    'no_viven_conmigo' => 'Tengo, no vivo con ellos',
+  ];
+
+  switch ($mode) {
+    case 'keys':
+      return array_keys($hijos);
+    case 'values':
+      return array_values($hijos);
+    default:
+      return $hijos;
+  }
+}
+
+function getColoresPelo($mode = '') {
+  $colores = [
+    '' => 'Sin respuesta',
+    'negro' => 'Negro',
+    'castano_oscuro' => 'Casta&ntilde;o oscuro',
+    'castano_claro' => 'Casta&ntilde;o claro',
+    'rubio' => 'Rubio',
+    'pelirrojo' => 'Pelirrojo',
+    'gris' => 'Gris',
+    'canoso' => 'Canoso',
+    'tenido' => 'Te&ntilde;ido',
+    'rapado' => 'Rapado',
+    'calvo' => 'Calvo',
+  ];
+
+  switch ($mode) {
+    case 'keys':
+      return array_keys($colores);
+    case 'values':
+      return array_values($colores);
+    default:
+      return $colores;
+  }
+}
+
+function getColoresOjos($mode = '') {
+  $colores = [
+    '' => 'Sin respuesta',
+    'negros' => 'Negros',
+    'marrones' => 'Marrones',
+    'celestes' => 'Celestes',
+    'verdes' => 'Verdes',
+    'grises' => 'Grises',
+  ];
+
+  switch ($mode) {
+    case 'keys':
+      return array_keys($colores);
+    case 'values':
+      return array_values($colores);
+    default:
+      return $colores;
+  }
+}
+
+function getComplexiones($mode = '') {
+  $complexiones = [
+    '' => 'Sin respuesta',
+    'delgado' => 'Delgado(a)',
+    'atletico' => 'Atl&eacute;tico(a)',
+    'normal' => 'Normal',
+    'kilos_de_mas' => 'Algunos kilos de m&aacute;s',
+    'corpulento' => 'Corpulento(a)',
+  ];
+
+  switch ($mode) {
+    case 'keys':
+      return array_keys($complexiones);
+    case 'values':
+      return array_values($complexiones);
+    default:
+      return $complexiones;
+  }
+}
+
+function getDietas($mode = '') {
+  $dietas = [
+    '' => 'Sin respuesta',
+    'vegetariana' => 'Vegetariana',
+    'lacto_vegetariana' => 'Lacto Vegetariana',
+    'organica' => 'Org&aacute;nica',
+    'de_todo' => 'De todo',
+    'comida_basura' => 'Comida basura',
+  ];
+
+  switch ($mode) {
+    case 'keys':
+      return array_keys($dietas);
+    case 'values':
+      return array_values($dietas);
+    default:
+      return $dietas;
+  }
+}
+
+function getFumos($mode = '') {
+  $fumos = [
+    '' => 'Sin respuesta',
+    'no' => 'No',
+    'casualmente' => 'Casualmente',
+    'socialmente' => 'Socialmente',
+    'regularmente' => 'Regularmente',
+    'mucho' => 'Mucho',
+  ];
+
+  switch ($mode) {
+    case 'keys':
+      return array_keys($fumos);
+    case 'values':
+      return array_values($fumos);
+    default:
+      return $fumos;
+  }
+}
+
+
+function getAlcoholes($mode = '') {
+  $alcoholes = [
+    '' => 'Sin respuesta',
+    'no' => 'No',
+    'casualmente' => 'Casualmente',
+    'socialmente' => 'Socialmente',
+    'regularmente' => 'Regularmente',
+    'mucho' => 'Mucho',
+  ];
+
+  switch ($mode) {
+    case 'keys':
+      return array_keys($alcoholes);
+    case 'values':
+      return array_values($alcoholes);
+    default:
+      return $alcoholes;
+  }
+}
+
 /*
 function flood() {}
 

@@ -78,42 +78,48 @@ function Comunidades() {
     if (empty($_SESSION['idddd'][$context['coMid']])) {
       db_query("
         UPDATE {$db_prefix}comunidades_articulos
-        SET visitas = visitas+1
+        SET visitas = visitas + 1
         WHERE id = '{$context['coMid']}'
         LIMIT 1", __FILE__, __LINE__);
 
       $_SESSION['idddd'][$context['coMid']] = '1';
    }
 
-    $rs44=db_query("
-    SELECT a.titulo,a.cuerpo,a.calificacion,a.visitas,c.nombre,c.url,a.nocoment,a.stiky, a.eliminado,b.url as url2,
-    b.nombre as cnam, m.avatar,a.creado,c.id,m.realName,a.id_user
-    FROM ({$db_prefix}members AS m)
-    INNER JOIN {$db_prefix}comunidades_articulos AS a ON a.id='{$context['coMid']}' AND a.id_user=m.ID_MEMBER
-    INNER JOIN {$db_prefix}comunidades AS c ON a.id_com=c.id
-    INNER JOIN {$db_prefix}comunidades_categorias AS b ON c.categoria=b.url
-    LIMIT 1",__FILE__, __LINE__);
-    while ($row=mysqli_fetch_assoc($rs44)){
-    $context['coMtitulo']=nohtml(nohtml2($row['titulo']));
-    $context['coMtitulo2']=$row['titulo'];
-    $context['coMcuerpo']=parse_bbc(nohtml(nohtml2($row['cuerpo'])));
-    $context['coMdasdasd']=$row['id'];
-    $context['coMeliminado']=$row['eliminado'];
-    $context['coMurl']=$row['url'];
-    $context['coMrealName']=$row['realName'];
-    $context['coMimg']=nohtml($row['avatar']);
-    $context['coMvbvbvki']=$row['id_user'];
-    $context['coMvisitas']=$row['visitas'];
-    $context['coMcreado']=hace($row['creado']);
-    $context['coMstiky']=$row['stiky'];
-    $context['coMnocoment']=$row['nocoment'];
-    $context['coMcalificacion']=$row['calificacion'];
-    $context['coMnombre']=$row['nombre'];
-    $context['coMurl2']=$row['url2'];
-    $context['coMcnam']=$row['cnam'];}
+    $rs44 = db_query("
+      SELECT
+        a.titulo, a.cuerpo, a.calificacion, a.visitas, c.nombre, c.url, a.nocoment, a.stiky, a.eliminado,
+        b.url as url2, b.nombre as cnam, m.avatar, a.creado, c.id, m.realName, a.id_user
+      FROM {$db_prefix}members AS m
+      INNER JOIN {$db_prefix}comunidades_articulos AS a ON a.id = '{$context['coMid']}'
+      INNER JOIN {$db_prefix}comunidades AS c ON a.id_com = c.id
+      INNER JOIN {$db_prefix}comunidades_categorias AS b ON c.categoria = b.id
+      AND a.id_user = m.ID_MEMBER
+      LIMIT 1", __FILE__, __LINE__);
+    while ($row = mysqli_fetch_assoc($rs44)) {
+      $context['coMtitulo'] = $row['titulo'];
+      $context['coMtitulo2'] = $row['titulo'];
+      $context['coMcuerpo']=parse_bbc($row['cuerpo']);
+      $context['coMdasdasd']=$row['id'];
+      $context['coMeliminado']=$row['eliminado'];
+      $context['coMurl']=$row['url'];
+      $context['coMrealName']=$row['realName'];
+      $context['coMimg'] = nohtml($row['avatar']);
+      $context['coMvbvbvki']=$row['id_user'];
+      $context['coMvisitas']=$row['visitas'];
+      $context['coMcreado']=hace($row['creado']);
+      $context['coMstiky']=$row['stiky'];
+      $context['coMnocoment']=$row['nocoment'];
+      $context['coMcalificacion']=$row['calificacion'];
+      $context['coMnombre']=$row['nombre'];
+      $context['coMurl2']=$row['url2'];
+      $context['coMcnam'] = $row['cnam'];
+    }
+
     mysqli_free_result($rs44);
-    $context['coMdasdasd']=isset($context['coMdasdasd']) ? $context['coMdasdasd'] : '';
-    $titulo=$context['coMtitulo'] ? $context['coMtitulo'] : $txt[18];
+
+    $context['coMdasdasd'] = isset($context['coMdasdasd']) ? $context['coMdasdasd'] : '';
+
+    $titulo = $context['coMtitulo'] ? $context['coMtitulo'] : $txt[18];
     $context['page_title'] = $titulo;
 
     include($sourcedir.'/FuncionesCom.php');

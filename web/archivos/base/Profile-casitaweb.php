@@ -572,7 +572,7 @@ $context['rownombre999']=nohtml(nohtml2($row['nombre']));
 $titulo=nohtml(nohtml2($row['titulo']));
 if(strlen($titulo)>45){$cort2=substr($titulo,0,42)."...";}else{$cort2=$titulo;}
 echo'<li><img title="Comunidades" src="'.$tranfer1.'/comunidades/categorias/'.$row['categoria'].'.png" class="png" alt="" />&nbsp;<a title="'.$titulo.'"  href="/comunidades/'.$row['url'].'/'.$row['id'].'/'.urls($row['titulo']).'.html">'.$cort2.'</a>
-<div><span>En <a title="'.$context['rownombre2'].'" href="/comunidades/'.$row['url'].'">'.$context['rownombre999'].'</a></span></div></li>
+<div><span>En <a title="'.$context['rownombre2'].'" href="' . $boardurl . '/comunidades/'.$row['url'].'">'.$context['rownombre999'].'</a></span></div></li>
 ';}mysqli_free_result($request);
 echo'</ul>';
 

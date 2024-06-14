@@ -86,7 +86,7 @@ LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
 while($MostrarFila2=mysqli_fetch_array($Resultado)){
 $datosmem=db_query("
 SELECT realName
-FROM ({$db_prefix}members)
+FROM {$db_prefix}members
 WHERE ID_MEMBER='{$MostrarFila2['id_para']}'
 LIMIT 1", __FILE__, __LINE__);
 while($data=mysqli_fetch_assoc($datosmem)){$nick=$data['realName'];}
@@ -108,7 +108,7 @@ if($PagAct>1)echo "<a href='/moderacion/pms/pag-$PagAnt'>&#171; anterior</a>";
  if($PagAct<$PagUlt)  echo "<a href='/moderacion/pms/pag-$PagSig'>siguiente &#187;</a>";
 echo'</div><div class="clearBoth"></div>';}
 
-}else{falta_error('No podes estar aca.');}}
+}else{fatal_error('No podes estar aca.');}}
 
 function template_tyc(){global $tranfer1, $context;
 echo'<script language="JavaScript" type="text/javascript">function showr_email(comment){if(comment == \'\'){alert(\'No has escrito ningun mensaje.\');return false;}}</script>';
@@ -291,66 +291,110 @@ echo'<div class="box_buscador"><div class="box_title" style="width: 920px;"><div
 <div style="clear: both;"></div></span></div></div>
 </div></div>';}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //////////////////
 
 function template_tyc23() {
   global $context, $db_prefix, $boardurl;
 
+  $allEstudios = getEstudios();
+  $allIngresos = getIngresos();
+  $allMeGustarias = getMeGustarias();
+  $allEstados = getEstados();
+  $allHijos = getHijos();
+  $allColoresPelo = getColoresPelo();
+  $allColoresOjos = getColoresOjos();
+  $allComplexiones = getComplexiones();
+  $allDietas = getDietas();
+  $allFumos = getFumos();
+  $allAlcoholes = getAlcoholes();
+
+  $pasos = isset($_GET['paso']) ? (int) $_GET['paso'] : '';
+
   ditaruser();
 
-  $refoagr = db_query("
-    SELECT i.*
+  // var_dump($context['user']['id']);
+
+  $request = db_query("
+    SELECT *
     FROM {$db_prefix}infop
-    WHERE id_user = '{$context['user']['id']}'
+    WHERE id_user = {$context['user']['id']}
     LIMIT 1", __FILE__, __LINE__);
 
-while($mddd=mysqli_fetch_array($refoagr)){
-$hp=$mddd['habilidades_profesionales'];
-$ip=$mddd['intereses_profesionales'];
-$ingresos=$mddd['nivel_de_ingresos'];
-$emp=$mddd['empresa'];
-$estudios=$mddd['estudios'];
-$prof=$mddd['profesion'];
-$me_gustaria=$mddd['me_gustaria'];
-$hijos=$mddd['hijos'];
-$en_el_amor_estoy=$mddd['en_el_amor_estoy'];
-$altura=$mddd['altura'];
-$peso=$mddd['peso'];
-$color_de_pelo=$mddd['color_de_pelo'];
-$color_de_ojos=$mddd['color_de_ojos'];
-$complexion=$mddd['complexion'];
-$mi_dieta_es=$mddd['mi_dieta_es'];
-$fumo=$mddd['fumo'];
-$tomo_alcohol=$mddd['tomo_alcohol'];
+  $row = mysqli_fetch_assoc($request);
 
+  $hp = isset($row['habilidades_profesionales']) ? $row['habilidades_profesionales'] : '';
+  $ip = isset($row['intereses_profesionales']) ? $row['intereses_profesionales'] : '';
+  $ingresos = isset($row['nivel_de_ingresos']) ? $row['nivel_de_ingresos'] : '';
+  $emp = isset($row['empresa']) ? $row['empresa'] : '';
+  $estudios = isset($row['estudios']) ? $row['estudios'] : '';
+  $prof = isset($row['profesion']) ? $row['profesion'] : '';
+  $me_gustaria = isset($row['me_gustaria']) ? $row['me_gustaria'] : '';
+  $hijos = isset($row['hijos']) ? $row['hijos'] : '';
+  $en_el_amor_estoy = isset($row['en_el_amor_estoy']) ? $row['en_el_amor_estoy'] : '';
+  $altura = isset($row['altura']) ? $row['altura'] : '';
+  $peso = isset($row['peso']) ? $row['peso'] : '';
+  $color_de_pelo = isset($row['color_de_pelo']) ? $row['color_de_pelo'] : '';
+  $color_de_ojos = isset($row['color_de_ojos']) ? $row['color_de_ojos'] : '';
+  $complexion = isset($row['complexion']) ? $row['complexion'] : '';
+  $mi_dieta_es = isset($row['mi_dieta_es']) ? $row['mi_dieta_es'] : '';
+  $fumo = isset($row['fumo']) ? $row['fumo'] : '';
+  $tomo_alcohol = isset($row['tomo_alcohol']) ? $row['tomo_alcohol'] : '';
+  $hobbies = isset($row['hobbies']) ? censorText($row['hobbies']) : '';
+  $series_de_tv_favorita = isset($row['series_de_tv_favorita']) ? censorText($row['series_de_tv_favorita']) : '';
+  $musica_favorita = isset($row['musica_favorita']) ? censorText($row['musica_favorita']) : '';
+  $deportes_y_equipos_favoritos = isset($row['deportes_y_equipos_favoritos']) ? censorText($row['deportes_y_equipos_favoritos']) : '';
+  $libros_favoritos = isset($row['libros_favoritos']) ? censorText($row['libros_favoritos']) : '';
+  $mis_intereses = isset($row['mis_intereses']) ? censorText($row['mis_intereses']) : '';
+  $peliculas_favoritas = isset($row['peliculas_favoritas']) ? censorText($row['peliculas_favoritas']) : '';
+  $comida_favorita = isset($row['comida_favorita']) ? censorText($row['comida_favorita']) : '';
+  $mis_heroes_son = isset($row['mis_heroes_son']) ? censorText($row['mis_heroes_son']) : '';
 
-if(!$estudios){$texto='';}
-if($estudios=='Sin Estudios'){$texto='sin';}
-if($estudios=='Primario completo'){$texto='pri';}
-if($estudios=='Secundario en curso'){$texto='sec_curso';}
-if($estudios=='Secundario completo'){$texto='sec_completo';}
-if($estudios=='Terciario en curso'){$texto='ter_curso';}
-if($estudios=='Universitario en curso'){$texto='univ_curso';}
-if($estudios=='Universitario completo'){$texto='univ_completo';}
-if($estudios=='Terciario completo'){$texto='ter_completo';}
-if($estudios=='Post-grado en curso'){$texto='post_curso';}
-if($estudios=='Post-grado completo'){$texto='post_completo';}
+  mysqli_free_result($request);
+
+if(!$estudios) {
+  $texto = '';
+}
+
+if ($estudios == 'Sin Estudios') {
+  $texto = 'sin';
+}
+
+if ($estudios == 'Primario completo') {
+  $texto = 'pri';
+}
+
+if ($estudios == 'Secundario en curso') {
+  $texto = 'sec_curso';
+}
+
+if ($estudios == 'Secundario completo') {
+  $texto = 'sec_completo';
+}
+
+if ($estudios == 'Terciario en curso') {
+  $texto = 'ter_curso';
+}
+
+if ($estudios == 'Universitario en curso') {
+  $texto = 'univ_curso';
+}
+
+if ($estudios == 'Universitario completo') {
+  $texto = 'univ_completo';
+}
+
+if ($estudios == 'Terciario completo') {
+  $texto = 'ter_completo';
+}
+
+if ($estudios == 'Post-grado en curso') {
+  $texto = 'post_curso';
+}
+
+if ($estudios == 'Post-grado completo') {
+  $texto = 'post_completo';
+}
+
 if(!$ingresos){$texto2='';}
 if($ingresos=='Sin ingresos'){$texto2='sin';}
 if($ingresos=='Bajos'){$texto2='bajos';}
@@ -430,19 +474,6 @@ elseif($complexion=='Normal'){$texto11='normal';}
 elseif($complexion=='Algunos kilos de m&aacute;s'){$texto11='kilos_de_mas';}	
 elseif($complexion=='Corpulento/a'){$texto11='corpulento';}else{$texto11='';}
 
-$hobbies=censorText($mddd['hobbies']);
-$series_de_tv_favorita=censorText($mddd['series_de_tv_favorita']);
-$musica_favorita=censorText($mddd['musica_favorita']);
-$deportes_y_equipos_favoritos=censorText($mddd['deportes_y_equipos_favoritos']);
-$libros_favoritos=censorText($mddd['libros_favoritos']);
-$mis_intereses=censorText($mddd['mis_intereses']);
-$pel�culas_favoritas=censorText($mddd['peliculas_favoritas']);
-$comida_favor�ta=censorText($mddd['comida_favorita']);
-$mis_heroes_son=censorText($mddd['mis_heroes_son']);
-}
-mysqli_free_result($refoagr);
-
-$pasos=isset($_GET['paso']) ? (int)$_GET['paso'] : '';
 if($pasos=='1'){
 $pasoabierto2='';$pasoabierto2a=' style="display: none;"';
 $pasoabierto3='';$pasoabierto3a=' style="display: none;"';
@@ -469,96 +500,415 @@ $pasoabierto2='';$pasoabierto2a=' style="display: none;"';
 $pasoabierto3='';$pasoabierto3a=' style="display: none;"';
 $pasoabierto4='';$pasoabierto4a=' style="display: none;"';}
 
-echo'<div class="aparence" style="float:left;margin-bottom:8px;width:776px;">
+echo'<div class="aparence" style="float: left; margin-bottom: 8px; width: 776px;">
 <div class="noesta-am">Al editar mi apariencia tambi&eacute;n acepto los <a href="' . $boardurl . '/terminos-y-condiciones/" target="_blank">T&eacute;rminos de uso</a>.</div>
 
 <h3 class="titlesCom '.$pasoabierto1.'" style="width: 762px;" onclick="chgsec(this)">1. Formaci&oacute;n y trabajo</h3>
 <div class="active" id="contennnt"'.$pasoabierto1a.'>';
-echo'<form action="/accion-apariencia/paso1/" method="post" accept-charset="'.$context['character_set'].'" enctype="multipart/form-data"><table cellpadding="4" width="100%"><tbody><tr><td align="right" valign="top" width="23%">
-<b>Estudios:</b></td><td width="40%"><select id="estudios" name="estudios"><option '; if(!$texto){echo'selected="selected"';} echo' value="">Sin Respuesta</option><option '; if($texto=='sin'){echo'selected="selected"';} echo' value="sin">Sin Estudios</option><option '; if($texto=='pri'){echo'selected="selected"';} echo' value="pri">Primario completo</option><option '; if($texto=='sec_curso'){echo'selected="selected"';} echo' value="sec_curso">Secundario en curso</option><option '; if($texto=='sec_completo'){echo'selected="selected"';} echo' value="sec_completo">Secundario completo</option><option '; if($texto=='ter_curso'){echo'selected="selected"';} echo' value="ter_curso">Terciario en curso</option><option '; if($texto=='ter_completo'){echo'selected="selected"';} echo' value="ter_completo">Terciario completo</option><option '; if($texto=='univ_curso'){echo'selected="selected"';} echo' value="univ_curso">Universitario en curso</option><option '; if($texto=='univ_completo'){echo'selected="selected"';} echo' value="univ_completo">Universitario completo</option><option '; if($texto=='post_curso'){echo'selected="selected"';} echo' value="post_curso">Post-grado en curso</option><option value="post_completo">Post-grado completo</option></select></td></tr><tr><td align="right" valign="top" width="23%"><b>Profesi&oacute;n:</b></td><td width="40%"><input size="30" maxlength="32" name="profesion" id="profesion" value="'.$prof.'" type="text" onfocus="foco(this);" onblur="no_foco(this);" /></td></tr><tr><td align="right" valign="top"><b>Empresa:</b></td><td><input size="30" maxlength="32" name="empresa" id="empresa" value="'.$emp.'" type="text" onfocus="foco(this);" onblur="no_foco(this);" /></td></tr><tr><td align="right" valign="top"><b>Nivel de ingresos:</b></td><td><select id="ingresos" name="ingresos"><option '; if($texto==''){echo'selected="selected"';} echo' value="">Sin Respuesta</option><option '; if($texto=='sin'){echo'selected="selected"';} echo' value="sin">Sin ingresos</option><option '; if($texto=='bajos'){echo'selected="selected"';} echo' value="bajos">Bajos</option><option '; if($texto=='intermedios'){echo'selected="selected"';} echo' value="intermedios">Intermedios</option><option '; if($texto=='altos'){echo'selected="selected"';} echo' value="altos">Altos</option></select></td></tr><tr><td align="right" valign="top"><b>Intereses Profesionales:</b></td><td><textarea name="intereses_profesionales" cols="30" rows="5" id="intereses_profesionales" onfocus="foco(this);" onblur="no_foco(this);">'.$ip.'</textarea></td></tr><tr><td align="right" valign="top"><b>Habilidades Profesionales:</b></td><td><textarea name="habilidades_profesionales" cols="30" rows="5" id="habilidades_profesionales" onfocus="foco(this);" onblur="no_foco(this);">'.$hp.'</textarea></td></tr><tr><td colspan="3" align="right"><div class="hrs"></div><input class="button" style="font-size: 15px;" value="Editar mi apariencia" title="Editar mi apariencia" type="submit" name="enviar-265" /><input value="1" type="hidden" name="tipo" /></td></tr></tbody></table></form></div>
+
+$texto = isset($texto) ? $texto : '';
+$texto2 = isset($texto2) ? $texto2 : '';
+$texto3 = isset($texto3) ? $texto3 : '';
+$prof = isset($prof) ? $prof : '';
+
+echo '
+  <form action="' . $boardurl . '/accion-apariencia/paso1/" method="post" accept-charset="' . $context['character_set'] . '" enctype="multipart/form-data">
+    <table cellpadding="4" width="100%">
+      <tbody>
+        <tr>
+          <td align="right" valign="top" width="23%">
+            <b>Estudios:</b>
+          </td>
+          <td width="40%">
+            <select id="estudios" name="estudios">';
+
+foreach ($allEstudios as $key => $value) {
+  echo '<option value="' . $key . '"' . ($key == $estudios ? ' selected="selected"' : '') . '>' . $value . '</option>';
+}
+  echo '
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td align="right" valign="top" width="23%">
+            <b>Profesi&oacute;n:</b>
+          </td>
+          <td width="40%">
+            <input size="30" maxlength="32" name="profesion" id="profesion" value="'.$prof.'" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
+          </td>
+        </tr>
+        <tr>
+          <td align="right" valign="top">
+            <b>Empresa:</b>
+          </td>
+          <td>
+            <input size="30" maxlength="32" name="empresa" id="empresa" value="'.$emp.'" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
+          </td>
+        </tr>
+        <tr>
+          <td align="right" valign="top">
+            <b>Nivel de ingresos:</b>
+          </td>
+          <td>
+            <select id="ingresos" name="ingresos">';
+foreach ($allIngresos as $key => $value) {
+  echo '<option value="' . $key . '"' . ($key == $ingresos ? ' selected="selected"' : '') . '>' . $value . '</option>';
+}
+            
+  echo '
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td align="right" valign="top">
+                <b>Intereses Profesionales:</b>
+              </td>
+              <td>
+                <textarea name="intereses_profesionales" cols="30" rows="5" id="intereses_profesionales" onfocus="foco(this);" onblur="no_foco(this);">' . $ip . '</textarea>
+              </td>
+            </tr>
+            <tr>
+              <td align="right" valign="top">
+                <b>Habilidades Profesionales:</b>
+              </td>
+              <td>
+                <textarea name="habilidades_profesionales" cols="30" rows="5" id="habilidades_profesionales" onfocus="foco(this);" onblur="no_foco(this);">' . $hp . '</textarea>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" align="right">
+                <div class="hrs"></div>
+                <input class="button" style="font-size: 15px;" value="Editar mi apariencia" title="Editar mi apariencia" type="submit" name="enviar-265" />
+                <input value="1" type="hidden" name="tipo" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+    <h3 class="titlesCom ' . $pasoabierto2 . '" style="width: 762px;" onclick="chgsec(this)">2. M&aacute;s sobre mi</h3>
+    <div class="active" id="contennnt" ' . $pasoabierto2a . '>
+      <form action="' . $boardurl . '/accion-apariencia/paso2/" method="post" accept-charset="' . $context['character_set'] . '" enctype="multipart/form-data">
+        <table width="100%" cellpadding="4">
+          <tbody>
+            <tr>
+              <td valign="top" width="23%" align="right">
+                <b>Me gustar&iacute;a:</b>
+              </td>
+              <td width="40%">
+                <table width="100%" border="0">
+                  <tbody>';
+  foreach ($allMeGustarias as $key => $value) {
+    echo '
+      <tr>
+        <td>
+          <label for="me_gustaria">
+            <input name="me_gustaria" id="me_gustaria" value="' . $key . '" type="radio" ' . ($key == $me_gustaria ? ' checked="checked" ' : '') . '/>
+            ' . $value . '
+          </label>
+        </td>
+      </tr>';
+
+  }
+
+  echo '
+        </tbody>
+      </table>
+    </tr>
+    <tr>
+      <td valign="top" align="right">
+        <b>En el amor estoy:</b>
+      </td>
+      <td>
+        <table width="100%" border="0">
+          <tbody>';
+
+  foreach ($allEstados as $key => $value) {
+    echo '
+      <tr>
+        <td>
+          <label for="estado">
+            <input name="estado" id="estado" value="' . $key . '" type="radio" ' . ($key == $en_el_amor_estoy ? ' checked="checked" ' : '') . '/>
+            ' . $value . '
+          </label>
+        </td>
+      </tr>';
+  }
+
+  echo '
+        </tbody>
+      </table>
+    </tr>
+    <tr>
+      <td valign="top" width="23%" align="right">
+        <b>Hijos:</b>
+      </td>
+      <td width="40%">
+        <table width="100%" border="0">
+          <tbody>';
+
+  foreach ($allHijos as $key => $value) {
+    echo '
+      <tr>
+        <td>
+          <label for="hijos">
+            <input name="hijos" id="hijos" value="' . $key . '" type="radio" ' . ($key == $hijos ? ' checked="checked" ' : '') . '/>
+            ' . $value . '
+          </label>
+        </td>
+      </tr>';
+  }
+
+  echo '
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" align="right">
+                <div class="hrs"></div>
+                <input class="button" style="font-size: 15px;" value="Editar mi apariencia" title="Editar mi apariencia" type="submit" name="enviar-265" />
+                <input value="2" type="hidden" name="tipo" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+    <h3 class="titlesCom ' . $pasoabierto3 . '" style="width: 762px;" onclick="chgsec(this)">3. Como soy</h3>
+    <div class="active" id="contennnt" ' . $pasoabierto3a . '>
+      <form action="' . $boardurl . '/accion-apariencia/paso3/" method="post" accept-charset="' . $context['character_set'] . '" enctype="multipart/form-data" style="margin: 0px; padding: 0px;">
+        <table width="100%" cellpadding="4">
+          <tbody>
+            <tr>
+              <td align="right" width="23%">
+                <b>Mi altura:</b>
+              </td>
+              <td width="40%">
+                <input name="altura" id="altura" size="3" maxlength="3" type="text" onfocus="foco(this);" onblur="no_foco(this);" value="' . str_replace('0', '', $altura) . '" />
+                cent&iacute;metros
+              </td>
+            </tr>
+            <tr>
+              <td align="right">
+                <b>Mi peso:</b>
+              </td>
+              <td>
+                <input name="peso" id="peso" size="3" maxlength="3" type="text" onfocus="foco(this);" onblur="no_foco(this);" value="' . str_replace('0', '', $peso) . '" />
+                kilos
+              </td>
+            </tr>
+            <tr>
+              <td align="right" width="23%">
+                <b>Color de pelo:</b>
+              </td>
+              <td width="40%">
+                <select id="pelo_color" name="pelo_color">';
+
+  foreach ($allColoresPelo as $key => $value) {
+    echo '<option value="' . $key . '"' . ($key == $color_de_pelo ? ' selected="selected"' : '') . '>' . $value . '</option>';
+  }
+
+  echo '
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td align="right">
+        <b>Color de ojos:</b>
+      </td>
+      <td>
+        <select id="ojos_color" name="ojos_color">';
+
+  foreach ($allColoresOjos as $key => $value) {
+    echo '<option value="' . $key . '"' . ($key == $color_de_ojos ? ' selected="selected"' : '') . '>' . $value . '</option>';
+  }
+
+  echo '
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td align="right">
+        <b>Complexi&oacute;n: ' . $complexion . '</b>
+      </td>
+      <td>
+        <select id="fisico" name="fisico">';
+
+  foreach ($allComplexiones as $key => $value) {
+    echo '<option value="' . $key . '"' . ($key == $complexion ? ' selected="selected"' : '') . '>' . $value . '</option>';
+  }
 
 
-<h3 class="titlesCom '.$pasoabierto2.'" style="width: 762px;" onclick="chgsec(this)">2. M&aacute;s sobre mi</h3>
-<div class="active" id="contennnt" '.$pasoabierto2a.'>
+  echo '
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td align="right" valign="top">
+        <b>Mi dieta es:</b>
+      </td>
+      <td>
+          <select id="dieta" name="dieta">';
 
-<form action="/accion-apariencia/paso2/" method="post" accept-charset="'.$context['character_set'].'" enctype="multipart/form-data"><table width="100%" cellpadding="4"><tbody><tr><td valign="top" width="23%" align="right"><b>Me gustar&iacute;a:</b></td><td width="40%"><table width="100%" border="0"><tbody><tr><td><label for="me_gustaria"><input '; if(!$texto3){echo'checked="checked"';} echo' name="me_gustaria" id="me_gustaria" value="" type="radio" /> Sin Respuesta</label></td></tr>
+  foreach ($allDietas as $key => $value) {
+    echo '<option value="' . $key . '"' . ($key == $mi_dieta_es ? ' selected="selected"' : '') . '>' . $value . '</option>';
+  }
 
-<tr><td><label for="me_gustaria2"><input ';if($texto3=='hacer_amigos'){echo'checked="checked"';}echo' name="me_gustaria" id="me_gustaria2" value="hacer_amigos" type="radio" /> Hacer Amigos</td></tr><tr>
+  echo '
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td align="right" valign="top">
+        <b>Fumo:</b>
+      </td>
+      <td>
+        <table border="0" width="100%">
+          <tbody>';
 
-<td><label for="me_gustaria3"><input '; if($texto3=='conocer_gente_con_mis_intereses'){echo'checked="checked"';} echo' name="me_gustaria" id="me_gustaria3" value="conocer_gente_con_mis_intereses" type="radio" /> Conocer gente con mis intereses</label></td></tr>
+  foreach ($allFumos as $key => $value) {
+    echo '
+      <tr>
+        <td>
+          <label for="fumo">
+            <input name="fumo" id="fumo" value="' . $key . '" type="radio" ' . ($key == $fumo ? ' checked="checked" ' : '') . '/>
+            ' . $value . '
+          </label>
+        </td>
+      </tr>';
+  }
 
-<tr><td><label for="me_gustaria4"><input '; if($texto3=='conocer_gente_para_hacer_negocios'){echo'checked="checked"';} echo' name="me_gustaria" id="me_gustaria4" value="conocer_gente_para_hacer_negocios" type="radio" /> Conocer gente para hacer negocios</label></td></tr>
+  echo '
+            </tbody>
+          </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="right" valign="top">
+        <b>Tomo alcohol:</b>
+      </td>
+      <td>
+        <table border="0" width="100%">
+          <tbody>';
 
-<tr><td><label for="me_gustaria5"><input '; if($texto3=='encontrar_pareja'){echo'checked="checked"';} echo' name="me_gustaria" id="me_gustaria5" value="encontrar_pareja" type="radio" /> Encontrar pareja</label></td></tr>
+  foreach ($allAlcoholes as $key => $value) {
+    echo '
+      <tr>
+        <td>
+          <label for="tomo_alcohol">
+            <input name="tomo_alcohol" id="tomo_alcohol" value="' . $key . '" type="radio" ' . ($key == $tomo_alcohol ? ' checked="checked" ' : '') . '/>
+            ' . $value . '
+          </label>
+        </td>
+      </tr>';
+  }
 
-<tr><td><label for="me_gustaria6"><input '; if($texto3=='de_todo'){echo'checked="checked"';} echo' name="me_gustaria" id="me_gustaria6" value="de_todo" type="radio" /> De todo</label></td></tr></tbody></table></tr>
+  echo '
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" align="right">
+                <div class="hrs"></div>
+                <input class="button" style="font-size: 15px;" value="Editar mi apariencia" title="Editar mi apariencia" type="submit" name="enviar-265" />
+                <input value="3" type="hidden" name="tipo" />
+              </td>
+            </tr>
+          </tbody>
+          </table>
+        </form>
+      </div>
+      <h3 class="titlesCom ' . $pasoabierto4 . '" style="width: 762px;" onclick="chgsec(this)">4. Intereses y preferencias</h3>
+      <div class="active" id="contennnt" ' . $pasoabierto4a . '>
+        <form action="' . $boardurl . '/accion-apariencia/paso4/" method="post" accept-charset="' . $context['character_set'] . '" enctype="multipart/form-data" style="margin:0px;padding:0px;">
+          <table width="100%" cellpadding="4">
+            <tbody>
+              <tr>
+                <td align="right" valign="top" width="23%">
+                  <b>Mis intereses:</b>
+                </td>
+                <td width="40%">
+                  <textarea style="width: 235px; height: 102px;" name="mis_intereses" cols="30" rows="5" id="mis_intereses" onfocus="foco(this);" onblur="no_foco(this);">' . $mis_intereses . '</textarea>
+                </td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">
+                  <b>Hobbies:</b>
+                </td>
+                <td>
+                  <textarea style="width: 235px; height: 102px;" name="hobbies" cols="30" rows="5" id="hobbies" onfocus="foco(this);" onblur="no_foco(this);">' . $hobbies . '</textarea>
+                </td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">
+                  <b>Series de Tv favoritas:</b>
+                </td>
+                <td>
+                  <textarea style="width: 235px; height: 102px;" name="series_tv_favoritas" cols="30" rows="5" id="series_tv_favoritas" onfocus="foco(this);" onblur="no_foco(this);">' . $series_de_tv_favorita . '</textarea>
+                </td>
+              </tr>
+              <tr>
+                <td align="right" valign="top" width="23%">
+                  <b>M&uacute;sica favorita:</b>
+                </td>
+                <td width="40%">
+                  <textarea style="width: 235px; height: 102px;" name="musica_favorita" cols="30" rows="5" id="musica_favorita" onfocus="foco(this);" onblur="no_foco(this);">' . $musica_favorita . '</textarea>
+                </td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">
+                  <b>Deportes y equipos favoritos:</b>
+                </td>
+                <td>
+                  <textarea style="width: 235px; height: 102px;" name="deportes_y_equipos_favoritos" cols="30" rows="5" id="deportes_y_equipos_favoritos" onfocus="foco(this);" onblur="no_foco(this);">' . $deportes_y_equipos_favoritos . '</textarea>
+                </td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">
+                  <b>Libros Favoritos:</b>
+                </td>
+                <td>
+                  <textarea style="width: 235px; height: 102px;" name="libros_favoritos" cols="30" rows="5" id="libros_favoritos" onfocus="foco(this);" onblur="no_foco(this);">' . $libros_favoritos . '</textarea>
+                </td>
+              </tr>
+              <tr>
+                <td align="right" valign="top" width="23%">
+                  <b>Pel&iacute;culas favoritas:</b>
+                </td>
+                <td width="40%">
+                  <textarea style="width: 235px; height: 102px;" name="peliculas_favoritas" cols="30" rows="5" id="peliculas_favoritas" onfocus="foco(this);" onblur="no_foco(this);">' . $peliculas_favoritas . '</textarea>
+                </td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">
+                  <b>Comida favor&iacute;ta:</b>
+                </td>
+                <td>
+                  <textarea style="width: 235px; height: 102px;" name="comida_favorita" cols="30" rows="5" id="comida_favorita" onfocus="foco(this);" onblur="no_foco(this);">' . $comida_favorita . '</textarea>
+                </td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">
+                  <b>Mis h&eacute;roes son:</b>
+                </td>
+                <td>
+                  <textarea style="width: 235px; height: 102px;" name="mis_heroes_son" cols="30" rows="5" id="mis_heroes_son" onfocus="foco(this);" onblur="no_foco(this);">' . $mis_heroes_son . '</textarea>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" align="right">
+                  <div class="hrs"></div>
+                  <input class="button" style="font-size: 15px;" value="Editar mi apariencia" title="Editar mi apariencia" type="submit" name="enviar-265" />
+                  <input value="4" type="hidden" name="tipo" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+    </div>';
+}
 
-
-<tr><td valign="top" align="right"><b>En el amor estoy:</b></td><td><table width="100%" border="0"><tbody>
-<tr><td><label for="estado"><input '; if(!$texto4){echo'checked="checked"';} echo' name="estado" id="estado" value="" type="radio" /> Sin Respuesta</label></td></tr>
-
-<tr><td><label for="estado2"><input '; if($texto4=='soltero'){echo'checked="checked"';} echo' name="estado" id="estado2" value="soltero" type="radio" /> Soltero/a</label></td></tr>
-
-<tr><td><label for="estado3"><input '; if($texto4=='novio'){echo'checked="checked"';} echo' name="estado" id="estado3" value="novio" type="radio" /> De novio/a</label></td></tr>
-
-<tr><td><label for="estado4"><input '; if($texto4=='casado'){echo'checked="checked"';} echo' name="estado" id="estado4" value="casado" type="radio" /> Casado/a</label></td></tr>
-
-<tr><td><label for="estado5"><input '; if($texto4=='divorciado'){echo'checked="checked"';} echo' name="estado" id="estado5" value="divorciado" type="radio" /> Divorciado/a</label></td></tr>
-
-<tr><td><label for="estado6"><input '; if($texto4=='viudo'){echo'checked="checked"';} echo' name="estado" id="estado6" value="viudo" type="radio" /> Viudo/a</label></td></tr>
-
-<tr><td><label for="estado7"><input '; if($texto4=='algo'){echo'checked="checked"';} echo' name="estado" id="estado7" value="algo" type="radio" /> En algo...</label></td></tr></tbody></table></tr>
-
-<tr><td valign="top" width="23%" align="right"><b>Hijos:</b></td><td width="40%"><table width="100%" border="0"><tbody>
-<tr><td><label for="hijos"><input '; if(!$texto5){echo'checked="checked"';} echo' name="hijos" id="hijos" value="" type="radio" /> Sin Respuesta</label></td></tr>
-
-<tr><td><label for="hijos2"><input '; if($texto5=='no'){echo'checked="checked"';} echo' name="hijos" id="hijos2" value="no" type="radio" /> No tengo</label></td></tr>
-
-<tr><td><label for="hijos3"><input '; if($texto5=='algun_dia'){echo'checked="checked"';} echo' name="hijos" id="hijos3" value="algun_dia" type="radio" /> Alg&uacute;n d&iacute;a</label></td></tr>
-
-<tr><td><label for="hijos4"><input '; if($texto5=='no_quiero'){echo'checked="checked"';} echo' name="hijos" id="hijos4" value="no_quiero" type="radio" /> No son lo m&iacute;o</label></td></tr>
-
-<tr><td><label for="hijos5"><input '; if($texto5=='viven_conmigo'){echo'checked="checked"';} echo' name="hijos" id="hijos5" value="viven_conmigo" type="radio" /> Tengo, vivo con ellos</label></td></tr>
-
-<tr><td><label for="hijos6"><input '; if($texto5=='no_viven_conmigo'){echo'checked="checked"';} echo' name="hijos" id="hijos6" value="no_viven_conmigo" type="radio" /> Tengo, no vivo con ellos</label></td></tr></tbody></table>
-
-</td></tr>
-<tr><td colspan="3" align="right"><div class="hrs"></div><input class="button" style="font-size: 15px;" value="Editar mi apariencia" title="Editar mi apariencia" type="submit" name="enviar-265" /><input value="2" type="hidden" name="tipo" /></td></tr></tbody></table></form>
-</div>
-
-
-<h3 class="titlesCom '.$pasoabierto3.'" style="width: 762px;" onclick="chgsec(this)">3. Como soy</h3>
-<div class="active" id="contennnt" '.$pasoabierto3a.'>
-<form action="/accion-apariencia/paso3/" method="post" accept-charset="'.$context['character_set'].'" enctype="multipart/form-data" style="margin:0px;padding:0px;"><table width="100%" cellpadding="4"><tbody><tr><td align="right" width="23%"><b>Mi altura:</b></td><td width="40%"><input name="altura" id="altura" size="3" maxlength="3" type="text" onfocus="foco(this);" onblur="no_foco(this);" value="'.str_replace('0','',$altura).'" /> centimetros</td></tr><tr><td align="right"><b>Mi peso:</b></td><td><input name="peso" id="peso" size="3" maxlength="3" type="text" onfocus="foco(this);" onblur="no_foco(this);" value="'.str_replace('0','',$peso).'" /> kilos</td></tr><tr><td align="right" width="23%"><b>Color de pelo:</b></td><td width="40%"><select id="pelo_color" name="pelo_color"><option '; if(!$texto9){echo'selected="selected"';} echo' value="">Sin Respuesta</option><option '; if($texto9=='negro'){echo'selected="selected"';} echo' value="negro">Negro</option><option '; if($texto9=='castano_oscuro'){echo'selected="selected"';} echo' value="castano_oscuro">Casta&ntilde;o oscuro</option><option '; if($texto9=='castano_claro'){echo'selected="selected"';} echo' value="castano_claro">Casta&ntilde;o claro</option><option '; if($texto9=='rubio'){echo'selected="selected"';} echo' value="rubio">Rubio</option><option '; if($texto9=='pelirrojo'){echo'selected="selected"';} echo' value="pelirrojo">Pelirrojo</option><option '; if($texto9=='gris'){echo'selected="selected"';} echo' value="gris">Gris</option><option '; if($texto9=='canoso'){echo'selected="selected"';} echo' value="canoso">Canoso</option><option '; if($texto9=='tenido'){echo'selected="selected"';} echo' value="tenido">Te&ntilde;ido</option><option '; if($texto9=='rapado'){echo'selected="selected"';} echo' value="rapado">Rapado</option><option '; if($texto9=='calvo'){echo'selected="selected"';} echo' value="calvo">Calvo</option></select></td></tr><tr><td align="right"><b>Color de ojos:</b></td><td><select id="ojos_color" name="ojos_color"><option '; if(!$texto10){echo'selected="selected"';} echo' value="">Sin Respuesta</option><option '; if($texto10=='negros'){echo'selected="selected"';} echo' value="negros">Negros</option><option '; if($texto10=='marrones'){echo'selected="selected"';} echo' value="marrones">Marrones</option><option '; if($texto10=='celestes'){echo'selected="selected"';} echo' value="celestes">Celestes</option><option '; if($texto10=='verdes'){echo'selected="selected"';} echo' value="verdes">Verdes</option><option '; if($texto10=='grises'){echo'selected="selected"';} echo' value="grises">Grises</option></select></td></tr><tr><td align="right"><b>Complexi&oacute;n:</b></td><td><select id="fisico" name="fisico"><option '; if(!$texto11){echo'selected="selected"';} echo' value="">Sin Respuesta</option><option '; if($texto11=='delgado'){echo'selected="selected"';} echo' value="delgado">Delgado/a</option><option '; if($texto11=='atletico'){echo'selected="selected"';} echo' value="atletico">Atl&eacute;tico</option><option '; if($texto11=='normal'){echo'selected="selected"';} echo' value="normal">Normal</option><option '; if($texto11=='kilos_de_mas'){echo'selected="selected"';} echo' value="kilos_de_mas">Algunos kilos de m&aacute;s</option><option '; if($texto11=='corpulento'){echo'selected="selected"';} echo' value="corpulento">Corpulento/a</option></select></td></tr><td align="right" valign="top"><b>Mi dieta es:</b></td><td><select id="dieta" name="dieta"><option '; if($texto6==''){echo'selected="selected"';} echo' value="">Sin Respuesta</option><option '; if($texto6=='vegetariana'){echo'selected="selected"';} echo' value="vegetariana">Vegetariana</option><option '; if($texto6=='lacto_vegetariana'){echo'selected="selected"';} echo' value="lacto_vegetariana">Lacto Vegetariana</option><option '; if($texto6=='organica'){echo'selected="selected"';} echo' value="organica">Org&aacute;nica</option><option '; if($texto6=='de_todo'){echo'selected="selected"';} echo' value="de_todo">De todo</option><option '; if($texto6=='comida_basura'){echo'selected="selected"';} echo' value="comida_basura">Comida basura</option></select></td></tr>
-
-<tr><td align="right" valign="top"><b>Fumo:</b></td><td><table border="0" width="100%"><tbody><tr><td><label for="fumo"><input '; if(!$texto7){echo'checked="checked"';} echo' name="fumo" id="fumo" value="" type="radio" /> Sin Respuesta</label></td></tr>
-
-<tr><td><label for="fumo2"><input '; if($texto7=='no'){echo'checked="checked"';} echo' name="fumo" id="fumo2" value="no" type="radio" /> No</label></td></tr>
-
-<tr><td><label for="fumo3"><input '; if($texto7=='casualmente'){echo'checked="checked"';} echo' name="fumo" id="fumo3" value="casualmente" type="radio" /> Casualmente</label></td></tr>
-
-<tr><td><label for="fumo4"><input '; if($texto7=='socialmente'){echo'checked="checked"';} echo' name="fumo" id="fumo4" value="socialmente" type="radio" /> Socialmente</label></td></tr>
-
-<tr><td><label for="fumo5"><input '; if($texto7=='regularmente'){echo'checked="checked"';} echo' name="fumo" id="fumo5" value="regularmente" type="radio" /> Regularmente</label></td></tr>
-
-<tr><td><label for="fumo6"><input '; if($texto7=='mucho'){echo'checked="checked"';} echo' name="fumo" id="fumo6" value="mucho" type="radio"> Mucho</label></td></tr></tbody></table>
-
-</td><tr><td align="right" valign="top"><b>Tomo alcohol:</b></td><td><table border="0" width="100%"><tbody>
-<tr><td><label for="tomo_alcohol"><input '; if(!$texto8){echo'checked="checked"';} echo' name="tomo_alcohol" id="tomo_alcohol" value="" type="radio" /> Sin Respuesta</label></td></tr>
-
-<tr><td><label for="tomo_alcohol2"><input '; if($texto8=='no'){echo'checked="checked"';} echo' name="tomo_alcohol" id="tomo_alcohol2" value="no" type="radio" /> No</label></td></tr>
-
-<tr><td><label for="tomo_alcohol3"><input '; if($texto8=='casualmente'){echo'checked="checked"';} echo' name="tomo_alcohol" id="tomo_alcohol3" value="casualmente" type="radio" /> Casualmente</label></td></tr>
-
-<tr><td><label for="tomo_alcohol4"><input '; if($texto8=='socialmente'){echo'checked="checked"';} echo' name="tomo_alcohol" id="tomo_alcohol4" value="socialmente" type="radio" /> Socialmente</label></td></tr>
-
-<tr><td><label for="tomo_alcohol5"><input '; if($texto8=='regularmente'){echo'checked="checked"';} echo' name="tomo_alcohol" id="tomo_alcohol5" value="regularmente" type="radio" /> Regularmente</label></td></tr>
-
-<tr><td><label for="tomo_alcohol6"><input '; if($texto8=='mucho'){echo'checked="checked"';} echo' name="tomo_alcohol" id="tomo_alcohol6" value="mucho" type="radio" /> Mucho</label></td></tr></tbody></table></td></tr>
-<tr><td colspan="3" align="right"><div class="hrs"></div><input class="button" style="font-size: 15px;" value="Editar mi apariencia" title="Editar mi apariencia" type="submit" name="enviar-265" /><input value="3" type="hidden" name="tipo" /></td></tr></tbody></table></form></div>
-
-<h3 class="titlesCom '.$pasoabierto4.'" style="width: 762px;" onclick="chgsec(this)">4. Intereses y preferencias</h3>
-<div class="active" id="contennnt" '.$pasoabierto4a.'><form action="/accion-apariencia/paso4/" method="post" accept-charset="'.$context['character_set'].'" enctype="multipart/form-data" style="margin:0px;padding:0px;"><table width="100%" cellpadding="4"><tbody><tr><td align="right" valign="top" width="23%"><b>Mis intereses:</b></td><td width="40%"><textarea style="width:235px;height:102px;" name="mis_intereses" cols="30" rows="5" id="mis_intereses" onfocus="foco(this);" onblur="no_foco(this);">'.$mis_intereses.'</textarea></td></tr><tr><td align="right" valign="top"><b>Hobbies:</b></td><td><textarea style="width:235px;height:102px;" name="hobbies" cols="30" rows="5" id="hobbies" onfocus="foco(this);" onblur="no_foco(this);">'.$hobbies.'</textarea></td></tr><tr><td align="right" valign="top"><b>Series de Tv favoritas:</b></td><td><textarea style="width:235px;height:102px;" name="series_tv_favoritas" cols="30" rows="5" id="series_tv_favoritas" onfocus="foco(this);" onblur="no_foco(this);">'.$series_de_tv_favorita.'</textarea></td></tr><tr><td align="right" valign="top" width="23%"><b>M&uacute;sica favorita:</b></td><td width="40%"><textarea style="width:235px;height:102px;" name="musica_favorita" cols="30" rows="5" id="musica_favorita" onfocus="foco(this);" onblur="no_foco(this);">'.$musica_favorita.'</textarea></td></tr><tr><td align="right" valign="top"><b>Deportes y equipos favoritos:</b></td><td><textarea style="width:235px;height:102px;" name="deportes_y_equipos_favoritos" cols="30" rows="5" id="deportes_y_equipos_favoritos" onfocus="foco(this);" onblur="no_foco(this);">'.$deportes_y_equipos_favoritos.'</textarea></td></tr><tr><td align="right" valign="top"><b>Libros Favoritos:</b></td><td><textarea style="width:235px;height:102px;" name="libros_favoritos" cols="30" rows="5" id="libros_favoritos" onfocus="foco(this);" onblur="no_foco(this);">'.$libros_favoritos.'</textarea></td></tr><tr><td align="right" valign="top" width="23%"><b>Pel&iacute;culas favoritas:</b></td><td width="40%"><textarea style="width:235px;height:102px;" name="peliculas_favoritas" cols="30" rows="5" id="peliculas_favoritas" onfocus="foco(this);" onblur="no_foco(this);">'.$pel�culas_favoritas.'</textarea></td></tr><tr><td align="right" valign="top"><b>Comida favor&iacute;ta:</b></td><td><textarea style="width:235px;height:102px;" name="comida_favorita" cols="30" rows="5" id="comida_favorita" onfocus="foco(this);" onblur="no_foco(this);">'.$comida_favor�ta.'</textarea></td></tr><tr><td align="right" valign="top"><b>Mis h&eacute;roes son:</b></td><td><textarea style="width:235px;height:102px;" name="mis_heroes_son" cols="30" rows="5" id="mis_heroes_son" onfocus="foco(this);" onblur="no_foco(this);">'.$mis_heroes_son.'</textarea></td></tr><tr><td colspan="3" align="right"><div class="hrs"></div><input class="button" style="font-size: 15px;" value="Editar mi apariencia" title="Editar mi apariencia" type="submit" name="enviar-265" /><input value="4" type="hidden" name="tipo" /></td></tr></tbody></table></form></div>
-
-
-</div>'; } ?>
+?>

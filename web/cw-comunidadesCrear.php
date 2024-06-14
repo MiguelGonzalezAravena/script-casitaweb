@@ -135,8 +135,8 @@ db_query("
 $id_community = db_insert_id();
 
 db_query("
-  INSERT INTO {$db_prefix}comunidades_miembros (id_user, id_com, rango) 
-  VALUES ({$user_settings['ID_MEMBER']}, $id_community, 1)", __FILE__, __LINE__);
+  INSERT INTO {$db_prefix}comunidades_miembros (id_user, id_com, rango, aprobado) 
+  VALUES ({$user_settings['ID_MEMBER']}, $id_community, 1, 1)", __FILE__, __LINE__);
 
 db_query("
   UPDATE {$db_prefix}comunidades_categorias

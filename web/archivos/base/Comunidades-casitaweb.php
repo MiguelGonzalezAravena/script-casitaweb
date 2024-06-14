@@ -42,7 +42,7 @@ function template_intro() {
     $_GET['cat'] = isset($_GET['cat']) ? (int) $_GET['cat'] : '';
     $cat = str_replace('/', '', $_GET['cat']);
 
-    $rs = db_query("
+    $request = db_query("
       SELECT a.titulo, c.nombre, c.url as url2, a.id, m.realName, b.url, b.nombre as nomb2
       FROM {$db_prefix}comunidades AS c
       INNER JOIN {$db_prefix}comunidades_articulos AS a ON a.id_com=c.id AND a.eliminado=0
@@ -56,7 +56,7 @@ function template_intro() {
 
     $context['posts'] = array();
 
-    while ($row = mysqli_fetch_assoc($rs)) {
+    while ($row = mysqli_fetch_assoc($request)) {
       $context['posts'][] = array(
         'titulo' => $row['titulo'],
         'nombre' => $row['nombre'],
@@ -68,7 +68,7 @@ function template_intro() {
       );
     }
 
-    mysqli_free_result($rs);
+    mysqli_free_result($request);
 
     foreach ($context['posts'] as $posts) {
       $tit = nohtml(nohtml2($posts['titulo']));
@@ -116,9 +116,10 @@ function template_intro() {
       $PagUlt = floor($PagUlt) + 1;
     }
 
-    if ($PagAct > $PagUlt) {
-      echo '<div class="noesta"><br /><br /><br /><br />Esta p&aacute;gina no existe.<br /><br /><br /><br /><br /></div>';
+    if ($NroRegistros == 0) {
+      echo '<div class="noesta"><br /><br /><br /><br />No se han creado temas recientemente.<br /><br /><br /><br /><br /></div>';
     }
+
 
     echo '</div>';
 
@@ -127,7 +128,7 @@ function template_intro() {
     if ($PagAct > $PagUlt) {
 
     } else {
-      if($PagAct >1 || $PagAct < $PagUlt) {
+      if($PagAct > 1 || $PagAct < $PagUlt) {
         echo '<div class="windowbgpag" style="width: 378px;">';
 
         if ($PagAct > 1) {
@@ -355,9 +356,11 @@ function template_intro() {
         </div>
       </div>';
   } else {
-    // COMUNIDAD
-    if (entrar($context['ddddsaaat'])) {
-      echo entrar($context['ddddsaaat']);
+    // Comunidad
+    $entrar = entrar($context['ddddsaaat']);
+
+    if ($entrar) {
+      echo $entrar;
     } else {
       $context['ComUeliminado'] = isset($context['ComUeliminado']) ? $context['ComUeliminado'] : '';
 
@@ -407,7 +410,7 @@ function template_intro() {
               </table>
             </div>
             <div class="box_title" style="width: 539px; margin-top: 8px;">
-              <div class="box_txt">Temas Fijados</div>
+              <div class="box_txt">Temas fijados</div>
               <div class="box_rss">
                 <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" border="0" />
               </div>
@@ -424,10 +427,10 @@ function template_intro() {
           AND a.eliminado = 0", __FILE__, __LINE__);
 
         while ($row = mysqli_fetch_assoc($rs)) {
-          $titulo = nohtml(nohtml2($row['titulo']));
+          $titulo = nohtml2($row['titulo']);
           $titulo2 = $titulo;
           $ids = $row['id'];
-          $url = nohtml($row['url']);
+          $url = nohtml2($row['url']);
           $realname = $row['realName'];
 
           echo '
@@ -495,18 +498,18 @@ function template_intro() {
         ORDER BY a.id DESC
         LIMIT $st,$pp",__FILE__, __LINE__);
         while ($row=mysqli_fetch_assoc($rs44)){
-        $titulo=nohtml(nohtml2($row['titulo']));
+        $titulo=$row['titulo'];
         $titulo2=$row['titulo'];
         $ids=$row['id'];
         $url=nohtml($row['url']);
         $realname=$row['realName'];
         echo'<div class="comunidad_tema"><div>
-        <div style="float:left;margin-right:5px;"><img src="'.$tranfer1.'/comunidades/temas.png" alt="" title="'.$titulo.'" /></div><div><a style="color:#D35F2C;font-weight:bold;font-size:13px;" href="/comunidades/'.$url.'/'.$ids.'/'.urls($titulo2).'.html" target="_self" title="'.$titulo.'">'.$titulo.'</a></div></div>
-        <div class="size10">Por <a href="/perfil/'.$realname.'" target="_self" title="'.$realname.'">'.$realname.'</a></div></div>
+        <div style="float:left;margin-right:5px;"><img src="'.$tranfer1.'/comunidades/temas.png" alt="" title="'.$titulo.'" /></div><div><a style="color:#D35F2C;font-weight:bold;font-size:13px;" href="' . $boardurl . '/comunidades/'.$url.'/'.$ids.'/'.urls($titulo2).'.html" target="_self" title="'.$titulo.'">'.$titulo.'</a></div></div>
+        <div class="size10">Por <a href="' . $boardurl . '/perfil/'.$realname.'" target="_self" title="'.$realname.'">'.$realname.'</a></div></div>
         <div class="hrs"></div>';}
         if(!$titulo){echo'<div class="noesta">No hay temas creados.</div>';}
         echo'</div><div style="width:541px;">';
-        echo paginacion($total, $pp, $st, '/comunidades/'.$context['url2222'].'/pag-');
+        echo paginacion($total, $pp, $st, $boardurl . '/comunidades/'.$context['url2222'].'/pag-');
         echo'</div></div>';
 
       }
@@ -598,7 +601,7 @@ function template_intro() {
       if(!$realnames)echo'<div class="noesta">No hay nuevos comentarios.</div>';
       echo'</span></div></div>';
 
-      echo'<div style="margin-bottom:8px;"><div class="box_title" style="width:201px;"><div class="box_txt box_perfil2-36">&Uacute;ltimos Miembros</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div>
+      echo'<div style="margin-bottom:8px;"><div class="box_title" style="width:201px;"><div class="box_txt box_perfil2-36">&Uacute;ltimos miembros</div><div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div>
       <div class="windowbg" style="width:193px;padding:4px;">';
       $rs44=db_query("SELECT m.realName,c.fecha
       FROM ({$db_prefix}members AS m, {$db_prefix}comunidades_miembros as c)
@@ -608,7 +611,7 @@ function template_intro() {
       while ($row=mysqli_fetch_assoc($rs44)){
       $realnames=$row['realName'];
       $fechav=hace($row['fecha']);
-      echo'<font class="size11"><b><a href="/perfil/'.$realnames.'" title="'.$realnames.'">'.$realnames.'</a></b> - '.$fechav.' </font><br style="margin: 0px; padding: 0px;">';}
+      echo'<font class="size11"><b><a href="' . $boardurl . '/perfil/'.$realnames.'" title="'.$realnames.'">'.$realnames.'</a></b> - '.$fechav.' </font><br style="margin: 0px; padding: 0px;">';}
       if(!$realnames)echo'<div class="noesta">No hay nuevos miembros.</div>';
       echo'</div></div>';
 
@@ -853,41 +856,129 @@ El permiso seleccionado se le asignar&aacute; autom&aacute;ticamente al usuario 
 
 
 //////////////CREAR TEMAA
-function template_ctema(){global $tranfer1, $func,$ID_MEMBER,$sourcedir,$modSettings, $context,$db_prefix;
-if(!$ID_MEMBER){fatal_error('Solo para usuarios registrados.-');}
-include($sourcedir.'/FuncionesCom.php');
-$id=seguridad($_GET['comun']);
-if(!$id){fatal_error('Debe seleccionar una comunidad.-');}
+function template_ctema() {
+  global $tranfer1, $ID_MEMBER, $sourcedir, $modSettings, $context, $db_prefix, $boardurl;
 
-$rs=db_query("SELECT c.nombre,b.rango,c.id,c.url,ca.url AS urlCat,ca.nombre AS nombreCat
-FROM ({$db_prefix}comunidades_miembros AS b, {$db_prefix}comunidades AS c, {$db_prefix}comunidades_categorias AS ca)
-WHERE c.url='$id' AND c.id=b.id_com AND b.id_user='$ID_MEMBER' AND c.bloquear=0 AND c.categoria=ca.url",__FILE__, __LINE__);
-while ($row=mysqli_fetch_assoc($rs)){
-    $cat=seguridad(nohtml($row['nombre']));
-    $rango=$row['rango'];
-    $rdasd=$row['id'];
-arriba('CrearTema','/comunidades/categoria/'.$row['urlCat'].'',''.$row['nombreCat'].'','/comunidades/'.$row['url'].'/',''.$cat.'');}
+  if (!$ID_MEMBER) {
+    fatal_error('S&oacute;lo para usuarios registrados.');
+  }
 
+  require_once($sourcedir . '/FuncionesCom.php');
 
-if(!$cat){fatal_error('No sos miembro de esta comunidad.-');}
-acces($rdasd);
+  $id = isset($_GET['comun']) ? seguridad($_GET['comun']) : '';
 
-if($context['puedo']=='1' || $context['puedo']=='3'){
-echo'<div style="width:354px;float:left;margin-right:8px;"><div class="box_354" style="margin-bottom:8px;"><div class="box_title" style="width:352px;"><div class="box_txt box_354-34">Importante</div><div class="box_rss"><div class="icon_img"><img src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" alt="" /></div></div></div><div style="width:344px;padding:4px;" class="windowbg">'; reglas_com('creart'); echo'</div></div>
-<div class="box_354"><div class="box_title" style="width:352px;"><div class="box_txt box_354-34">Destacados</div><div class="box_rss"><div class="icon_img"><img src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" alt="" /></div></div></div>
-<div style="width:344px;padding:4px;" class="windowbg">'; anuncio_300x250(); echo'</div></div></div>
-<div style="width:560px;float:left;">
-<div class="box_560"><div class="box_title" style="width: 558px;"><div class="box_txt box_560-34"> Crear nuevo tema</div><div class="box_rss"><div class="icon_img"><img src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" border="0" alt="" /></div></div></div>
-<div class="windowbg" style="width:550px;padding:4px;">
-<form name="add_comunidad" id="nuevocoment" method="post" action="/web/cw-comunidadesCrearTema.php">
-<div class="form-container"><label for="uname">Titulo:</label><input style="width:540px;" onfocus="foco(this);" onblur="no_foco(this);" class="c_input" value="" name="titulo" tabindex="1" datatype="text" dataname="Titulo" type="text"><div class="clearBoth"></div>';
-echo'<div class="data"><label for="uname">Cuerpo:</label><textarea style="height:300px;width:544px;" id="editorCW" name="cuerpo_comment" tabindex="3"></textarea>';
-textaer(1);
-echo'</div><div class="clearBoth"></div><br /><fieldset style="width:200px;"><legend><span class="tit_lab">Opciones</span></legend>';
-if($context['puedo']=='3'){echo'<label for="sticky"><input name="sticky" id="sticky" value="1" type="checkbox" /> Fijar</label>';}
-echo'<label for="nocoment"><input name="nocoment" id="nocoment" value="1" type="checkbox" /> No permitir comentarios</label></fieldset> 
-<input name="comun" value="'.$id.'" type="hidden" /></div><div style="clear: both; margin-bottom: 15px; margin-top: 20px;" class="hrs"></div><div id="buttons" align="right"><input tabindex="14" title="Crear tema" value="Crear tema" class="login" name="Enviar" type="submit"/></div></form>
-</div></div></div>';}else{fatal_error('No podes crear nuevos temas');}}
+  if (!$id) {
+    fatal_error('Debes seleccionar una comunidad.');
+  }
+
+  $request = db_query("
+    SELECT c.nombre, b.rango, c.id, c.url, ca.url AS url_categoria, ca.nombre AS nombre_categoria
+    FROM {$db_prefix}comunidades_miembros AS b, {$db_prefix}comunidades AS c, {$db_prefix}comunidades_categorias AS ca
+    WHERE c.url = '$id'
+    AND c.id = b.id_com
+    AND b.id_user = $ID_MEMBER
+    AND c.bloquear = 0
+    AND c.categoria = ca.id
+    LIMIT 1", __FILE__, __LINE__);
+
+  $row = mysqli_fetch_assoc($request);
+  $cat = seguridad(nohtml($row['nombre']));
+  $rango = $row['rango'];
+  $id_comunidad = $row['id'];
+  arriba('CrearTema', $boardurl . '/comunidades/categoria/' . $row['url_categoria'], $row['nombre_categoria'], $boardurl . '/comunidades/' . $row['url'] . '/', $cat);
+
+  if (!$cat) {
+    fatal_error('No eres miembro de esta comunidad.');
+  }
+
+  acces($id_comunidad);
+
+  if ($context['puedo'] == 1 || $context['puedo'] == 3) {
+    echo '
+      <div style="width: 354px; float: left; margin-right: 8px;">
+        <div class="box_354" style="margin-bottom: 8px;">
+          <div class="box_title" style="width: 352px;">
+            <div class="box_txt box_354-34">Importante</div>
+            <div class="box_rss">
+              <div class="icon_img">
+                <img src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" alt="" />
+              </div>
+            </div>
+          </div>
+          <div style="width: 344px; padding: 4px;" class="windowbg">';
+          
+    reglas_com('creart');
+    
+    echo '
+        </div>
+      </div>
+      <div class="box_354">
+        <div class="box_title" style="width: 352px;">
+          <div class="box_txt box_354-34">Destacados</div>
+          <div class="box_rss">
+            <div class="icon_img">
+              <img src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" alt="" />
+            </div>
+          </div>
+        </div>
+        <div style="width: 344px; padding: 4px;" class="windowbg">';
+        
+    anuncio_300x250();
+    
+    echo '
+          </div>
+        </div>
+      </div>
+      <div style="width: 560px; float: left;">
+        <div class="box_560">
+          <div class="box_title" style="width: 558px;">
+            <div class="box_txt box_560-34">Crear nuevo tema</div>
+            <div class="box_rss">
+              <div class="icon_img">
+                <img src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" alt="" />
+              </div>
+            </div>
+          </div>
+          <div class="windowbg" style="width: 550px; padding: 4px;">
+            <form name="add_comunidad" id="nuevocoment" method="post" action="' . $boardurl . '/web/cw-comunidadesCrearTema.php">
+              <div class="form-container">
+                <label for="uname">Titulo:</label>
+                <input style="width:540px;" onfocus="foco(this);" onblur="no_foco(this);" class="c_input" value="" name="titulo" tabindex="1" datatype="text" dataname="Titulo" type="text" />
+                <div class="clearBoth"></div>
+                <div class="data">
+                  <label for="uname">Cuerpo:</label>
+                  <textarea style="height: 300px; width: 544px;" id="editorCW" name="cuerpo_comment" tabindex="3"></textarea>';
+
+    textaer(1);
+
+    echo '
+                </div>
+                <div class="clearBoth"></div>
+                <br />
+                <fieldset style="width: 200px;">
+                  <legend>
+                    <span class="tit_lab">Opciones</span>
+                  </legend>
+                  ' . ($context['puedo'] == 3 ? '<label for="sticky"><input name="sticky" id="sticky" value="1" type="checkbox" /> Fijar</label>' : '') . '
+                  <label for="nocoment">
+                    <input name="nocoment" id="nocoment" value="1" type="checkbox" />
+                    No permitir comentarios
+                  </label>
+                </fieldset> 
+                <input name="comun" value="' . $id . '" type="hidden" />
+              </div>
+              <div style="clear: both; margin-bottom: 15px; margin-top: 20px;" class="hrs"></div>
+              <div id="buttons" align="right">
+                <input tabindex="14" title="Crear tema" value="Crear tema" class="login" name="Enviar" type="submit"/>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>';
+  } else {
+    fatal_error('No puedes crear nuevos temas.');
+  }
+}
 
 
 
