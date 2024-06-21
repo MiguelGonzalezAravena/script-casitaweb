@@ -1325,7 +1325,7 @@ function salir() {
       WHERE ID_MEMBER = $ID_MEMBER
       LIMIT 1", __FILE__, __LINE__);
 
-    require($sourcedir . '/Subs-Auth.php');
+    require_once($sourcedir . '/Subs-Auth.php');
 
     $_SESSION['log_time'] = 0;
 

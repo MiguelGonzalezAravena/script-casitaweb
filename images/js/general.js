@@ -580,39 +580,39 @@ function del_coment_post(id,post){
   });
 }
 
- // Comentar COMENTARIO DE MURO
-function comentarCcmuro(id){
-$('#cargandoCC_'+id).css('display', 'block');
-$.ajax({
-    type: 'POST',
-    url: '/web/cw-comentarMurocc.php',
-    data: 'id=' + id + '&quediche=' + $('#textareaCC_'+id).val(),
-    success: function(h){
+// Comentar un comentario del muro
+function comentarCcmuro(id) {
+  $('#cargandoCC_'+id).css('display', 'block');
 
-      if(h.charAt(0)==0){			
-            $('#comentarCC_'+id).hide();
-            $('#comentarCC2_'+id).html(h.substring(3));
-            $('#comentarCC2_'+id).addClass('noestaGR');
-                     $('#comentarCC2_'+id).fadeIn('fast');
-                    $('#cargandoCC_'+id).hide();}
-   else if(h.charAt(0)==1){
-                $('#textareaCC_'+id).val('Escribe un comentario...');
-                $('#comentarCC_'+id).hide();
-                $('#vmam_'+id).fadeIn('fast');
-                $('#comentarCC2_'+id).html(h.substring(3));
-                $('#comentarCC2_'+id).fadeIn('fast');
-                $('#cargandoCC_'+id).hide();             
-                }					
+  $.ajax({
+    type: 'POST',
+    url: boardUrl + '/web/cw-comentarMurocc.php',
+    data: 'id=' + id + '&quediche=' + $('#textareaCC_'+id).val(),
+    success: function(h) {
+      if (h.charAt(0) == 0) {
+        $('#comentarCC_' + id).hide();
+        $('#comentarCC2_' + id).html(h.substring(3));
+        $('#comentarCC2_' + id).addClass('noestaGR');
+        $('#comentarCC2_' + id).fadeIn('fast');
+        $('#cargandoCC_' + id).hide();
+      } else if (h.charAt(0) == 1) {
+        $('#textareaCC_' + id).val('Escribe un comentario...');
+        $('#comentarCC_' + id).hide();
+        $('#vmam_' + id).fadeIn('fast');
+        $('#comentarCC2_' + id).html(h.substring(3));
+        $('#comentarCC2_' + id).fadeIn('fast');
+        $('#cargandoCC_' + id).hide();
+      }
     },
-    error: function(){
-            $('#comentarCC_'+id).remove();
-                    Boxy.alert("Error, volver a intentar...", null, {title: 'Alerta'});
+    error: function() {
+      $('#comentarCC_'+id).remove();
+      Boxy.alert('Error, volver a intentar...', null, { title: 'Alerta' });
     }
   });
 }
 
  // ELIMINAR COMENTARIO IMG
-function del_coment_img(id,img){
+function del_coment_img(id, img) {
     $('.errorDelCom').hide();
     $('.msg_add_comment').hide();
   $.ajax({
@@ -713,44 +713,48 @@ function ignorar(id,accion){
     
 /*agregar comentario muro*/
 function add_muro(id){
-  if($('#muro').val() == ''){
+  if ($('#muro').val() == '') {
     $('#muro').focus();
     return;
   }
+
   $('.msg_add_muro').hide();
   $('#gif_cargando_add_muro').css('display', 'block');
+
   $.ajax({
     type: 'POST',
-    url: '/web/cw-comentarMuro.php',
+    url: boardUrl + '/web/cw-comentarMuro.php',
     data: 'muro=' + encodeURIComponent($('#muro').val()) + '&datapagss=' + encodeURIComponent($('#datapagss').val()) + '&user=' + id,
-    success: function(h){
+    success: function(h) {
       $('#gif_cargando_add_muro').css('display', 'none');
-      if(h.charAt(0)==0){
-       $('.msg_add_muro').html(h.substring(3));
-             $('.msg_add_muro').addClass('noesta');
-             $('.msg_add_muro').fadeIn('fast');
-             }else{	
-          $('#return_agregar_muro').html(h.substring(3));
-          $('#return_agregar_muro').fadeIn('fast');
-          $('#cantmuro').html(parseInt($('#cantmuro').html()) + 1);
-                    $('#muro').val('Escribe algo...');
-          if($('#no_muro'))
+
+      if (h.charAt(0) == 0) {
+        $('.msg_add_muro').html(h.substring(3));
+        $('.msg_add_muro').addClass('noesta');
+        $('.msg_add_muro').fadeIn('fast');
+      } else {
+        $('#return_agregar_muro').html(h.substring(3));
+        $('#return_agregar_muro').fadeIn('fast');
+        $('#cantmuro').html(parseInt($('#cantmuro').html()) + 1);
+        $('#muro').val('Escribe algo...');
+
+        if ($('#no_muro')) {
           $('#no_muro').fadeOut('fast');
-          if($('#si_muro'))
+        }
+
+        if ($('#si_muro')) {
           $('#si_muro').fadeIn('fast');
-                    
-                    }					
+        }
+      }	
     },
-    error: function(){
+    error: function() {
       $('#gif_cargando_add_muro').remove();
-            Boxy.alert("Error, volver a intentar...", null, {title: 'Alerta'});
+      Boxy.alert('Error, volver a intentar...', null, { title: 'Alerta' });
     }
   });
 }
 
-
-
-function AmigosActs(){
+function AmigosActs() {
 $.ajax({
     type: 'GET',
     url: '/web/cw-AmistadesAct.php',

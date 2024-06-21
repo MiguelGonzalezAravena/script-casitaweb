@@ -1,21 +1,46 @@
-<?php require("cw-conexion-seg-0011.php");
-global $tranfer1, $context,$db_prefix, $user_info,$user_settings;
-if($user_info['is_guest']){die();}
+<?php
+require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
+global $tranfer1, $context, $db_prefix, $user_info;
 
-$aLista= (int)$_GET['id'];
-if($aLista <= 0){die('0: Error.');}else{
-    
-$reddd=db_query("
-SELECT c.amigo,c.user
-FROM ({$db_prefix}amistad AS c)
-WHERE c.id='{$aLista}' AND c.acepto=0
-LIMIT 1", __FILE__, __LINE__);
-while($red=mysqli_fetch_array($reddd)){$context['amigo']=$red['amigo'];$userxx=$red['user'];}
+if ($user_info['is_guest']) {
+  die('0: Funcionalidad exclusiva para usuarios registrados.');
+}
 
-if($context['amigo']==$user_settings['ID_MEMBER']){
-$tip=(int)$_GET['tipo'];
-if(empty($tip)){db_query("DELETE FROM {$db_prefix}amistad WHERE id='$aLista'", __FILE__, __LINE__);}
-else{db_query("UPDATE {$db_prefix}amistad SET acepto=1 WHERE id='$aLista' LIMIT 1", __FILE__, __LINE__);}
+$aLista = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
-die('1: Ok');}
-else{die('0: Sin permisos.');}} ?>
+if ($aLista <= 0) {
+  die('0: Error.');
+} else {
+  $request = db_query("
+    SELECT amigo, user
+    FROM {$db_prefix}amistad
+    WHERE id = {$aLista}
+    AND acepto = 0
+    LIMIT 1", __FILE__, __LINE__);
+
+  $row = mysqli_fetch_assoc($request);
+  $context['amigo'] = $row['amigo'];
+  $userxx = $row['user'];
+
+  if ($context['amigo'] == $ID_MEMBER) {
+    $tip = isset($_GET['tipo']) ? (int) $_GET['tipo'] : 0;
+
+    if (empty($tip)) {
+      db_query("
+        DELETE FROM {$db_prefix}amistad
+        WHERE id = $aLista", __FILE__, __LINE__);
+    } else {
+      db_query("
+        UPDATE {$db_prefix}amistad
+        SET acepto = 1
+        WHERE id = $aLista
+        LIMIT 1", __FILE__, __LINE__);
+    }
+
+    die('1: OK');
+  } else {
+    die('0: Sin permisos.');
+  }
+}
+
+?>

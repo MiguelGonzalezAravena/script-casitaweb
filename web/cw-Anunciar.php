@@ -1,13 +1,17 @@
-<?php require("cw-conexion-seg-0011.php");
-global $db_prefix,$user_info;
+<?php
+require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
+global $db_prefix, $user_info;
 
-if(($user_info['is_admin'] || $user_info['is_mods'])){
-$dat=seguridad($_POST['anuncio']);
+$anuncio = isset($_POST['anuncio']) ? seguridad($_POST['anuncio']) : '';
 
-db_query("UPDATE {$db_prefix}settings SET value='$dat' WHERE variable='news' LIMIT 1",__FILE__, __LINE__);
+if (($user_info['is_admin'] || $user_info['is_mods'])) {
+  db_query("
+    UPDATE {$db_prefix}settings
+    SET value = '$anuncio'
+    WHERE variable = 'news'
+    LIMIT 1", __FILE__, __LINE__);
 
-die('1: Anuncio guardado correctamente.');
-
+  die('1: Anuncio guardado correctamente.');
 }
 
 ?>

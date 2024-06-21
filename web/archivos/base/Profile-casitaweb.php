@@ -1,5 +1,5 @@
 <?php
-// Pagina echa por rigo (Rodrigo). CasitaWeb! - www.casitaweb.net.
+// Página echa por rigo (Rodrigo). CasitaWeb! - www.casitaweb.net.
 
 function partearriba($sasdde, $lugar) {
   global $db_prefix, $context, $boardurl, $ID_MEMBER;
@@ -546,7 +546,7 @@ LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
             while ($mostrarcmtarios1 = mysqli_fetch_array($mostrarcmtarios)) {
               $sdddd = $mostrarcmtarios1['id'];
               $haces = hace($mostrarcmtarios1['fecha']);
-              $mensaje2 = moticon(censorText(nohtml2(nohtml($mostrarcmtarios1['muro']))), true);
+              $mensaje2 = moticon(nohtml2(nohtml($mostrarcmtarios1['muro'])), true);
               $nombremem = getUsername($mostrarcmtarios1['de']);
               $avatar = getAvatar($mostrarcmtarios1['de']);
 
@@ -630,7 +630,7 @@ LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
         LIMIT 1", __FILE__, __LINE__);
 
       while ($mostrarmuros1 = mysqli_fetch_array($mostrarmuros)) {
-        $mensaje = censorText(nohtml2($mostrarmuros1['muro']));
+        $mensaje = nohtml2($mostrarmuros1['muro']);
         $ivvd = $mostrarmuros1['id'];
         $yata = timeformat($mostrarmuros1['fecha']);
         $cmntarioss = $mostrarmuros1['ccos'];
@@ -676,7 +676,7 @@ ORDER BY m.id ASC", __FILE__, __LINE__);
           echo '<div align="center">';
           $sdddd = $mostrarcmtarios1['id'];
           $haces = hace($mostrarcmtarios1['fecha']);
-          $mensaje2 = moticon(censorText(nohtml2(nohtml($mostrarcmtarios1['muro']))), true);
+          $mensaje2 = moticon(nohtml2(nohtml($mostrarcmtarios1['muro'])), true);
           $datosmem = db_query("
 SELECT ID_MEMBER,realName,avatar
 FROM ({$db_prefix}members)

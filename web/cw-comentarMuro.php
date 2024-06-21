@@ -51,11 +51,11 @@ if ($muro != '' || $quehago != '') {
 
           // MOSTRARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
           $dsddd = isset($_POST['datapagss']) ? (int) $_POST['datapagss'] : 0;
-          if ($dsddd <> '1') {
+          if ($dsddd != 1) {
             echo '1: <div class="noesta-am">&iexcl;Comentario agregado correctamente!</div>';
           } else {
             $mensaje = censorText($muro);
-            $yata = hace($fecha);
+            $yata = hace(time());
             $mensaje = nohtml2(moticon($mensaje, true));
             $filtrado = str_replace("\n", '<br />', $mensaje);
             $nombremem = getUsername($idmem);
@@ -78,7 +78,7 @@ if ($muro != '' || $quehago != '') {
                         <br />
                         ' . VideosMuro($filtrado) . '
                         <div style="margin-top: 6px;">
-                          ' . hace($fecha) . '
+                          ' . hace(time()) . '
                           -
                           <span onclick="boxHablar(\'' . $ivvd . '\');" style="cursor: pointer; color: #424242;" id="c-' . $ivvd . '">Comentar</span>
                           <span style="display: none;" id="vmam_' . $ivvd . '">
@@ -99,7 +99,7 @@ if ($muro != '' || $quehago != '') {
           $url = $boardurl . '/perfil/' . $nombremem . '/muro;ccIDmuro=' . $ivvd;
           notificacionAGREGAR($idmem, '3', '', $url);
 
-          $_SESSION['ultima_accionTIME'] = $fecha;
+          $_SESSION['ultima_accionTIME'] = time();
           die();
         }
       }
@@ -126,14 +126,12 @@ if ($muro != '' || $quehago != '') {
         db_query("
           INSERT INTO {$db_prefix}muro (id_user, de, tipo, muro) VALUES ($yo, '$yo', '1', '$quehago')", __FILE__, __LINE__);
 
-        Header('Location: /perfil');
-        exit();
-        die();
+        header('Location: ' . $boardurl . '/perfil');
       }
     }
   }
 } else {
-  header('Location:/');
-  exit();
-  die();
-} ?>
+  header('Location: ' . $boardurl . '/');
+}
+
+?>
