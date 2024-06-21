@@ -191,18 +191,19 @@ input.EliCom:active{
 	background:#EEEEEE;
 	border-bottom:#D5CCC3 solid 1px;}
     
-.post-comentCont{
-    background:#F6F6F6;
-    border-bottom:1px solid #B4B4B4;
-    border-left:1px solid #B4B4B4;
-    border-right:1px solid #B4B4B4;
-    white-space: pre-wrap;
-    margin-bottom:5px;
-    display: block;
-    padding: 12px;
-    font-size: 13px;
-    line-height: 1.5em;
-    overflow: hidden;} 
+.post-comentCont {
+  background: #F6F6F6;
+  border-bottom: 1px solid #B4B4B4;
+  border-left: 1px solid #B4B4B4;
+  border-right: 1px solid #B4B4B4;
+  /* white-space: pre-wrap; */
+  margin-bottom: 5px;
+  display: block;
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.5em;
+  overflow: hidden;
+} 
 
 .post-datos{
 	color:#000000;

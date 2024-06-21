@@ -240,7 +240,7 @@ function template_intro()
       while ($row = mysqli_fetch_assoc($request)) {
         $ddddsxx = nohtml(nohtml2($row['titulo']));
         $ddaa = $row['titulo'];
-        echo '<font class="size11"><b><a href="/perfil/' . $row['realName'] . '" target="_self" title="' . $row['realName'] . '">' . $row['realName'] . '</a></b> - <a href="/comunidades/' . $row['url'] . '/' . $row['id'] . '/' . urls($ddaa) . '.html" target="_self" title="' . $ddddsxx . '">' . $ddddsxx . '</a></font><br style="margin: 0px; padding: 0px;">';
+        echo '<font class="size11"><b><a href="' . $boardurl . '/perfil/' . $row['realName'] . '" target="_self" title="' . $row['realName'] . '">' . $row['realName'] . '</a></b> - <a href="' . $boardurl . '/comunidades/' . $row['url'] . '/' . $row['id'] . '/' . urls($ddaa) . '.html" target="_self" title="' . $ddddsxx . '">' . $ddddsxx . '</a></font><br style="margin: 0px; padding: 0px;">';
       }
     }
 
@@ -599,7 +599,7 @@ function template_intro()
         } else {
           $valor = $titledsd2;
         }
-        echo '<font class="size11"><b><a href="/perfil/' . $realnames . '" title="' . $realnames . '">' . $realnames . '</a></b> - <a title="' . $titledsd2 . '" href="/comunidades/' . $row['url'] . '/' . $row['id_tema'] . '/' . urls($titledsd2) . '.html#comentarios">' . nohtml(nohtml2($valor)) . '</a></font><br style="margin: 0px; padding: 0px;">';
+        echo '<font class="size11"><b><a href="' . $boardurl . '/perfil/' . $realnames . '" title="' . $realnames . '">' . $realnames . '</a></b> - <a title="' . $titledsd2 . '" href="/comunidades/' . $row['url'] . '/' . $row['id_tema'] . '/' . urls($titledsd2) . '.html#comentarios">' . nohtml(nohtml2($valor)) . '</a></font><br style="margin: 0px; padding: 0px;">';
       }
       $realnames = isset($realnames) ? $realnames : '';
       if (!$realnames)
@@ -662,14 +662,14 @@ function template_intro()
 // / ARTICULOO
 function template_articulo()
 {
-  global $context, $ID_MEMBER, $db_prefix, $user_info, $tranfer1, $sourcedir, $no_avatar;
+  global $context, $ID_MEMBER, $db_prefix, $user_info, $tranfer1, $sourcedir, $no_avatar, $boardurl;
 
   if (entrar($context['coMdasdasd'])) {
     echo entrar($context['coMdasdasd']);
   } else {
     echo '<div style="margin-bottom:8px;width:922px;">';
 
-    arriba('tema', '/comunidades/categoria/' . $context['coMurl2'] . '', '' . $context['coMcnam'] . '', '/comunidades/' . $context['coMurl'] . '', '' . nohtml(nohtml2($context['coMnombre'])) . '', '' . $context['coMtitulo'] . '');
+    arriba('tema', $boardurl . '/comunidades/categoria/' . $context['coMurl2'], $context['coMcnam'], $boardurl . '/comunidades/' . $context['coMurl'], $context['coMnombre'], $context['coMtitulo']);
 
     if ($context['coMimg']) {
       $img2 = $context['coMimg'];
@@ -696,7 +696,7 @@ function template_articulo()
 <tr style="padding:0px;margin:0px;">
 <td valign="top">
 
-<a href="/perfil/' . $context['coMrealName'] . '" title="' . $context['coMrealName'] . '"><img src="' . $img2 . '" width="100px" height="100px" alt="" class="avatar" onerror="error_avatar(this)" /></a></td>
+<a href="' . $boardurl . '/perfil/' . $context['coMrealName'] . '" title="' . $context['coMrealName'] . '"><img src="' . $img2 . '" width="100px" height="100px" alt="" class="avatar" onerror="error_avatar(this)" /></a></td>
 <td valign="top" style="width:160px;">';
 
     $rs444 = db_query("
@@ -710,7 +710,7 @@ LIMIT 1", __FILE__, __LINE__);
     $rango = ranguear($context['rangoos'], $context['coMdasdasd']);
     $rangoIMG = ranguearIMG($context['rangoos'], $context['coMdasdasd']);
 
-    echo '<b class="size15"><a href="/perfil/' . $context['coMrealName'] . '" title="' . $context['coMrealName'] . '">' . $context['coMrealName'] . '</a></b><br />
+    echo '<b class="size15"><a href="' . $boardurl . '/perfil/' . $context['coMrealName'] . '" title="' . $context['coMrealName'] . '">' . $context['coMrealName'] . '</a></b><br />
 ' . $rangoIMG . ' ' . $rango;
     if (!$user_info['is_guest']) {
       echo '<br /><a href="/web/cw-TEMPenviarMP.php?user=' . $context['coMrealName'] . '" title="Enviar MP a ' . $context['coMrealName'] . '" class="boxy"><img src="' . $tranfer1 . '/icons/mensaje_para.gif" alt="" /> Enviar mensaje privado</a><br />';
@@ -768,22 +768,25 @@ LIMIT 1", __FILE__, __LINE__);
     echo '<div style="margin-bottom:5px;"><div style="float:left;margin-right:5px;"><a href="/rss/temas-comment/' . $context['coMid'] . '"><div style="height: 16px; width: 16px; cursor: pointer;" class="feed png"><img alt="" src="' . $tranfer1 . '/espacio.gif" class="png" height="16px" width="16px"></div></a></div><div><b style="font-size:14px;">Comentarios (<span id="nrocoment">' . $cant . '</span>)</b></div></div>
 <div id="comentarios">
 <div class="post-com">';
-    $rs443 = db_query("SELECT com.comentario,m.realName,com.id,com.fecha,m.ID_MEMBER
-FROM ({$db_prefix}members AS m,{$db_prefix}comunidades_comentarios AS com)
-WHERE com.id_tema='{$context['coMid']}' AND com.id_user=m.ID_MEMBER
-ORDER BY com.id ASC", __FILE__, __LINE__);
+    $rs443 = db_query("
+      SELECT com.comentario, m.realName, com.id, com.fecha, m.ID_MEMBER
+      FROM {$db_prefix}members AS m, {$db_prefix}comunidades_comentarios AS com
+      WHERE com.id_tema = {$context['coMid']}
+      AND com.id_user = m.ID_MEMBER
+      ORDER BY com.id ASC", __FILE__, __LINE__);
+
     while ($row = mysqli_fetch_assoc($rs443)) {
       $dasd = $row['id'];
-      $comene = parse_bbc(nohtml(nohtml2($row['comentario'])));
-      $comene2 = nohtml(nohtml2($row['comentario']));
+      $comene = parse_bbc($row['comentario']);
+      $comene2 = $row['comentario'];
 
       echo '<div class="User-Coment">
 
-<div style="float:left;"><span class="size11"><b id="autor_cmnt_' . $dasd . '" user_comment="' . $row['realName'] . '" text_comment=\'' . $comene2 . '\'><a href="/perfil/' . $row['realName'] . '" title="' . $row['realName'] . '" style="color:#956100;">' . $row['realName'] . '</a></b> | ' . hace($row['fecha']) . ' dijo:</span></div>
+<div style="float:left;"><span class="size11"><b id="autor_cmnt_' . $dasd . '" user_comment="' . $row['realName'] . '" text_comment=\'' . $comene2 . '\'><a href="' . $boardurl . '/perfil/' . $row['realName'] . '" title="' . $row['realName'] . '" style="color:#956100;">' . $row['realName'] . '</a></b> | ' . hace($row['fecha']) . ' dijo:</span></div>
 
 <div style="float:right;">';
       if (!$user_info['is_guest']) {
-        echo '<span onclick="Boxy.load(\'/web/cw-TEMPenviarMP.php?user=' . $row['realName'] . "', {title: 'Enviar MP a " . $row['realName'] . '\'})" title="Enviar MP a ' . $row['realName'] . '" class="pointer"><img src="' . $tranfer1 . '/icons/mensaje_para.gif" alt="" /></span>';
+        echo '<span onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPenviarMP.php?user=' . $row['realName'] . "', {title: 'Enviar MP a " . $row['realName'] . '\'})" title="Enviar MP a ' . $row['realName'] . '" class="pointer"><img src="' . $tranfer1 . '/icons/mensaje_para.gif" alt="" /></span>';
       }
 
       if (!$context['coMnocoment'] && ($context['puedo'] == '1' || $context['puedo'] == '2' || $context['puedo'] == '3')) {
@@ -791,7 +794,7 @@ ORDER BY com.id ASC", __FILE__, __LINE__);
       }
 
       if ($context['permisoCom'] == '1' || $context['permisoCom'] == '3' || $context['permisoCom'] == '2' || $row['ID_MEMBER'] == $ID_MEMBER) {
-        echo ' <a href="/web/cw-comunidadesEliCom.php?id=' . $dasd . '" title="Eliminar Comentario" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este comentario?\')) return false;"><img src="' . $tranfer1 . '/comunidades/eliminar.png" class="png" alt="" /></a>';
+        echo ' <a href="' . $boardurl . '/web/cw-comunidadesEliCom.php?id=' . $dasd . '" title="Eliminar Comentario" onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas eliminar este comentario?\')) return false;"><img src="' . $tranfer1 . '/comunidades/eliminar.png" class="png" alt="" /></a>';
       }
 
       echo '</div><div style="clear:both"></div></div>

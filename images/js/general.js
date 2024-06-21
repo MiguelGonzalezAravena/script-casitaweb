@@ -878,183 +878,205 @@ function EliminarAmistad(user,id){
   });
 }
 
-function ComComentar(id){
-if($('#editorCW').val()==''){$('#editorCW').focus(); return false;}
-$('#gif_cargando_add_comment').fadeIn('fast');
+function ComComentar(id) {
+  if ($('#editorCW').val() == '') {
+    $('#editorCW').focus();
+    return false;
+  }
+
+  $('#gif_cargando_add_comment').fadeIn('fast');
+
   $.ajax({
     type: 'POST',
-    url: '/web/cw-comunidadesComentar.php',
+    url: boardUrl + '/web/cw-comunidadesComentar.php',
     data: 'comentario=' + encodeURIComponent($('#editorCW').val()) + '&id=' + id,
-    success: function(h){
+    success: function(h) {
       $('#gif_cargando_add_comment').fadeOut('fast');
-      if(h.charAt(0)==0){	
-       $('.msg_comentar').html(h.substring(3));
-             $('.msg_comentar').addClass('noesta');
-             $('.msg_comentar').fadeIn('fast');}                    
-            else   if(h.charAt(0)==1){
-                    $('.coment-user').hide();
-                    $('.msg_comentar').hide();
-                    $('#editorCW').val('');
-                    $('#nrocoment').html(parseInt($('#nrocoment').html()) + 1);
-            $('#nuevocrio').html(h.substring(3));
-          $('#nuevocrio').fadeIn('fast');}
-                              
+
+      if (h.charAt(0) == 0) {
+        $('.msg_comentar').html(h.substring(3));
+        $('.msg_comentar').addClass('noesta');
+        $('.msg_comentar').fadeIn('fast');
+      } else if (h.charAt(0) == 1) {
+        $('.coment-user').hide();
+        $('.msg_comentar').hide();
+        $('#editorCW').val('');
+        $('#nrocoment').html(parseInt($('#nrocoment').html()) + 1);
+        $('#nuevocrio').html(h.substring(3));
+        $('#nuevocrio').fadeIn('fast');
+      }
     },
-    error: function(){
-            $('.msg_comentar').remove();
-                    $('#gif_cargando_add_comment').remove();
-                    Boxy.alert("Error, volver a intentar...", null, {title: 'Alerta'});
+    error: function() {
+      $('.msg_comentar').remove();
+      $('#gif_cargando_add_comment').remove();
+      Boxy.alert('Error, volver a intentar...', null, { title: 'Alerta' });
     }
   });
 }
     
-function login_ajax(donde){
+function login_ajax(donde) {
   var el = new Array();
-    el['nick'] = $('#hd_loginbox #nickname');
-    el['pass'] = $('#hd_loginbox #password');
-    el['error'] = $('#hd_loginbox #login_error');
-    el['cargando'] = $('#hd_loginbox #login_cargando');
-    el['cuerpo'] = $('#hd_loginbox .login_cuerpo');
-    el['button'] = $('#hd_loginbox input[type="submit"]');
+  el['nick'] = $('#hd_loginbox #nickname');
+  el['pass'] = $('#hd_loginbox #password');
+  el['error'] = $('#hd_loginbox #login_error');
+  el['cargando'] = $('#hd_loginbox #login_cargando');
+  el['cuerpo'] = $('#hd_loginbox .login_cuerpo');
+  el['button'] = $('#hd_loginbox input[type="submit"]');
 
-  if(empty($(el['nick']).val())){
+  if (empty($(el['nick']).val())) {
     $(el['nick']).focus();
     return;
-  }else if(empty($(el['pass']).val())){
+  } else if (empty($(el['pass']).val())) {
     $(el['pass']).focus();
     return;
   }
+
   $(el['error']).css('display','none');
   $(el['cargando']).css('display','block');
   $(el['button']).attr('disabled', 'disabled').addClass('disabled');
+
   $.ajax({
     type: 'POST',
     url: boardUrl + '/web/cw-Login.php',
     cache: false,
     data: 'nick=' + encodeURIComponent($(el['nick']).val()) + '&pass=' + encodeURIComponent($(el['pass']).val()),
-    success: function(h){
-        if(h.charAt(0)==0){ //Datos incorrectos
-          $(el['error']).html(h.substring(3)).fadeIn('fast');
-          $(el['nick']).focus();
-                    $(el['cargando']).css('display','none');
-          $(el['button']).removeAttr('disabled').removeClass('disabled');
-        } else
-        if(h.charAt(0)==1){ //OK
-                  if(donde=='Home')
-            location.href='/';
-          else
-            location.reload();
-
-          }
-        if(h.charAt(0)==2){ //Suspendido
-                $(el['cargando']).css('display','none');
-                $(el['cuerpo']).css('text-align','center').css('line-height','150%').html(h.substring(3));
-        }		
-    },
-    error: function(){
-      Boxy.alert("Error, volver a intentar...", null, {title: 'Alerta'});
-    }
-  });
-}
-
-function loginSeguridad(){
-  var el = new Array();
-    el['nick'] = $('#hd_loginbox2 #nickname');
-    el['pass'] = $('#hd_loginbox2 #password');
-    el['error'] = $('#hd_loginbox2 #login_error2');
-    el['cargando'] = $('#hd_loginbox2 #login_cargando2');
-    el['cuerpo'] = $('#hd_loginbox2 .login_cuerpo2');
-    el['button'] = $('#hd_loginbox2 input[type="submit"]');
-  
-  if(empty($(el['nick']).val())){
-    $(el['nick']).focus();
-    return;
-  }else if(empty($(el['pass']).val())){
-    $(el['pass']).focus();
-    return;
-  }
-  $(el['error']).css('display','none');
-  $(el['cargando']).css('display','block');
-  $(el['button']).attr('disabled', 'disabled').addClass('disabled');
-  $.ajax({
-    type: 'POST',
-    url: boardUrl + '/web/cw-Login.php',
-    cache: false,
-    data: 'nick=' + encodeURIComponent($(el['nick']).val()) + '&pass=' + encodeURIComponent($(el['pass']).val()),
-    success: function(h){
-        if(h.charAt(0)==0){ //Datos incorrectos
-                    $(el['cargando']).css('display','none');
-          $(el['error']).html(h.substring(3)).fadeIn('fast');
-          $(el['nick']).focus();
-          $(el['button']).removeAttr('disabled').removeClass('disabled');
-        } else
-        if(h.charAt(0)==1){ //OK
-            location.reload();
-          }
-        if(h.charAt(0)==2){ //Suspendido
-                $(el['cargando']).css('display','none');
-        $(el['cuerpo']).css('text-align','center').css('line-height','150%').html(h.substring(3));
+    success: function(h) {
+      // Datos incorrectos
+      if (h.charAt(0) == 0) {
+        $(el['error']).html(h.substring(3)).fadeIn('fast');
+        $(el['nick']).focus();
+        $(el['cargando']).css('display','none');
+        $(el['button']).removeAttr('disabled').removeClass('disabled');
+      } else if (h.charAt(0) == 1) {
+        // OK
+        if (donde == 'Home') {
+          location.href='/';
+        } else {
+          location.reload();
         }
-      
+      }
+
+      // Suspendido
+      if (h.charAt(0) == 2) {
+        $(el['cargando']).css('display','none');
+        $(el['cuerpo']).css('text-align','center').css('line-height','150%').html(h.substring(3));
+      }
     },
-    error: function(){
-      Boxy.alert("Error, volver a intentar...", null, {title: 'Alerta'});
+    error: function() {
+      Boxy.alert('Error, volver a intentar...', null, { title: 'Alerta' });
     }
   });
 }
 
-function AbrirCats(){
-    if( $(".hdLoglink2").hasClass("opened")){
-    $(".hdLoglink2").removeClass("opened");
-    $(".hd_loginbox2").css({'display' : 'none'});
-  } else {
-    $(".hdLoglink2").addClass("opened");
-    $(".hd_loginbox2").css({'display' : 'block'});
+function loginSeguridad() {
+  var el = new Array();
+  el['nick'] = $('#hd_loginbox2 #nickname');
+  el['pass'] = $('#hd_loginbox2 #password');
+  el['error'] = $('#hd_loginbox2 #login_error2');
+  el['cargando'] = $('#hd_loginbox2 #login_cargando2');
+  el['cuerpo'] = $('#hd_loginbox2 .login_cuerpo2');
+  el['button'] = $('#hd_loginbox2 input[type="submit"]');
+  
+  if (empty($(el['nick']).val())) {
+    $(el['nick']).focus();
+    return;
+  } else if (empty($(el['pass']).val())) {
+    $(el['pass']).focus();
+    return;
   }
+
+  $(el['error']).css('display','none');
+  $(el['cargando']).css('display','block');
+  $(el['button']).attr('disabled', 'disabled').addClass('disabled');
+
+  $.ajax({
+    type: 'POST',
+    url: boardUrl + '/web/cw-Login.php',
+    cache: false,
+    data: 'nick=' + encodeURIComponent($(el['nick']).val()) + '&pass=' + encodeURIComponent($(el['pass']).val()),
+    success: function(h) {
+      // Datos incorrectos
+      if(h.charAt(0) == 0) {
+        $(el['cargando']).css('display','none');
+        $(el['error']).html(h.substring(3)).fadeIn('fast');
+        $(el['nick']).focus();
+        $(el['button']).removeAttr('disabled').removeClass('disabled');
+      } else if (h.charAt(0) == 1) {
+        // OK
+        location.reload();
+      }
+
+      // Suspendido
+      if (h.charAt(0) == 2) {
+        $(el['cargando']).css('display','none');
+        $(el['cuerpo']).css('text-align','center').css('line-height','150%').html(h.substring(3));
+      }
+    },
+    error: function() {
+      Boxy.alert('Error, volver a intentar...', null, { title: 'Alerta' });
     }
-function servicenavlogin(){
-    if( $(".hdLoglink").hasClass("opened")){
-    $(".hdLoglink").removeClass("opened");
-    $("#hd_loginbox").css({'display' : 'none'});
+  });
+}
+
+function AbrirCats() {
+  if ($('.hdLoglink2').hasClass('opened')) {
+    $('.hdLoglink2').removeClass('opened');
+    $('.hd_loginbox2').css({'display' : 'none'});
   } else {
-     $(".hdLoglink").addClass("opened");
-     $("#hd_loginbox").css({'display' : 'block'});
+    $('.hdLoglink2').addClass('opened');
+    $('.hd_loginbox2').css({'display' : 'block'});
   }
 }
 
-function notificaciones(){
-    if( $(".hdLoglink3").hasClass("opened")){
-    $(".hdLoglink3").removeClass("opened");
-    $("#hd_loginboxx3").css({'display' : 'none'});
-        $(".Sfvc22").css({'display' : 'block'});
+function servicenavlogin() {
+  if ($('.hdLoglink').hasClass('opened')) {
+    $('.hdLoglink').removeClass('opened');
+    $('#hd_loginbox').css({'display' : 'none'});
   } else {
-     $(".hdLoglink3").addClass("opened");
-     $("#hd_loginboxx3").css({'display' : 'block'});
-     $(".Sfvc22").css({'display' : 'none'});
-       NOTget();
-  } }
-function NOTget(){
-if($('#notificaciones_cuerpo').css('display') != 'block'){
-$("#NOT_cargando").css({'display' : 'block'});}
+    $('.hdLoglink').addClass('opened');
+    $('#hd_loginbox').css({'display' : 'block'});
+  }
+}
+
+function notificaciones() {
+  if ($('.hdLoglink3').hasClass('opened')) {
+    $('.hdLoglink3').removeClass('opened');
+    $('#hd_loginboxx3').css({'display' : 'none'});
+    $('.Sfvc22').css({'display' : 'block'});
+  } else {
+    $('.hdLoglink3').addClass('opened');
+    $('#hd_loginboxx3').css({'display' : 'block'});
+    $('.Sfvc22').css({'display' : 'none'});
+    NOTget();
+  }
+}
+
+function NOTget() {
+  if ($('#notificaciones_cuerpo').css('display') != 'block') {
+    $('#NOT_cargando').css({'display' : 'block'});
+  }
+
   $.ajax({
     type: 'GET',
     url: boardUrl + '/web/cw-notificaciones.php',
-    success: function(h){		  
-      $("#NOT_cargando").css({'display' : 'none'});
-      $("#notificaciones_cuerpo").css({'display' : 'block'});
-      $("#notificaciones_cuerpo").html(h.substring(0));}
+    success: function(h) {		  
+      $('#NOT_cargando').css({'display' : 'none'});
+      $('#notificaciones_cuerpo').css({'display' : 'block'});
+      $('#notificaciones_cuerpo').html(h.substring(0));
+    }
   });
 }
 
-//Desloguearse
-function salir(){
-    $.ajax({
+// Cerrar sesión
+function salir() {
+  $.ajax({
     type: 'GET',
-    url: '/web/cw-salir.php',
-    success: function(h){location.reload();}
-});
+    url: boardUrl + '/web/cw-salir.php',
+    success: function(h) {
+      location.reload();
+    }
+  });
 }
-
 
 bbcode = {
   CasitaWSet: [

@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-global $context, $db_prefix, $no_avatar, $user_info, $user_settings, $boardurl;
+global $context, $db_prefix, $no_avatar, $user_info, $user_settings, $boardurl, $ID_MEMBER;
 
 if ($user_info['is_guest']) {
   die('0: Funcionalidad exclusiva de usuarios registrados.');
@@ -8,10 +8,9 @@ if ($user_info['is_guest']) {
 
 $muro = isset($_POST['muro']) ? seguridad($_POST['muro']) : '';
 $quehago = isset($_POST['quehago']) ? seguridad($_POST['quehago']) : '';
+$idmem = isset($_POST['user']) ? (int) $_POST['user'] : 0;
 
 if ($muro != '' || $quehago != '') {
-  $idmem = isset($_POST['user']) ? (int) $_POST['user'] : 0;
-
   if ($muro != '') {
     if (empty($idmem)) {
       die('0: Debes especificar el usuario al cual deseas escribir en el muro.');
@@ -23,16 +22,14 @@ if ($muro != '' || $quehago != '') {
       if (strlen($muro) > 10000) {
         die('0: No se aceptan escritos tan grandes.');
       } else {
-        $yo = $user_settings['ID_MEMBER'];
-
-        if (empty($yo)) {
+        if (empty($ID_MEMBER)) {
           die('0: No puedes escribir en el muro alguien si no has iniciado sesi&oacute;n.');
         } else {
           $request = db_query("
             SELECT id_user
             FROM {$db_prefix}pm_admitir
             WHERE id_user = $idmem
-            AND quien = $yo
+            AND quien = $ID_MEMBER
             LIMIT 1", __FILE__, __LINE__);
 
           $ignorado = mysqli_num_rows($request);
@@ -104,13 +101,12 @@ if ($muro != '' || $quehago != '') {
         }
       }
     }
-  } elseif ($_POST['quehago']) {
-    $quehago = nohtml($_POST['quehago']);
-    if (!$_POST['quehago']) {
+  } else if ($quehago) {
+    if ($quehago == '') {
       fatal_error('Debes escribir algo.');
     }
 
-    if ($_POST['quehago'] == '¿Qué estás haciendo ahora?' || $_POST['quehago'] == '&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;') {
+    if ($quehago == '¿Qué estás haciendo ahora?' || $quehago == '&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;') {
       fatal_error('Debes escribir algo.');
     }
 
@@ -118,13 +114,13 @@ if ($muro != '' || $quehago != '') {
       if (strlen($quehago) > 70) {
         fatal_error('No se aceptan escritos mayor a 70 letras.');
       }
-      $yo = $user_settings['ID_MEMBER'];
-      if (empty($yo)) {
-        fatal_error('Usuarios no logueados no pueden no pueden hacer esta acci&oacute;n.');
-      }
-      if (!empty($yo)) {
+
+      if (empty($ID_MEMBER)) {
+        fatal_error('Funcionalidad exclusiva de usuarios registrados');
+      } else {
         db_query("
-          INSERT INTO {$db_prefix}muro (id_user, de, tipo, muro) VALUES ($yo, '$yo', '1', '$quehago')", __FILE__, __LINE__);
+          INSERT INTO {$db_prefix}muro (id_user, de, tipo, tipocc, muro)
+          VALUES ($ID_MEMBER, $ID_MEMBER, 1, 0, '$quehago')", __FILE__, __LINE__);
 
         header('Location: ' . $boardurl . '/perfil');
       }

@@ -918,8 +918,8 @@ WHERE ID_MEMBER='{$mostrarcmtarios1['de']}' LIMIT 1", __FILE__, __LINE__);
           <ul class="ultimos">';
 
       while ($row = mysqli_fetch_assoc($request)) {
-        $context['rownombre999'] = nohtml(nohtml2($row['nombre']));
-        $titulo = nohtml(nohtml2($row['titulo']));
+        $context['rownombre999'] = $row['nombre'];
+        $titulo = $row['titulo'];
         $cort2 = strlen($titulo) > 45 ? substr($titulo, 0, 42) . '...' : $titulo;
 
         echo '
@@ -927,7 +927,7 @@ WHERE ID_MEMBER='{$mostrarcmtarios1['de']}' LIMIT 1", __FILE__, __LINE__);
             <img title="Comunidades" src="' . $tranfer1 . '/comunidades/categorias/' . $row['categoria'] . '.png" class="png" alt="" />
             <a title="' . $titulo . '"  href="' . $boardurl . '/comunidades/' . $row['url'] . '/' . $row['id'] . '/' . urls($row['titulo']) . '.html">' . $cort2 . '</a>
             <div>
-              <span>En <a title="' . $context['rownombre2'] . '" href="' . $boardurl . '/comunidades/' . $row['url'] . '">' . $context['rownombre999'] . '</a></span>
+              <span>En <a title="' . $context['rownombre999'] . '" href="' . $boardurl . '/comunidades/' . $row['url'] . '">' . $context['rownombre999'] . '</a></span>
             </div>
           </li>';
       }

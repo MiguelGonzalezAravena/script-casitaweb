@@ -5,7 +5,7 @@ if (!defined('CasitaWeb!-PorRigo')) {
 }
 
 function Comunidades() {
-  global $context, $user_settings, $sourcedir, $txt, $db_prefix, $urlSep;
+  global $context, $user_settings, $sourcedir, $txt, $db_prefix, $urlSep, $boardurl;
 
   loadTemplate('Comunidades');
 
