@@ -38,7 +38,7 @@ function template_main() {
         <tbody>';
 
     foreach ($context['entries'] as $entry) {
-      //var_dump($entry);
+      // var_dump($entry);
       echo '<tr>';
 
       if(isset($entry['extra']['member'])) {

@@ -1,8 +1,11 @@
 <?php
-//Pagina de Rodrigo Zaupa (rigo@casitaweb.net)
-if (!defined('CasitaWeb!-PorRigo'))die(base64_decode("d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv"));
+// Página de Rodrigo Zaupa (rigo@casitaweb.net)
+if (!defined('CasitaWeb!-PorRigo')) {
+  die(base64_decode('d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv'));
+}
+
 function Ban() {
-  global $context, $txt, $user_info,$scripturl, $boardurl;
+  global $context, $txt, $user_info, $scripturl, $boardurl;
 
   if (($user_info['is_admin'] || $user_info['is_mods'])) {
     adminIndex('ban_members');
@@ -18,19 +21,19 @@ function Ban() {
 
     $_REQUEST['sa'] = isset($_GET['sa']) && isset($subActions[$_GET['sa']]) ? $_GET['sa'] : 'list';
     $context['page_title'] = 'Historial de baneados';
-    $context['sub_action'] = isset($_GET['sa']) ? str_replace('/','',$_GET['sa']) : '';
+    $context['sub_action'] = isset($_GET['sa']) ? str_replace('/', '', $_GET['sa']) : '';
     $context['admin_tabs'] = array(
       'title' => 'Historial de baneados',
       'help' => 'ban_members',
       'description' => '',
       'tabs' => array(
         'list' => array(
-          'title' => 'Lista de usuarios' ,
+          'title' => 'Lista de usuarios',
           'href' => $boardurl . '/moderacion/edit-user/ban/',
           'is_selected' => empty($context['sub_action']),
         ),
         'buscar' => array(
-          'title' => 'Buscar usuario' ,
+          'title' => 'Buscar usuario',
           'href' => $boardurl . '/moderacion/edit-user/ban/buscar/',
           'is_selected' => $context['sub_action'] == 'buscar',
         ),
@@ -42,6 +45,7 @@ function Ban() {
 }
 
 function buscar() {}
+
 function BanList() {
   global $txt, $db_prefix, $context, $ban_request, $scripturl, $user_info;
 

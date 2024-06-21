@@ -1,438 +1,459 @@
 <?php
-//Pagina de Rodrigo Zaupa (rigo@casitaweb.net)
-if (!defined('CasitaWeb!-PorRigo'))die(base64_decode("d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv"));
-function Memberlist(){global $scripturl, $txt, $modSettings, $context, $settings;
-	isAllowedTo('view_mlist');
-	loadTemplate('Memberlist');
-	$context['listing_by'] = !empty($_GET['sa']) ? $_GET['sa'] : 'all';
+// Página de Rodrigo Zaupa (rigo@casitaweb.net)
+if (!defined('CasitaWeb!-PorRigo')) {
+  die(base64_decode('d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv'));
+}
 
-	$subActions = array(
-		'all' => array(&$txt[303], 'MLAll', $context['listing_by'] == 'all'),
-		'search' => array(&$txt['mlist_search'], 'MLSearch', $context['listing_by'] == 'search'),
-	);
+function Memberlist() {
+  global $scripturl, $txt, $modSettings, $context, $settings;
 
-	// Set up the sort links.
-	$context['sort_links'] = array();
-	foreach ($subActions as $act => $text)
-		$context['sort_links'][] = array(
-			'label' => $text[0],
-			'action' => $act,
-			'selected' => $text[2],
-		);
+  isAllowedTo('view_mlist');
+  loadTemplate('Memberlist');
 
-	$context['num_members'] = $modSettings['totalMembers'];
+  $context['listing_by'] = !empty($_GET['sa']) ? $_GET['sa'] : 'all';
 
-	// Set up the columns...
-	$context['columns'] = array(
-		'isOnline' => array(
-			'label' => $txt['online8'],
-			'width' => '20'
-		),
-		'realName' => array(
-			'label' => $txt[35]
-		),
-		'emailAddress' => array(
-			'label' => $txt[307],
-			'width' => '25'
-		),
-		'websiteUrl' => array(
-			'label' => $txt[96],
-			'width' => '25'
-		),
-		'ICQ' => array(
-			'label' => $txt[513],
-			'width' => '25'
-		),
-		'AIM' => array(
-			'label' => $txt[603],
-			'width' => '25'
-		),
-		'YIM' => array(
-			'label' => $txt[604],
-			'width' => '25'
-		),
-		'MSN' => array(
-			'label' => $txt['MSN'],
-			'width' => '25'
-		),
-		'ID_GROUP' => array(
-			'label' => $txt[87]
-		),
-		'registered' => array(
-			'label' => $txt[233]
-		),
-		'posts' => array(
-			'label' => $txt[21],
-			'width' => '57',
-			'colspan' => '2'
-		),
-		'topics' => array(
-			'label' => $txt['topicsmb'],
-			'width' => '58',
-			'colspan' => '2'
-		)
-	);
+  $subActions = array(
+    'all' => array(&$txt[303], 'MLAll', $context['listing_by'] == 'all'),
+    'search' => array(&$txt['mlist_search'], 'MLSearch', $context['listing_by'] == 'search'),
+  );
 
-	$context['linktree'][] = array(
-		'url' => $scripturl . '?action=mlist',
-		'name' => &$txt[332]
-	);
+  // Set up the sort links.
+  $context['sort_links'] = array();
 
-	$context['can_send_pm'] = allowedTo('pm_send');
+  foreach ($subActions as $act => $text) {
+    $context['sort_links'][] = array(
+      'label' => $text[0],
+      'action' => $act,
+      'selected' => $text[2],
+    );
+  }
 
-	// Jump to the sub action.
-	if (isset($subActions[$context['listing_by']]))
-		$subActions[$context['listing_by']][1]();
-	else
-		$subActions['all'][1]();
+  $context['num_members'] = $modSettings['totalMembers'];
+
+  // Set up the columns...
+  $context['columns'] = array(
+    'isOnline' => array(
+      'label' => $txt['online8'],
+      'width' => '20'
+    ),
+    'realName' => array(
+      'label' => $txt[35]
+    ),
+    'emailAddress' => array(
+      'label' => $txt[307],
+      'width' => '25'
+    ),
+    'websiteUrl' => array(
+      'label' => $txt[96],
+      'width' => '25'
+    ),
+    'ICQ' => array(
+      'label' => $txt[513],
+      'width' => '25'
+    ),
+    'AIM' => array(
+      'label' => $txt[603],
+      'width' => '25'
+    ),
+    'YIM' => array(
+      'label' => $txt[604],
+      'width' => '25'
+    ),
+    'MSN' => array(
+      'label' => $txt['MSN'],
+      'width' => '25'
+    ),
+    'ID_GROUP' => array(
+      'label' => $txt[87]
+    ),
+    'registered' => array(
+      'label' => $txt[233]
+    ),
+    'posts' => array(
+      'label' => $txt[21],
+      'width' => '57',
+      'colspan' => '2'
+    ),
+    'topics' => array(
+      'label' => $txt['topicsmb'],
+      'width' => '58',
+      'colspan' => '2'
+    )
+  );
+
+  $context['linktree'][] = array(
+    'url' => $scripturl . '?action=mlist',
+    'name' => &$txt[332]
+  );
+
+  $context['can_send_pm'] = allowedTo('pm_send');
+
+  // Jump to the sub action.
+  if (isset($subActions[$context['listing_by']])) {
+    $subActions[$context['listing_by']][1]();
+  } else {
+    $subActions['all'][1]();
+  }
 }
 
 // List all members, page by page.
-function MLAll()
-{
-	global $txt, $scripturl, $db_prefix, $user_info;
-	global $modSettings, $context, $func;
+function MLAll() {
+  global $txt, $scripturl, $db_prefix, $user_info;
+  global $modSettings, $context, $func;
 
-	// The chunk size for the cached index.
-	$cache_step_size = 500;
+  // The chunk size for the cached index.
+  $cache_step_size = 500;
 
-	// Only use caching if:
-	// 1. there are at least 2k members,
-	// 2. the default sorting method (realName) is being used,
-	// 3. the page shown is high enough to make a DB filesort unprofitable.
-	$use_cache = $modSettings['totalMembers'] > 2000 && (!isset($_REQUEST['sort']) || $_REQUEST['sort'] === 'realName') && isset($_REQUEST['start']) && $_REQUEST['start'] > $cache_step_size;
+  // Only use caching if:
+  // 1. there are at least 2k members,
+  // 2. the default sorting method (realName) is being used,
+  // 3. the page shown is high enough to make a DB filesort unprofitable.
+  $use_cache = $modSettings['totalMembers'] > 2000 && (!isset($_REQUEST['sort']) || $_REQUEST['sort'] === 'realName') && isset($_REQUEST['start']) && $_REQUEST['start'] > $cache_step_size;
 
-	if ($use_cache)
-	{
-		// Maybe there's something cached already.
-		if (!empty($modSettings['memberlist_cache']))
-			$memberlist_cache = @unserialize($modSettings['memberlist_cache']);
+  if ($use_cache) {
+    // Maybe there's something cached already.
+    if (!empty($modSettings['memberlist_cache'])) {
+      $memberlist_cache = @unserialize($modSettings['memberlist_cache']);
+    }
 
-		// Only update the cache if something changed or no cache existed yet.
-		if (empty($memberlist_cache) || empty($modSettings['memberlist_updated']) || $memberlist_cache['last_update'] < $modSettings['memberlist_updated'])
-		{
-			$request = db_query("
-				SELECT realName
-				FROM {$db_prefix}members
-				WHERE is_activated = 1
-				ORDER BY realName", __FILE__, __LINE__);
+    // Only update the cache if something changed or no cache existed yet.
+    if (empty($memberlist_cache) || empty($modSettings['memberlist_updated']) || $memberlist_cache['last_update'] < $modSettings['memberlist_updated']) {
+      $request = db_query("
+        SELECT realName
+        FROM {$db_prefix}members
+        WHERE is_activated = 1
+        ORDER BY realName", __FILE__, __LINE__);
 
-			$memberlist_cache = array(
-				'last_update' => time(),
-				'num_members' => mysqli_num_rows($request),
-				'index' => array(),
-			);
+      $memberlist_cache = array(
+        'last_update' => time(),
+        'num_members' => mysqli_num_rows($request),
+        'index' => array(),
+      );
 
-			for ($i = 0, $n = mysqli_num_rows($request); $i < $n; $i += $cache_step_size)
-			{
-				mysqli_data_seek($request, $i);
-				list($memberlist_cache['index'][$i]) = mysqli_fetch_row($request);
-			}
-			mysqli_data_seek($request, $memberlist_cache['num_members'] - 1);
-			list($memberlist_cache['index'][$i]) = mysqli_fetch_row($request);
-			mysqli_free_result($request);
+      for ($i = 0, $n = mysqli_num_rows($request); $i < $n; $i += $cache_step_size) {
+        mysqli_data_seek($request, $i);
+        list($memberlist_cache['index'][$i]) = mysqli_fetch_row($request);
+      }
 
-			// Now we've got the cache...store it.
-			updateSettings(array('memberlist_cache' => addslashes(serialize($memberlist_cache))));
-		}
+      mysqli_data_seek($request, $memberlist_cache['num_members'] - 1);
+      list($memberlist_cache['index'][$i]) = mysqli_fetch_row($request);
+      mysqli_free_result($request);
 
-		$context['num_members'] = $memberlist_cache['num_members'];
-	}
+      // Now we've got the cache...store it.
+      updateSettings(array('memberlist_cache' => addslashes(serialize($memberlist_cache))));
+    }
 
-	// Without cache we need an extra query to get the amount of members.
-	else
-	{
-		$request = db_query("
-			SELECT COUNT(*)
-			FROM {$db_prefix}members
-			WHERE is_activated = 1", __FILE__, __LINE__);
-		list ($context['num_members']) = mysqli_fetch_row($request);
-		mysqli_free_result($request);
-	}
+    $context['num_members'] = $memberlist_cache['num_members'];
+  }
 
-	// Set defaults for sort (realName) and start. (0)
-	if (!isset($_REQUEST['sort']) || !isset($context['columns'][$_REQUEST['sort']]))
-		$_REQUEST['sort'] = 'realName';
+  // Without cache we need an extra query to get the amount of members.
+  else {
+    $request = db_query("
+      SELECT COUNT(*)
+      FROM {$db_prefix}members
+      WHERE is_activated = 1", __FILE__, __LINE__);
 
-	if (!is_numeric($_REQUEST['start']))
-	{
-		if (preg_match('~^[^\'\\\\/]~' . ($context['utf8'] ? 'u' : ''), $func['strtolower']($_REQUEST['start']), $match) === 0)
-			fatal_error('Hacker?', false);
+    list($context['num_members']) = mysqli_fetch_row($request);
+    mysqli_free_result($request);
+  }
 
-		$_REQUEST['start'] = $match[0];
+  // Set defaults for sort (realName) and start. (0)
+  if (!isset($_REQUEST['sort']) || !isset($context['columns'][$_REQUEST['sort']])) {
+    $_REQUEST['sort'] = 'realName';
+  }
 
-		$request = db_query("
-			SELECT COUNT(*)
-			FROM {$db_prefix}members
-			WHERE LOWER(SUBSTRING(realName, 1, 1)) < '$_REQUEST[start]'
-				AND is_activated = 1", __FILE__, __LINE__);
-		list ($_REQUEST['start']) = mysqli_fetch_row($request);
-		mysqli_free_result($request);
-	}
+  if (!is_numeric($_REQUEST['start'])) {
+    if (preg_match("~^[^'\\\\/]~" . ($context['utf8'] ? 'u' : ''), $func['strtolower']($_REQUEST['start']), $match) === 0) {
+      fatal_error('Hacker?', false);
+    }
 
-	$context['letter_links'] = '';
-	for ($i = 97; $i < 123; $i++)
-		$context['letter_links'] .= '<a href="' . $scripturl . '?action=mlist;sa=all;start=' . chr($i) . '#letter' . chr($i) . '">' . strtoupper(chr($i)) . '</a> ';
+    $_REQUEST['start'] = $match[0];
 
-	// Sort out the column information.
-	foreach ($context['columns'] as $col => $dummy)
-	{
-		$context['columns'][$col]['href'] = $scripturl . '?action=mlist;sort=' . $col . ';start=0';
+    $request = db_query("
+      SELECT COUNT(*)
+      FROM {$db_prefix}members
+      WHERE LOWER(SUBSTRING(realName, 1, 1)) < '$_REQUEST[start]'
+      AND is_activated = 1", __FILE__, __LINE__);
 
-		if (!isset($_REQUEST['desc']) && $col == $_REQUEST['sort'])
-			$context['columns'][$col]['href'] .= ';desc';
+    list($_REQUEST['start']) = mysqli_fetch_row($request);
+    mysqli_free_result($request);
+  }
 
-		$context['columns'][$col]['link'] = '<a href="' . $context['columns'][$col]['href'] . '">' . $context['columns'][$col]['label'] . '</a>';
-		$context['columns'][$col]['selected'] = $_REQUEST['sort'] == $col;
-	}
+  $context['letter_links'] = '';
 
-	$context['sort_by'] = $_REQUEST['sort'];
-	$context['sort_direction'] = !isset($_REQUEST['desc']) ? 'down' : 'up';
+  for ($i = 97; $i < 123; $i++) {
+    $context['letter_links'] .= '<a href="' . $scripturl . '?action=mlist;sa=all;start=' . chr($i) . '#letter' . chr($i) . '">' . strtoupper(chr($i)) . '</a> ';
+  }
 
-	// Construct the page index.
-	$context['page_index'] = constructPageIndex($scripturl . '?action=mlist;sort=' . $_REQUEST['sort'] . (isset($_REQUEST['desc']) ? ';desc' : ''), $_REQUEST['start'], $context['num_members'], $modSettings['defaultMaxMembers']);
+  // Sort out the column information.
+  foreach ($context['columns'] as $col => $dummy) {
+    $context['columns'][$col]['href'] = $scripturl . '?action=mlist;sort=' . $col . ';start=0';
 
-	// Send the data to the template.
-	$context['start'] = $_REQUEST['start'] + 1;
-	$context['end'] = min($_REQUEST['start'] + $modSettings['defaultMaxMembers'], $context['num_members']);
+    if (!isset($_REQUEST['desc']) && $col == $_REQUEST['sort']) {
+      $context['columns'][$col]['href'] .= ';desc';
+    }
 
-	$context['page_title'] = $txt[308] . ' ' . $context['start'] . ' ' . $txt[311] . ' ' . $context['end'];
-	$context['linktree'][] = array(
-		'url' => $scripturl . '?action=mlist;sort=' . $_REQUEST['sort'] . ';start=' . $_REQUEST['start'],
-		'name' => &$context['page_title'],
-		'extra_after' => ' (' . $txt[309] . ' ' . $context['num_members'] . ' ' . $txt[310] . ')'
-	);
+    $context['columns'][$col]['link'] = '<a href="' . $context['columns'][$col]['href'] . '">' . $context['columns'][$col]['label'] . '</a>';
+    $context['columns'][$col]['selected'] = $_REQUEST['sort'] == $col;
+  }
 
-	// List out the different sorting methods...
-	$sort_methods = array(
-		'isOnline' => array(
-			'down' => '(ISNULL(lo.logTime)' . (!allowedTo('moderate_forum') ? ' OR NOT mem.showOnline' : '') . ') ASC, realName ASC',
-			'up' => '(ISNULL(lo.logTime)' . (!allowedTo('moderate_forum') ? ' OR NOT mem.showOnline' : '') . ') DESC, realName DESC'
-		),
-		'realName' => array(
-			'down' => 'mem.realName ASC',
-			'up' => 'mem.realName DESC'
-		),
-		'emailAddress' => array(
-			'down' => (allowedTo('moderate_forum') || empty($modSettings['allow_hideEmail'])) ? 'mem.emailAddress ASC' : 'mem.hideEmail ASC, mem.emailAddress ASC',
-			'up' => (allowedTo('moderate_forum') || empty($modSettings['allow_hideEmail'])) ? 'mem.emailAddress DESC' : 'mem.hideEmail DESC, mem.emailAddress DESC'
-		),
-		'websiteUrl' => array(
-			'down' => 'LENGTH(mem.websiteURL) > 0 DESC, ISNULL(mem.websiteURL) ASC, mem.websiteURL ASC',
-			'up' => 'LENGTH(mem.websiteURL) > 0 ASC, ISNULL(mem.websiteURL) DESC, mem.websiteURL DESC'
-		),
-		'ICQ' => array(
-			'down' => 'LENGTH(mem.ICQ) > 0 DESC, ISNULL(mem.ICQ) OR mem.ICQ = 0 ASC, mem.ICQ ASC',
-			'up' => 'LENGTH(mem.ICQ) > 0 ASC, ISNULL(mem.ICQ) OR mem.ICQ = 0 DESC, mem.ICQ DESC'
-		),
-		'AIM' => array(
-			'down' => 'LENGTH(mem.AIM) > 0 DESC, ISNULL(mem.AIM) ASC, mem.AIM ASC',
-			'up' => 'LENGTH(mem.AIM) > 0 ASC, ISNULL(mem.AIM) DESC, mem.AIM DESC'
-		),
-		'YIM' => array(
-			'down' => 'LENGTH(mem.YIM) > 0 DESC, ISNULL(mem.YIM) ASC, mem.YIM ASC',
-			'up' => 'LENGTH(mem.YIM) > 0 ASC, ISNULL(mem.YIM) DESC, mem.YIM DESC'
-		),
-		'MSN' => array(
-			'down' => 'LENGTH(mem.MSN) > 0 DESC, ISNULL(mem.MSN) ASC, mem.MSN ASC',
-			'up' => 'LENGTH(mem.MSN) > 0 ASC, ISNULL(mem.MSN) DESC, mem.MSN DESC'
-		),
-		'registered' => array(
-			'down' => 'mem.dateRegistered ASC',
-			'up' => 'mem.dateRegistered DESC'
-		),
-		'ID_GROUP' => array(
-			'down' => 'ISNULL(mg.groupName) ASC, mg.groupName ASC',
-			'up' => 'ISNULL(mg.groupName) DESC, mg.groupName DESC'
-		),
-		'posts' => array(
-			'down' => 'mem.posts DESC',
-			'up' => 'mem.posts ASC'
-		),
-		'topics' => array(
-			'down' => 'mem.topics DESC',
-			'up' => 'mem.topics ASC'
-		)
-	);
+  $context['sort_by'] = $_REQUEST['sort'];
+  $context['sort_direction'] = !isset($_REQUEST['desc']) ? 'down' : 'up';
 
-	$limit = $_REQUEST['start'];
+  // Construct the page index.
+  $context['page_index'] = constructPageIndex($scripturl . '?action=mlist;sort=' . $_REQUEST['sort'] . (isset($_REQUEST['desc']) ? ';desc' : ''), $_REQUEST['start'], $context['num_members'], $modSettings['defaultMaxMembers']);
 
-	// Using cache allows to narrow down the list to be retrieved.
-	if ($use_cache && $_REQUEST['sort'] === 'realName' && !isset($_REQUEST['desc']))
-	{
-		$first_offset = $_REQUEST['start'] - ($_REQUEST['start'] % $cache_step_size);
-		$second_offset = ceil(($_REQUEST['start'] + $modSettings['defaultMaxMembers']) / $cache_step_size) * $cache_step_size;
-		$where = "mem.realName BETWEEN '" . addslashes($memberlist_cache['index'][$first_offset]) . "' AND '" . addslashes($memberlist_cache['index'][$second_offset]) . "'";
-		$limit -= $first_offset;
-	}
+  // Send the data to the template.
+  $context['start'] = $_REQUEST['start'] + 1;
+  $context['end'] = min($_REQUEST['start'] + $modSettings['defaultMaxMembers'], $context['num_members']);
 
-	// Reverse sorting is a bit more complicated...
-	elseif ($use_cache && $_REQUEST['sort'] === 'realName')
-	{
-		$first_offset = floor(($memberlist_cache['num_members'] - $modSettings['defaultMaxMembers'] - $_REQUEST['start']) / $cache_step_size) * $cache_step_size;
-		if ($first_offset < 0)
-			$first_offset = 0;
-		$second_offset = ceil(($memberlist_cache['num_members'] - $_REQUEST['start']) / $cache_step_size) * $cache_step_size;
-		$where = "mem.realName BETWEEN '" . addslashes($memberlist_cache['index'][$first_offset]) . "' AND '" . addslashes($memberlist_cache['index'][$second_offset]) . "'";
-		$limit = $second_offset - ($memberlist_cache['num_members'] - $_REQUEST['start']) - ($second_offset > $memberlist_cache['num_members'] ? $cache_step_size - ($memberlist_cache['num_members'] % $cache_step_size) : 0);
-	}
+  $context['page_title'] = $txt[308] . ' ' . $context['start'] . ' ' . $txt[311] . ' ' . $context['end'];
+  $context['linktree'][] = array(
+    'url' => $scripturl . '?action=mlist;sort=' . $_REQUEST['sort'] . ';start=' . $_REQUEST['start'],
+    'name' => &$context['page_title'],
+    'extra_after' => ' (' . $txt[309] . ' ' . $context['num_members'] . ' ' . $txt[310] . ')'
+  );
 
-	// Select the members from the database.
-	$request = db_query("
-		SELECT mem.ID_MEMBER
-		FROM {$db_prefix}members AS mem" . ($_REQUEST['sort'] === 'isOnline' ? "
-			LEFT JOIN {$db_prefix}log_online AS lo ON (lo.ID_MEMBER = mem.ID_MEMBER)" : '') . ($_REQUEST['sort'] === 'ID_GROUP' ? "
-			LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = IF(mem.ID_GROUP = 0, mem.ID_POST_GROUP, mem.ID_GROUP))" : '') . "
-		WHERE mem.is_activated = 1" . (empty($where) ? '' : "
-			AND $where") . "
-		ORDER BY " . $sort_methods[$_REQUEST['sort']][$context['sort_direction']] . "
-		LIMIT $limit, $modSettings[defaultMaxMembers]", __FILE__, __LINE__);
-	printMemberListRows($request);
-	mysqli_free_result($request);
+  // List out the different sorting methods...
+  $sort_methods = array(
+    'isOnline' => array(
+      'down' => '(ISNULL(lo.logTime)' . (!allowedTo('moderate_forum') ? ' OR NOT mem.showOnline' : '') . ') ASC, realName ASC',
+      'up' => '(ISNULL(lo.logTime)' . (!allowedTo('moderate_forum') ? ' OR NOT mem.showOnline' : '') . ') DESC, realName DESC'
+    ),
+    'realName' => array(
+      'down' => 'mem.realName ASC',
+      'up' => 'mem.realName DESC'
+    ),
+    'emailAddress' => array(
+      'down' => (allowedTo('moderate_forum') || empty($modSettings['allow_hideEmail'])) ? 'mem.emailAddress ASC' : 'mem.hideEmail ASC, mem.emailAddress ASC',
+      'up' => (allowedTo('moderate_forum') || empty($modSettings['allow_hideEmail'])) ? 'mem.emailAddress DESC' : 'mem.hideEmail DESC, mem.emailAddress DESC'
+    ),
+    'websiteUrl' => array(
+      'down' => 'LENGTH(mem.websiteURL) > 0 DESC, ISNULL(mem.websiteURL) ASC, mem.websiteURL ASC',
+      'up' => 'LENGTH(mem.websiteURL) > 0 ASC, ISNULL(mem.websiteURL) DESC, mem.websiteURL DESC'
+    ),
+    'ICQ' => array(
+      'down' => 'LENGTH(mem.ICQ) > 0 DESC, ISNULL(mem.ICQ) OR mem.ICQ = 0 ASC, mem.ICQ ASC',
+      'up' => 'LENGTH(mem.ICQ) > 0 ASC, ISNULL(mem.ICQ) OR mem.ICQ = 0 DESC, mem.ICQ DESC'
+    ),
+    'AIM' => array(
+      'down' => 'LENGTH(mem.AIM) > 0 DESC, ISNULL(mem.AIM) ASC, mem.AIM ASC',
+      'up' => 'LENGTH(mem.AIM) > 0 ASC, ISNULL(mem.AIM) DESC, mem.AIM DESC'
+    ),
+    'YIM' => array(
+      'down' => 'LENGTH(mem.YIM) > 0 DESC, ISNULL(mem.YIM) ASC, mem.YIM ASC',
+      'up' => 'LENGTH(mem.YIM) > 0 ASC, ISNULL(mem.YIM) DESC, mem.YIM DESC'
+    ),
+    'MSN' => array(
+      'down' => 'LENGTH(mem.MSN) > 0 DESC, ISNULL(mem.MSN) ASC, mem.MSN ASC',
+      'up' => 'LENGTH(mem.MSN) > 0 ASC, ISNULL(mem.MSN) DESC, mem.MSN DESC'
+    ),
+    'registered' => array(
+      'down' => 'mem.dateRegistered ASC',
+      'up' => 'mem.dateRegistered DESC'
+    ),
+    'ID_GROUP' => array(
+      'down' => 'ISNULL(mg.groupName) ASC, mg.groupName ASC',
+      'up' => 'ISNULL(mg.groupName) DESC, mg.groupName DESC'
+    ),
+    'posts' => array(
+      'down' => 'mem.posts DESC',
+      'up' => 'mem.posts ASC'
+    ),
+    'topics' => array(
+      'down' => 'mem.topics DESC',
+      'up' => 'mem.topics ASC'
+    )
+  );
 
-	// Add anchors at the start of each letter.
-	if ($_REQUEST['sort'] == 'realName')
-	{
-		$last_letter = '';
-		foreach ($context['members'] as $i => $dummy)
-		{
-			$this_letter = $func['strtolower']($func['substr']($context['members'][$i]['name'], 0, 1));
+  $limit = $_REQUEST['start'];
 
-			if ($this_letter != $last_letter && preg_match('~[a-z]~', $this_letter) === 1)
-			{
-				$context['members'][$i]['sort_letter'] = htmlspecialchars($this_letter);
-				$last_letter = $this_letter;
-			}
-		}
-	}
+  // Using cache allows to narrow down the list to be retrieved.
+  if ($use_cache && $_REQUEST['sort'] === 'realName' && !isset($_REQUEST['desc'])) {
+    $first_offset = $_REQUEST['start'] - ($_REQUEST['start'] % $cache_step_size);
+    $second_offset = ceil(($_REQUEST['start'] + $modSettings['defaultMaxMembers']) / $cache_step_size) * $cache_step_size;
+    $where = "mem.realName BETWEEN '" . addslashes($memberlist_cache['index'][$first_offset]) . "' AND '" . addslashes($memberlist_cache['index'][$second_offset]) . "'";
+    $limit -= $first_offset;
+  }
+
+  // Reverse sorting is a bit more complicated...
+  else if ($use_cache && $_REQUEST['sort'] === 'realName') {
+    $first_offset = floor(($memberlist_cache['num_members'] - $modSettings['defaultMaxMembers'] - $_REQUEST['start']) / $cache_step_size) * $cache_step_size;
+
+    if ($first_offset < 0) {
+      $first_offset = 0;
+    }
+
+    $second_offset = ceil(($memberlist_cache['num_members'] - $_REQUEST['start']) / $cache_step_size) * $cache_step_size;
+    $where = "mem.realName BETWEEN '" . addslashes($memberlist_cache['index'][$first_offset]) . "' AND '" . addslashes($memberlist_cache['index'][$second_offset]) . "'";
+    $limit = $second_offset - ($memberlist_cache['num_members'] - $_REQUEST['start']) - ($second_offset > $memberlist_cache['num_members'] ? $cache_step_size - ($memberlist_cache['num_members'] % $cache_step_size) : 0);
+  }
+
+  // Select the members from the database.
+  $request = db_query("
+    SELECT mem.ID_MEMBER
+    FROM {$db_prefix}members AS mem" . ($_REQUEST['sort'] === 'isOnline' ? "
+      LEFT JOIN {$db_prefix}log_online AS lo ON (lo.ID_MEMBER = mem.ID_MEMBER)" : '') . ($_REQUEST['sort'] === 'ID_GROUP' ? "
+      LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = IF(mem.ID_GROUP = 0, mem.ID_POST_GROUP, mem.ID_GROUP))" : '') . '
+    WHERE mem.is_activated = 1' . (empty($where) ? '' : "
+      AND $where") . '
+    ORDER BY ' . $sort_methods[$_REQUEST['sort']][$context['sort_direction']] . "
+    LIMIT $limit, $modSettings[defaultMaxMembers]", __FILE__, __LINE__);
+
+  printMemberListRows($request);
+  mysqli_free_result($request);
+
+  // Add anchors at the start of each letter.
+  if ($_REQUEST['sort'] == 'realName') {
+    $last_letter = '';
+    foreach ($context['members'] as $i => $dummy) {
+      $this_letter = $func['strtolower']($func['substr']($context['members'][$i]['name'], 0, 1));
+
+      if ($this_letter != $last_letter && preg_match('~[a-z]~', $this_letter) === 1) {
+        $context['members'][$i]['sort_letter'] = htmlspecialchars($this_letter);
+        $last_letter = $this_letter;
+      }
+    }
+  }
 }
 
 // Search for members...
-function MLSearch()
-{
-	global $txt, $scripturl, $db_prefix, $context, $user_info, $modSettings;
+function MLSearch() {
+  global $txt, $scripturl, $db_prefix, $context, $user_info, $modSettings;
 
-	$context['page_title'] = $txt['mlist_search'];
+  $context['page_title'] = $txt['mlist_search'];
 
-	// They're searching..
-	if (isset($_REQUEST['search']) && isset($_REQUEST['fields']))
-	{
-		$_POST['search'] = trim(isset($_GET['search']) ? $_GET['search'] : $_POST['search']);
-		$_POST['fields'] = isset($_GET['fields']) ? explode(',', $_GET['fields']) : $_POST['fields'];
+  // They're searching..
+  if (isset($_REQUEST['search']) && isset($_REQUEST['fields'])) {
+    $_POST['search'] = trim(isset($_GET['search']) ? $_GET['search'] : $_POST['search']);
+    $_POST['fields'] = isset($_GET['fields']) ? explode(',', $_GET['fields']) : $_POST['fields'];
 
-		$context['old_search'] = $_REQUEST['search'];
-		$context['old_search_value'] = urlencode($_REQUEST['search']);
+    $context['old_search'] = $_REQUEST['search'];
+    $context['old_search_value'] = urlencode($_REQUEST['search']);
 
-		// No fields?  Use default...
-		if (empty($_POST['fields']))
-			$_POST['fields'] = array('name');
+    // No fields?  Use default...
+    if (empty($_POST['fields']))
+      $_POST['fields'] = array('name');
 
-		// Search for a name?
-		if (in_array('name', $_POST['fields']))
-			$fields = array('memberName', 'realName');
-		else
-			$fields = array();
-		// Search for messengers...
-		if (in_array('messenger', $_POST['fields']) && (!$user_info['is_guest'] || empty($modSettings['guest_hideContacts'])))
-			$fields += array(3 => 'MSN', 'AIM', 'ICQ', 'YIM');
-		// Search for websites.
-		if (in_array('website', $_POST['fields']))
-			$fields += array(7 => 'websiteTitle', 'websiteUrl');
-		// Search for groups.
-		if (in_array('group', $_POST['fields']))
-			$fields += array(9 => 'IFNULL(groupName, \'\')');
-		// Search for an email address?
-		if (in_array('email', $_POST['fields']))
-		{
-			$fields += array(2 => allowedTo('moderate_forum') ? 'emailAddress' : '(hideEmail = 0 AND emailAddress');
-			$condition = allowedTo('moderate_forum') ? '' : ')';
-		}
-		else
-			$condition = '';
+    // Search for a name?
+    if (in_array('name', $_POST['fields'])) {
+      $fields = array('memberName', 'realName');
+    } else {
+      $fields = array();
+    }
 
-		$query = $_POST['search'] == '' ? "= ''" : "LIKE '%" . strtr($_POST['search'], array('_' => '\\_', '%' => '\\%', '*' => '%')) . "%'";
+    // Search for messengers...
+    if (in_array('messenger', $_POST['fields']) && (!$user_info['is_guest'] || empty($modSettings['guest_hideContacts']))) {
+      $fields += array(3 => 'MSN', 'AIM', 'ICQ', 'YIM');
+    }
 
-		$request = db_query("
-			SELECT COUNT(*)
-			FROM {$db_prefix}members AS mem
-				LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = IF(mem.ID_GROUP = 0, mem.ID_POST_GROUP, mem.ID_GROUP))
-			WHERE " . implode(" $query OR ", $fields) . " $query$condition
-				AND is_activated = 1", __FILE__, __LINE__);
-		list ($numResults) = mysqli_fetch_row($request);
-		mysqli_free_result($request);
+    // Search for websites.
+    if (in_array('website', $_POST['fields'])) {
+      $fields += array(7 => 'websiteTitle', 'websiteUrl');
+    }
 
-		$context['page_index'] = constructPageIndex($scripturl . '?action=mlist;sa=search;search=' . $_POST['search'] . ';fields=' . implode(',', $_POST['fields']), $_REQUEST['start'], $numResults, $modSettings['defaultMaxMembers']);
+    // Search for groups.
+    if (in_array('group', $_POST['fields'])) {
+      $fields += array(9 => "IFNULL(groupName, '')");
+    }
 
-		// Find the members from the database.
-		// !!!SLOW This query is slow.
-		$request = db_query("
-			SELECT mem.ID_MEMBER
-			FROM {$db_prefix}members AS mem
-				LEFT JOIN {$db_prefix}log_online AS lo ON (lo.ID_MEMBER = mem.ID_MEMBER)
-				LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = IF(mem.ID_GROUP = 0, mem.ID_POST_GROUP, mem.ID_GROUP))
-			WHERE " . implode(" $query OR ", $fields) . " $query$condition
-				AND is_activated = 1
-			LIMIT $_REQUEST[start], $modSettings[defaultMaxMembers]", __FILE__, __LINE__);
-		printMemberListRows($request);
-		mysqli_free_result($request);
-	}
-	else
-	{
-		$context['sub_template'] = 'search';
-		$context['old_search'] = isset($_REQUEST['search']) ? htmlspecialchars($_REQUEST['search']) : '';
-	}
+    // Search for an email address?
+    if (in_array('email', $_POST['fields'])) {
+      $fields += array(2 => allowedTo('moderate_forum') ? 'emailAddress' : '(hideEmail = 0 AND emailAddress');
+      $condition = allowedTo('moderate_forum') ? '' : ')';
+    } else {
+      $condition = '';
+    }
 
-	$context['linktree'][] = array(
-		'url' => $scripturl . '?action=mlist;sa=search',
-		'name' => &$context['page_title']
-	);
+    $query = $_POST['search'] == '' ? "= ''" : "LIKE '%" . strtr($_POST['search'], array('_' => '\_', '%' => '\%', '*' => '%')) . "%'";
+
+    $request = db_query("
+      SELECT COUNT(*)
+      FROM {$db_prefix}members AS mem
+        LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = IF(mem.ID_GROUP = 0, mem.ID_POST_GROUP, mem.ID_GROUP))
+      WHERE " . implode(" $query OR ", $fields) . " $query$condition
+        AND is_activated = 1", __FILE__, __LINE__);
+
+    list($numResults) = mysqli_fetch_row($request);
+    mysqli_free_result($request);
+
+    $context['page_index'] = constructPageIndex($scripturl . '?action=mlist;sa=search;search=' . $_POST['search'] . ';fields=' . implode(',', $_POST['fields']), $_REQUEST['start'], $numResults, $modSettings['defaultMaxMembers']);
+
+    // Find the members from the database.
+    // !!!SLOW This query is slow.
+    $request = db_query("
+      SELECT mem.ID_MEMBER
+      FROM {$db_prefix}members AS mem
+        LEFT JOIN {$db_prefix}log_online AS lo ON (lo.ID_MEMBER = mem.ID_MEMBER)
+        LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = IF(mem.ID_GROUP = 0, mem.ID_POST_GROUP, mem.ID_GROUP))
+      WHERE " . implode(" $query OR ", $fields) . " $query$condition
+        AND is_activated = 1
+      LIMIT $_REQUEST[start], $modSettings[defaultMaxMembers]", __FILE__, __LINE__);
+
+    printMemberListRows($request);
+    mysqli_free_result($request);
+  } else {
+    $context['sub_template'] = 'search';
+    $context['old_search'] = isset($_REQUEST['search']) ? htmlspecialchars($_REQUEST['search']) : '';
+  }
+
+  $context['linktree'][] = array(
+    'url' => $scripturl . '?action=mlist;sa=search',
+    'name' => &$context['page_title']
+  );
 }
 
-function printMemberListRows($request)
-{
-	global $scripturl, $txt, $db_prefix, $user_info, $modSettings;
-	global $context, $settings, $memberContext;
+function printMemberListRows($request) {
+  global $scripturl, $txt, $db_prefix, $user_info, $modSettings;
+  global $context, $settings, $memberContext;
 
-	// Get the most posts.
-	$result = db_query("
-		SELECT MAX(posts)
-		FROM {$db_prefix}members", __FILE__, __LINE__);
-	list ($MOST_POSTS) = mysqli_fetch_row($result);
-	mysqli_free_result($result);
+  // Get the most posts.
+  $result = db_query("
+    SELECT MAX(posts)
+    FROM {$db_prefix}members", __FILE__, __LINE__);
 
-	// Avoid division by zero...
-	if ($MOST_POSTS == 0)
-		$MOST_POSTS = 1;
+  list($MOST_POSTS) = mysqli_fetch_row($result);
+  mysqli_free_result($result);
 
-	// Get the most topics.
-	$result = db_query("
-		SELECT MAX(topics)
-		FROM {$db_prefix}members", __FILE__, __LINE__);
-	list ($MOST_TOPICS) = mysqli_fetch_row($result);
-	mysqli_free_result($result);
+  // Avoid division by zero...
+  if ($MOST_POSTS == 0) {
+    $MOST_POSTS = 1;
+  }
 
-	// Avoid division by zero...
-	if ($MOST_TOPICS == 0)
-		$MOST_TOPICS = 1;
+  // Get the most topics.
+  $result = db_query("
+    SELECT MAX(topics)
+    FROM {$db_prefix}members", __FILE__, __LINE__);
 
-	$members = array();
-	while ($row = mysqli_fetch_assoc($request))
-		$members[] = $row['ID_MEMBER'];
+  list($MOST_TOPICS) = mysqli_fetch_row($result);
+  mysqli_free_result($result);
 
-	// Load all the members for display.
-	loadMemberData($members);
+  // Avoid division by zero...
+  if ($MOST_TOPICS == 0) {
+    $MOST_TOPICS = 1;
+  }
 
-	$context['members'] = array();
-	foreach ($members as $member)
-	{
-		if (!loadMemberContext($member))
-			continue;
+  $members = array();
 
-		$context['members'][$member] = $memberContext[$member];
-		$context['members'][$member]['post_percent'] = round(($context['members'][$member]['real_posts'] * 100) / $MOST_POSTS);
-		$context['members'][$member]['topic_percent'] = round(($context['members'][$member]['real_topics'] * 100) / $MOST_TOPICS);
-		$context['members'][$member]['registered_date'] = strftime('%Y-%m-%d', $context['members'][$member]['registered_timestamp']);
-	}
+  while ($row = mysqli_fetch_assoc($request)) {
+    $members[] = $row['ID_MEMBER'];
+  }
+
+  // Load all the members for display.
+  loadMemberData($members);
+
+  $context['members'] = array();
+
+  foreach ($members as $member) {
+    if (!loadMemberContext($member)) {
+      continue;
+    }
+
+    $context['members'][$member] = $memberContext[$member];
+    $context['members'][$member]['post_percent'] = round(($context['members'][$member]['real_posts'] * 100) / $MOST_POSTS);
+    $context['members'][$member]['topic_percent'] = round(($context['members'][$member]['real_topics'] * 100) / $MOST_TOPICS);
+    $context['members'][$member]['registered_date'] = strftime('%Y-%m-%d', $context['members'][$member]['registered_timestamp']);
+  }
 }
 
 ?>

@@ -1,6 +1,9 @@
 <?php
-//Pagina de Rodrigo Zaupa (rigo@casitaweb.net)
-if (!defined('CasitaWeb!-PorRigo'))die(base64_decode("d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv"));
+// Página de Rodrigo Zaupa (rigo@casitaweb.net)
+if (!defined('CasitaWeb!-PorRigo')) {
+  die(base64_decode('d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv'));
+}
+
 function ManageBoards() {
   global $context, $txt, $scripturl, $urlSep;
 
@@ -114,22 +117,22 @@ function ManageBoardsMain() {
         if (!isset($context['categories'][$catid]['move_link'])) {
           $context['categories'][$catid]['move_link'] = array(
             'child_level' => 0,
-            'label' => $txt['mboards_order_before'] . ' \'' . htmlspecialchars($boards[$boardid]['name']) . '\'',
-            'href' => $scripturl . '?' . $urlSep . '=manageboards;sa=move;src_board=' . $context['move_board'] . ';target_board='. $boardid . ';move_to=before;sesc=' . $context['session_id'],
+            'label' => $txt['mboards_order_before'] . " '" . htmlspecialchars($boards[$boardid]['name']) . "'",
+            'href' => $scripturl . '?' . $urlSep . '=manageboards;sa=move;src_board=' . $context['move_board'] . ';target_board=' . $boardid . ';move_to=before;sesc=' . $context['session_id'],
           );
         }
-        
+
         if (!$context['categories'][$catid]['boards'][$boardid]['move']) {
           $context['categories'][$catid]['boards'][$boardid]['move_links'] = array(
             array(
               'child_level' => $boards[$boardid]['level'],
-              'label' => $txt['mboards_order_after'] . '\'' . htmlspecialchars($boards[$boardid]['name']) . '\'',
-              'href' => $scripturl . '?' . $urlSep . '=manageboards;sa=move;src_board=' . $context['move_board'] . ';target_board='. $boardid . ';move_to=after;sesc=' . $context['session_id'],
+              'label' => $txt['mboards_order_after'] . "'" . htmlspecialchars($boards[$boardid]['name']) . "'",
+              'href' => $scripturl . '?' . $urlSep . '=manageboards;sa=move;src_board=' . $context['move_board'] . ';target_board=' . $boardid . ';move_to=after;sesc=' . $context['session_id'],
             ),
             array(
               'child_level' => $boards[$boardid]['level'] + 1,
-              'label' => $txt['mboards_order_child_of'] . ' \'' . htmlspecialchars($boards[$boardid]['name']) . '\'',
-              'href' => $scripturl . '?' . $urlSep . '=manageboards;sa=move;src_board=' . $context['move_board'] . ';target_board='. $boardid . ';move_to=child;sesc=' . $context['session_id'],
+              'label' => $txt['mboards_order_child_of'] . " '" . htmlspecialchars($boards[$boardid]['name']) . "'",
+              'href' => $scripturl . '?' . $urlSep . '=manageboards;sa=move;src_board=' . $context['move_board'] . ';target_board=' . $boardid . ';move_to=child;sesc=' . $context['session_id'],
             ),
           );
         }
@@ -161,7 +164,7 @@ function ManageBoardsMain() {
       if (empty($boardList[$catid])) {
         $context['categories'][$catid]['move_link'] = array(
           'child_level' => 0,
-          'label' => $txt['mboards_order_before'] . ' \'' . htmlspecialchars($tree['node']['name']) . '\'',
+          'label' => $txt['mboards_order_before'] . " '" . htmlspecialchars($tree['node']['name']) . "'",
           'href' => $scripturl . '?' . $urlSep . '=manageboards;sa=move;src_board=' . $context['move_board'] . ';target_cat=' . $catid . ';move_to=top;sesc=' . $context['session_id'],
         );
       }
@@ -172,32 +175,35 @@ function ManageBoardsMain() {
   $context['can_manage_permissions'] = allowedTo('manage_permissions');
 }
 
-function EditCategory(){}
-function EditCategory2(){}
-function EditBoard()
-{
+function EditCategory() {}
+function EditCategory2() {}
+
+function EditBoard() {
   global $txt, $db_prefix, $context, $cat_tree, $boards, $boardList, $sourcedir;
 
   loadTemplate('ManageBoards');
-  require_once($sourcedir . '/Subs-Boards.php');
+
+  require_once ($sourcedir . '/Subs-Boards.php');
+
   getBoardTree();
 
   // ID_BOARD must be a number....
   $_REQUEST['boardid'] = isset($_REQUEST['boardid']) ? (int) $_REQUEST['boardid'] : 0;
-  if (!isset($boards[$_REQUEST['boardid']]))
-  {
+
+  if (!isset($boards[$_REQUEST['boardid']])) {
     $_REQUEST['boardid'] = 0;
     $_REQUEST['sa'] = 'newboard';
   }
 
-  if ($_REQUEST['sa'] == 'newboard')
-  {
+  if ($_REQUEST['sa'] == 'newboard') {
     // Some things that need to be setup for a new board.
     $curBoard = array(
       'memberGroups' => array(0, -1),
       'category' => (int) $_REQUEST['cat']
     );
+
     $context['board_order'] = array();
+
     $context['board'] = array(
       'is_new' => true,
       'id' => 0,
@@ -212,9 +218,7 @@ function EditBoard()
       'thank_you_post_enable' => 0,
       'thank_you_post_enable' => 0,
     );
-  }
-  else
-  {
+  } else {
     // Just some easy shortcuts.
     $curBoard = &$boards[$_REQUEST['boardid']];
     $context['board'] = $boards[$_REQUEST['boardid']];
@@ -245,10 +249,11 @@ function EditBoard()
     FROM {$db_prefix}membergroups
     WHERE ID_GROUP > 3 OR ID_GROUP = 2
     ORDER BY minPosts, ID_GROUP != 2, groupName", __FILE__, __LINE__);
-  while ($row = mysqli_fetch_assoc($request))
-  {
-    if ($_REQUEST['sa'] == 'newboard' && $row['minPosts'] == -1)
+
+  while ($row = mysqli_fetch_assoc($request)) {
+    if ($_REQUEST['sa'] == 'newboard' && $row['minPosts'] == -1) {
       $curBoard['memberGroups'][] = $row['ID_GROUP'];
+    }
 
     $context['groups'][(int) $row['ID_GROUP']] = array(
       'id' => $row['ID_GROUP'],
@@ -257,51 +262,53 @@ function EditBoard()
       'is_post_group' => $row['minPosts'] != -1,
     );
   }
+
   mysqli_free_result($request);
 
   /*
-    TO-DO: ¿Esto se usa?
-  foreach ($boardList[$curBoard['category']] as $boardid)
-  {
-    if ($boardid == $_REQUEST['boardid'])
-    {
-      $context['board_order'][] = array(
-        'id' => $boardid,
-        'name' => str_repeat('-', $boards[$boardid]['level']) . ' (' . $txt['mboards_current_position'] . ')',
-        'children' => $boards[$boardid]['tree']['children'],
-        'no_children' => empty($boards[$boardid]['tree']['children']),
-        'is_child' => false,
-        'selected' => true
-      );
-    }
-    else
-    {
-      $context['board_order'][] = array(
-        'id' => $boardid,
-        'name' => str_repeat('-', $boards[$boardid]['level']) . ' ' . $boards[$boardid]['name'],
-        'is_child' => empty($_REQUEST['boardid']) ? false : isChildOf($boardid, $_REQUEST['boardid']),
-        'selected' => false
-      );
-    }
-  }
-  */
+   * TO-DO: ¿Esto se usa?
+   * foreach ($boardList[$curBoard['category']] as $boardid)
+   * {
+   *   if ($boardid == $_REQUEST['boardid'])
+   *   {
+   *     $context['board_order'][] = array(
+   *       'id' => $boardid,
+   *       'name' => str_repeat('-', $boards[$boardid]['level']) . ' (' . $txt['mboards_current_position'] . ')',
+   *       'children' => $boards[$boardid]['tree']['children'],
+   *       'no_children' => empty($boards[$boardid]['tree']['children']),
+   *       'is_child' => false,
+   *       'selected' => true
+   *     );
+   *   }
+   *   else
+   *   {
+   *     $context['board_order'][] = array(
+   *       'id' => $boardid,
+   *       'name' => str_repeat('-', $boards[$boardid]['level']) . ' ' . $boards[$boardid]['name'],
+   *       'is_child' => empty($_REQUEST['boardid']) ? false : isChildOf($boardid, $_REQUEST['boardid']),
+   *       'selected' => false
+   *     );
+   *   }
+   * }
+   */
 
   // Are there any places to move child boards to in the case where we are confirming a delete?
-  if (!empty($_REQUEST['boardid']))
-  {
+  if (!empty($_REQUEST['boardid'])) {
     $context['can_move_children'] = false;
     $context['children'] = $boards[$_REQUEST['boardid']]['tree']['children'];
 
     //  TO-DO: ¿Esto se usa realmente?
+
     /*
-    foreach ($context['board_order'] as $board)
-      if ($board['is_child'] == false && $board['selected'] == false)
-        $context['can_move_children'] = true;
-    */
+     * foreach ($context['board_order'] as $board)
+     *   if ($board['is_child'] == false && $board['selected'] == false)
+     *     $context['can_move_children'] = true;
+     */
   }
 
   // Get other available categories.
   $context['categories'] = array();
+
   foreach ($cat_tree as $catID => $tree)
     $context['categories'][] = array(
       'id' => $catID,
@@ -313,18 +320,19 @@ function EditBoard()
     SELECT ID_THEME AS id, value AS name
     FROM {$db_prefix}themes
     WHERE variable = 'name'", __FILE__, __LINE__);
+
   $context['themes'] = array();
-  while ($row = mysqli_fetch_assoc($request))
+
+  while ($row = mysqli_fetch_assoc($request)) {
     $context['themes'][] = $row;
+  }
+
   mysqli_free_result($request);
 
-  if (!isset($_REQUEST['delete']))
-  {
+  if (!isset($_REQUEST['delete'])) {
     $context['sub_template'] = 'modify_board';
     $context['page_title'] = $txt['boardsEdit'];
-  }
-  else
-  {
+  } else {
     $context['sub_template'] = 'confirm_board_delete';
     $context['page_title'] = $txt['mboards_delete_board'];
   }
@@ -356,7 +364,7 @@ function EditBoard2() {
       }
 
       $boardOptions['move_to'] = $_POST['placement'];
-      $boardOptions['target_board'] =  (int) $_POST['board_order'];
+      $boardOptions['target_board'] = (int) $_POST['board_order'];
     }
 
     // Checkboxes....
@@ -412,7 +420,7 @@ function EditBoard2() {
       }
 
       deleteBoards(array($_POST['boardid']), (int) $_POST['board_to']);
-    }  else {
+    } else {
       deleteBoards(array($_POST['boardid']), 0);
     }
   }
@@ -420,9 +428,10 @@ function EditBoard2() {
   redirectexit($urlSep . '=manageboards');
 }
 
-function ModifyCat(){}
+function ModifyCat() {}
 
-function EditBoardSettings(){global $context, $txt, $db_prefix, $sourcedir, $modSettings;
+function EditBoardSettings() {
+  global $context, $txt, $db_prefix, $sourcedir, $modSettings;
 
   $context['page_title'] = $txt[41] . ' - ' . $txt['settings'];
 
@@ -432,8 +441,7 @@ function EditBoardSettings(){global $context, $txt, $db_prefix, $sourcedir, $mod
   // Needed for the inline permission functions.
   require($sourcedir . '/ManagePermissions.php');
 
-  if (!empty($_POST['save_settings']))
-  {
+  if (!empty($_POST['save_settings'])) {
     updateSettings(array(
       'countChildPosts' => empty($_POST['countChildPosts']) ? '0' : '1',
       'recycle_enable' => empty($_POST['recycle_enable']) ? '0' : '1',
@@ -446,16 +454,19 @@ function EditBoardSettings(){global $context, $txt, $db_prefix, $sourcedir, $mod
 
   // Get a list of boards.
   $context['boards'] = array();
+
   $request = db_query("
     SELECT b.ID_BOARD, b.name AS bName
     FROM {$db_prefix}boards AS b", __FILE__, __LINE__);
-  while ($row = mysqli_fetch_assoc($request))
+
+  while ($row = mysqli_fetch_assoc($request)) {
     $context['boards'][] = array(
       'id' => $row['ID_BOARD'],
       'name' => $row['bName'],
       'is_recycle' => !empty($modSettings['recycle_board']) && $modSettings['recycle_board'] == $row['ID_BOARD'],
-
     );
+  }
+
   mysqli_free_result($request);
 
   init_inline_permissions(array('manage_boards'), array(-1));

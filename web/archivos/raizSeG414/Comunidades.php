@@ -1,9 +1,11 @@
 <?php
-//Pagina de Rodrigo Zaupa (rigo@casitaweb.net)
-if (!defined('CasitaWeb!-PorRigo'))die(base64_decode("d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv"));
+// Página de Rodrigo Zaupa (rigo@casitaweb.net)
+if (!defined('CasitaWeb!-PorRigo')) {
+  die(base64_decode('d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv'));
+}
 
 function Comunidades() {
-  global $context, $user_settings, $sourcedir, $txt,$db_prefix,$urlSep;
+  global $context, $user_settings, $sourcedir, $txt, $db_prefix, $urlSep;
 
   loadTemplate('Comunidades');
 
@@ -22,7 +24,7 @@ function Comunidades() {
     'tops' => 'tops',
     'buscar' => 'buscar',
   );
-    
+
   if (!isset($_GET['m']) || !isset($context['all_pages'][$_GET['m']])) {
     $_GET['m'] = 'index';
   }
@@ -30,10 +32,10 @@ function Comunidades() {
   $context['current_page'] = $_GET['m'];
   $context['sub_template'] = $context['all_pages'][$context['current_page']];
 
-  if ($context['current_page']== 'ecomunidad') {
+  if ($context['current_page'] == 'ecomunidad') {
     is_not_guest();
 
-    $id = seguridad($_GET['comun']);
+    $id = isset($_GET['comun']) ? seguridad($_GET['comun']) : '';
 
     if (empty($id)) {
       fatal_error('Debes seleccionar una comunidad.');
@@ -43,7 +45,7 @@ function Comunidades() {
       SELECT c.id, c.nombre, c.descripcion, c.acceso, c.permiso, c.url, c.imagen, c.categoria, c.aprobar, ca.url AS urlCat, ca.nombre AS nombreCat
       FROM {$db_prefix}comunidades AS c, {$db_prefix}comunidades_categorias AS ca
       WHERE c.url = '$id'
-      AND c.categoria = ca.url
+      AND c.categoria = ca.id
       LIMIT 1", __FILE__, __LINE__);
 
     while ($row = mysqli_fetch_assoc($rs)) {
@@ -61,7 +63,8 @@ function Comunidades() {
     }
 
     $context['page_title'] = 'Editar comunidad';
-    $context['COMediTidvb'] = isset($context['COMediTidvb']) ?  $context['COMediTidvb'] : '';
+    $context['COMediTidvb'] = isset($context['COMediTidvb']) ? $context['COMediTidvb'] : '';
+
     if (empty($context['COMediTidvb'])) {
       fatal_error('Debes seleccionar una comunidad.');
     }
@@ -72,18 +75,18 @@ function Comunidades() {
     if (empty($context['permisoCom'])) {
       fatal_error('No tenes permiso para editar esta comunidad.');
     }
-  } else if($context['current_page']== 'articulo') {
-    $context['coMid']= isset($_GET['tema']) ? (int) $_GET['tema'] : 0;
+  } else if ($context['current_page'] == 'articulo') {
+    $context['coMid'] = isset($_GET['tema']) ? (int) $_GET['tema'] : 0;
 
     if (empty($_SESSION['idddd'][$context['coMid']])) {
       db_query("
         UPDATE {$db_prefix}comunidades_articulos
         SET visitas = visitas + 1
-        WHERE id = '{$context['coMid']}'
+        WHERE id = {$context['coMid']}
         LIMIT 1", __FILE__, __LINE__);
 
       $_SESSION['idddd'][$context['coMid']] = '1';
-   }
+    }
 
     $rs44 = db_query("
       SELECT
@@ -95,23 +98,24 @@ function Comunidades() {
       INNER JOIN {$db_prefix}comunidades_categorias AS b ON c.categoria = b.id
       AND a.id_user = m.ID_MEMBER
       LIMIT 1", __FILE__, __LINE__);
+
     while ($row = mysqli_fetch_assoc($rs44)) {
       $context['coMtitulo'] = $row['titulo'];
       $context['coMtitulo2'] = $row['titulo'];
-      $context['coMcuerpo']=parse_bbc($row['cuerpo']);
-      $context['coMdasdasd']=$row['id'];
-      $context['coMeliminado']=$row['eliminado'];
-      $context['coMurl']=$row['url'];
-      $context['coMrealName']=$row['realName'];
+      $context['coMcuerpo'] = parse_bbc($row['cuerpo']);
+      $context['coMdasdasd'] = $row['id'];
+      $context['coMeliminado'] = $row['eliminado'];
+      $context['coMurl'] = $row['url'];
+      $context['coMrealName'] = $row['realName'];
       $context['coMimg'] = nohtml($row['avatar']);
-      $context['coMvbvbvki']=$row['id_user'];
-      $context['coMvisitas']=$row['visitas'];
-      $context['coMcreado']=hace($row['creado']);
-      $context['coMstiky']=$row['stiky'];
-      $context['coMnocoment']=$row['nocoment'];
-      $context['coMcalificacion']=$row['calificacion'];
-      $context['coMnombre']=$row['nombre'];
-      $context['coMurl2']=$row['url2'];
+      $context['coMvbvbvki'] = $row['id_user'];
+      $context['coMvisitas'] = $row['visitas'];
+      $context['coMcreado'] = hace($row['creado']);
+      $context['coMstiky'] = $row['stiky'];
+      $context['coMnocoment'] = $row['nocoment'];
+      $context['coMcalificacion'] = $row['calificacion'];
+      $context['coMnombre'] = $row['nombre'];
+      $context['coMurl2'] = $row['url2'];
       $context['coMcnam'] = $row['cnam'];
     }
 
@@ -122,27 +126,33 @@ function Comunidades() {
     $titulo = $context['coMtitulo'] ? $context['coMtitulo'] : $txt[18];
     $context['page_title'] = $titulo;
 
-    include($sourcedir.'/FuncionesCom.php');
+    require_once($sourcedir . '/FuncionesCom.php');
     baneadoo($context['coMdasdasd']);
     permisios($context['coMdasdasd']);
     acces($context['coMdasdasd']);
     bloqueado($context['coMdasdasd']);
     miembro($context['coMdasdasd']);
 
-    if(empty($context['coMdasdasd'])){fatal_error('Este tema esta eliminado.');}
+    if (empty($context['coMdasdasd'])) {
+      fatal_error('Este tema esta eliminado.');
+    }
 
-    if($context['coMeliminado']){
-    if($context['permisoCom']=='1' || $context['permisoCom']=='3' || $context['permisoCom']=='2'){
-    $styleboteditartema=' display:none; ';
-    $styleboteliminartema=' display:none; ';
-    $stylebotreactivartema=' display:inline; ';  
-    $context['postEliAdm']='<div class="noesta" style="margin-bottom:8px;width:922px;" id="tel">Este tema esta eliminado.</div>';}
-    else{fatal_error('Este tema esta eliminado.');}}
-    else{$styleboteditartema=' display:inline; ';
-    $styleboteliminartema=' display:inline; ';
-    $stylebotreactivartema=' display:none; ';}
-    $context['botonesCom']='<input class="login" style="font-size: 11px;'.$styleboteditartema.'" value="Editar tema" title="Editar tema" onclick="location.href=\'/comunidades/editar-tema/'.$context['coMid'].'\'" type="button" id="edt" /> <input class="login" style="font-size: 11px;'.$styleboteliminartema.'" value="Eliminar tema" title="Eliminar tema" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este tema?\')) return false;location.href=\'/web/cw-comunidadesEliTem.php?id='.$context['coMid'].'\'" type="button" id="elt" /> <input class="login" style="font-size: 11px;'.$stylebotreactivartema.'" value="Reactivar tema" title="Reactivar tema" onclick="if (!confirm(\'\xbfEstas seguro que desea reactivar este tema?\')) return false; reacTemas(\''.$context['coMid'].'\');" type="button" id="rect" />';
-  } else if($context['current_page']== 'index') {
+    if ($context['coMeliminado']) {
+      if ($context['permisoCom'] == 1 || $context['permisoCom'] == 3 || $context['permisoCom'] == 2) {
+        $styleboteditartema = ' display:none; ';
+        $styleboteliminartema = ' display:none; ';
+        $stylebotreactivartema = ' display:inline; ';
+        $context['postEliAdm'] = '<div class="noesta" style="margin-bottom: 8px; width: 922px;" id="tel">Este tema est&aacute; eliminado.</div>';
+      } else {
+        fatal_error('Este tema est&aacute; eliminado.');
+      }
+    } else {
+      $styleboteditartema = ' display:inline; ';
+      $styleboteliminartema = ' display:inline; ';
+      $stylebotreactivartema = ' display:none; ';
+    }
+    $context['botonesCom'] = '<input class="login" style="font-size: 11px;' . $styleboteditartema . '" value="Editar tema" title="Editar tema" onclick="location.href=\'' . $boardurl . '/comunidades/editar-tema/' . $context['coMid'] . '\'" type="button" id="edt" /> <input class="login" style="font-size: 11px;' . $styleboteliminartema . '" value="Eliminar tema" title="Eliminar tema" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este tema?\')) return false;location.href=\'/web/cw-comunidadesEliTem.php?id=' . $context['coMid'] . '\'" type="button" id="elt" /> <input class="login" style="font-size: 11px;' . $stylebotreactivartema . '" value="Reactivar tema" title="Reactivar tema" onclick="if (!confirm(\'\xbfEstas seguro que desea reactivar este tema?\')) return false; reacTemas(\'' . $context['coMid'] . '\');" type="button" id="rect" />';
+  } else if ($context['current_page'] == 'index') {
     require_once($sourcedir . '/FuncionesCom.php');
 
     if ($context['comuid']) {
@@ -160,9 +170,9 @@ function Comunidades() {
         $context['ivvvaar'] = $row['bloquear'];
         $context['ddddsaaat'] = $row['id'];
         $context['UserName'] = $row['UserName'];
-        $context['descecat'] = nohtml($row['descripcion']);   
-        $context['fecha'] = timeformat($row['fecha_inicio']);  
-        $context['cat'] = nohtml($row['nombre']); 
+        $context['descecat'] = nohtml($row['descripcion']);
+        $context['fecha'] = timeformat($row['fecha_inicio']);
+        $context['cat'] = nohtml($row['nombre']);
         $context['caturl'] = nohtml($row['url']);
       }
 

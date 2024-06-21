@@ -1,5 +1,5 @@
 <?php
-//Pagina de Rodrigo Zaupa (rigo@casitaweb.net)
+// Página de Rodrigo Zaupa (rigo@casitaweb.net)
 if (!defined('CasitaWeb!-PorRigo')) {
   die(base64_decode('d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv'));
 }
@@ -10,7 +10,7 @@ function Admin() {
 
   isAllowedTo(array('admin_forum', 'manage_permissions', 'moderate_forum', 'manage_membergroups', 'manage_bans', 'send_mail', 'edit_news', 'manage_boards', 'manage_smileys', 'manage_attachments'));
   adminIndex('index');
-    
+
   $request = db_query("
     SELECT ID_MEMBER, realName
     FROM {$db_prefix}members
@@ -20,7 +20,7 @@ function Admin() {
   $context['administrators'] = array();
 
   while ($row = mysqli_fetch_assoc($request)) {
-    $context['administrators'][] = '<a href="' . $boardurl . '/perfil/'.$row['realName'].'" title="'.$row['realName'].'">'.$row['realName'].'</a>';
+    $context['administrators'][] = '<a href="' . $boardurl . '/perfil/' . $row['realName'] . '" title="' . $row['realName'] . '">' . $row['realName'] . '</a>';
   }
 
   mysqli_free_result($request);
@@ -31,6 +31,7 @@ function Admin() {
     WHERE ID_GROUP = 2", __FILE__, __LINE__);
 
   $context['moderadores'] = array();
+
   while ($row = mysqli_fetch_assoc($request2)) {
     $context['moderadores'][] = array(
       'realName' => $row['realName']

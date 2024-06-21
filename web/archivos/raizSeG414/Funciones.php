@@ -14,6 +14,7 @@ function tiempo1($fecha) {
 }
 
 function tiempo2($fecha) {
+  $fecha = intval($fecha);
   // $mesesano2 = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
   $mesesano2 = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
   $diames2 = date('j', $fecha);
@@ -1004,6 +1005,7 @@ function achicars($valor) {
 
 // Tiempo
 function hace($valor) {
+  // var_dump($valor);
   $formato_defecto = "H:i:s j-n-Y";
   $date = getEnglishDateFormat($valor);
   $ht = time() - $date->getTimestamp();
@@ -1359,16 +1361,25 @@ function cw_header() {
 }
 
 function getEnglishDateFormat($str_date) {
+  // var_dump($str_date);
+  $str_date = trim($str_date);
+
   // Formato 1: 2024-06-14 12:16:15
   $pattern1 = '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/';
 
   // Formato 2: 1660338149
   $pattern2 = '/^\d{10}$/';
 
-  // Formato 3: 
-  $pattern3 = '/^(Enero|Febrero|Marzo|Abril|Mayo|Junio|Julio|Agosto|Septiembre|Octubre|Noviembre|Diciembre) \d{1,2}, \d{4}, \d{2}:\d{2}:\d{2}$/';
+  // Formato 3: Septiembre 11, 2008, 07:51:09 pm
+  $pattern3 = '/^(Enero|Febrero|Marzo|Abril|Mayo|Junio|Julio|Agosto|Septiembre|Octubre|Noviembre|Diciembre) \d{1,2}, \d{4}, \d{2}:\d{2}:\d{2} (am|pm)$/i';
 
-  if (preg_match($pattern1, $str_date)) {
+  // Formato 4: Septiembre 11, 2008, 07:51:09
+  $pattern4 = '/^(Enero|Febrero|Marzo|Abril|Mayo|Junio|Julio|Agosto|Septiembre|Octubre|Noviembre|Diciembre) \d{1,2}, \d{4}, \d{2}:\d{2}:\d{2}$/';
+
+  // Formato 5: 25-09-2008, 12:35:41
+  $pattern5 = '/^\d{2}-\d{2}-\d{4}, \d{2}:\d{2}:\d{2}$/';
+
+  if (preg_match($pattern1, $str_date) || preg_match($pattern5, $str_date)) {
     return new DateTime($str_date);
   }
 
@@ -1378,7 +1389,7 @@ function getEnglishDateFormat($str_date) {
     return new DateTime('@' . $str_date);
   }
 
-  if (preg_match($pattern3, $str_date)) {
+  if (preg_match($pattern3, $str_date) || preg_match($pattern4, $str_date)) {
     $months = array(
       'Enero' => 'January',
       'Febrero' => 'February',
@@ -1409,7 +1420,7 @@ function getEnglishDateFormat($str_date) {
   }
 }
 
-function getEstudios($mode = '') {
+function getEstudios($mode = '', $key = '') {
   $estudios = [
     '' => 'Sin respuesta',
     'sin' => 'Sin estudios',
@@ -1426,14 +1437,14 @@ function getEstudios($mode = '') {
   switch ($mode) {
     case 'keys':
       return array_keys($estudios);
-    case 'values':
-      return array_values($estudios);
+    case 'value':
+      return $estudios[$key];
     default:
       return $estudios;
   }
 }
 
-function getIngresos($mode = '') {
+function getIngresos($mode = '', $key = '') {
   $ingresos = [
     '' => 'Sin respuesta',
     'sin' => 'Sin ingresos',
@@ -1445,14 +1456,14 @@ function getIngresos($mode = '') {
   switch ($mode) {
     case 'keys':
       return array_keys($ingresos);
-    case 'values':
-      return array_values($ingresos);
+    case 'value':
+      return $ingresos[$key];
     default:
       return $ingresos;
   }
 }
 
-function getMeGustarias($mode = '') {
+function getMeGustarias($mode = '', $key = '') {
   $me_gustaria = [
     '' => 'Sin respuesta',
     'hacer_amigos' => 'Hacer amigos',
@@ -1465,14 +1476,14 @@ function getMeGustarias($mode = '') {
   switch ($mode) {
     case 'keys':
       return array_keys($me_gustaria);
-    case 'values':
-      return array_values($me_gustaria);
+    case 'value':
+      return $me_gustaria[$key];
     default:
       return $me_gustaria;
   }
 }
 
-function getEstados($mode = '') {
+function getEstados($mode = '', $key = '') {
   $estados = [
     '' => 'Sin respuesta',
     'soltero' => 'Soltero(a)',
@@ -1486,14 +1497,14 @@ function getEstados($mode = '') {
   switch ($mode) {
     case 'keys':
       return array_keys($estados);
-    case 'values':
-      return array_values($estados);
+    case 'value':
+      return $estados[$key];
     default:
       return $estados;
   }
 }
 
-function getHijos($mode = '') {
+function getHijos($mode = '', $key = '') {
   $hijos = [
     '' => 'Sin respuesta',
     'no' => 'No tengo',
@@ -1506,14 +1517,14 @@ function getHijos($mode = '') {
   switch ($mode) {
     case 'keys':
       return array_keys($hijos);
-    case 'values':
-      return array_values($hijos);
+    case 'value':
+      return $hijos[$key];
     default:
       return $hijos;
   }
 }
 
-function getColoresPelo($mode = '') {
+function getColoresPelo($mode = '', $key = '') {
   $colores = [
     '' => 'Sin respuesta',
     'negro' => 'Negro',
@@ -1531,14 +1542,14 @@ function getColoresPelo($mode = '') {
   switch ($mode) {
     case 'keys':
       return array_keys($colores);
-    case 'values':
-      return array_values($colores);
+    case 'value':
+      return $colores[$key];
     default:
       return $colores;
   }
 }
 
-function getColoresOjos($mode = '') {
+function getColoresOjos($mode = '', $key = '') {
   $colores = [
     '' => 'Sin respuesta',
     'negros' => 'Negros',
@@ -1551,14 +1562,14 @@ function getColoresOjos($mode = '') {
   switch ($mode) {
     case 'keys':
       return array_keys($colores);
-    case 'values':
-      return array_values($colores);
+    case 'value':
+      return $colores[$key];
     default:
       return $colores;
   }
 }
 
-function getComplexiones($mode = '') {
+function getComplexiones($mode = '', $key = '') {
   $complexiones = [
     '' => 'Sin respuesta',
     'delgado' => 'Delgado(a)',
@@ -1571,14 +1582,14 @@ function getComplexiones($mode = '') {
   switch ($mode) {
     case 'keys':
       return array_keys($complexiones);
-    case 'values':
-      return array_values($complexiones);
+    case 'value':
+      return $complexiones[$key];
     default:
       return $complexiones;
   }
 }
 
-function getDietas($mode = '') {
+function getDietas($mode = '', $key = '') {
   $dietas = [
     '' => 'Sin respuesta',
     'vegetariana' => 'Vegetariana',
@@ -1591,14 +1602,14 @@ function getDietas($mode = '') {
   switch ($mode) {
     case 'keys':
       return array_keys($dietas);
-    case 'values':
-      return array_values($dietas);
+    case 'value':
+      return $dietas[$key];
     default:
       return $dietas;
   }
 }
 
-function getFumos($mode = '') {
+function getFumos($mode = '', $key = '') {
   $fumos = [
     '' => 'Sin respuesta',
     'no' => 'No',
@@ -1611,15 +1622,15 @@ function getFumos($mode = '') {
   switch ($mode) {
     case 'keys':
       return array_keys($fumos);
-    case 'values':
-      return array_values($fumos);
+    case 'value':
+      return $fumos[$key];
     default:
       return $fumos;
   }
 }
 
 
-function getAlcoholes($mode = '') {
+function getAlcoholes($mode = '', $key = '') {
   $alcoholes = [
     '' => 'Sin respuesta',
     'no' => 'No',
@@ -1632,8 +1643,8 @@ function getAlcoholes($mode = '') {
   switch ($mode) {
     case 'keys':
       return array_keys($alcoholes);
-    case 'values':
-      return array_values($alcoholes);
+    case 'value':
+      return $alcoholes[$key];
     default:
       return $alcoholes;
   }
@@ -1656,6 +1667,27 @@ function getUsername($id) {
     $row = mysqli_fetch_assoc($request);
 
     return $row['realName'];
+  }
+}
+
+function getAvatar($id) {
+  global $db_prefix, $no_avatar;
+
+  $request = db_query("
+    SELECT avatar
+    FROM {$db_prefix}members
+    WHERE ID_MEMBER = $id
+    LIMIT 1", __FILE__, __LINE__);
+
+  $rows = mysqli_num_rows($request);
+
+  if ($rows == 0) {
+    return $no_avatar;
+  } else {
+    $row = mysqli_fetch_assoc($request);
+    $avatar = $row['avatar'];
+
+    return !empty($avatar) ? $avatar : $no_avatar;
   }
 }
 

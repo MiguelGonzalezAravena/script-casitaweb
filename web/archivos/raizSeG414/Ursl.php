@@ -1,37 +1,29 @@
 <?php
 
-function urls($url) {// Tranformamos todo a minusculas
+function urls($url) {
+  // Transformar todo a minÃºsculas
+  $url = strtolower($url);
 
-$url = strtolower($url);
+  // Reemplazar caracteres especiales latinos
+  $url = str_replace('&quot;', '', $url);
+  $find = array('Ã¡', 'Ã©', 'Ã­', 'Ã³', 'Ãº', 'Ã±');
+  $repl = array('a', 'e', 'i', 'o', 'u', 'n');
+  $url = str_replace($find, $repl, $url);
+  $finfg = array('<', '>');
+  $repgf = array('', '');
+  $url = str_replace($find, $repl, $url);
 
-//Rememplazamos caracteres especiales latinos
+  // AÃ±adir guiones
+  $find = array(' ', '&', '\r\n', '\n', '+');
+  $url = str_replace($find, '-', $url);
 
-$url = str_replace ("&quot;", "", $url);
-$find = array('á', 'é', 'í', 'ó', 'ú', 'ñ');
+  // Eliminar y reemplazar otros caracteres especiales
+  $find = array('/[^a-z0-9\-<>]/', '/[\-]+/', '/<[^>]*>/');
+  $repl = array('', '-', '');
+  $url = preg_replace($find, $repl, $url);
+  $url = trim($url);
 
-$repl = array('a', 'e', 'i', 'o', 'u', 'n');
-
-$url = str_replace ($find, $repl, $url);
-
-$finfg = array('<', '>');
-
-$repgf = array('', '');
-
-$url = str_replace ($find, $repl, $url);
-
-// Añaadimos los guiones
-
-$find = array(' ', '&', '\r\n', '\n', '+');
-$url = str_replace ($find, '-', $url);
-
-// Eliminamos y Reemplazamos demás caracteres especiales
-
-$find = array('/[^a-z0-9\-<>]/', '/[\-]+/', '/<[^>]*>/');
-
-$repl = array('', '-', '');
-
-$url = preg_replace ($find, $repl, $url);
-$url=trim($url);
-return $url; }
+  return $url;
+}
 
 ?>
