@@ -25,7 +25,7 @@ drawSocialLinks = function(oContainers){
       var l,i,socialList = [], socialHtm='';
       var t = $('h1').eq(0).text();
       var u = window.location.href;
-    var iconDirectory = '/images';
+    var iconDirectory = boardUrl + '/images';
      var socialMedia = [
       {linkText: 'Del-icio-us', icon:'del',href:'http://del.icio.us/post?url='+u+'&title='+t},
       {linkText: 'Google', icon:'google',href:'http://www.google.com/bookmarks/mark?op=edit&bkmk='+u},
