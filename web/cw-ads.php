@@ -20,17 +20,17 @@ echo '
         <body>';
 
 if ($tamanio == '300250') {
-  echo 'Publicidad de 300x250';
+  echo '300x250';
 } else if ($tamanio == '120600') {
-  echo 'Publicidad de 120x600';
+  echo '120x600';
 } else if ($tamanio == '46860') {
-  echo 'Publicidad de 468x60';
+  echo '468x60';
 } else if ($tamanio == '72890') {
-  echo 'Publicidad de 728x90';
+  echo '728x90';
 } else if ($tamanio == '23460') {
-  echo 'Publicidad de 234x60';
+  echo '234x60';
 } else if ($tamanio == '160600') {
-  echo 'Publicidad de 160x600';
+  echo '160x600';
 }
 
 echo '

@@ -547,7 +547,6 @@ function menuser($user) {
     <span title="' . (!empty($membergropu2) ? $membergropu2 : $membergropu) . '">
       <img alt="" src="' . str_replace("1#rangos", "$tranfer1/rangos", $medalla) . '" />
     </span>
-    &nbsp;
     <span title="' . sexo1($context['gender']) . '">'. sexo2($context['gender']) . '</span>';
 
   if ($context['usertitle']) {
@@ -557,7 +556,7 @@ function menuser($user) {
   }
 
   if (!$context['user']['is_guest']) {
-    echo '&nbsp;<a href="' . $boardurl . '/web/cw-TEMPenviarMP.php?user=' . $context['memberName'] . '" title="Enviar MP a ' . $context['memberName'] . '" class="boxy" ><img alt="" src="' . $tranfer1 . '/icons/mensaje_para.gif" border="0" /></a>';
+    echo '&nbsp;<a href="' . $boardurl . '/web/cw-TEMPenviarMP.php?user=' . $context['memberName'] . '" title="Enviar MP a ' . $context['memberName'] . '" class="boxy"><img alt="" src="' . $tranfer1 . '/icons/mensaje_para.gif" border="0" /></a>';
   }
 
   echo '

@@ -19,17 +19,23 @@ $imagen = isset($_POST['imagen']) ? seguridad($_POST['imagen']) : '';
 $cat = isset($_POST['categoria']) ? seguridad($_POST['categoria']) : '';
 
 if (!$user_settings['ID_GROUP']) {
-  if ($user_settings['ID_POST_GROUP'] == 4) {
+  if ($user_settings['ID_POST_GROUP'] == 4) { 
+    // ID: 4 - Turista
     $cantidadcom = 1;
   } else if ($user_settings['ID_POST_GROUP'] == 5) {
+    // ID: 5 - Conocido
     $cantidadcom = 2;
   } else if ($user_settings['ID_POST_GROUP'] == 9) {
+    // ID: 9 - Vecino
     $cantidadcom = 4;
   } else if ($user_settings['ID_POST_GROUP'] == 10) {
+    // ID: 10 - Amigo
     $cantidadcom = 6;
   } else if ($user_settings['ID_POST_GROUP'] == 6) {
+    // ID: 6 - Familiar
     $cantidadcom = 8;
   } else if ($user_settings['ID_POST_GROUP'] == 8) {
+    // ID: 8 - Casero
     $cantidadcom = 10;
   }
 } else if ($user_settings['ID_GROUP']) {
