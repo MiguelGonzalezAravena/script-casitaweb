@@ -18,6 +18,21 @@ $url = isset($_POST['shortname']) ? seguridad($_POST['shortname']) : '';
 $imagen = isset($_POST['imagen']) ? seguridad($_POST['imagen']) : '';
 $cat = isset($_POST['categoria']) ? seguridad($_POST['categoria']) : '';
 
+/*
+ * ID_GROUP | Nombre
+ * 4. Turista
+ * 5. Conocido
+ * 9. Vecino
+ * 10. Amigo
+ * 6. Familiar
+ * 8. Casero
+ * ---
+ * 7. Abastecedor
+ * 11. Heredero
+ * 2. Hermano Mayor
+ * 1. Padre
+ */
+
 if (!$user_settings['ID_GROUP']) {
   if ($user_settings['ID_POST_GROUP'] == 4) { 
     // ID: 4 - Turista
@@ -116,7 +131,7 @@ $request = db_query("
 
 $comunidades_categorias = mysqli_num_rows($request);
 $category = mysqli_fetch_assoc($request);
-$id_category  = $category['id'];
+$id_category = $category['id'];
 
 if ($comunidades_categorias == 0) {
   fatal_error('Esta categor&iacuet;a no existe.');
