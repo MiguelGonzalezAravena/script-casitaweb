@@ -799,7 +799,7 @@ function template_vr2965() {
 
       echo '<a href="javascript:moticonup()">[m&aacute;s]</a>
               <br />
-              <input class="login" name="post" id="post" value="Enviar Comentario" onclick="return errorrojo(this.form.cuerpo_comment.value);" tabindex="2" type="submit" />
+              <input class="login" name="post" id="post" value="Enviar comentario" onclick="return errorrojo(this.form.cuerpo_comment.value);" tabindex="2" type="submit" />
               <input name="id_post" value="' . $getid . '" type="hidden" />
             </p>
             <div style="clear: left;"></div>

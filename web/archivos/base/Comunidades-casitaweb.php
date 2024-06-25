@@ -822,7 +822,7 @@ LIMIT 1", __FILE__, __LINE__);
         textaer();
 
         echo '<br />
-<input class="login" type="button" id="button_comentar" value="Enviar Comentario" onclick="ComComentar(' . $context['coMid'] . '); return false;" tabindex="2" /></p>
+<input class="login" type="button" id="button_comentar" value="Enviar comentario" onclick="ComComentar(' . $context['coMid'] . '); return false;" tabindex="2" /></p>
 <div style="display:none;text-align:right;" id="gif_cargando_add_comment"><img src="' . $tranfer1 . '/icons/cargando.gif" alt="" /></div>
 </form>
 

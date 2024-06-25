@@ -293,7 +293,7 @@ WHERE ID_MEMBER='{$context['user_ID']}'", __FILE__, __LINE__);
 <center><div class="msg_add_comment"></div></center>
 <div style="clear: left;margin-bottom:2px"></div>';
       theme_quickreply_box();
-      echo '<br/><input class="login" type="button" id="button_add_comment" value="Enviar Comentario" onclick="add_comment(\'' . $context['id-post'] . "', '" . ($context['numcom'] + 1) . '\'); return false;" tabindex="2" /><div style="display:none;text-align:right;" id="gif_cargando_add_comment"><img alt="" src="' . $tranfer1 . '/icons/cargando.gif" alt="" /></div></p>
+      echo '<br/><input class="login" type="button" id="button_add_comment" value="Enviar comentario" onclick="add_comment(\'' . $context['id-post'] . "', '" . ($context['numcom'] + 1) . '\'); return false;" tabindex="2" /><div style="display:none;text-align:right;" id="gif_cargando_add_comment"><img alt="" src="' . $tranfer1 . '/icons/cargando.gif" alt="" /></div></p>
 <div style="clear: left;"></div>
 
 </form></div>

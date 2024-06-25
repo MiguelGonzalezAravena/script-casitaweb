@@ -673,7 +673,7 @@ function recomendarPost(id) {
       $('#contenidoEP').remove();
       $('#resultadoEP').css('display', 'block');
 
-      if (h.charAt(0) == 0){
+      if (h.charAt(0) == 0) {
         // Datos incorrectos
         $('#resultadoEP').addClass('noesta');
         $('#resultadoEP').html(h.substring(3)).fadeIn('fast');
@@ -872,7 +872,7 @@ function del_mp_env(id) {
         $('#imgel_' + id).hide();
         $('#imgerr_' + id).fadeIn('fast');
       } else if (h.charAt(0) == 1) {
-        $('#mp_'+ id).addClass('eliminado');
+        $('#mp_' + id).addClass('eliminado');
         $('#imgel_' + id).hide();
 
         if (parseInt($('#cantidad-MP2').html()) == '1') {
@@ -916,7 +916,7 @@ function del_coment_post(id, post) {
           $('#nrocoment').html(parseInt($('#nrocoment').html()) - 1);
         }
 
-        $('#cmt_'+ id).hide();
+        $('#cmt_' + id).hide();
       }					
     },
     error: function() {
@@ -927,12 +927,12 @@ function del_coment_post(id, post) {
 
 // Comentar un comentario del muro
 function comentarCcmuro(id) {
-  $('#cargandoCC_'+id).css('display', 'block');
+  $('#cargandoCC_' + id).css('display', 'block');
 
   $.ajax({
     type: 'POST',
     url: boardUrl + '/web/cw-comentarMurocc.php',
-    data: 'id=' + id + '&quediche=' + $('#textareaCC_'+id).val(),
+    data: 'id=' + id + '&quediche=' + $('#textareaCC_' + id).val(),
     success: function(h) {
       if (h.charAt(0) == 0) {
         $('#comentarCC_' + id).hide();
@@ -978,7 +978,7 @@ function del_coment_img(id, img) {
           $('#nrocoment').html(parseInt($('#nrocoment').html()) - 1);
         }
 
-        $('#cmt_'+ id ).hide();
+        $('#cmt_' + id ).hide();
       }
     },
     error: function() {
@@ -1029,7 +1029,7 @@ function del_comentCC_muro(id) {
       }
     },
     error: function() {
-      $('#SETcto_'+id).remove();
+      $('#SETcto_' + id).remove();
       Boxy.alert('Error, volver a intentar...', null, { title: 'Alerta' });
     }
   });
@@ -1271,9 +1271,9 @@ function EliminarAmistad(user, id) {
     url: '/web/cw-AmistadBorrar.php',
     data: 'user=' + user,
     success: function(h) {
-      $('#amig_'+id).css('display', 'none');
-      $('#error_'+id).html(h.substring(3));
-      $('#error_'+id).css('display', 'block');
+      $('#amig_' + id).css('display', 'none');
+      $('#error_' + id).html(h.substring(3));
+      $('#error_' + id).css('display', 'block');
     },
     error: function() {
       Boxy.alert('Error, volver a intentar...', null, { title: 'Alerta' });
