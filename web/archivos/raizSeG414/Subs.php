@@ -513,9 +513,6 @@ function timeformat($logTime, $show_today = true) {
   // Format any other characters.
   return (new DateTime())->setTimestamp($time)->format(str_replace('%', '', $str));
 }
-/*
-*/
-
 
 function un_htmlspecialchars($string) {
   return strtr($string, array_flip(get_html_translation_table(HTML_SPECIALCHARS, ENT_QUOTES)) + array('&#039;' => "'", '&nbsp;' => ' '));

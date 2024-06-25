@@ -1360,8 +1360,8 @@ function cw_header() {
 }
 
 function getEnglishDateFormat($str_date) {
-  // var_dump($str_date);
   $str_date = trim($str_date);
+  // var_dump($str_date);
 
   // Formato 1: 2024-06-14 12:16:15
   $pattern1 = '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/';
@@ -1370,7 +1370,7 @@ function getEnglishDateFormat($str_date) {
   $pattern2 = '/^\d{10}$/';
 
   // Formato 3: Septiembre 11, 2008, 07:51:09 pm
-  $pattern3 = '/^(Enero|Febrero|Marzo|Abril|Mayo|Junio|Julio|Agosto|Septiembre|Octubre|Noviembre|Diciembre) \d{1,2}, \d{4}, \d{2}:\d{2}:\d{2} (am|pm)$/i';
+  $pattern3 = '/^(Enero|Febrero|Marzo|Abril|Mayo|Junio|Julio|Agosto|Septiembre|Octubre|Noviembre|Diciembre) \d{1,2}, \d{4}, \d{2}:\d{2}:\d{2} (am|pm|AM|PM)$/i';
 
   // Formato 4: Septiembre 11, 2008, 07:51:09
   $pattern4 = '/^(Enero|Febrero|Marzo|Abril|Mayo|Junio|Julio|Agosto|Septiembre|Octubre|Noviembre|Diciembre) \d{1,2}, \d{4}, \d{2}:\d{2}:\d{2}$/';
@@ -1383,8 +1383,6 @@ function getEnglishDateFormat($str_date) {
   }
 
   if (preg_match($pattern2, $str_date)) {
-    // $date = date('Y-m-d H:i:s', intval($str_date));
-    // return new DateTime($date);
     $date = new DateTime();
     $date->setTimestamp($str_date);
     return $date;
