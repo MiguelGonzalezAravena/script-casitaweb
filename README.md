@@ -1,4 +1,8 @@
-# Script de www.casitaweb.net
+<p align="center" width="100%">
+  <img style="background-color: #FFFFFF; border-radius: 8px" width="60%" src="https://raw.githubusercontent.com/MiguelGonzalezAravena/script-casitaweb/master/logos/logo.gif" />
+</p>
+<hr />
+
 ![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white)
 ![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
@@ -23,6 +27,10 @@ El siguiente script fue arreglado para que funcione con PHP `8.1.0`.
 4. Importar archivo `casitaweb.sql`.
 5. Configurar archivo `config-seg-cw1983.php` con credenciales a base de datos, URL del dominio donde se va a instalar el script.
 6. Disfrutar tu página clon de [CasitaWeb](http://www.casitaweb.net/).
+
+## Pendientes
+
+Para revisar los temas que se encuentran pendientes, se puede revisar el archivo [TODO.md](https://github.com/MiguelGonzalezAravena/script-casitaweb/blob/master/TODO.md).
 
 ## Créditos
 
