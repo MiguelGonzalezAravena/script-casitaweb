@@ -3,7 +3,7 @@ require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
 global $tranfer1, $context, $db_prefix, $user_info;
 
 if ($user_info['is_guest']) {
-  die('0: Funcionalidad exclusiva para usuarios registrados.');
+  die('0: Funcionalidad exclusiva de usuarios registrados.');
 }
 
 $aLista = isset($_GET['id']) ? (int) $_GET['id'] : 0;

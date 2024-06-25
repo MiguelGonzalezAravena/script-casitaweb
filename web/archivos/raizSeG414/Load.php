@@ -787,7 +787,7 @@ function loadTheme($ID_THEME = 0, $initialize = true) {
     SELECT
       p.ID_BOARD, p.ID_TOPIC, p.puntos, p.subject, p.body, p.ID_MEMBER, p.hiddenOption, p.anuncio, b.ID_BOARD, b.name, b.description,
       p.posterTime, p.smileysEnabled, p.visitas, SUBSTRING(p.body, 1, 300) AS ACsgg, p.posterName, p.eliminado
-    FROM ({$db_prefix}messages AS p)
+    FROM {$db_prefix}messages AS p
     INNER JOIN {$db_prefix}boards as b ON p.ID_BOARD = b.ID_BOARD
     AND p.ID_TOPIC = $idtop
     LIMIT 1", __FILE__, __LINE__);

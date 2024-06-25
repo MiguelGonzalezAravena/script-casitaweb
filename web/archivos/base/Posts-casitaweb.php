@@ -240,7 +240,7 @@ WHERE ID_MEMBER='{$context['user_ID']}'", __FILE__, __LINE__);
   if ($context['numcom']) {
     echo '<div class="icon_img" style="float: left; margin-right: 5px;"><a href="/rss/post-comment/' . $context['id-post'] . '"><img alt="" src="' . $tranfer1 . '/icons/cwbig-v1-iconos.gif?v3.2.3" style="cursor:pointer;margin-top:-352px;display:inline;" /></a></div>';
   }
-  echo '<b style="font-size: 14px;">Comentarios (<span id="nrocoment">' . $context['numcom'] . '</span>)</b>';
+  echo '<b style="font-size: 14px;">Comentarios ' . $context['is_locked'] . ' (<span id="nrocoment">' . $context['numcom'] . '</span>)</b>';
 
   echo '<div style="clear: both;margin-bottom: 3px;"></div>';
 

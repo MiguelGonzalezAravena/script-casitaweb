@@ -150,7 +150,7 @@ function EditPicture() {
   global $context, $user_settings, $db_prefix, $txt;
 
   if ($context['user']['is_guest']) {
-    fatal_error('Funcionalidad exclusiva para usuarios registrados.', false);
+    fatal_error('Funcionalidad exclusiva de usuarios registrados.', false);
   }
 
   if (!empty($context['user']['is_guest'])) {

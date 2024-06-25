@@ -3,7 +3,7 @@ require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
 global $user_info, $user_settings, $db_prefix;
 
 if ($user_info['is_guest']) {
-  die('0: Funcionalidad exclusiva para usuarios registrados.');
+  die('0: Funcionalidad exclusiva de usuarios registrados.');
 }
 
 $user = isset($_GET['user']) ? (int) $_GET['user'] : 0;
