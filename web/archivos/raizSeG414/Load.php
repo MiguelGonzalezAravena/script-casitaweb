@@ -488,11 +488,10 @@ function loadMemberData($users, $is_name = false, $set = 'normal')
   return empty($loaded_ids) ? false : $loaded_ids;
 }
 
-function loadMemberContext($user)
-{
+function loadMemberContext($user) {
   global $memberContext, $user_profile, $txt, $scripturl, $user_info;
   global $context, $modSettings, $tranfer1, $ID_MEMBER, $board_info, $settings;
-  global $db_prefix, $func;
+  global $db_prefix, $func, $boardurl;
   static $dataLoaded = array();
 
   if (isset($dataLoaded[$user]))
@@ -537,7 +536,7 @@ function loadMemberContext($user)
     'id' => &$profile['ID_MEMBER'],
     'is_guest' => $profile['ID_MEMBER'] == 0,
     'title' => !empty($modSettings['titlesEnable']) ? $profile['usertitle'] : '',
-    'href' => '/perfi/' . $profile['realName'],
+    'href' => $boardurl . '/perfi/' . $profile['realName'],
     'link' => '<a href="/perfi/' . $profile['realName'] . '" title="' . $txt[92] . ' ' . $profile['realName'] . '">' . $profile['realName'] . '</a>',
     'email' => &$profile['emailAddress'],
     'hide_email' => $profile['emailAddress'] == '' || (!empty($modSettings['guest_hideContacts']) && $user_info['is_guest']) || (!empty($profile['hideEmail']) && !empty($modSettings['allow_hideEmail']) && !allowedTo('moderate_forum') && $ID_MEMBER != $profile['ID_MEMBER']),

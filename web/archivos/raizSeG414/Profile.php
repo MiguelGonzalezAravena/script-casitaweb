@@ -105,12 +105,14 @@ function ModifyProfile($post_errors = array()) {
 
   $context['require_password'] = in_array($context['menu_item_selected'], array('account'));
 
+  $test = (new DateTime())->setTimestamp(1185962400)->format('Y-m-d');
+  var_dump($test);
   $context['member'] = array(
     'id' => $memID,
     'name' => !isset($user_profile[$memID]['realName']) || $user_profile[$memID]['realName'] == '' ? '' : $user_profile[$memID]['realName'],
     'email' => $user_profile[$memID]['emailAddress'],
     'posts' => empty($user_profile[$memID]['posts']) ? 0 : (int) $user_profile[$memID]['posts'],
-    'registered' => empty($user_profile[$memID]['dateRegistered']) ? $txt[470] : strftime('%Y-%m-%d', $user_profile[$memID]['dateRegistered'] + ($user_info['time_offset'] + $modSettings['time_offset']) * 3600),
+    'registered' => empty($user_profile[$memID]['dateRegistered']) ? $txt[470] : (new DateTime())->setTimestamp($user_profile[$memID]['dateRegistered'] + ($user_info['time_offset'] + $modSettings['time_offset']) * 3600)->format('Y-m-d'),
     'group' => $user_profile[$memID]['ID_GROUP'],
     'gender' => array('name' => empty($user_profile[$memID]['gender']) ? '' : ($user_profile[$memID]['gender'] == 2 ? 'f' : 'm')),
     'avatar' => array(

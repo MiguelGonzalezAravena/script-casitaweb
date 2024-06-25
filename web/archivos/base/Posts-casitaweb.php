@@ -268,9 +268,9 @@ WHERE ID_MEMBER='{$context['user_ID']}'", __FILE__, __LINE__);
 
 </span></div>';
     }
-    echo '<div id="no_comentarios" class="noesta" style="width: 774px;display:none;">Este post no tiene comentarios.-</div>';
+    echo '<div id="no_comentarios" class="noesta" style="width: 774px;display:none;">Este post no tiene comentarios.</div>';
   } else {
-    echo '<div id="no_comentarios" class="noesta" style="width: 774px;">Este post no tiene comentarios.-</div>';
+    echo '<div id="no_comentarios" class="noesta" style="width: 774px;">Este post no tiene comentarios.</div>';
   }
   echo '<div id="return_agregar_comentario" style="display:none;"></div>';
 

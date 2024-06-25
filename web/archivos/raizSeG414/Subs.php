@@ -386,6 +386,8 @@ function comma_format($number, $override_decimal_count = false) {
   return number_format($number, is_float($number) ? ($override_decimal_count === false ? $decimal_count : $override_decimal_count) : 0, $decimal_separator, $thousands_separator);
 }
 
+// DEPRECADO
+/*
 function timeformat($logTime, $show_today = true) {
   global $user_info, $txt, $db_prefix, $modSettings, $func;
 
@@ -422,20 +424,98 @@ function timeformat($logTime, $show_today = true) {
 
   if (setlocale(LC_TIME, $txt['lang_locale'])) {
     foreach (array('%a', '%A', '%b', '%B') as $token)
-      if (strpos($str, $token) !== false)
-        $str = str_replace($token, ucwords(strftime($token, $time)), $str);
+      if (strpos($str, $token) !== false) {
+        // DEPRECADO
+        // $str = str_replace($token, ucwords(strftime($token, $time)), $str);
+        $str = str_replace($token, ucwords((new DateTime())->setTimestamp($time)->format($token)), $str);
+      }
   } else {
     // Do-it-yourself time localization.  Fun.
     foreach (array('%a' => 'days_short', '%A' => 'days', '%b' => 'months_short', '%B' => 'months') as $token => $text_label)
-      if (strpos($str, $token) !== false)
-        $str = str_replace($token, $txt[$text_label][(int) strftime($token === '%a' || $token === '%A' ? '%w' : '%m', $time)], $str);
+      if (strpos($str, $token) !== false) {
+        // DEPRECADO
+        // $str = str_replace($token, $txt[$text_label][(int) strftime($token === '%a' || $token === '%A' ? '%w' : '%m', $time)], $str);
+        $dateTime = (new DateTime())->setTimestamp($time);
+        $format = ($token === '%a' || $token === '%A') ? 'w' : 'm';
+        $index = (int) $dateTime->format($format);
+        $str = str_replace($token, $txt[$text_label][$index], $str);
+      }
     if (strpos($str, '%p'))
       $str = str_replace('%p', (strftime('%H', $time) < 12 ? 'am' : 'pm'), $str);
   }
 
   // Format any other characters..
-  return strftime($str, $time);
+  return (new DateTime())->setTimestamp($time)->format(str_replace('%', '', $str));
 }
+/*
+*/
+
+/* Actualizado */
+function timeformat($logTime, $show_today = true) {
+  global $user_info, $txt, $modSettings, $func;
+
+  $logTime = getEnglishDateFormat($logTime);
+  $logTime = $logTime->getTimestamp();
+
+  $time = $logTime + ($user_info['time_offset'] + $modSettings['time_offset']) * 3600;
+
+  if ($time < 0) {
+    $time = 0;
+  }
+  
+  // Today and Yesterday?
+  if ($modSettings['todayMod'] >= 1 && $show_today === true) {
+    // Get the current time.
+    $nowtime = forum_time();
+
+    $then = (new DateTime())->setTimestamp($time);
+    $now = (new DateTime())->setTimestamp($nowtime);
+
+    // Try to make something of a time format string...
+    $s = strpos($user_info['time_format'], '%S') === false ? '' : ':%S';
+    if (strpos($user_info['time_format'], '%H') === false && strpos($user_info['time_format'], '%T') === false) {
+      $today_fmt = '%I:%M' . $s . ' %p';
+    } else {
+      $today_fmt = '%H:%M' . $s;
+    }
+    
+    if ($then->format('z') == $now->format('z') && $then->format('Y') == $now->format('Y')) {
+      return $txt['smf10'] . timeformat($logTime, $today_fmt);
+    }
+
+    if ($modSettings['todayMod'] == '2' && (($then->format('z') == $now->format('z') - 1 && $then->format('Y') == $now->format('Y')) || ($now->format('z') == 0 && $then->format('Y') == $now->format('Y') - 1 && $then->format('m') == 12 && $then->format('d') == 31))) {
+      return $txt['smf10b'] . timeformat($logTime, $today_fmt);
+    }
+  }
+
+  $str = !is_bool($show_today) ? $show_today : $user_info['time_format'];
+
+  if (setlocale(LC_TIME, $txt['lang_locale'])) {
+    foreach (array('%a', '%A', '%b', '%B') as $token)
+      if (strpos($str, $token) !== false) {
+        $str = str_replace($token, ucwords((new DateTime())->setTimestamp($time)->format($token)), $str);
+      }
+  } else {
+    // Do-it-yourself time localization.  Fun.
+    foreach (array('%a' => 'days_short', '%A' => 'days', '%b' => 'months_short', '%B' => 'months') as $token => $text_label)
+      if (strpos($str, $token) !== false) {
+        $dateTime = (new DateTime())->setTimestamp($time);
+        $format = ($token === '%a' || $token === '%A') ? 'w' : 'm';
+        $index = (int) $dateTime->format($format);
+        $str = str_replace($token, $txt[$text_label][$index], $str);
+      }
+    if (strpos($str, '%p') !== false) {
+      $am_pm = (new DateTime())->setTimestamp($time)->format('A');
+      $str = str_replace('%p', $am_pm, $str);
+    }
+  }
+
+  // Format any other characters.
+  return (new DateTime())->setTimestamp($time)->format(str_replace('%', '', $str));
+}
+/*
+*/
+
 
 function un_htmlspecialchars($string) {
   return strtr($string, array_flip(get_html_translation_table(HTML_SPECIALCHARS, ENT_QUOTES)) + array('&#039;' => "'", '&nbsp;' => ' '));
@@ -3356,7 +3436,10 @@ function trackStats($stats = array()) {
       $cache_stats[$field] = 1;
   }
 
-  $date = strftime('%Y-%m-%d', forum_time(false));
+  // DEPRECADO
+  // $date = strftime('%Y-%m-%d', forum_time(false));
+  $date = (new DateTime())->setTimestamp(forum_time(false))->format('Y-m-d');
+
   db_query("
     UPDATE {$db_prefix}log_activity
     SET" . substr($setStringUpdate, 0, -1) . "

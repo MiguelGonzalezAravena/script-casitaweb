@@ -1385,7 +1385,9 @@ function getEnglishDateFormat($str_date) {
   if (preg_match($pattern2, $str_date)) {
     // $date = date('Y-m-d H:i:s', intval($str_date));
     // return new DateTime($date);
-    return new DateTime('@' . $str_date);
+    $date = new DateTime();
+    $date->setTimestamp($str_date);
+    return $date;
   }
 
   if (preg_match($pattern3, $str_date) || preg_match($pattern4, $str_date)) {

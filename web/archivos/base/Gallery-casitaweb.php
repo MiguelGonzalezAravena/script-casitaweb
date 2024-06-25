@@ -313,7 +313,7 @@ WHERE ID_MEMBER='{$context['gallery_pic']['ID_MEMBER']}'", __FILE__, __LINE__);
   $nwesdas = $context['firma'];
   if (!empty($nwesdas) && empty($options['show_no_signatures'])) {
     echo '<div class="box_390" style="margin-top:8px;"><div class="box_title" style="width:384px;"><div class="box_txt box_390-34">Firma</div><div class="box_rss"><img alt="" src="' . $tranfer1 . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="width: 376px; padding: 4px;">';
-    echo '<div class="fimaFIX"><b class="size11">' . censorText(str_replace('if(this.width >720) {this.width=720}', 'if(this.width > 375) {this.width=375}', str_replace('class="imagen"', 'class="imagen-firma"', parse_bbc($nwesdas)))) . '</b>';
+    echo '<div class="fimaFIX"><b class="size11">' . str_replace('if(this.width >720) {this.width=720}', 'if(this.width > 375) {this.width=375}', str_replace('class="imagen"', 'class="imagen-firma"', parse_bbc($nwesdas))) . '</b>';
     echo '</div></div></div>';
   }
   echo '</div>';
@@ -372,12 +372,12 @@ WHERE ID_MEMBER='{$context['gallery_pic']['ID_MEMBER']}'", __FILE__, __LINE__);
   }
 
   if (!$context['sin_coment']) {
-    echo '<div id="no_comentarios" class="noesta" style="width: 774px;">Esta imagen no tiene comentarios.-</div>';
+    echo '<div id="no_comentarios" class="noesta" style="width: 774px;">Esta imagen no tiene comentarios.</div>';
   } else {
-    echo '<div id="no_comentarios" class="noesta" style="width: 774px;display:none;">Esta imagen no tiene comentarios.-</div>';
+    echo '<div id="no_comentarios" class="noesta" style="width: 774px; display: none;">Esta imagen no tiene comentarios.</div>';
   }
 
-  echo '<div id="return_agregar_comentario" style="display:none;"></div>';
+  echo '<div id="return_agregar_comentario" style="display: none;"></div>';
 
   echo '<div class="errorDelCom" style="display:hide;width: 774px;"></div>
 </div>
