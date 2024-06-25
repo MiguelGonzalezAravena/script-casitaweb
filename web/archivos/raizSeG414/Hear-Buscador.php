@@ -1,21 +1,22 @@
 <?php
 function hearBuscador($mm, $dd) {
-  global $txt, $tranfer1, $scripturl, $db_prefix, $modSettings, $user_info, $context, $mbname;
+  global $txt, $tranfer1, $scripturl, $db_prefix, $modSettings, $user_info, $context, $mbname, $boardurl;
 
   $_GET['q'] = isset($_GET['q']) ? $_GET['q'] : '';
   $_GET['autor'] = isset($_GET['autor']) ? $_GET['autor'] : '';
   $_GET['palabra'] = isset($_GET['palabra']) ? $_GET['palabra'] : '';
   $_GET['categoria'] = isset($_GET['categoria']) ? $_GET['categoria'] : '';
   $_GET['orden'] = isset($_GET['orden']) ? $_GET['orden'] : '';
+  $stylen = '';
 
   if (!$mm) {
     $activo = ' class="here"';
     $activo2 = ' href=""';
     $activo3 = '';
-    $activo4 = ' href="/buscar-com.php?q=' . trim(decodeurl($_GET['q'])) . '&autor=' . trim(decodeurl($_GET['autor'])) . '&buscador_tipo=c&tipoc=1"';
+    $activo4 = ' href="' . $boardurl . '/buscar-com.php?q=' . trim(decodeurl($_GET['q'])) . '&autor=' . trim(decodeurl($_GET['autor'])) . '&buscador_tipo=c&tipoc=1"';
 
     if ($dd == 'g') {
-      $accion = '/buscargoogle.php';
+      $accion = $boardurl . '/buscargoogle.php';
       $quee = 'google';
       $hereg = 'class="here"';
       $herecw = '';
@@ -24,7 +25,7 @@ function hearBuscador($mm, $dd) {
       $cat = '0';
       $order = '0';
     } else if ($dd == 't') {
-      $accion = '/buscartags.php';
+      $accion = $boardurl . '/buscartags.php';
       $quee = 'tags';
       $herecw = '';
       $hereg = '';
@@ -33,7 +34,7 @@ function hearBuscador($mm, $dd) {
       $cat = '1';
       $order = '1';
     } else {
-      $accion = '/buscar.php';
+      $accion = $boardurl . '/buscar.php';
       $quee = 'cw';
       $herecw = 'class="here"';
       $hereg = '';
@@ -74,7 +75,7 @@ function hearBuscador($mm, $dd) {
         var enlace = tipo;
       } 
               
-      $('form[name="buscador"]').attr('action', '/buscar' + enlace + '.php');
+      $('form[name="buscador"]').attr('action', '<?php echo $boardurl; ?>/buscar' + enlace + '.php');
 
       // Sólo hago los cambios visuales si no envia consulta
       // Cambio here en <a />
@@ -96,7 +97,8 @@ function hearBuscador($mm, $dd) {
         $('#filterorder').hide();
         $('input[name="buscador_tipo"]').val('g');
         $('#agregarG').append('<input name="cof" value="FORID:10" type="hidden" /><input name="cx" value="015978274333592990658:r0qy7erzrbw" type="hidden" /><input name="ie" value="UTF-8" type="hidden" /><input name="sa" value="Buscar" type="hidden" />');
-      } else if (this.tipo=='google'){ //El anterior fue google
+      } else if (this.tipo == 'google') {
+        // El anterior fue Google
         $('input[name="cx"]').remove();
         $('input[name="cof"]').remove();
         $('input[name="sa"]').remove();
@@ -121,7 +123,7 @@ function hearBuscador($mm, $dd) {
 <?php
   } else if ($mm) {
     if ($dd == 't') {
-      $accion = '/buscar-com.php';
+      $accion = $boardurl . '/buscar-com.php';
       $quee = 'temas';
       $hereg = 'class="here"';
       $autor = '1';
@@ -129,7 +131,7 @@ function hearBuscador($mm, $dd) {
       $order = '1';
     } else if ($dd == 'c') {
       $hereg = '';
-      $accion = '/buscar-com.php';
+      $accion = $boardurl . '/buscar-com.php';
       $quee = 'comunidades';
       $heret = 'class="here"';
       $autor = '1';
@@ -143,7 +145,7 @@ function hearBuscador($mm, $dd) {
       <a ' . $heret . ' id="selen_comunidades" href="javascript:buscador.select(\'comunidades\')">Comunidades</a>';
 
     $activo = '';
-    $activo2 = ' href="/buscar.php?q=' . trim(decodeurl($_GET['q'])) . '&buscador_tipo=c"';
+    $activo2 = ' href="' . $boardurl . '/buscar.php?q=' . trim(decodeurl($_GET['q'])) . '&buscador_tipo=c"';
     $activo3 = ' class="here"';
     $activo4 = ' href=""';
 
@@ -158,7 +160,7 @@ var buscador = {
     }
 
     // Cambio de action form
-    $('form[name="buscador"]').attr('action', '/buscar-com.php');
+    $('form[name="buscador"]').attr('action', '<?php echo $boardurl; ?>/buscar-com.php');
  
     if (tipo == 'temas') {
       $('#buscador_tipo').val('t');
@@ -233,6 +235,7 @@ var buscador = {
   } else {
     $shas = '';
   }
+
   $request = db_query("
     SELECT ID_BOARD, description, name
     FROM {$db_prefix}boards

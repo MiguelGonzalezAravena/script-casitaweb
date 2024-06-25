@@ -196,12 +196,12 @@ function template_main() {
 
     <div class="act_comments">
       <div class="box_title" style="width:361px;">
-        <div class="box_txt ultimos_comments">TOPs Tags <span style="font-size:9px;">(<a href="/tags/"
+        <div class="box_txt ultimos_comments">TOPs Tags <span style="font-size:9px;">(<a href="<?php echo $boardurl; ?>/tags/"
               title="Nube de Tags">Nube de Tags</a>)</span></div>
-        <div class="box_rss"><img alt="" src="<?php echo $tranfer1; ?>/blank.gif" style="width:16px;height:16px;"
+        <div class="box_rss"><img alt="" src="<?php echo $tranfer1; ?>/blank.gif" style="width: 16px; height: 16px;"
             border="0" /></div>
       </div>
-      <div class="windowbg" style="width: 353px; padding:4px;margin-bottom:8px;font-size:11px;">
+      <div class="windowbg" style="width: 353px; padding: 4px; margin-bottom: 8px; font-size: 11px;">
         <center>
           <?php
   $fontmax = 20;
@@ -248,7 +248,7 @@ function template_main() {
     $tamanio = (int) ($fontmin + (($value - $elemento_menor) * $font_step));
     $asfff = ++$asdas;
     $paltag = strtolower(str_replace('%', '', $key));
-    echo '<a href="/tags/' . $paltag . '" style="font-size:' . $tamanio . 'pt;margin-right:2px;margin-bottom:2px;" title="' . $value . ' post con el tag ' . $paltag . '">' . $paltag . '</a>&nbsp;';
+    echo '<a href="' . $boardurl . '/tags/' . $paltag . '" style="font-size:' . $tamanio . 'pt;margin-right:2px;margin-bottom:2px;" title="' . $value . ' post con el tag ' . $paltag . '">' . $paltag . '</a>&nbsp;';
     if ($asfff == 5)
       echo '<br />';
     if ($asfff == 10)

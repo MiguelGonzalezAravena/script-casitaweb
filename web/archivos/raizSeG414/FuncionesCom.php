@@ -833,8 +833,9 @@ function resultados($tipo) {
       $RegistrosAMostrar = $modSettings['search_results_per_page'];
       $pag = isset($_GET['pag']) ? (int) $_GET['pag'] : 0;
 
-      if (isset($pag)) {
-        $RegistrosAEmpezar = ($pag - 1) * $RegistrosAMostrar;
+      if ($pag != 0) {
+        $calc = ($pag - 1) * $RegistrosAMostrar;
+        $RegistrosAEmpezar = $calc < 0 ? 0 : $calc;
         $PagAct = $pag;
       } else {
         $RegistrosAEmpezar = 0;

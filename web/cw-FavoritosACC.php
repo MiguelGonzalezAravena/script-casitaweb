@@ -1,83 +1,187 @@
-<?php require("cw-conexion-seg-0011.php");
-global $context, $settings,$db_prefix, $scripturl, $txt, $user_settings,$user_info, $tranfer1;
-$tipo=$_GET['tipo'];
-if($tipo=='imagen'){$tip='imagen';}else{$tip='posts';}
-$myser=$user_settings['ID_MEMBER'];
-if($tip=='posts'){$idcc='0';}elseif($tip=='imagen'){$idcc='1';}else{$idcc='0';}
-if(!$user_info['is_admin']){$shas=' AND p.ID_BOARD<>142';}else{$shas='';}
-if($idcc=='0'){$topicw=$_GET['post'];}
-elseif($idcc=='1'){$topicw=$_GET['kjas'];}
-if($topicw){$topic='topic';}else{$topic='';}
+<?php
+require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
+global $context, $settings, $db_prefix, $scripturl, $txt, $user_settings, $user_info, $tranfer1, $ID_MEMBER, $boardurl;
 
-if($topic=='topic'){
-if(empty($topicw)){die('0: Debes seleccionar el favorito a agregar.-');}
-if($user_info['is_guest']){die('0: Solo usuarios registrados pueden agregar favoritos.-');}else{
-$limpio=(int) $topicw;
-if(!$idcc){
-$sffss=mysqli_num_rows(db_query("
-SELECT p.ID_TOPIC,p.tipo,p.ID_MEMBER
-FROM ({$db_prefix}bookmarks AS p)
-WHERE p.ID_TOPIC='$limpio' AND p.tipo=0 AND p.ID_MEMBER='$myser'", __FILE__, __LINE__));
-if($sffss){die('0: Este post ya est&aacute; en tus favoritos.-');}
+$tipo = $_GET['tipo'];
+$tip = $tipo == 'imagen' ? 'imagen' : 'posts';
+$myser = $ID_MEMBER;
+$idcc = ($tip == 'posts' ? 0 : ($tip == 'imagen' ? 1 : 0));
 
-$dss3ss=mysqli_num_rows(db_query("
-SELECT p.ID_TOPIC,p.ID_MEMBER
-FROM ({$db_prefix}messages AS p)
-WHERE p.ID_TOPIC='$limpio'$shas AND p.ID_MEMBER='$myser'", __FILE__, __LINE__));
-if($dss3ss){die('0: No puedes agregar a favoritos tus posts.-');}}
+if (!$user_info['is_admin']) {
+  $shas = ' AND p.ID_BOARD <> 142';
+} else {
+  $shas = '';
+}
 
-elseif($idcc){
-$sffss=mysqli_num_rows(db_query("
-SELECT p.ID_TOPIC,p.tipo,p.ID_MEMBER
-FROM ({$db_prefix}bookmarks AS p)
-WHERE p.ID_TOPIC='$limpio' AND p.tipo=1 AND p.ID_MEMBER='$myser'", __FILE__, __LINE__));
-if($sffss){die('0: Esta imagen ya est&aacute; en tus favoritos.-');}
+$topicw = ($idcc == 0 ? (int) $_GET['post'] : ($idcc == 1 ? (int) $_GET['kjas'] : 0));
+$topic = $topicw != 0 ? 'topic' : '';
 
-$dss3ss=mysqli_num_rows(db_query("
-SELECT p.ID_PICTURE,p.ID_MEMBER
-FROM ({$db_prefix}gallery_pic AS p)
-WHERE p.ID_PICTURE='$limpio' AND p.ID_MEMBER='$myser'", __FILE__, __LINE__));
-if($dss3ss){die('0: No puedes agregar a favoritos tus im&aacute;genes.-');}}
+if ($user_info['is_guest']) {
+  die('0: Funcionalidad exclusiva de usuarios registrados.');
+}
 
-if(!$idcc){
-$sadasd33=db_query("
-SELECT p.ID_TOPIC,p.ID_MEMBER,b.description,p.subject
-FROM ({$db_prefix}messages AS p,{$db_prefix}boards AS b)
-WHERE p.ID_TOPIC='$limpio' AND b.ID_BOARD=p.ID_BOARD$shas", __FILE__, __LINE__);
-while($red=mysqli_fetch_array($sadasd33)){$idss=$red['ID_TOPIC'];$idMen=$red['ID_MEMBER'];$subject=$red['subject'];$description=$red['description'];}
-if(empty($idss)){die('0: El post seleccionado no existe.-');}
-$fecha=time();
-db_query("INSERT INTO {$db_prefix}bookmarks (ID_MEMBER,ID_TOPIC,tipo) VALUES ('$myser','$idss','0')", __FILE__, __LINE__);
+if($topic != 'topic') {
+  // Eliminar favorito
+  $id = isset($_GET['eliminar']) ? (int) $_GET['eliminar'] : 0;
 
-if ($myser <> $idMen) {
-  $url = '/post/' . $idss . '/' . $description . '/' . urls($subject) . '.html';
-db_query("INSERT INTO {$db_prefix}notificaciones (url,que,a_quien,por_quien) VALUES ('$url','6','$idMen','$myser')", __FILE__, __LINE__);
-db_query("UPDATE {$db_prefix}members SET notificacionMonitor=notificacionMonitor+1 WHERE ID_MEMBER='$idMen' LIMIT 1", __FILE__, __LINE__);}
+  if ($id > 0) {
+    $request = db_query("
+      SELECT *
+      FROM {$db_prefix}bookmarks
+      WHERE id = $id
+      LIMIT 1", __FILE__, __LINE__);
 
-die('1: Agregado a favoritos!');
+    $rows = mysqli_num_rows($request);
 
-}elseif($idcc){
+    if ($rows == 0) {
+      die('0: El favorito que quieres eliminar no existe.');
+    }
 
-$sadasd33=db_query("
-SELECT p.ID_PICTURE,p.ID_MEMBER
-FROM ({$db_prefix}gallery_pic AS p)
-WHERE p.ID_PICTURE='$limpio'
-LIMIT 1", __FILE__, __LINE__);
-while($red=mysqli_fetch_array($sadasd33)){$idss=$red['ID_PICTURE'];$idMen=$red['ID_MEMBER'];}
-if(empty($idss)){die('0: La imagen seleccionada no existe.-');}
-$fecha=time();
+    db_query("
+      DELETE FROM {$db_prefix}bookmarks
+      WHERE id = $id
+      AND ID_MEMBER = $myser", __FILE__, __LINE__);
 
-db_query("INSERT INTO {$db_prefix}bookmarks (ID_MEMBER,ID_TOPIC,tipo) VALUES ('$myser','$idss','1')", __FILE__, __LINE__);
-if($myser<>$idMen){$url='/imagenes/ver/'.$idss;
-db_query("INSERT INTO {$db_prefix}notificaciones (url,que,a_quien,por_quien) VALUES ('$url','7','$idMen','$myser')", __FILE__, __LINE__);
-db_query("UPDATE {$db_prefix}members SET notificacionMonitor=notificacionMonitor+1 WHERE ID_MEMBER='$idMen' LIMIT 1", __FILE__, __LINE__);}
-die('1: Agregado a favoritos!');
+    die('1: Favorito eliminado exitosamente.');
+  }
+} else if ($topic == 'topic') {
+  if ($topicw == 0) {
+    die('0: Debes seleccionar el favorito a agregar.');
+  }
 
+  // Verificar si el post o imagen ya existe en tus favoritos y si es que eres dueño o no del mismo
+  if (!$idcc) {
+    // Post
+    $request = db_query("
+      SELECT ID_TOPIC, tipo, ID_MEMBER
+      FROM {$db_prefix}bookmarks
+      WHERE ID_TOPIC = $topicw
+      AND tipo = 0
+      AND ID_MEMBER = $myser", __FILE__, __LINE__);
 
-}}}else{
-$sa=(int)$_GET['eliminar'];
-if(!empty($sa)){
-if($context['user']['is_guest']){die('Error.-');}else{
-db_query("DELETE FROM {$db_prefix}bookmarks WHERE id='$sa' AND ID_MEMBER='$myser'", __FILE__, __LINE__);
-die('1: ');
-}}} ?>
+    $rows = mysqli_num_rows($request);
+
+    if ($rows) {
+      die('0: Este post ya est&aacute; en tus favoritos.');
+    }
+
+    $request = db_query("
+      SELECT ID_TOPIC, ID_MEMBER
+      FROM {$db_prefix}messages
+      WHERE ID_TOPIC = $topicw
+      $shas
+      AND ID_MEMBER = $myser", __FILE__, __LINE__);
+
+    $rows = mysqli_num_rows($request);
+
+    if ($rows) {
+      die('0: No puedes agregar a favoritos tus posts.');
+    }
+
+  } else if ($idcc) {
+    // Imagen
+    $request = db_query("
+      SELECT ID_TOPIC, tipo, ID_MEMBER
+      FROM {$db_prefix}bookmarks
+      WHERE ID_TOPIC = $topicw
+      AND tipo = 1
+      AND ID_MEMBER = $myser", __FILE__, __LINE__);
+
+    $rows = mysqli_num_rows($request);
+
+    if ($rows) {
+      die('0: Esta imagen ya est&aacute; en tus favoritos.');
+    }
+
+    $request = db_query("
+      SELECT ID_PICTURE, ID_MEMBER
+      FROM {$db_prefix}gallery_pic
+      WHERE ID_PICTURE = $topicw
+      AND ID_MEMBER = $myser", __FILE__, __LINE__);
+
+    $rows = mysqli_num_rows($request);
+
+    if ($rows) {
+      die('0: No puedes agregar a favoritos tus im&aacute;genes.');
+    }
+  }
+
+  // Agregar a favoritos y enviar notificación a quien corresponda
+  if (!$idcc) {
+    // Post
+    $request = db_query("
+      SELECT p.ID_TOPIC, p.ID_MEMBER, b.description, p.subject
+      FROM {$db_prefix}messages AS p, {$db_prefix}boards AS b
+      WHERE p.ID_TOPIC = $topicw
+      AND b.ID_BOARD = p.ID_BOARD
+      $shas
+      LIMIT 1", __FILE__, __LINE__);
+
+    $row = mysqli_fetch_assoc($request);
+    $idss = $row['ID_TOPIC'];
+    $idMen = $row['ID_MEMBER'];
+    $subject = $row['subject'];
+    $description = $row['description'];
+
+    if (empty($idss)) {
+      die('0: El post seleccionado no existe.');
+    }
+
+    db_query("
+      INSERT INTO {$db_prefix}bookmarks (ID_MEMBER, ID_TOPIC, tipo)
+      VALUES ($myser, $idss, 0)", __FILE__, __LINE__);
+
+    if ($myser != $idMen) {
+      $url = $boardurl . '/post/' . $idss . '/' . $description . '/' . urls($subject) . '.html';
+
+      db_query("
+        INSERT INTO {$db_prefix}notificaciones (url, que, a_quien, por_quien)
+        VALUES ('$url', 6, $idMen, $myser)", __FILE__, __LINE__);
+
+      db_query("
+        UPDATE {$db_prefix}members
+        SET notificacionMonitor = notificacionMonitor + 1
+        WHERE ID_MEMBER = $idMen
+        LIMIT 1", __FILE__, __LINE__);
+    }
+
+    die('1: &iexcl;Agregado a favoritos!');
+  } else if ($idcc) {
+    // Imagen
+    $request = db_query("
+      SELECT ID_PICTURE, ID_MEMBER
+      FROM {$db_prefix}gallery_pic
+      WHERE ID_PICTURE = $topicw
+      LIMIT 1", __FILE__, __LINE__);
+
+    $row = mysqli_fetch_assoc($request);
+    $idss = $row['ID_PICTURE'];
+    $idMen = $row['ID_MEMBER'];
+
+    if (empty($idss)) {
+      die('0: La imagen seleccionada no existe.');
+    }
+
+    db_query("
+      INSERT INTO {$db_prefix}bookmarks (ID_MEMBER, ID_TOPIC, tipo)
+      VALUES ($myser, $idss, 1)", __FILE__, __LINE__);
+
+    if ($myser != $idMen) {
+      $url = $boardurl . '/imagenes/ver/' . $idss;
+
+      db_query("
+        INSERT INTO {$db_prefix}notificaciones (url, que, a_quien, por_quien)
+        VALUES ('$url', 7, $idMen, $myser)", __FILE__, __LINE__);
+
+      db_query("
+        UPDATE {$db_prefix}members
+        SET notificacionMonitor = notificacionMonitor + 1
+        WHERE ID_MEMBER = $idMen
+        LIMIT 1", __FILE__, __LINE__);
+    }
+
+    die('1: &iexcl;Agregado a favoritos!');
+  }
+}
+
+?>

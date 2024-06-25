@@ -839,7 +839,7 @@ function accionAmistad(id, q) {
 function del_favoritos(id) {
   $.ajax({
     type: 'GET',
-    url: '/web/cw-FavoritosACC.php',
+    url: boardUrl + '/web/cw-FavoritosACC.php',
     data: 'eliminar=' + id,
     success: function(h) {
       if (h.charAt(0) == 0) {

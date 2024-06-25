@@ -1,5 +1,5 @@
 <?php
-require_once (dirname(dirname(__FILE__)) . '/raizSeG414/Funciones.php');
+require_once(dirname(dirname(__FILE__)) . '/raizSeG414/Funciones.php');
 
 function template_main() {
   global $tranfer1, $context, $user_settings, $options, $txt, $modSettings, $db_prefix, $boardurl;
@@ -238,9 +238,9 @@ WHERE ID_MEMBER='{$context['user_ID']}'", __FILE__, __LINE__);
 <div style="margin-bottom:8px;margin-top:8px;width:774px;">';
 
   if ($context['numcom']) {
-    echo '<div class="icon_img" style="float: left; margin-right: 5px;"><a href="/rss/post-comment/' . $context['id-post'] . '"><img alt="" src="' . $tranfer1 . '/icons/cwbig-v1-iconos.gif?v3.2.3" style="cursor:pointer;margin-top:-352px;display:inline;" /></a></div>';
+    echo '<div class="icon_img" style="float: left; margin-right: 5px;"><a href="' . $boardurl . '/rss/post-comment/' . $context['id-post'] . '"><img alt="" src="' . $tranfer1 . '/icons/cwbig-v1-iconos.gif?v3.2.3" style="cursor:pointer;margin-top:-352px;display:inline;" /></a></div>';
   }
-  echo '<b style="font-size: 14px;">Comentarios ' . $context['is_locked'] . ' (<span id="nrocoment">' . $context['numcom'] . '</span>)</b>';
+  echo '<b style="font-size: 14px;">Comentarios (<span id="nrocoment">' . $context['numcom'] . '</span>)</b>';
 
   echo '<div style="clear: both;margin-bottom: 3px;"></div>';
 
@@ -287,13 +287,13 @@ WHERE ID_MEMBER='{$context['user_ID']}'", __FILE__, __LINE__);
     if (!$ignorado) {
       echo '<!-- comentar -->
 <div style="clear: left;"></div>
-<div style="margin-bottom:3px;" id="comentar" name="comentar"><b style="font-size: 14px;">Agregar un nuevo comentario</b></div>
+<div style="margin-bottom: 3px;" id="comentar" name="comentar"><b style="font-size: 14px;">Agregar un nuevo comentario</b></div>
 
-<div style="width:774px;"><form name="nuevocoment">
+<div style="width: 774px;"><form name="nuevocoment">
 <center><div class="msg_add_comment"></div></center>
-<div style="clear: left;margin-bottom:2px"></div>';
+<div style="clear: left; margin-bottom: 2px"></div>';
       theme_quickreply_box();
-      echo '<br/><input class="login" type="button" id="button_add_comment" value="Enviar comentario" onclick="add_comment(\'' . $context['id-post'] . "', '" . ($context['numcom'] + 1) . '\'); return false;" tabindex="2" /><div style="display:none;text-align:right;" id="gif_cargando_add_comment"><img alt="" src="' . $tranfer1 . '/icons/cargando.gif" alt="" /></div></p>
+      echo '<br /><input class="login" type="button" id="button_add_comment" value="Enviar comentario" onclick="add_comment(\'' . $context['id-post'] . "', '" . ($context['numcom'] + 1) . '\'); return false;" tabindex="2" /><div style="display:none;text-align:right;" id="gif_cargando_add_comment"><img alt="" src="' . $tranfer1 . '/icons/cargando.gif" alt="" /></div></p>
 <div style="clear: left;"></div>
 
 </form></div>
@@ -301,6 +301,7 @@ WHERE ID_MEMBER='{$context['user_ID']}'", __FILE__, __LINE__);
 <!-- fin comentar -->';
     }
   }
+
   if (!$context['user']['id']) {
     echo '<div style="clear: left;"></div><div class="noesta-am" style="width:774px;margin-top: 5px;">Para poder comentar necesitas estar <a href="' . $boardurl . '/registrarse/" style="color:#FFB600;" title="Registrarse">registrado</a>. Si ya tienes usuario <a href="javascript:irAconectarse();" style="color:#FFB600;" title="Conectarse">&iexcl;con&eacute;ctate!</a></div>';
   }
@@ -316,8 +317,7 @@ WHERE ID_MEMBER='{$context['user_ID']}'", __FILE__, __LINE__);
   }
 }
 
-function template_quickreply_box()
-{
+function template_quickreply_box() {
   global $tranfer1, $context, $settings, $options, $txt, $modSettings;
 
   echo '<textarea id="editorCW" style="resize:none;height:70px; width: 768px;" name="cuerpo_comment" tabindex="1"></textarea><p align="right" style="margin:0px;padding:0px;">';
@@ -332,4 +332,5 @@ function template_quickreply_box()
       echo '<a href="javascript:moticonup()">[', $txt['more_smileys'], ']</a>';
   }
 }
+
 ?>

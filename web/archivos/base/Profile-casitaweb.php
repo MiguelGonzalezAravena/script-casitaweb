@@ -1080,8 +1080,8 @@ LIMIT 10", __FILE__, __LINE__);
     echo '<div class="title-w"><h3>&Uacute;ltimos temas creados</h3></div>
 <ul class="ultimos">';
     while ($row = mysqli_fetch_assoc($request)) {
-      $context['rownombre2'] = nohtml(nohtml2($row['nombre']));
-      $titulo = nohtml(nohtml2($row['titulo']));
+      $context['rownombre2'] = $row['nombre'];
+      $titulo = $row['titulo'];
       if (strlen($titulo) > 45) {
         $cort2 = substr($titulo, 0, 42) . '...';
       } else {
