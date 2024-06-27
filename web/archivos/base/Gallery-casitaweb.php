@@ -122,8 +122,7 @@ WHERE p.ID_MEMBER='$userid' AND p.ID_MEMBER=m.ID_MEMBER", __FILE__, __LINE__));
   echo '</div></div>';
 }
 
-function template_view_picture()
-{
+function template_view_picture() {
   global $tranfer1, $context, $db_prefix, $user_settings, $options, $ID_MEMBER, $modSettings, $ie, $boardurl;
 
   $context['contando'] = mysqli_num_rows(db_query("
@@ -356,10 +355,10 @@ WHERE ID_MEMBER='{$context['gallery_pic']['ID_MEMBER']}'", __FILE__, __LINE__);
     $hora2 = date('H', $coment['fecha']);
     $min2 = date('i', $coment['fecha']);
 
-    echo '<b id="autor_cmnt_' . $coment['id'] . '" user_comment="' . $coment['nomuser'] . '" text_comment=\'' . $coment['comentario2'] . '\'><a href="/perfil/' . $coment['nomuser'] . '" style="color:#956100;">' . $coment['nomuser'] . '</a></b> <span title="' . $diames2 . '.' . $mesesano2[$mesano2] . '.' . $ano2 . ' ' . $hora2 . ':' . $min2 . ':' . $seg2 . '">' . hace($coment['fecha']) . '</span> dijo:</div><div style="float:right;">';
+    echo '<b id="autor_cmnt_' . $coment['id'] . '" user_comment="' . $coment['nomuser'] . '" text_comment=\'' . $coment['comentario2'] . '\'><a href="' . $boardurl . '/perfil/' . $coment['nomuser'] . '" style="color:#956100;">' . $coment['nomuser'] . '</a></b> <span title="' . $diames2 . '.' . $mesesano2[$mesano2] . '.' . $ano2 . ' ' . $hora2 . ':' . $min2 . ':' . $seg2 . '">' . hace($coment['fecha']) . '</span> dijo:</div><div style="float:right;">';
 
     if ($context['user']['is_logged']) {
-      echo '<a href="/web/cw-TEMPenviarMP.php?user=' . $coment['nomuser'] . '" title="Enviar MP a ' . $coment['nomuser'] . '" class="boxy"><img alt="" src="' . $tranfer1 . '/icons/mensaje_para.gif" border="0" /></a>';
+      echo '<a href="' . $boardurl . '/web/cw-TEMPenviarMP.php?user=' . $coment['nomuser'] . '" title="Enviar MP a ' . $coment['nomuser'] . '" class="boxy"><img alt="" src="' . $tranfer1 . '/icons/mensaje_para.gif" border="0" /></a>';
       echo '&#32;<a onclick="citar_comment(' . $coment['id'] . ')" href="javascript:void(0)" title="Citar Comentario"><img alt="" src="' . $tranfer1 . '/comunidades/respuesta.png" class="png" border="0" /></a>';
       if ($context['gallery_pic']['ID_MEMBER'] == $ID_MEMBER || $context['allow_admin']) {
         echo '&#32;<a href="#" onclick="del_coment_img(' . $coment['id'] . ',' . $context['gallery_pic']['ID_PICTURE'] . '); return false;" title="Eliminar Comentario"><img alt="" src="' . $tranfer1 . '/comunidades/eliminar.png" class="png" style="width:16px;height:16px;" border="0" /></a>';

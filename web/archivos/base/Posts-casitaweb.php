@@ -255,7 +255,7 @@ WHERE ID_MEMBER='{$context['user_ID']}'", __FILE__, __LINE__);
         <span title="' . tiempo2($coment['fecha']) . '">' . hace($coment['fecha']) . '</span> dijo:</div><div style="float:right;">';
 
       if ($context['user']['is_logged']) {
-        echo '<a href="/web/cw-TEMPenviarMP.php?user=' . $coment['nomuser'] . '" title="Enviar MP a ' . $coment['nomuser'] . '" class="boxy"><img alt="" src="' . $tranfer1 . '/icons/mensaje_para.gif" border="0" /></a>';
+        echo '<a href="' . $boardurl . '/web/cw-TEMPenviarMP.php?user=' . $coment['nomuser'] . '" title="Enviar MP a ' . $coment['nomuser'] . '" class="boxy"><img alt="" src="' . $tranfer1 . '/icons/mensaje_para.gif" border="0" /></a>';
         if (!$context['is_locked']) {
           echo '&#32;<a onclick="citar_comment(' . $coment['id'] . ')" href="javascript:void(0)" title="Citar Comentario"><img alt="" src="' . $tranfer1 . '/comunidades/respuesta.png" class="png" border="0" /></a>';
         }

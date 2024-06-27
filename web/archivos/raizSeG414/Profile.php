@@ -106,7 +106,7 @@ function ModifyProfile($post_errors = array()) {
   $context['require_password'] = in_array($context['menu_item_selected'], array('account'));
 
   $test = (new DateTime())->setTimestamp(1185962400)->format('Y-m-d');
-  var_dump($test);
+  // var_dump($test);
   $context['member'] = array(
     'id' => $memID,
     'name' => !isset($user_profile[$memID]['realName']) || $user_profile[$memID]['realName'] == '' ? '' : $user_profile[$memID]['realName'],

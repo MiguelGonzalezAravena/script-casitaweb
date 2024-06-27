@@ -713,7 +713,7 @@ LIMIT 1", __FILE__, __LINE__);
     echo '<b class="size15"><a href="' . $boardurl . '/perfil/' . $context['coMrealName'] . '" title="' . $context['coMrealName'] . '">' . $context['coMrealName'] . '</a></b><br />
 ' . $rangoIMG . ' ' . $rango;
     if (!$user_info['is_guest']) {
-      echo '<br /><a href="/web/cw-TEMPenviarMP.php?user=' . $context['coMrealName'] . '" title="Enviar MP a ' . $context['coMrealName'] . '" class="boxy"><img src="' . $tranfer1 . '/icons/mensaje_para.gif" alt="" /> Enviar mensaje privado</a><br />';
+      echo '<br /><a href="' . $boardurl . '/web/cw-TEMPenviarMP.php?user=' . $context['coMrealName'] . '" title="Enviar MP a ' . $context['coMrealName'] . '" class="boxy"><img src="' . $tranfer1 . '/icons/mensaje_para.gif" alt="" /> Enviar mensaje privado</a><br />';
     }
     echo '</td>
 
