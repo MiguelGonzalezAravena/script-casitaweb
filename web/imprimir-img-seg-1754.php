@@ -87,11 +87,11 @@ echo '
         ' . $boardurl . '/imagenes/ver/' . $userdb . '
         <br />
         <hr />
-        <img alt="" onload="if(this.width > 750) {this.width=750}" src="' . $filename . '" title="' . $title . '" />
+        <img alt="" onload="if (this.width > 750) { this.width = 750 }" src="' . $filename . '" title="' . $title . '" />
       </center>
       <center>
         <hr />
-        &copy; ' . date('Y') . ' casitaweb.net
+        &copy; ' . date('Y') . ' ' . $boardurl . '
       </center>
     </body>
   </html>';
