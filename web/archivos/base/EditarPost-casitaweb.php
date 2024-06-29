@@ -1,4 +1,6 @@
-<?php function template_main(){ global $context, $user_settings, $txt,$db_prefix, $modSettings,$tranfer1;
+<?php
+function template_main() {
+    global $context, $user_settings, $txt, $db_prefix, $modSettings, $tranfer1, $boardurl;
 
 if($context['allow_admin']){echo'<script type="text/javascript" src="'.$tranfer1.'/js/?a=3"></script>
 <style type="text/css">#The_colorPicker{position:absolute;width:224px;padding-bottom:1px;background-color:#FFF;border:1px solid #317082;}</style>';}
@@ -47,7 +49,7 @@ var params = \'subject=\' + encodeURIComponent(titulo) + \'&message=\' + encodeU
 
 $.ajax({
             type: "POST",
-            url: \'/web/cw-vistaPrev.php\',
+            url: \'' . $boardurl . '/web/cw-vistaPrev.php\',
 			data: params,
           success: function(h){scrollUp();
           $(\'#preview\').html(h);
@@ -67,7 +69,7 @@ $.ajax({
         });
 </script>';
 
-echo'<form action="/web/cw-PostEditar.php" method="post" accept-charset="'.$context['character_set'].'" name="editarPost" id="editarPost" enctype="multipart/form-data">';
+echo'<form action="' . $boardurl . '/web/cw-PostEditar.php" method="post" accept-charset="'.$context['character_set'].'" name="editarPost" id="editarPost" enctype="multipart/form-data">';
 //previsualizaci�n:
 echo'<div id="preview" style="display:none;width:922px;"></div>';
 //fin previsualizaci�n
