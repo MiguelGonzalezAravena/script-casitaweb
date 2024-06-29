@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-global $user_info, $db_prefix, $user_settings, $ID_MEMBER;
+global $user_info, $db_prefix, $user_settings, $ID_MEMBER, $boardurl;
 
 
 $id = isset($_POST['id_tema']) ? (int) $_POST['id_tema'] : 0;
