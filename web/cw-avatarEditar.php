@@ -24,7 +24,7 @@ if (!$user_info['is_admin'] && $id_user == '1') {
 }
 
 if (strlen($avatars) > 110) {
-  fatal_error('El enlace del avatar no puede ser mayor de <b>110 letras</b><br/>Sube la imagen a <a href="' . $modSettings['host_imagen'] . '">' . $modSettings['host_imagen'] . '</a> que los enlaces son cortos.-');
+  fatal_error('El enlace del avatar no puede ser mayor de <b>110 letras</b><br/>Sube la imagen a <a href="' . $modSettings['host_imagen'] . '">' . $modSettings['host_imagen'] . '</a> que los enlaces son cortos.');
 }
 
 if (empty($avatars)) {

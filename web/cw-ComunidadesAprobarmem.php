@@ -1,27 +1,49 @@
-<?php require("cw-conexion-seg-0011.php"); global $db_prefix,$context,$user_info,$sourcedir,$ID_MEMBER;
-if($user_info['is_guest']){die();}
+<?php
+require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
+global $db_prefix, $context, $user_info, $sourcedir, $ID_MEMBER;
 
-$us=isset($_GET['m']) ? (int)$_GET['m'] : '';
-if(!$us){die();}
+if ($user_info['is_guest']) {
+  die('Funcionalidad exclusiva de usuarios registrados.');
+}
 
-$rss3=db_query("
-SELECT c.id,co.id AS id_com,co.url
-FROM ({$db_prefix}comunidades_miembros AS c, {$db_prefix}comunidades AS co) 
-WHERE c.id='$us' AND c.aprobado='0' AND c.id_com=co.id
-LIMIT 1",__FILE__, __LINE__);
-while ($r2ow=mysqli_fetch_assoc($rss3)){$dddd=$r2ow['id'];$url=$r2ow['url'];$id_com=$r2ow['id_com'];
-include($sourcedir.'/FuncionesCom.php');
+$us = isset($_GET['m']) ? (int) $_GET['m'] : 0;
+
+if (!$us) {
+  die('Debes seleccionar el usuario.');
+}
+
+$request = db_query("
+  SELECT c.id, co.id AS id_com, co.url
+  FROM {$db_prefix}comunidades_miembros AS c, {$db_prefix}comunidades AS co
+  WHERE c.id = $us
+  AND c.id_com = co.id
+  AND c.aprobado = 0
+  LIMIT 1", __FILE__, __LINE__);
+
+$row = mysqli_fetch_assoc($request);
+$dddd = $row['id'];
+$url = $row['url'];
+$id_com = $row['id_com'];
+
+require_once($sourcedir . '/FuncionesCom.php');
 permisios($id_com);
-if($context['permisoCom']==1){ 
-db_query("UPDATE {$db_prefix}comunidades
-			SET usuarios=usuarios+1
-			WHERE id='$id_com'
-			LIMIT 1", __FILE__, __LINE__);
-db_query("UPDATE {$db_prefix}comunidades_miembros
-			SET aprobado='1'
-			WHERE id='$dddd'
-			LIMIT 1", __FILE__, __LINE__);  
-            
-Header("Location: /comunidades/$url/");die();}
-else{die();}}
+
+if ($context['permisoCom'] == 1) {
+  db_query("
+    UPDATE {$db_prefix}comunidades
+    SET usuarios = usuarios + 1
+    WHERE id = $id_com
+    LIMIT 1", __FILE__, __LINE__);
+
+  db_query("
+    UPDATE {$db_prefix}comunidades_miembros
+    SET aprobado = 1
+    WHERE id = $dddd
+    LIMIT 1", __FILE__, __LINE__);
+
+  header(`Location: $boardurl/comunidades/$url/`);
+} else {
+  die('No tienes permisos para realizar esta acci&oacute;n.');
+}
+
 ?>
