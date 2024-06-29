@@ -9,7 +9,7 @@ if (!$id) {
 }
 $rs44 = db_query("
   SELECT c.id, a.nocoment
-  FROM {$db_prefix}members AS m,{$db_prefix}comunidades AS c, {$db_prefix}comunidades_articulos AS a
+  FROM {$db_prefix}members AS m, {$db_prefix}comunidades AS c, {$db_prefix}comunidades_articulos AS a
   WHERE a.id = $id
   AND a.id_com = c.id
   AND a.id_user = m.ID_MEMBER
