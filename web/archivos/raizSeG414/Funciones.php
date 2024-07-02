@@ -918,7 +918,7 @@ function categorias($tipo, $extra = null) {
 function enlaces() {
   global $boardurl;
 
-  echo '
+  return '
     <div align="left" style="margin-bottom: 4px;">
       <a title="Anunciate ac&aacute;" href="' . $boardurl . '/contactanos/" target="_blank" rel="nofollow" class="anuncio">Anunciate ac&aacute;</a>
     </div>
@@ -944,7 +944,7 @@ function destacado() {
   $destacados = array($destacado, $adsense, $adsense1a, $adsense2a, $destacado02, $destacado04);
   $destacados01 = rand(0, sizeof($destacados) - 1);
 
-  echo $destacados[$destacados01];
+  return $destacados[$destacados01];
 }
 
 function updateMensajesEliminados($id = '') {
