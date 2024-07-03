@@ -20,7 +20,7 @@ function template_main() {
             <!-- empiezan los post -->';
 
   foreach ($context['sticky'] as $sticky) {
-    $pag = $_GET['pag'];
+    $pag = isset($_GET['pag']) ? (int) $_GET['pag'] : 0;
 
     if (empty($pag) || $pag == 1) {
       echo '

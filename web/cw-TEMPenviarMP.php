@@ -2,18 +2,18 @@
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
 global $tranfer1, $db_prefix, $context, $settings, $ajaxError, $options, $ID_MEMBER, $scripturl,$modSettings, $txt, $boardurl;
 
+$responder = isset($_GET['responder']) ? (int) $_GET['responder'] : 0;
+
 if (empty($context['ajax'])) {
   echo $ajaxError;
-  die();
+  die('Error de ajax.');
 }
 
 if (empty($ID_MEMBER)) {
-  die();
+  die('Funcionalidad exclusiva de usuarios registrados.');
 }
 
 loadLanguage('Post');
-
-$responder = isset($_GET['responder']) ? (int) $_GET['responder'] : 0;
 
 if (!empty($responder)) {
   $request = db_query("
@@ -23,15 +23,14 @@ if (!empty($responder)) {
     AND id_para = $ID_MEMBER
     LIMIT 1", __FILE__, __LINE__);
 
-  while ($row = mysqli_fetch_assoc($request)) {
-    censorText($row['mensaje']);
+  $row = mysqli_fetch_assoc($request);
+  censorText($row['mensaje']);
 
-    $row['mensaje'] = trim(un_htmlspecialchars(strip_tags(strtr(parse_bbc($row['mensaje'],false), array('<br />' => "\n", '</div>' => "\n", '</li>' => "\n", '&#91;' => '[', '&#93;' => ']')))));
-    $comentario = $row['mensaje'];
-    $fecha = $row['fecha'];
-    $titulo = 'Re: ' . censorText($row['titulo']);
-    $nombre = $row['name_de'];
-  }
+  $row['mensaje'] = trim(un_htmlspecialchars(strip_tags(strtr(parse_bbc($row['mensaje'],false), array('<br />' => "\n", '</div>' => "\n", '</li>' => "\n", '&#91;' => '[', '&#93;' => ']')))));
+  $comentario = $row['mensaje'];
+  $fecha = $row['fecha'];
+  $titulo = 'Re: ' . censorText($row['titulo']);
+  $nombre = $row['name_de'];
 
   mysqli_free_result($request);
 }
