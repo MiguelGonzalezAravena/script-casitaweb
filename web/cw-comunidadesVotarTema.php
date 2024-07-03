@@ -1,50 +1,142 @@
-<?php require("cw-conexion-seg-0011.php"); global $db_prefix,$user_settings;
-if(!$user_settings['ID_MEMBER']){echo'0: <span class="error">Usuario no conectado</span>';}else{
-    
-$voto=trim($_POST['voto']);
-$id=(int)$_POST['tema'];
+<?php
+require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
 
-if(!$id){echo'0: <span class="error">Error2</span>';}else{
-$rs44=db_query("
-SELECT a.calificacion,a.id,a.id_com
-FROM ({$db_prefix}comunidades_articulos AS a)
-WHERE a.id='$id'
-LIMIT 1",__FILE__, __LINE__);
-while($row=mysqli_fetch_assoc($rs44)){
-$id2=$row['id'];
-$id_com=$row['id_com'];
-$def1=$row['calificacion'];}
-include($sourcedir.'/FuncionesCom.php');
+global $db_prefix, $user_settings, $ID_MEMBER;
+
+$voto = isset($_POST['voto']) ? seguridad($_POST['voto']) : '';
+$id = isset($_POST['tema']) ? (int) $_POST['tema'] : 0;
+
+if (!$ID_MEMBER) {
+  die('0: <span class="error">Funcionalidad exclusiva de usuarios registrados.</span>');
+}
+
+if (!$id) {
+  die('0: <span class="error">Debes especificar el tema que deseas votar.</span>');
+}
+
+$request = db_query("
+  SELECT calificacion, id, id_com
+  FROM {$db_prefix}comunidades_articulos
+  WHERE id = $id
+  LIMIT 1", __FILE__, __LINE__);
+
+$row = mysqli_fetch_assoc($request);
+$id2 = isset($row['id']) ? $row['id'] : '';
+$id_com = $row['id_com'];
+$def1 = $row['calificacion'];
+
+mysqli_free_result($request);
+
+require_once($sourcedir . '/FuncionesCom.php');
+
 baneadoo($id_com);
-if(!$id2){echo'0: <span class="error">Error</span>';}else{
-$ya3=mysqli_num_rows(db_query("SELECT m.id_com FROM ({$db_prefix}comunidades_miembros AS m) WHERE m.id_com='$id_com' AND m.id_user='{$user_settings['ID_MEMBER']}' LIMIT 1",__FILE__, __LINE__));
-if(!$ya3){echo'0: <span class="error">No sos miembro la comunidad</span>';}else{    
-    
-$ya=mysqli_num_rows(db_query("SELECT v.id_tema FROM ({$db_prefix}comunidades_votosArts AS v) WHERE v.id_tema='$id' AND v.id_user='{$user_settings['ID_MEMBER']}' LIMIT 1",__FILE__, __LINE__));
-if($ya){echo'0: <span class="error">Ya puntuastes</span>';}else{
-$ya2=mysqli_num_rows(db_query("SELECT a.id FROM ({$db_prefix}comunidades_articulos AS a) WHERE a.id='$id' AND a.id_user='{$user_settings['ID_MEMBER']}' LIMIT 1",__FILE__, __LINE__));
-if($ya2){echo'0: <span class="error">No a tus temas</span>';}else{
 
+if (!$id2) {
+  die('0: <span class="error">El tema especificado no existe.</span>');
+} 
 
-if($voto<'-1'){echo'0: <span class="error">Error</span>';}
-elseif($voto>'1'){echo'0: <span class="error">Error</span>';}
-elseif($voto=='-0'){echo'0: <span class="error">Error</span>';}
-elseif(!$voto){echo'0: <span class="error">Error</span>';}else{
-if($voto=='-1'){$cali=$voto;
-$def=$def1-1;
-}elseif($voto=='1'){$cali='+1';
-$def=$def1+1;}
-else{$cali='-1';
-$def=$def1-1;}
+$request = db_query("
+  SELECT id_com
+  FROM {$db_prefix}comunidades_miembros
+  WHERE id_com = $id_com
+  AND id_user = $ID_MEMBER
+  LIMIT 1", __FILE__, __LINE__);
 
-db_query("  UPDATE {$db_prefix}comunidades_articulos
-			SET calificacion=calificacion$cali
-			WHERE id='$id'
-			LIMIT 1", __FILE__, __LINE__);
-db_query("INSERT INTO {$db_prefix}comunidades_votosArts (id_tema, id_user, cant, fecha ) 
-    VALUES ('$id', '{$user_settings['ID_MEMBER']}', '$cali', ".time().")", __FILE__, __LINE__);
-if(!$def){echo'1: <span class="ok">'.$def.'</span>';}
-elseif($def<0){echo'1: <span class="error">'.$def.'</span>';}
-elseif($def>0){echo'1: <span class="ok">+'.$def.'</span>';}
-}}}}}}}
+$ya3 = mysqli_num_rows($request);
+
+if (!$ya3) {
+  die('0: <span class="error">No eres miembro de la comunidad.</span>');
+}
+
+$request = db_query("
+  SELECT id_tema
+  FROM {$db_prefix}comunidades_articulos_votos
+  WHERE id_tema = $id
+  AND id_user = $ID_MEMBER
+  LIMIT 1", __FILE__, __LINE__);
+
+$ya = mysqli_num_rows($request);
+
+if ($ya) {
+  die('0: <span class="error">Ya puntuaste este tema.</span>');
+}
+
+$request = db_query("
+  SELECT id
+  FROM {$db_prefix}comunidades_articulos
+  WHERE id = $id
+  AND id_user = $ID_MEMBER
+  LIMIT 1", __FILE__, __LINE__);
+
+$ya2 = mysqli_num_rows($request);
+
+if ($ya2) {
+  die('0: <span class="error">No puedes votar tus temas.</span>');
+}
+
+if ($voto < -1) {
+  die('0: <span class="error">El voto no puede ser menor a -1.</span>');
+}
+
+if ($voto > 1) {
+  die('0: <span class="error">El voto no puede ser mayor a 1.</span>');
+}
+
+if ($voto == -0) {
+  die('0: <span class="error">El voto no puede ser igual a -0.</span>');
+}
+
+if (!$voto) {
+  die('0: <span class="error">Debes especificar el voto que quieres dar.</span>');
+}
+
+/*
+if ($voto == -1) {
+  $cali = $voto;
+  $def = $def1 - 1;
+}
+*/
+
+if ($voto == 1) {
+  $cali = '+1';
+  $def = $def1 + 1;
+
+  db_query("
+    UPDATE {$db_prefix}comunidades_articulos
+    SET calificacion = calificacion + 1
+    WHERE id = $id
+    LIMIT 1", __FILE__, __LINE__);
+
+  db_query("
+    INSERT INTO {$db_prefix}comunidades_articulos_votos (id_tema, id_user, cant, fecha)
+    VALUES ($id, $ID_MEMBER, '+1', " . time() . ')', __FILE__, __LINE__);
+}
+
+if ($voto == -1) {
+  $cali = '-1';
+  $def = $def1 - 1;
+
+  db_query("
+    UPDATE {$db_prefix}comunidades_articulos
+    SET calificacion = calificacion - 1
+    WHERE id = $id
+    LIMIT 1", __FILE__, __LINE__);
+
+  db_query("
+    INSERT INTO {$db_prefix}comunidades_articulos_votos (id_tema, id_user, cant, fecha)
+    VALUES ($id, $ID_MEMBER, '-1', " . time() . ')', __FILE__, __LINE__);
+}
+
+if (!$def) {
+  die('1: <span class="ok">' . $def . '</span>');
+}
+
+if ($def < 0) {
+  die('1: <span class="error">' . $def . '</span>');
+}
+
+if ($def > 0) {
+  die('1: <span class="ok">+' . $def . '</span>');
+}
+
 ?>

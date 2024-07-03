@@ -1215,7 +1215,7 @@ var com = {
   tema_votar: function(voto, id) {
     $.ajax({
       type: 'POST',
-      url: '/web/cw-comunidadesVotarTema.php',
+      url: boardUrl + '/web/cw-comunidadesVotarTema.php',
       data: 'voto=' + voto + '&tema=' + id,
       success: function(h) {
         switch (h.charAt(0)) {

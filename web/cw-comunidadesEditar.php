@@ -27,8 +27,9 @@ $request = db_query("
 
 $row = mysqli_fetch_assoc($request);
 $url = $row['url'];
-$Esta = $row['id'];
-$Esta = isset($Esta) ? $Esta : '';
+$Esta = isset($row['id']) ? $row['id'] : '';
+
+mysqli_free_result($request);
 
 if (empty($Esta)) {
   fatal_error('Debes seleccionar una comunidad.');

@@ -28,9 +28,9 @@ function template_main() {
     $conectados = mysqli_num_rows($request);
 
     $anuncio = db_query("
-    SELECT ID_MEMBER
-    FROM {$db_prefix}log_online
-    WHERE ID_MEMBER <> 0", __FILE__, __LINE__);
+      SELECT ID_MEMBER
+      FROM {$db_prefix}log_online
+      WHERE ID_MEMBER <> 0", __FILE__, __LINE__);
 
     echo '
       <center>
