@@ -1,21 +1,47 @@
-<?php require("cw-conexion-seg-0011.php");
-global $func, $ID_MEMBER, $modSettings, $db_prefix;
+<?php
+require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
+global $ID_MEMBER, $modSettings, $db_prefix, $boardurl;
 
-if(empty($ID_MEMBER))die();
-$jetid=(int)$_POST['id'];
-if(empty($jetid))die();
+$jetid = isset($_POST['id']) ? (int) $_POST['id'] : 0;
+$titulo = isset($_POST['titulo']) ? seguridad($_POST['titulo']) : '';
+$contenido = isset($_POST['contenido']) ? seguridad($_POST['contenido']) : '';
 
-$titulo=trim($_POST['titulo']);
-if(empty($titulo)){fatal_error('Debes escribir un titulo a la nota.-',false);}
-if(strlen($titulo)>=61){fatal_error('El titulo no puede tener m&aacute;s de 60 letras.-',false);}
+if (empty($ID_MEMBER)) {
+  die('Funcionalidad exclusiva de usuarios registrados.');
+}
 
+if (empty($jetid)) {
+  die('Debes especificar la nota a editar.');
+}
 
-$contenido=trim($_POST['contenido']);
-if(empty($contenido)){fatal_error('Debes escribir la nota.-',false);}
-if(strlen($contenido)>$modSettings['max_messageLength']){fatal_error('El post no puede tener m&aacute;s de '.$modSettings['max_messageLength'].' letras.-',false);}
+if (empty($titulo)) {
+  fatal_error('Debes escribir un t&iacute;tulo a la nota.', false);
+}
 
-$fecha=time(); 
-db_query("UPDATE {$db_prefix}notas SET titulo='$titulo',contenido='$contenido', fecha_editado='$fecha' WHERE id='$jetid' AND id_user='$ID_MEMBER' LIMIT 1", __FILE__, __LINE__);
+if (strlen($titulo) >= 61) {
+  fatal_error('El t&iacute;tulo no puede tener m&aacute;s de 60 letras.', false);
+}
 
-Header("Location: /mis-notas/");exit();die();
+if (empty($contenido)) {
+  fatal_error('Debes escribir la nota.', false);
+}
+
+if (strlen($contenido) > $modSettings['max_messageLength']) {
+  fatal_error('El post no puede tener m&aacute;s de ' . $modSettings['max_messageLength'] . ' letras.', false);
+}
+
+$fecha = time();
+
+db_query("
+  UPDATE {$db_prefix}notas
+  SET
+    titulo = '$titulo',
+    contenido = '$contenido',
+    fecha_editado = $fecha
+    WHERE id = $jetid
+    AND id_user = $ID_MEMBER
+    LIMIT 1", __FILE__, __LINE__);
+
+header(`Location: $boardurl/mis-notas/`);
+
 ?>
