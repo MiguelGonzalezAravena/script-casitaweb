@@ -3,6 +3,7 @@ require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
 global $tranfer1, $context, $db_prefix, $options, $txt, $no_avatar, $user_info, $ID_MEMBER;
 
 if ($user_info['is_guest']) {
+  // TO-DO: ¿Está bien esto?
   return;
 } else {
   $request = db_query("

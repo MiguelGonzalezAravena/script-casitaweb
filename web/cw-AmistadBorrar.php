@@ -2,11 +2,11 @@
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
 global $user_info, $user_settings, $db_prefix;
 
+$user = isset($_GET['user']) ? (int) $_GET['user'] : 0;
+
 if ($user_info['is_guest']) {
   die('0: Funcionalidad exclusiva de usuarios registrados.');
 }
-
-$user = isset($_GET['user']) ? (int) $_GET['user'] : 0;
 
 if (empty($user)) {
   die('0: No seleccionaste a nadie, para borrar como amistad.');

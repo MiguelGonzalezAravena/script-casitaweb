@@ -3,7 +3,7 @@ require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
 global $db_prefix, $user_info;
 
 if ($user_info['is_guest']) {
-  echo '0: Faltan datos.-';
+  echo '0: Funcionalidad exclusiva de usuarios registrados.';
 } else {
 
   $_POST['shortname'] = seguridad($_POST['shortname']);

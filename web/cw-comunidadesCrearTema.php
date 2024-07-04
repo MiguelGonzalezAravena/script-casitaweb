@@ -3,7 +3,7 @@ require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
 global $user_info, $db_prefix, $user_settings, $ID_MEMBER;
 
 if ($user_info['is_guest']) {
-  fatal_error('Faltan datos.');
+  fatal_error('Funcionalidad exclusiva de usuarios registrados.');
 }
 
 ignore_user_abort(true);

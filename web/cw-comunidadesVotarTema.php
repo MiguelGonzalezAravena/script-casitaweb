@@ -1,6 +1,5 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-
 global $db_prefix, $user_settings, $ID_MEMBER;
 
 $voto = isset($_POST['voto']) ? seguridad($_POST['voto']) : '';

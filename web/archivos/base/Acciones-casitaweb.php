@@ -9,11 +9,11 @@ function template_tyc24()
 {
   global $context, $user_settings, $modSettings, $tranfer1;
 
-  if ($user_settings['ID_GROUP'] == '7' || $user_settings['ID_GROUP'] == '11') {
+  if ($user_settings['ID_GROUP'] == 7 || $user_settings['ID_GROUP'] == 11) {
     if (empty($user_settings['dar_dia'])) {
-      $ss = '<span style="color:red;">A las <span style="font-size:9px;" title="Horario Argentino">(' . $modSettings['horap'] . ')</span> se recargar&aacute;n las recargas.</span>';
+      $ss = '<span style="color: red;">A las <span style="font-size: 9px;" title="Horario Chileno">(' . $modSettings['horap'] . ')</span> se recargar&aacute;n los puntos.</span>';
     } else {
-      $ss = '<span style="color:green;">' . $user_settings['dar_dia'] . ' recargas disponibles.</span>';
+      $ss = '<span style="color: green;">' . $user_settings['dar_dia'] . ' recargas disponibles.</span>';
     }
 
     if ($user_settings['ID_GROUP'] == '7') {

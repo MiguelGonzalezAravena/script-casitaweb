@@ -869,7 +869,7 @@ function captcha($ds, $c = '') {
       if ($ds == 2) {
         fatal_error('C&oacute;digo de imagen no v&aacute;lido.');
       } else {
-        die('0: C&oacute;digo de imagen invalido.');
+        die('0: C&oacute;digo de imagen no v&aacute;lido.' . $sas1 . '-' . $sas2);
       }
     }
   }

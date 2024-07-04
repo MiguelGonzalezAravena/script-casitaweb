@@ -1,6 +1,5 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-
 global $context, $tranfer1, $ajaxError, $boardurl;
 
 if (empty($context['ajax'])) {
@@ -8,7 +7,7 @@ if (empty($context['ajax'])) {
   die('Error de ajax.');
 }
 if (!$user_info['is_admin']) {
-  die('No tiens los permisos necesarios para realizar esta acci&oacute;n.');
+  die('No tienes los permisos necesarios para realizar esta acci&oacute;n.');
 }
 
 echo '

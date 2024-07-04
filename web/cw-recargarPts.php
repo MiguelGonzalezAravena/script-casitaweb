@@ -34,7 +34,7 @@ if ($user_settings['ID_GROUP'] == 7 || $user_settings['ID_GROUP'] == 11 || ($use
     $pts = 5;
   }
 
-  if ($user_settings['ID_GROUP'] == '11') {
+  if ($user_settings['ID_GROUP'] == 11) {
     $pts = 5;
   }
 

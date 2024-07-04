@@ -1,5 +1,5 @@
 <?php
-require ('cw-conexion-seg-0011.php');
+require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
 global $db_prefix, $user_settings, $user_info;
 
 $denunciante = isset($_GET['den']) ? (int) $_GET['den'] : 0;

@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-global $context, $func, $db_prefix, $user_settings;
+global $context, $db_prefix, $user_settings;
 
 if ($user_info['is_admin'] || $user_info['is_mods']) {
   ignore_user_abort(true);

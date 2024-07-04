@@ -1,6 +1,5 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php'); 
-
 global $db_prefix, $user_info, $user_settings;
 global $ID_MEMBER, $modSettings, $context;
 global $sourcedir, $boardurl;

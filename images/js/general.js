@@ -358,7 +358,7 @@ function votar_post(id, puntos) {
 
   $.ajax({
     type: 'GET',
-    url: '/web/cw-VotarPost.php',
+    url: boardUrl + '/web/cw-VotarPost.php',
     data: 'post=' + id + '&puntos=' + puntos,
     success: function(h) {
       $('#cargando_opciones').css('display', 'none');
@@ -393,7 +393,7 @@ function votar_img(id, puntos) {
 
   $.ajax({
     type: 'GET',
-    url: '/web/cw-votar-img.php',
+    url: boardUrl + '/web/cw-votar-img.php',
     data: 'imagen=' + id + '&cantidad=' + puntos,
     success: function(h) {
       $('#cargando_opciones').css('display', 'none');
@@ -525,7 +525,7 @@ function enviarDen(tipo, id) {
 
   $.ajax({
     type: 'POST',
-    url: '/web/cw-denunciaEnviar.php',
+    url: boardUrl + '/web/cw-denunciaEnviar.php',
     cache: false,
     data: 'tipo=' + tipo + '&id=' + id + '&razon=' +  encodeURIComponent($('#razon').val()) + '&comentario=' +  encodeURIComponent($('#cDen').val()),
     success: function(h) {
@@ -558,7 +558,7 @@ function pagComunidad(id, pag) {
 
   $.ajax({
     type: 'GET',
-    url: '/web/cw-TEMPcomMIEMBROS.php',
+    url: boardUrl + '/web/cw-TEMPcomMIEMBROS.php',
     cache: false,
     data: 'c=' +  id + '&ajaxboxy=si&pag=' + pag,
     success: function(h) {
@@ -579,7 +579,7 @@ function pagComunidad2(id, pag) {
 
   $.ajax({
     type: 'GET',
-    url: '/web/cw-TEMPcomMIEMBROSaDm.php',
+    url: boardUrl + '/web/cw-TEMPcomMIEMBROSaDm.php',
     cache: false,
     data: 'c=' +  id + '&ajaxboxy=si&pag=' + pag,
     success: function(h) {
@@ -664,7 +664,7 @@ function recomendarPost(id) {
 
   $.ajax({
     type: 'POST',
-    url: '/web/cw-recomendarPost.php',
+    url: boardUrl + '/web/cw-recomendarPost.php',
     cache: false,
     data: 'post=' + id + '&r_email=' + encodeURIComponent($('.r_email').val()) + '&r_email1=' + encodeURIComponent($('.r_email1').val()) + '&r_email2=' + encodeURIComponent($('.r_email2').val()) + '&r_email3=' + encodeURIComponent($('.r_email3').val()) + '&r_email4=' + encodeURIComponent($('.r_email4').val()) + '&r_email5=' + encodeURIComponent($('.r_email5').val()) + '&titulo=' + encodeURIComponent($('#titulo').val()) + '&comment=' + encodeURIComponent($('#comment').val()) + '&code=' + encodeURIComponent($('#code').val()),
     success: function(h) {
@@ -816,7 +816,7 @@ function accionAmistad(id, q) {
 
   $.ajax({
     type: 'GET',
-    url: '/web/cw-AmistadDecs.php',
+    url: boardUrl + '/web/cw-AmistadDecs.php',
     data: 'id=' + id + '&tipo=' + q,
     success: function(h) {
       $('#cargandoAmistad').fadeOut('fast');
@@ -864,7 +864,7 @@ function del_favoritos(id) {
 function del_mp_env(id) {
   $.ajax({
     type: 'GET',
-    url: '/web/cw-eliminarMp.php',
+    url: boardUrl + '/web/cw-eliminarMp.php',
     data: 'eliminar=' + id,
     success: function(h) {
       if (h.charAt(0) == 0) {
@@ -901,7 +901,7 @@ function del_coment_post(id, post) {
 
   $.ajax({
     type: 'GET',
-    url: '/web/cw-eliminarComPost.php',
+    url: boardUrl + '/web/cw-eliminarComPost.php',
     data: 'id=' + id + '&post=' + post,
     success: function(h) {
       if (h.charAt(0) == 0) {
@@ -993,7 +993,7 @@ function del_coment_muro(id) {
 
   $.ajax({
     type: 'GET',
-    url: '/web/cw-eliminarMuroComent.php',
+    url: boardUrl + '/web/cw-eliminarMuroComent.php',
     data: 'id=' + id,
     success: function(h) {
       if (h.charAt(0) == 0) {
@@ -1015,7 +1015,7 @@ function del_coment_muro(id) {
 function del_comentCC_muro(id) {
   $.ajax({
     type: 'GET',
-    url: '/web/cw-eliminarMuroComent.php',
+    url: boardUrl + '/web/cw-eliminarMuroComent.php',
     data: 'id=' + id,
     success: function(h) {
       if (h.charAt(0) == 0) {
@@ -1039,7 +1039,7 @@ function del_comentCC_muro(id) {
 function ignorar(id, accion) {
   $.ajax({
     type: 'GET',
-    url: '/web/cw-DESadminitr.php',
+    url: boardUrl + '/web/cw-DESadminitr.php',
     data: 'acion=' + accion + '&user=' + id,
     success: function(h) {
       if (h.charAt(0) == 0) {
@@ -1107,7 +1107,7 @@ function add_muro(id) {
 function AmigosActs() {
   $.ajax({
     type: 'GET',
-    url: '/web/cw-AmistadesAct.php',
+    url: boardUrl + '/web/cw-AmistadesAct.php',
     success: function(h) {
       $('#amistadesACT').html(h.substring(3));
     },
@@ -1268,7 +1268,7 @@ function DesplComOps(id, id1, id2) {
 function EliminarAmistad(user, id) {
   $.ajax({
     type: 'GET',
-    url: '/web/cw-AmistadBorrar.php',
+    url: boardUrl + '/web/cw-AmistadBorrar.php',
     data: 'user=' + user,
     success: function(h) {
       $('#amig_' + id).css('display', 'none');

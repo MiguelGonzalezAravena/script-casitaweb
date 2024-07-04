@@ -2,11 +2,12 @@
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
 global $db_prefix, $context, $user_info, $sourcedir, $user_settings;
 
-$id = (int) $_GET['id'];
+$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
 if (!$id) {
-  die('Faltan datos.-');
+  die('Debes especificar el tema a comentar.');
 }
+
 $rs44 = db_query("
   SELECT c.id, a.nocoment
   FROM {$db_prefix}members AS m, {$db_prefix}comunidades AS c, {$db_prefix}comunidades_articulos AS a
@@ -40,27 +41,42 @@ if (isset($per)) {
   $st = 1;
 }
 
-echo '<div class="post-com" id="carando" style="display:none;padding:4px 0px 4px 0px;margin-bottom:4px;"><center><img alt="" src="' . $tranfer1 . '/comunidades/cargando.gif" /></center></div>
-<div class="post-com">';
-$cant = mysqli_num_rows(db_query("SELECT com.id FROM ({$db_prefix}comunidades_comentarios AS com) WHERE com.id_tema='$id'", __FILE__, __LINE__));
-$rs443 = db_query("
-SELECT com.comentario,m.realName,com.id,com.fecha,m.ID_MEMBER
-FROM ({$db_prefix}members AS m,{$db_prefix}comunidades_comentarios AS com)
-WHERE com.id_tema='$id' AND com.id_user=m.ID_MEMBER
-ORDER BY com.id ASC
-LIMIT $st,$pp", __FILE__, __LINE__);
+echo '
+  <div class="post-com" id="carando" style="display: none; padding: 4px 0px 4px 0px; margin-bottom: 4px;">
+    <center>
+      <img alt="" src="' . $tranfer1 . '/comunidades/cargando.gif" />
+    </center>
+  </div>
+  <div class="post-com">';
+
+$request = db_query("
+  SELECT id
+  FROM {$db_prefix}comunidades_comentarios
+  WHERE id_tema = $id", __FILE__, __LINE__);
+
+$cant = mysqli_num_rows($request);
+
+$request2 = db_query("
+  SELECT com.comentario, m.realName, com.id, com.fecha, m.ID_MEMBER
+  FROM {$db_prefix}members AS m, {$db_prefix}comunidades_comentarios AS com
+  WHERE com.id_tema = $id
+  AND com.id_user = m.ID_MEMBER
+  ORDER BY com.id ASC
+  LIMIT $st, $pp", __FILE__, __LINE__);
 
 $emrr = $pp * ($per - 1);
+
 if ($emrr < 2) {
-  $emrr = '1';
+  $emrr = 1;
 } else {
   $emrr = $emrr + 1;
 }
+
 $caste = $emrr;
 $caste32 = $emrr;
 $caste2 = $emrr;
 
-while ($row = mysqli_fetch_assoc($rs443)) {
+while ($row = mysqli_fetch_assoc($request2)) {
   $mesesano2 = array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12');
   $diames2 = date(j, $row['fecha']);
   $mesano2 = date(n, $row['fecha']) - 1;
@@ -82,7 +98,7 @@ while ($row = mysqli_fetch_assoc($rs443)) {
   }
 
   if ($context['permisoCom'] == '1' || $context['permisoCom'] == '3' || $context['permisoCom'] == '2' || $row['ID_MEMBER'] == $ID_MEMBER) {
-    echo ' <a href="/web/cw-comunidadesEliCom.php?id=' . $dasd . '" title="Eliminar Comentario" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este comentario?\')) return false;"><img src="' . $tranfer1 . '/comunidades/eliminar.png" alt="" /></a>';
+    echo ' <a href="' . $boardurl . '/web/cw-comunidadesEliCom.php?id=' . $dasd . '" title="Eliminar Comentario" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este comentario?\')) return false;"><img src="' . $tranfer1 . '/comunidades/eliminar.png" alt="" /></a>';
   }
 
   echo '</div><div style="clear:both"></div></div>

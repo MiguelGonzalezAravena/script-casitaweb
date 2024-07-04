@@ -2,13 +2,14 @@
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
 global $context, $func, $modSettings, $db_prefix, $user_settings, $ID_MEMBER, $boardurl;
 
+$titulo = trim($_POST['titulo']);
+
 if (empty($ID_MEMBER)) {
-  die();
+  die('Funcionalidad exclusiva de usuarios registrados.');
 }
 
 timeforComent(1);
 
-$titulo = trim($_POST['titulo']);
 
 if (empty($titulo)) {
   fatal_error('Debes escribir un t&iacute;tulo a la nota.');

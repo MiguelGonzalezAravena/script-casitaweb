@@ -3,7 +3,7 @@ require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
 global $context, $db_prefix, $user_settings, $user_info, $ID_MEMBER, $boardurl;
 
 if ($user_info['is_guest']) {
-  fatal_error('No puedes estar acá.');
+  fatal_error('Funcionalidad exclusiva de usuarios registrados.');
 }
 
 $tipo = isset($_POST['tipo']) ? (int) $_POST['tipo'] : 1;

@@ -23,5 +23,6 @@ db_query("
   WHERE ID_GROUP = 1", __FILE__, __LINE__);
 
 
-header('Location: /');
+header(`Location: $boardurl/`);
+
 ?>

@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-global $tranfer1, $db_prefix, $context, $settings, $ajaxError, $options, $ID_MEMBER, $scripturl,$modSettings, $txt, $boardurl;
+global $tranfer1, $db_prefix, $context, $settings, $ajaxError, $options, $ID_MEMBER, $scripturl, $modSettings, $txt, $boardurl;
 
 $responder = isset($_GET['responder']) ? (int) $_GET['responder'] : 0;
 

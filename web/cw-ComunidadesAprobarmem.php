@@ -9,7 +9,7 @@ if ($user_info['is_guest']) {
 $us = isset($_GET['m']) ? (int) $_GET['m'] : 0;
 
 if (!$us) {
-  die('Debes seleccionar el usuario.');
+  die('Debes seleccionar el usuario a aprobar.');
 }
 
 $request = db_query("

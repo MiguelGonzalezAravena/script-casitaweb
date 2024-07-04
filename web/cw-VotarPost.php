@@ -109,8 +109,8 @@ if ($topic) {
     LIMIT 1", __FILE__, __LINE__);
 
   db_query("
-    INSERT INTO {$db_prefix}puntos (id_post, id_member, fecha, cantidad)
-    VALUES ($topic, $ID_MEMBER, $fecha, $amount)", __FILE__, __LINE__);
+    INSERT INTO {$db_prefix}puntos (id_post, id_member, cantidad)
+    VALUES ($topic, $ID_MEMBER, $amount)", __FILE__, __LINE__);
 
   notificacionAGREGAR($id_user, '5', $amount);
 

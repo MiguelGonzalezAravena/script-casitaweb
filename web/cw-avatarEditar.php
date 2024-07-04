@@ -19,7 +19,7 @@ if (!$avatars2) {
 }
 
 // TO-DO: ¿Qué valida esto?
-if (!$user_info['is_admin'] && $id_user == '1') {
+if (!$user_info['is_admin'] && $id_user == 1) {
   fatal_error('No puedes estar ac&aacute;.', false);
 }
 

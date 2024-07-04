@@ -1,6 +1,5 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-
 global $db_prefix, $context, $sourcedir, $user_settings;
 
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;

@@ -1,6 +1,5 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-
 global $db_prefix, $context, $ID_MEMBER, $user_info, $sourcedir, $user_settings, $boardurl;
 
 $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;

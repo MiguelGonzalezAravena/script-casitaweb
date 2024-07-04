@@ -9,6 +9,8 @@ function template_main() {
   $txt['mensajes'] = 'post';
   $post = (int) $context['id-post'];
 
+  
+  // var_dump($user_settings);
   // POSTS
   echo "<script type=\"text/javascript\">function errorrojo2(causa){if(causa == ''){document.getElementById('errors').innerHTML='Es necesaria la causa de la eliminaci&oacute;n.'; return false;}}</script><a name=\"arriba\"></a>";
   echo '<div>';
