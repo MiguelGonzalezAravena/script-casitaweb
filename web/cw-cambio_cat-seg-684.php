@@ -1,6 +1,7 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-global $tranfer1, $context, $settings, $db_prefix, $options, $txt, $user_info, $user_settings, $scripturl;
+require_once($sourcedir . '/Funciones.php');
+global $tranfer1, $context, $settings, $db_prefix, $options, $txt, $user_info, $user_settings, $scripturl, $boardurl;
 
 $ids = isset($_POST['id-seg-2451']) ? (int) $_POST['id-seg-2451'] : 0;
 $tipo = isset($_POST['tipo']) ? seguridad($_POST['tipo']) : '';
@@ -9,7 +10,7 @@ $user = isset($_POST['useradar']) ? seguridad($_POST['useradar']) : '';
 
 if ($user_info['is_admin']) {
   if (empty($ids)) {
-    fatal_error('Debe seleccionar el id.-');
+    fatal_error('Debe seleccionar el post.');
   }
 
   $request = db_query("
@@ -24,7 +25,7 @@ if ($user_info['is_admin']) {
     fatal_error('El post no existe.');
   }
 
-  if ($tipo == 'Cambiar cat') {
+  if ($tipo == 'Cambiar categor&iacute;a') {
     if (empty($cat)) {
       fatal_error('Debe seleccionar la categor&iacute;a.');
     }
@@ -32,7 +33,7 @@ if ($user_info['is_admin']) {
     $request = db_query("
       SELECT ID_BOARD
       FROM {$db_prefix}boards
-      WHERE ID_BOARD='$cat'
+      WHERE ID_BOARD = $cat
       LIMIT 1", __FILE__, __LINE__);
 
     $context['contadorsss'] = mysqli_num_rows($request);
@@ -46,7 +47,7 @@ if ($user_info['is_admin']) {
       SET ID_BOARD = $cat
       WHERE ID_TOPIC = $ids
       LIMIT 1", __FILE__, __LINE__);
-  } else if ($tipo == 'Regalar') {
+  } else if ($tipo == 'Cambiar autor') {
     if (empty($user)) {
       fatal_error('Debes seleccionar el usuario.');
     }
@@ -55,14 +56,12 @@ if ($user_info['is_admin']) {
       SELECT memberIP, ID_MEMBER, emailAddress
       FROM {$db_prefix}members
       WHERE realName = '$user'
-      ORDER BY ID_MEMBER DESC
       LIMIT 1", __FILE__, __LINE__);
 
-    while ($des = mysqli_fetch_assoc($lvccct)) {
-      $memberIP = $des['memberIP'];
-      $id_mem = $des['ID_MEMBER'];
-      $emailAddress = $des['emailAddress'];
-    }
+    $des = mysqli_fetch_assoc($lvccct);
+    $memberIP = $des['memberIP'];
+    $id_mem = isset($des['ID_MEMBER']) ? $des['ID_MEMBER'] : '';
+    $emailAddress = $des['emailAddress'];
 
     if (empty($id_mem)) {
       fatal_error('El usuario no existe.');
@@ -78,7 +77,8 @@ if ($user_info['is_admin']) {
       LIMIT 1", __FILE__, __LINE__);
   }
 }
+$url = generatePostURL($ids);
 
-header('Location: ' . $boardurl);
+header('Location: ' . $url);
 
 ?>

@@ -65,7 +65,7 @@ function template_main() {
 <div class="box_rss"><span id="cargando_opciones" style="display:none;"><img alt="" src="' . $tranfer1 . '/icons/cargando.gif" style="width:16px;height:16px;" border="0" /></span><span id="cargando_opciones2"><img alt="" src="' . $tranfer1 . '/blank.gif" style="width:16px;height:16px;" border="0" /></span></div></div>
 <div class="windowbg" style="width:370px;padding:4px;">
 
-<form action="/web/cw-postEliminar.php?id=' . $context['id-post'] . '" method="post" accept-charset="' . $context['character_set'] . '" style="margin:0px;padding:0px;" name="causa" id="causa">';
+<form action="' . $boardurl . '/web/cw-postEliminar.php?id=' . $context['id-post'] . '" method="post" accept-charset="' . $context['character_set'] . '" style="margin:0px;padding:0px;" name="causa" id="causa">';
     if ($context['allow_admin']) {
       echo '<input class="login" style="font-size: 11px;" value="Editar post" title="Editar post" onclick="location.href=\'' . $boardurl . '/editar-post/id-' . $context['id-post'] . '\'" type="button" />&nbsp;<input class="login" style="font-size: 11px;" type="submit" value="Eliminar post" title="Eliminar post" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este post?\')) return false;';
       if ($context['id_cat'] !== '142') {
@@ -248,12 +248,42 @@ function template_main() {
     }
 
     if ($context['user']['is_admin']) {
-      echo '<div class="hrs"></div><center><form action="' . $boardurl . '/web/cw-cambio_cat-seg-684.php" method="post" accept-charset="' . $context['character_set'] . '" name="cat" id="cat">';
+      echo '
+        <div class="hrs"></div>
+        <center>
+          <strong>Moderaci&oacute;n</strong>
+          <br />
+          <form action="' . $boardurl . '/web/cw-cambio_cat-seg-684.php" method="post" accept-charset="' . $context['character_set'] . '" name="cat" id="cat">
+            <table style="width: 100%">
+              <tr style="margin: 10px">
+                <td align="right">';
+
       categorias(2, $context['id_cat']);
-      echo ' <input class="login" style="font-size: 10px;" value="Cambiar cat" title="Cambiar cat" name="tipo" type="submit" /><br /><input size="10" value="" name="useradar" type="text" />&nbsp;<input class="login" style="font-size: 10px;" value="Regalar" title="regalar" name="tipo" type="submit" />
-<input value="' . $context['id-post'] . '" name="id-seg-2451" type="hidden" /></form></center>';
+
+      echo '
+                </td>
+                <td>
+                  <input class="login" style="font-size: 10px;" value="Cambiar categor&iacute;a" title="Cambiar categor&iacute;a" name="tipo" type="submit" />
+                </td>
+              </tr>
+              <tr>
+                <td align="right">
+                  <input size="10" value="" name="useradar" type="text" />
+                </td>
+                <td>
+                  <input class="login" style="font-size: 10px;" value="Cambiar autor" title="Cambiar autor" name="tipo" type="submit" />
+                  <input value="' . $context['id-post'] . '" name="id-seg-2451" type="hidden" />
+                </td>
+              </tr>
+            </table>
+          </form>
+        </center>';
     }
-    echo '</div></div>';
+
+    echo '
+        </div>
+      </div>';
+
     $requests = db_query("
       SELECT signature
       FROM {$db_prefix}members

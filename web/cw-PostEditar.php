@@ -38,7 +38,7 @@ if (empty($error)) {
 
 $titulo = isset($_POST['titulo']) ? seguridad($_POST['titulo']) : '';
 $post = isset($_POST['contenido']) ? seguridad($_POST['contenido']) : '';
-$tags = isset($_POST['tags']) ? trim(strtolower($_POST['tags'])) : '';
+$tags = isset($_POST['tags']) ? strtolower(seguridad($_POST['tags'])) : '';
 $categorias = isset($_POST['categorias']) ? (int) $_POST['categorias'] : 0;
 $privado = isset($_POST['privado']) ? (int) $_POST['privado'] : 0;
 
@@ -74,13 +74,13 @@ if (strlen($_POST['contenido']) > $modSettings['max_messageLength']) {
   fatal_error('El post no puede tener m&aacute;s de <b>' . $modSettings['max_messageLength'] . ' letras</b>.');
 }
 
-$resquest = db_query("
+$request = db_query("
   SELECT description
   FROM {$db_prefix}boards
   WHERE ID_BOARD = $categorias
   LIMIT 1", __FILE__, __LINE__);
 
-$row = mysqli_fetch_assoc($resquest);
+$row = mysqli_fetch_assoc($request);
 $descript = isset($row['description']) ? $row['description'] : '';
 
 if (empty($descript)) {
@@ -89,13 +89,11 @@ if (empty($descript)) {
 
 mysqli_free_result($resquest);
 
-$ak = explode(',', $tags);
-$Nn = implode(',', array_diff($ak, array_values(array(''))));
-$a = explode(',', $Nn);
+$a = array_unique(array_map('trim', array_filter(explode(',', $tags), 'trim')));
 $c = sizeof($a);
 
 if ($c < 4) {
-  fatal_error('No se permiten menos de 4 tags.');
+  fatal_error('No se permiten menos de 4 tags, palabras vacías ni tags repetidos.');
 }
 
 if ($c > 5) {
@@ -166,46 +164,69 @@ if (($user_info['is_admin'] || $user_info['is_mods']) && $id_user != $ID_MEMBER)
   logAction('modify', array('topic' => $titulo . ' (ID: ' . $id_topics . ')', 'member' => $id_user, 'causa' => $causa));
 }
 
-// Tags
-db_query("
-  DELETE FROM {$db_prefix}tags
-  WHERE id_post = $id_topics
-  AND rango = 0", __FILE__, __LINE__);
+// Obtener tags del post
+$request = db_query("
+  SELECT palabra
+  FROM {$db_prefix}tags
+  WHERE id_post = $id_topics", __FILE__, __LINE__);
 
-for ($i = 0; $i < $c; ++$i) {
-  $lvccct = db_query("
-    SELECT ID_TAG
-    FROM {$db_prefix}tags
-    WHERE palabra = '$a[$i]'
-    AND rango = 1
-    LIMIT 1", __FILE__, __LINE__);
+$rows = mysqli_num_rows($request);
 
-  $asserr = mysqli_fetch_assoc($lvccct);
-  $idse = isset($asserr['ID_TAG']) ? $asserr['ID_TAG'] : '';
-  $a[$i] = nohtml($a[$i]);
+if ($rows > 0) {
+  $tags = mysqli_fetch_all($request);
 
-  if (!empty($idse)) {
-    db_query("
-      UPDATE {$db_prefix}tags
-      SET cantidad = cantidad + 1
-      WHERE ID_TAG = $idse
-      AND rango = 1
-      LIMIT 1", __FILE__, __LINE__);
-
-    $rg = 0;
-  } else {
-    $rg = 1;
+  // Generar arreglo de tags del post
+  foreach ($tags as $subarray) {
+    foreach ($subarray as $value) {
+      $post_tags[] = $value;
+    }
   }
 
-  db_query("
-    INSERT INTO {$db_prefix}tags (id_post, palabra, cantidad, rango)
-    VALUES ($id_topics, SUBSTRING('$a[$i]',  1, 65), 1, $rg)", __FILE__, __LINE__);
+  // Arreglo de tags a insertar
+  $insert_array = array_diff($a, $post_tags);
+
+  // Arreglo de tags a eliminar
+  $delete_array = array_diff($post_tags, $a);
+
+  foreach ($insert_array as $tag) {
+    // Verificar si tags existen en el post
+    $request = db_query("
+      SELECT *
+      FROM {$db_prefix}tags
+      WHERE palabra = '$tag'
+      AND id_post = $id_topics", __FILE__, __LINE__);
+
+    $rows = mysqli_num_rows($request);
+
+    if ($rows == 0) {
+      db_query("
+      INSERT INTO {$db_prefix}tags (id_post, palabra, cantidad, rango)
+      VALUES ($id_topics, SUBSTRING('$tag',  1, 65), 1, 1)", __FILE__, __LINE__);
+    }
+  }
+
+  foreach ($delete_array as $tag) {
+    // Verificar si tags existen en el post
+    $request = db_query("
+      SELECT *
+      FROM {$db_prefix}tags
+      WHERE palabra = '$tag'
+      AND id_post = $id_topics", __FILE__, __LINE__);
+
+    $rows = mysqli_num_rows($request);
+
+    if ($rows > 0) {
+      db_query("
+        DELETE FROM {$db_prefix}tags
+        WHERE id_post = $id_topics
+        AND palabra = '$tag'", __FILE__, __LINE__);
+    }
+  }
 }
-// Fin tags
 
 $_SESSION['edit'] = 1;
 $_SESSION['ultima_accionTIME'] = time();
-$urls = $boardurl . '/post/' . $id_topics . '/' . $descript . '/' . urls($titulo) . '.html';
+$urls = generatePostURL($id_topics);
 
 PostAccionado('Post editado', 'Tu post "<strong>' . censorText($titulo) . '</strong>" ha sido editado correctamente.', $urls, 'Ir al post');
 

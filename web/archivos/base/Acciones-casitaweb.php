@@ -1,13 +1,11 @@
 <?php
-function template_intro()
-{
+function template_intro() {
   exit();
   die();
 }
 
-function template_tyc24()
-{
-  global $context, $user_settings, $modSettings, $tranfer1;
+function template_tyc24() {
+  global $context, $user_settings, $modSettings, $tranfer1, $mbname;
 
   if ($user_settings['ID_GROUP'] == 7 || $user_settings['ID_GROUP'] == 11) {
     if (empty($user_settings['dar_dia'])) {
@@ -16,83 +14,132 @@ function template_tyc24()
       $ss = '<span style="color: green;">' . $user_settings['dar_dia'] . ' recargas disponibles.</span>';
     }
 
-    if ($user_settings['ID_GROUP'] == '7') {
+    if ($user_settings['ID_GROUP'] == 7) {
       $pts = '5';
       $title = 'Heredero';
-      $texto = '<b>&#191;Que es ser Heredero?</b><br/>- Los usuarios con rango Heredero son usuarios destacados dentro de <b>CasitaWeb!</b> por su comportamiento (Posteos, Comentarios, Ayudas, etc).<br/>- El rango heredero lo obtendran siempre que este comportamiento continue estable o mejore.<br /><i>Muchas gracias.</i>';
-    } elseif ($user_settings['ID_GROUP'] == '11') {
+      $texto = '
+        <b>&#191;Qu&eacute; es ser Heredero?</b>
+        <br />
+        - Los usuarios con rango Heredero son usuarios destacados dentro de <b>' . $mbname . '</b> por su comportamiento (Posteos, Comentarios, Ayudas, etc).
+        <br />
+        - El rango heredero lo obtendr&aacute;n siempre que este comportamiento continue estable o mejore.
+        <br />
+        <i>Muchas gracias.</i>';
+    } else if ($user_settings['ID_GROUP'] == 11) {
       $pts = '5';
       $title = 'Abastecedor';
-      $texto = '<b>&#191;Que es ser Abastecedor?</b><br/>- Los usuarios con rango Abastecedor son usuarios destacados dentro de <b>CasitaWeb!</b> por haber ayudado a <b>CasitaWeb!</b> subiendo material para la web.<br/>- El rango abastecedor lo obtendran siempre que este comportamiento continue estable o mejore.<br /><i>Muchas gracias.</i>';
+      $texto = '
+        <b>&#191;Qu&eacute; es ser Abastecedor?</b>
+        <br />
+        - Los usuarios con rango Abastecedor son usuarios destacados dentro de <b>' . $mbname . '</b> por haber ayudado a <b>' . $mbname . '</b> subiendo material para la web.
+        <br />
+        - El rango abastecedor lo obtendr&aacute;n siempre que este comportamiento continue estable o mejore.
+        <br />
+        <i>Muchas gracias.</i>';
     }
 
-    echo '<div style="width:922px;">
-<strong class="size17">' . $title . '</strong><div class="hrs"></div> ' . $texto;
+    echo '
+      <div style="width: 922px;">
+        <strong class="size17">' . $title . '</strong>
+        <div class="hrs"></div>
+        ' . $texto;
 
 ?>
 
 <script type="text/javascript">
-//Recargar puntos
-function recargarPTS(){
-if($('#user').val() == ''){$('#user').focus(); return false;}
-$('#cargandoBoxyc').css('display','none');
-$('#cargandoBoxy').css('display','block');
-$.ajax({
-    type: 'POST',
-    url: '/web/cw-recargarPts.php',
-    cache: false,
-    data: 'user=' +  encodeURIComponent($('#user').val()),
-    success: function(h){
-      $('#cargandoBoxy').css('display','none');
-          $('#cargandoBoxyc').css('display','block');
-          $('#contenidoRE').remove();
-        if(h.charAt(0)==0){ //Datos incorrectos
+  // Recargar puntos
+  function recargarPTS() {
+    if ($('#user').val() == '') {
+      $('#user').focus();
+      return false;
+    }
+
+    $('#cargandoBoxyc').css('display', 'none');
+    $('#cargandoBoxy').css('display', 'block');
+
+    $.ajax({
+      type: 'POST',
+      url: '/web/cw-recargarPts.php',
+      cache: false,
+      data: 'user=' +  encodeURIComponent($('#user').val()),
+      success: function(h) {
+        $('#cargandoBoxy').css('display', 'none');
+        $('#cargandoBoxyc').css('display', 'block');
+        $('#contenidoRE').remove();
+
+        if (h.charAt(0) == 0) {
+          // Datos incorrectos
           $('#resultadoRE').addClass('noesta');
           $('#resultadoRE').html(h.substring(3)).fadeIn('fast');
-        } else
-        if(h.charAt(0)==1){ //OK				
+        } else if (h.charAt(0) == 1) {
+          // OK
           $('#resultadoRE').removeClass('noesta');
           $('#resultadoRE').addClass('noesta-ve');
-          $('#resultadoRE').html(h.substring(3)).fadeIn('fast');}			
-    },
-    error: function(){
-      Boxy.alert("Error, volver a intentar...", null, {title: 'Alerta'});
-    }
-  });
-}
-
+          $('#resultadoRE').html(h.substring(3)).fadeIn('fast');
+        }
+      },
+      error: function() {
+        Boxy.alert('Error, volver a intentar...', null, { title: 'Alerta' });
+      }
+    });
+  }
 </script>
 
 <?php
-    echo '<br /><br /><strong class="size17">Recargar puntos</strong> <span id="cargandoBoxy" style="display: none;"><img alt="" src="' . $tranfer1 . '/icons/cargando.gif" style="width: 16px; height: 16px;" border="0"></span>
-<div class="hrs"></div>';
-
-    echo '<div id="resultadoRE" style="display:none;"></div>
-<div style="padding:8px;background-color:#f4f4f4;border:1px solid #ccc;" id="contenidoRE">
-<div style="float:right;display:block;">
-<div style="float:left;">' . $ss . '<input type="text" onfocus="foco(this);" onblur="no_foco(this);" id="user" tabindex="1" style="width:155px;" maxlength="60" title="Introduci el NICK tal cual es." /></div><div><input onclick="return recargarPTS();" type="button" value="Recargar" tabindex="2" /></div>
-</div>
-
-<div class="clearfix"></div>
-
-</div>
-
- </div>';
+    echo '
+        <br /><br />
+        <strong class="size17">Recargar puntos</strong>
+        <span id="cargandoBoxy" style="display: none;">
+          <img alt="" src="' . $tranfer1 . '/icons/cargando.gif" style="width: 16px; height: 16px;" border="0">
+        </span>
+        <div class="hrs"></div>
+        <div id="resultadoRE" style="display: none;"></div>
+        <div style="padding: 8px; background-color: #f4f4f4; border: 1px solid #ccc;" id="contenidoRE">
+          <div style="float: right; display: block;">
+            <div style="float: left;">
+              ' . $ss . '
+              <input type="text" onfocus="foco(this);" onblur="no_foco(this);" id="user" tabindex="1" style="width: 155px;" maxlength="60" title="INgresa el usuario..." />
+            </div>
+            <div>
+              <input onclick="return recargarPTS();" type="button" value="Recargar" tabindex="2" />
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>';
   }
 }
 
-function template_tyc14()
-{
-  global $tranfer1, $db_prefix;
+function template_tyc14() {
+  global $tranfer1, $db_prefix, $boardurl;
 
-  echo '<div class="box_buscador"><div class="box_title" style="width: 920px;"><div class="box_txt box_buscadort"><center>Nube de Tags</center></div><div class="box_rss"><img alt="" src="' . $tranfer1 . '/blank.gif" style="width:14px;height:12px;" border="0" /></div></div><div style="width: 912px;padding:4px;" class="windowbg"><center>En esta nube se reflejan los 100 tags m&aacute;s populares. Cuanto m&aacute;s grande es la palabra, mayor cantidad de veces fue utilizada.<br />
-ordenar: <a href="/tags-alfa/" title="alfab&eacute;ticamente">alfab&eacute;ticamente</a> | <a href="/tags-importacia/" title="por importancia">por importancia</a><div class="hrs"></div>';
+  echo '
+    <div class="box_buscador">
+      <div class="box_title" style="width: 920px;">
+        <div class="box_txt box_buscadort">
+          <center>Nube de Tags</center>
+        </div>
+        <div class="box_rss">
+          <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" border="0" />
+        </div>
+      </div>
+      <div style="width: 912px; padding: 4px;" class="windowbg">
+        <center>
+          En esta nube se reflejan los 100 tags m&aacute;s populares. Cuanto m&aacute;s grande es la palabra, mayor cantidad de veces fue utilizada.
+          <br />
+          ordenar:
+          <a href="' . $boardurl . '/tags-alfa/" title="alfab&eacute;ticamente">alfab&eacute;ticamente</a>
+          |
+          <a href="' . $boardurl . '/tags-importacia/" title="por importancia">por importancia</a>
+          <div class="hrs"></div>';
+
   $_GET['orden'] = str_replace('/', '', $_GET['orden']);
+
   if (empty($_GET['orden'])) {
     $orden = 'palabra ASC';
-  } elseif ($_GET['orden'] == 'alfa') {
+  } else if ($_GET['orden'] == 'alfa') {
     $orden = 'palabra ASC';
-  } elseif ($_GET['orden'] == 'importacia') {
+  } else if ($_GET['orden'] == 'importacia') {
     $orden = 'cantidad DESC';
   } else {
     $orden = 'palabra ASC';
@@ -101,78 +148,101 @@ ordenar: <a href="/tags-alfa/" title="alfab&eacute;ticamente">alfab&eacute;ticam
   $fontmax = 18;
   $fontmin = 10;
   $tagmax = 100;
-  if ($tagmax <= 0)
+
+  if ($tagmax <= 0) {
     $tagmax = 10;
+  }
+
   $result3 = db_query("
-SELECT cantidad
-FROM {$db_prefix}tags
-ORDER BY cantidad DESC
-LIMIT 99,1", __FILE__, __LINE__);
+    SELECT cantidad
+    FROM {$db_prefix}tags
+    ORDER BY cantidad DESC
+    LIMIT 99, 1", __FILE__, __LINE__);
+
   while ($row = mysqli_fetch_array($result3)) {
     $cantidad = $row['cantidad'];
   }
 
-  $result = db_query("SELECT palabra as tag,count(palabra) as quantity, cantidad
-FROM {$db_prefix}tags
-WHERE cantidad >= '$cantidad'
-GROUP BY palabra 
-ORDER BY $orden
-LIMIT 0,$tagmax", __FILE__, __LINE__);
+  $result = db_query("
+    SELECT palabra AS tag, count(palabra) AS quantity, cantidad
+    FROM {$db_prefix}tags
+    WHERE cantidad >= '$cantidad'
+    GROUP BY palabra
+    ORDER BY $orden
+    LIMIT 0, $tagmax", __FILE__, __LINE__);
+
   while ($row = mysqli_fetch_array($result)) {
     $tags[$row['tag']] = $row['cantidad'];
   }
+
   $max_qty = max(array_values($tags));
   $universo = array_sum(array_values($tags));
   $elemento_menor = min(array_values($tags));
   $hoja = max(array_values($tags)) - $elemento_menor;
-  if ($hoja <= 0)
+
+  if ($hoja <= 0) {
     $hoja = 1;
+  }
+
   $letra_hoja = $fontmax - $fontmin;
-  if ($letra_hoja <= 0)
+
+  if ($letra_hoja <= 0) {
     $letra_hoja = 1;
+  }
+
   $font_step = $letra_hoja / $hoja;
   $asdas = 1;
+
   foreach ($tags as $key => $value) {
     $porcentaje = 0;
     $porcentaje = ($value / $universo) * 100;
     $tamanio = (int) ($fontmin + (($value - $elemento_menor) * $font_step));
     $asfff = $asdas++;
     $paltag = strtolower(str_replace('%', '', $key));
-    echo '<a href="/tags/' . $paltag . '" style="font-size:' . $tamanio . 'pt;margin-right:2px;margin-bottom:5px;" title="' . $value . ' post con el tag ' . $paltag . '">' . $paltag . '</a> ';
-    if ($asfff == 50)
+
+    echo '<a href="' . $boardurl . '/tags/' . $paltag . '" style="font-size: ' . $tamanio . 'pt; margin-right: 2px; margin-bottom: 5px;" title="' . $value . ' post con el tag ' . $paltag . '">' . $paltag . '</a> ';
+
+    if ($asfff % 50 == 0) {
       echo '<br />';
-    if ($asfff == 100)
-      echo '<br />';
-    if ($asfff == 150)
-      echo '<br />';
-    if ($asfff == 200)
-      echo '<br />';
+    }
   }
-  echo '</center></div></div>';
+
+  echo '
+        </center>
+      </div>
+    </div>';
 }
 
-function template_tyc999()
-{
-  global $tranfer1, $context, $settings, $db_prefix, $sourcedir, $ID_MEMBER, $options, $txt, $modSettings, $scripturl;
+function template_tyc999() {
+  global $tranfer1, $context, $settings, $db_prefix, $sourcedir, $ID_MEMBER, $options, $txt, $modSettings, $scripturl, $boardurl;
 
-  require ($sourcedir . '/Hear-Buscador.php');
+  require_once($sourcedir . '/Hear-Buscador.php');
   hearBuscador('0', 't');
 
-  $pasda = seguridad($_GET['palabra']);
+  $pasda = isset($_GET['palabra']) ? seguridad($_GET['palabra']) : '';
 
   if ($pasda) {
-    $request = db_query("SELECT b.ID_BOARD, b.name, b.childLevel FROM {$db_prefix}boards AS b", __FILE__, __LINE__);
+    $request = db_query("
+      SELECT b.ID_BOARD, b.name, b.childLevel
+      FROM {$db_prefix}boards AS b", __FILE__, __LINE__);
+
     $context['boards'] = array();
-    while ($row = mysqli_fetch_assoc($request))
+
+    while ($row = mysqli_fetch_assoc($request)) {
       $context['boards'][] = array('id' => $row['ID_BOARD'], 'name' => $row['name']);
+    }
+
     mysqli_free_result($request);
+
     $RegistrosAMostrar = $modSettings['search_results_per_page'];
     $_GET['pag'] = isset($_GET['pag']) ? $_GET['pag'] : '';
+
     if ($_GET['pag'] < 1) {
       $dud = 1;
     } else {
       $dud = $_GET['pag'];
     }
+
     if (isset($dud)) {
       $RegistrosAEmpezar = ($dud - 1) * $RegistrosAMostrar;
       $PagAct = $dud;
@@ -181,15 +251,26 @@ function template_tyc999()
       $PagAct = 1;
     }
 
-    $NroRegistros = mysqli_num_rows(db_query("SELECT t.palabra FROM ({$db_prefix}tags as t, {$db_prefix}messages AS p) WHERE t.palabra='$pasda' AND t.id_post=p.ID_TOPIC", __FILE__, __LINE__));
     $request = db_query("
-SELECT p.puntos,t.palabra,p.subject,p.ID_TOPIC,b.description,p.hiddenOption,p.posterName,p.posterTime
-FROM ({$db_prefix}tags AS t, {$db_prefix}messages AS p,{$db_prefix}boards AS b) 
-WHERE t.palabra='$pasda' AND t.id_post=p.ID_TOPIC AND p.ID_BOARD=b.ID_BOARD
-GROUP BY p.subject
-ORDER BY p.ID_TOPIC ASC
-LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
+      SELECT t.palabra
+      FROM {$db_prefix}tags AS t, {$db_prefix}messages AS p
+      WHERE t.palabra = '$pasda'
+      AND t.id_post = p.ID_TOPIC", __FILE__, __LINE__);
+
+    $NroRegistros = mysqli_num_rows($request);
+
+    $request = db_query("
+      SELECT p.puntos, t.palabra, p.subject, p.ID_TOPIC, b.description, p.hiddenOption, p.posterName, p.posterTime
+      FROM {$db_prefix}tags AS t, {$db_prefix}messages AS p,{$db_prefix}boards AS b
+      WHERE t.palabra = '$pasda'
+      AND t.id_post = p.ID_TOPIC
+      AND p.ID_BOARD = b.ID_BOARD
+      GROUP BY p.subject
+      ORDER BY p.ID_TOPIC ASC
+      LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
+
     $context['tags'] = array();
+
     while ($row = mysqli_fetch_assoc($request)) {
       $context['tags'][] = array(
         'subject' => $row['subject'],
@@ -200,39 +281,70 @@ LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
         'description' => $row['description']
       );
     }
+
     mysqli_free_result($request);
     // div grande
 
     if (!$NroRegistros) {
-      echo '<div class="noesta-am" style="width:922px;">No se encontraron resultados.</div>';
+      echo '<div class="noesta-am" style="width: 922px;">No se encontraron resultados.</div>';
     } else {
-      echo '<table class="linksList" style="width:922px;">
-<thead align="center"><tr><th style="text-align:left;">' . $NroRegistros . ' Posts con el tag: ' . $pasda . '</th><th>Fecha</th><th>Puntos</th></tr></thead><tbody>';
+      echo '
+        <table class="linksList" style="width: 922px;">
+          <thead align="center">
+            <tr>
+              <th style="text-align: left;">' . $NroRegistros . ' Posts con el tag: ' . $pasda . '</th>
+              <th>Fecha</th>
+              <th>Puntos</th>
+            </tr>
+          </thead>
+          <tbody>';
 
       foreach ($context['tags'] as $tag) {
-        echo '<tr>
-<td style="text-align: left;">';
+        echo '
+          <tr>
+            <td style="text-align: left;">';
 
-        if ($tag['hiddenOption'] == '1' && $context['user']['is_guest'])
-          echo '<div class="icon_img" style="float:left;margin-right:0px;"><img alt="" src="' . $tranfer1 . '/icons/cwbig-v1-iconos.gif?v3.2.3" style="margin-top:-578px;display:inline;" /></div>';
+        if ($tag['hiddenOption'] == 1 && $context['user']['is_guest']) {
+          echo '
+            <div class="icon_img" style="float: left; margin-right: 0px;">
+              <img alt="" src="' . $tranfer1 . '/icons/cwbig-v1-iconos.gif?v3.2.3" style="margin-top: -578px; display: inline;" />
+            </div>';
+        }
 
-        echo '<a rel="dc:relation" target="_self" href="/post/' . $tag['id'] . '/' . $tag['description'] . '/' . urls(censorText($tag['subject'])) . '.html" title="' . censorText($tag['subject']) . '" class="categoriaPost ' . $tag['description'] . '">' . censorText($tag['subject']) . '</a></td><td title="' . timeformat($tag['posterTime']) . '">' . timeformat($tag['posterTime']) . '</td><td title="' . $tag['puntos'] . ' Puntos" style="color:green;">' . $tag['puntos'] . '</td>';
+        echo '
+            <a rel="dc:relation" target="_self" href="' . $boardurl . '/post/' . $tag['id'] . '/' . $tag['description'] . '/' . urls(censorText($tag['subject'])) . '.html" title="' . censorText($tag['subject']) . '" class="categoriaPost ' . $tag['description'] . '">' . censorText($tag['subject']) . '</a>
+          </td>
+          <td title="' . timeformat($tag['posterTime']) . '">' . timeformat($tag['posterTime']) . '</td>
+          <td title="' . $tag['puntos'] . ' Puntos" style="color: green;">' . $tag['puntos'] . '</td>';
       }
 
-      echo '</tbody></table>';
+      echo '
+          </tbody>
+        </table>';
+
       $PagAnt = $PagAct - 1;
       $PagSig = $PagAct + 1;
       $PagUlt = $NroRegistros / $RegistrosAMostrar;
       $Res = $NroRegistros % $RegistrosAMostrar;
-      if ($Res > 0)
+
+      if ($Res > 0) {
         $PagUlt = floor($PagUlt) + 1;
+      }
+
       if ($PagAct < $PagUlt) {
-        echo '<div class="windowbgpag" style="width:698px;">';
-        if ($PagAct > 1)
-          echo "<a href='/tags/buscar/&q=$pasda&orden=$order&categoria=$cat2&pag=$PagAnt'>&#171; anterior</a>";
-        if ($PagAct < $PagUlt)
-          echo "<a href='/tags/buscar/&q=$pasda&orden=$order&categoria=$cat2&pag=$PagSig'>siguiente &#187;</a>";
-        echo '<div class="clearBoth"></div></div>';
+        echo '<div class="windowbgpag" style="width: 698px;">';
+
+        if ($PagAct > 1) {
+          echo `<a href="$boardurl/tags/buscar/&q=$pasda&orden=$order&categoria=$cat2&pag=$PagAnt">&#171; anterior</a>`;
+        }
+
+        if ($PagAct < $PagUlt) {
+          echo `<a href="$boardurl/tags/buscar/&q=$pasda&orden=$order&categoria=$cat2&pag=$PagSig">siguiente &#187;</a>`;
+        }
+
+        echo '
+            <div class="clearBoth"></div>
+          </div>';
       }
     }
   }
@@ -290,11 +402,11 @@ function template_tyc666()
 
     $NroRegistros = mysqli_num_rows(db_query("SELECT p.ID_TOPIC
 FROM ({$db_prefix}tags AS t, {$db_prefix}messages AS p,{$db_prefix}boards AS b)
-WHERE t.palabra LIKE '%$pssads%' AND t.id_post=p.ID_TOPIC$shas AND p.ID_BOARD={$cat} AND p.ID_BOARD=b.ID_BOARD 
+WHERE t.palabra LIKE '%$pssads%' AND t.id_post=p.ID_TOPIC$shas AND p.ID_BOARD={$cat} AND p.ID_BOARD=b.ID_BOARD
 GROUP BY p.subject", __FILE__, __LINE__));
 
     $request = db_query("SELECT p.puntos,p.subject,p.ID_TOPIC,b.description,p.hiddenOption,p.posterTime
-FROM ({$db_prefix}tags AS t, {$db_prefix}messages AS p,{$db_prefix}boards AS b) 
+FROM ({$db_prefix}tags AS t, {$db_prefix}messages AS p,{$db_prefix}boards AS b)
 WHERE t.palabra LIKE '%$pssads%' AND t.id_post=p.ID_TOPIC$shas AND p.ID_BOARD={$cat} AND p.ID_BOARD=b.ID_BOARD
 GROUP BY p.subject
 ORDER BY {$order2}
@@ -379,7 +491,7 @@ LIMIT 1", __FILE__, __LINE__);
 <form action="/web/cw-EnviarImgMail.php" method="post" accept-charset="' . $context['character_set'] . '"><br /><font class="size11"><b>Recomendarle esta imagen hasta a seis amigos:</b></font><br /><b class="size11">1 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email" size="28" maxlength="60" /> <b class="size11">2 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email1" size="28" maxlength="60" /><br /><b class="size11">3 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email2" size="28" maxlength="60" /> <b class="size11">4 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email3" size="28" maxlength="60" /><br /><b class="size11">5 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email4" size="28" maxlength="60" /> <b class="size11">6 - </b><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email5" size="28" maxlength="60" /><br /><br />
           <font class="size11"><b>Asunto:</b></font><br /><input size="40" name="titulo" value="' . $row['title'] . '" type="text" onfocus="foco(this);" onblur="no_foco(this);"><br /><br />
           <font class="size11"><b>Mensaje:</b></font><br />
-          <textarea onfocus="foco(this);" onblur="no_foco(this);" cols="70" rows="8" wrap="hard" tabindex="6" name="comment">Hola! Te recomiendo que veas esta imagen! 
+          <textarea onfocus="foco(this);" onblur="no_foco(this);" cols="70" rows="8" wrap="hard" tabindex="6" name="comment">Hola! Te recomiendo que veas esta imagen!
 
 Saludos!
 
@@ -405,7 +517,7 @@ function template_tyc6()
   if(email == ''){document.getElementById('errorr').innerHTML='<br /><font class=\"size10\" style=\"color: red;\">Debes agregar tu e-mail.</font>'; return false;}
   if(comentario == ''){document.getElementById('comentario').innerHTML='<font class=\"size10\" style=\"color: red;\"><br />Debes agregar el comentario.</font>'; return false;}
   if(code == ''){document.getElementById('visual_verification_code').innerHTML='<font class=\"size10\" style=\"color: red;\"><br />Debes insertar el codigo.</font>'; return false;}
-  
+
   }</script>";
 
     echo '<div><form action="/web/cw-Contactar.php" method="post" accept-charset="' . $context['character_set'] . '"><div class="box_buscador">
@@ -468,7 +580,7 @@ function template_tyc3() {
       ancho[\'1\'] = 200;
       alto[\'1\'] = 200;
       ancho[\'2\'] = 200;
-      alto[\'2\'] = 250; 
+      alto[\'2\'] = 250;
       ancho[\'3\'] = 285;
       alto[\'3\'] = 134;
       ancho[\'4\'] = 200;
@@ -542,7 +654,7 @@ function template_tyc3() {
           <div style="width: 911px; padding: 4px; margin-bottom: 8px;" class="windowbg">
             Integra los &uacute;ltimos posts de ' . $mbname . ' en tu web y mantente siempre actualizado.
             <br />
-            En segundos podr&aacute;s tener un listado que estar&aacute; siempre 
+            En segundos podr&aacute;s tener un listado que estar&aacute; siempre
             actualizado con los &uacute;ltimos posts publicados en ' . $mbname . '.
             <br />
             Puedes personalizar el listado para que se adapte al estilo de tu sitio. Puedes cambiar su tama&ntilde;o, color, cantidad de posts a listar y hasta puedes filtrar por categor&iacute;as.
@@ -574,7 +686,7 @@ function template_tyc3() {
                 <font color="#EEE">Ejemplo</font>
               </b>
             </td>
-          </tr>  
+          </tr>
           <tr style="padding: 0px; margin: 0px;">
             <td align="center" style="padding: 0px; margin: 0px;" class="windowbg">
               <b>Categor&iacute;a:</b>
@@ -879,7 +991,7 @@ function template_vr2965() {
                 <div style="white-space: pre-wrap; overflow: hidden; display: block;">
                   ' . str_replace('http://linkoculto.net/index.php?l=', '', parse_bbc($row['comentario'])) . '
                 </div>
-              </div> 
+              </div>
             </span>
           </div>';
       }
@@ -971,10 +1083,10 @@ $.ajax({
           $('#resultado_'+id).addClass('noesta');
           $('#resultado_'+id).html(h.substring(3)).show();
         } else
-        if(h.charAt(0)==1){ //OK				
+        if(h.charAt(0)==1){ //OK
           $('#resultado_'+id).removeClass('noesta');
           $('#resultado_'+id).addClass('noesta-ve');
-          $('#resultado_'+id).html(h.substring(3)).show();}			
+          $('#resultado_'+id).html(h.substring(3)).show();}
     },
     error: function(){
       Boxy.alert("Error, volver a intentar...", null, {title: 'Alerta'});

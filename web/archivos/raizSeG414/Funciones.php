@@ -1690,6 +1690,70 @@ function getAvatar($id) {
   }
 }
 
+function generatePostURL($id) {
+  global $db_prefix, $boardurl;
+
+  $request = db_query("
+    SELECT m.ID_TOPIC AS id, m.subject AS title, b.description AS category
+    FROM {$db_prefix}messages AS m
+    INNER JOIN {$db_prefix}boards AS b ON b.ID_BOARD = m.ID_BOARD
+    WHERE m.ID_TOPIC = $id
+    LIMIT 1", __FILE__, __LINE__);
+
+  $rows = mysqli_num_rows($request);
+
+  if ($rows == 0) {
+    return '';
+  }
+
+  $row = mysqli_fetch_assoc($request);
+
+  return $boardurl . '/post/' . $row['id'] . '/' . $row['category'] . '/' . urls($row['title']) . '.html';
+}
+
+function generateImageURL($id) {
+  global $db_prefix, $boardurl;
+
+  $request = db_query("
+    SELECT ID_PICTURE AS id
+    FROM {$db_prefix}gallery_pic
+    WHERE ID_PICTURE = $id
+    LIMIT 1", __FILE__, __LINE__);
+
+  $rows = mysqli_num_rows($request);
+
+  if ($rows == 0) {
+    return '';
+  }
+
+  $row = mysqli_fetch_assoc($request);
+
+  return $boardurl . '/imagenes/ver/' . $row['category'];
+}
+
+function generateProfileURL($id) {
+  global $db_prefix, $boardurl;
+
+  $request = db_query("
+    SELECT memberName, realName
+    FROM {$db_prefix}members
+    WHERE ID_MEMBER = $id
+    LIMIT 1", __FILE__, __LINE__);
+
+  $rows = mysqli_num_rows($request);
+
+  if ($rows == 0) {
+    return '';
+  }
+
+  $row = mysqli_fetch_assoc($request);
+  $nick = $row['memberName'] || $row['realName'];
+
+  return $boardurl . '/perfil/' . $nick;
+}
+
+
+
 /*
 function flood() {}
 
