@@ -4,70 +4,129 @@ function template_intro() {
   die();
 }
 
+// Mis notas
 function template_tyc17() {
-  global $tranfer1, $func, $ID_MEMBER, $modSettings, $context, $db_prefix;
+  global $tranfer1, $func, $ID_MEMBER, $modSettings, $context, $db_prefix, $boardurl;
 
   ditaruser();
 
   $_GET['accion'] = isset($_GET['accion']) ? $_GET['accion'] : '';
 
-if ($_GET['accion'] == 'misnotas') {
+  if ($_GET['accion'] == 'misnotas') {
+    echo '<div style="float: left; width: 776px;">';
 
-echo'<div style="float:left;width:776px;">';
-$RegistrosAMostrar=10;
-$NroRegistros=mysqli_num_rows(db_query("
-SELECT id_user
-FROM {$db_prefix}notas
-WHERE id_user='{$ID_MEMBER}'", __FILE__, __LINE__)); 
-$_GET['pag']=isset($_GET['pag']) ? $_GET['pag'] : '';
-if($_GET['pag'] < 1){$oagvv=1;}else{$oagvv=$_GET['pag'];}
-if(isset($oagvv)){$RegistrosAEmpezar=($oagvv-1)*$RegistrosAMostrar;
-$PagAct=$oagvv;}else{$RegistrosAEmpezar=0;$PagAct=1;}
-$PagAnt=$PagAct-1;
-$PagSig=$PagAct+1;
-$PagUlt=$NroRegistros/$RegistrosAMostrar;
- $Res=$NroRegistros%$RegistrosAMostrar;
- if($Res>0) $PagUlt=floor($PagUlt)+1;
- 
-echo'<div style="float:left;width:776px;">';
-if(empty($NroRegistros)){echo'<div class="noesta" style="width:776px;">No tienes notas agregadas.</div>';}
-elseif($PagAct>$PagUlt){echo'<div class="noesta" style="width:776px;">Est&aacute; p&aacute;gina no existe.</div>';}
-else{echo'<table class="linksList" style="width:776px;"><thead align="center"><tr><th style="text-align:left;">Nota</th><th>Fecha</th><th>Eliminar</th></tr></thead><tbody>';
+    $RegistrosAMostrar = 10;
 
-$notas=db_query("
-SELECT id,fecha_creado,titulo
-FROM {$db_prefix}notas
-WHERE id_user='{$ID_MEMBER}'
-ORDER BY id DESC 
-LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
-$context['posts']=array();
-while($row=mysqli_fetch_assoc($notas)){
-    $context['posts'][]=array(
-    'id' => $row['id'],
-    'titulo' => nohtml($row['titulo']),
-    'fechac' => timeformat($row['fecha_creado']));}
-mysqli_free_result($notas);
+    $request = db_query("
+      SELECT id_user
+      FROM {$db_prefix}notas
+      WHERE id_user='{$ID_MEMBER}'", __FILE__, __LINE__);
 
+    $NroRegistros = mysqli_num_rows($request);
+    $_GET['pag'] = isset($_GET['pag']) ? $_GET['pag'] : '';
+    $oagvv = $_GET['pag'] < 1 ? 1 : $_GET['pag'];
 
-foreach($context['posts'] as $post){
-echo'<tr><td style="text-align:left;"><a title="'.$post['titulo'].'" href="#" onclick=\'Boxy.load("/web/cw-TEMPeditarNota.php?id='.$post['id'].'", { title: "'.nohtml($post['titulo']).'"});\' >'.$post['titulo'].'</a></td>
-<td title="'.$post['fechac'].'">'.$post['fechac'].'</td> <td><img alt="" title="Eliminar nota" style="width:16px;height:16px;cursor:pointer;" class="png" src="' . $tranfer1 . '/comunidades/eliminar.png" onclick="Boxy.confirm(\'&iquest;Estas seguro que desea eliminar esta nota?\', function() { location.href=\'/web/cw-EliminarNota.php?id='.$post['id'].'\' }, {title: \'Eliminar nota\'}); return false;" /></td></tr>';}
+    if (isset($oagvv)) {
+      $RegistrosAEmpezar = ($oagvv - 1) * $RegistrosAMostrar;
+      $PagAct = $oagvv;
+    } else {
+      $RegistrosAEmpezar = 0;
+      $PagAct = 1;
+    }
 
+    $PagAnt = $PagAct - 1;
+    $PagSig = $PagAct + 1;
+    $PagUlt = $NroRegistros / $RegistrosAMostrar;
+    $Res = $NroRegistros % $RegistrosAMostrar;
 
+    if ($Res > 0) {
+      $PagUlt = floor($PagUlt) + 1;
+    }
 
-echo'</tbody></table>';
+    echo '<div style="float: left; width: 776px;">';
 
+    if (empty($NroRegistros)) {
+      echo '<div class="noesta" style="width: 776px;">No tienes notas agregadas.</div>';
+    } else if ($PagAct > $PagUlt) {
+      echo '<div class="noesta" style="width: 776px;">Est&aacute; p&aacute;gina no existe.</div>';
+    } else {
+      echo '
+        <table class="linksList" style="width: 776px;">
+          <thead align="center">
+            <tr>
+              <th style="text-align: left;">Nota</th>
+              <th>Fecha</th>
+              <th>Eliminar</th>
+            </tr>
+          </thead>
+          <tbody>';
 
-if($PagAct>$PagUlt){}elseif($PagAct>1 || $PagAct<$PagUlt){
-echo'<div class="windowbgpag" >';
-if($PagAct>1) echo "<a href='/mis-notas/pag-$PagAnt'>&#171; anterior</a>";
-if($PagAct<$PagUlt)  echo "<a href='/mis-notas/pag-$PagSig'>siguiente &#187;</a>";
-echo'</div>';}}
+      $notas = db_query("
+        SELECT id, fecha_creado, titulo
+        FROM {$db_prefix}notas
+        WHERE id_user = $ID_MEMBER
+        ORDER BY id DESC 
+        LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
 
-echo'<div style="width:776px;margin-top:4px;"><p align="right" style="margin: 0px; padding: 0px;"><input type="button" value="Agregar nota" onclick="Boxy.load(\'/web/cw-TEMPagregarNota.php\', { title: \'Agregar nota\'});" class="boxy login" /></p></div>';
-echo'<div class="clearBoth"></div></div>';
-echo'</div>';
-}else{die();}}
+      $context['posts'] = array();
+
+      while ($row = mysqli_fetch_assoc($notas)) {
+        $context['posts'][] = array(
+          'id' => $row['id'],
+          'titulo' => nohtml($row['titulo']),
+          'fechac' => timeformat($row['fecha_creado'])
+        );
+      }
+
+      mysqli_free_result($notas);
+
+      foreach ($context['posts'] as $post) {
+        echo '
+          <tr>
+            <td style="text-align: left;">
+              <a title="' . $post['titulo'] . '" href="#" onclick="Boxy.load("' . $boardurl . '/web/cw-TEMPeditarNota.php?id=' . $post['id'] . '", { title: "' . nohtml($post['titulo']) . '" });">' . $post['titulo'] . '</a>
+            </td>
+            <td title="' . $post['fechac'] . '">' . $post['fechac'] . '</td>
+            <td>
+              <img alt="" title="Eliminar nota" style="width: 16px; height: 16px; cursor: pointer;" class="png" src="' . $tranfer1 . '/comunidades/eliminar.png" onclick="Boxy.confirm(\'&iquest;Estas seguro que desea eliminar esta nota?\', function() { location.href = \'' . $boardurl . '/web/cw-EliminarNota.php?id=' . $post['id'] . '\' }, { title: \'Eliminar nota\' }); return false;" />
+            </td>
+          </tr>';
+      }
+
+      echo '
+          </tbody>
+        </table>';
+
+      if ($PagAct > $PagUlt) {
+        // ¿Se hace algo acá?
+      } else if ($PagAct > 1 || $PagAct < $PagUlt) {
+        echo '<div class="windowbgpag">';
+
+        if ($PagAct > 1) {
+          echo `<a href="$boardurl/mis-notas/pag-$PagAnt">&#171; anterior</a>`;
+        }
+
+        if ($PagAct < $PagUlt) {
+          echo `<a href="$boardurl/mis-notas/pag-$PagSig">siguiente &#187;</a>`;
+        }
+
+        echo '</div>';
+      }
+    }
+
+    echo '
+          <div style="width: 776px; margin-top: 4px;">
+            <p align="right" style="margin: 0px; padding: 0px;">
+              <input type="button" value="Agregar nota" onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPagregarNota.php\', { title: \'Agregar nota\' });" class="boxy login" />
+            </p>
+          </div>
+          <div class="clearBoth"></div>
+        </div>
+      </div>';
+  } else {
+    die('Acci&oacute;n no reconocida.');
+  }
+}
 
 // Moderación de mensajes privados
 function template_tyc12() {
@@ -77,21 +136,22 @@ function template_tyc12() {
     echo '
       <div class="box_757">
         <div class="box_title" style="width: 752px;">
-          <div class="box_txt box_757-34"><center>Mensajes privados</center>
-        </div>
-        <div class="box_rss">
-          <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
+          <div class="box_txt box_757-34">
+            <center>Mensajes privados</center>
+          </div>
+          <div class="box_rss">
+            <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
+          </div>
         </div>
       </div>
-    </div>
-    <div style="width: 744px; padding:4px;" class="windowbg">
-      <form action="' . $boardurl . '/web/cw-EliminarPMSADM.php" method="post" accept-charset="' . $context['character_set'] . '" name="coments" id="coments">';
+      <div style="width: 744px; padding:4px;" class="windowbg">
+        <form action="' . $boardurl . '/web/cw-EliminarPMSADM.php" method="post" accept-charset="' . $context['character_set'] . '" name="coments" id="coments">';
 
     $RegistrosAMostrar = 10;
     $pag = isset($_GET['pag-11sdasd']) ? (int) $_GET['pag-11sdasd'] : 0;
     $oagvv = $pag < 1 ? 1 : $pag;
 
-    if(isset($oagvv)) {
+    if (isset($oagvv)) {
       $RegistrosAEmpezar = ($oagvv - 1) * $RegistrosAMostrar;
       $PagAct = $oagvv;
     } else {
@@ -142,6 +202,7 @@ function template_tyc12() {
     $PagSig = $PagAct + 1;
     $PagUlt = $NroRegistros / $RegistrosAMostrar;
     $Res = $NroRegistros % $RegistrosAMostrar;
+
     if ($Res > 0) {
       $PagUlt = floor($PagUlt) + 1;
     }
@@ -241,7 +302,7 @@ function template_tyc() {
 
 Saludos!
 
-'.$context['user']['name'].'</textarea>
+' . $context['user']['name'] . '</textarea>
                 <br /><br />
                 <font class="size11">
                   <strong>C&oacute;digo de la imagen:</strong>
@@ -360,26 +421,26 @@ function template_tyc2() {
 
   if (!empty($modSettings['radio'])) {
     if ($modSettings['radio'] == 1) {
-      echo '
+      echo "
         <center>
-          <div class="stream">
-            <script type="text/javascript">
+          <div class=\"stream\">
+            <script type=\"text/javascript\">
               window.onload = radio;
 
               function radio() {
-                if (document.getElementById(\'cc_stream_info_song\').innerHTML == \'\') {
-                  document.getElementById(\'enlinea\').innerHTML = \'<span style="color:red;">Fuera de linea</span>\';
-                  document.getElementById(\'imgmic\').style.display = \'inline\';
-                  document.getElementById(\'imgcar\').style.display = \'none\';}
-                  else{document.getElementById(\'enlinea\').innerHTML = \'<span style="color:green;">En linea</span>\';
-                  document.getElementById(\'imgmic\').style.display = \'inline\';
-                  document.getElementById(\'imgcar\').style.display = \'none\';
-                  document.getElementById(\'escuchando\').style.display = \'inline\';
+                if (document.getElementById('cc_stream_info_song').innerHTML == '') {
+                  document.getElementById('enlinea').innerHTML = '<span style=\"color:red;\">Fuera de linea</span>';
+                  document.getElementById('imgmic').style.display = 'inline';
+                  document.getElementById('imgcar').style.display = 'none';}
+                  else{document.getElementById('enlinea').innerHTML = '<span style=\"color:green;\">En linea</span>';
+                  document.getElementById('imgmic').style.display = 'inline';
+                  document.getElementById('imgcar').style.display = 'none';
+                  document.getElementById('escuchando').style.display = 'inline';
                 }
               }
             </script>
-            <span id="escuchando" style="display: none;">
-              <img src="' . $tranfer1 . '/icons/microfono.png" alt="" />
+            <span id=\"escuchando\" style=\"display: none;\">
+              <img src=\"" . $tranfer1 . '/icons/microfono.png" alt="" />
               <a href="' . $boardurl . '/chat/" id="cc_stream_info_song"></a>
               <br />
             </span>
@@ -671,30 +732,50 @@ function template_tyc23() {
   mysqli_free_result($request);
 
   if ($pasos == 1) {
-    $pasoabierto2='';$pasoabierto2a=' style="display: none;"';
-    $pasoabierto3='';$pasoabierto3a=' style="display: none;"';
-    $pasoabierto4='';$pasoabierto4a=' style="display: none;"';
-    $pasoabierto1='titlesCom2';$pasoabierto1a='';
+    $pasoabierto2 = '';
+    $pasoabierto2a = ' style="display: none;"';
+    $pasoabierto3 = '';
+    $pasoabierto3a = ' style="display: none;"';
+    $pasoabierto4 = '';
+    $pasoabierto4a = ' style="display: none;"';
+    $pasoabierto1 = 'titlesCom2';
+    $pasoabierto1a = '';
   } else if ($pasos == 2) {
-    $pasoabierto1='';$pasoabierto1a=' style="display: none;"';
-    $pasoabierto3='';$pasoabierto3a=' style="display: none;"';
-    $pasoabierto4='';$pasoabierto4a=' style="display: none;"';
-    $pasoabierto2='titlesCom2';$pasoabierto2a='';
+    $pasoabierto1 = '';
+    $pasoabierto1a = ' style="display: none;"';
+    $pasoabierto3 = '';
+    $pasoabierto3a = ' style="display: none;"';
+    $pasoabierto4 = '';
+    $pasoabierto4a = ' style="display: none;"';
+    $pasoabierto2 = 'titlesCom2';
+    $pasoabierto2a = '';
   } else if ($pasos == 3) {
-    $pasoabierto1='';$pasoabierto1a=' style="display: none;"';
-    $pasoabierto2='';$pasoabierto2a=' style="display: none;"';
-    $pasoabierto4='';$pasoabierto4a=' style="display: none;"';
-    $pasoabierto3='titlesCom2';$pasoabierto3a='';
+    $pasoabierto1 = '';
+    $pasoabierto1a = ' style="display: none;"';
+    $pasoabierto2 = '';
+    $pasoabierto2a = ' style="display: none;"';
+    $pasoabierto4 = '';
+    $pasoabierto4a = ' style="display: none;"';
+    $pasoabierto3 = 'titlesCom2';
+    $pasoabierto3a = '';
   } else if ($pasos == 4) {
-    $pasoabierto1='';$pasoabierto1a=' style="display: none;"';
-    $pasoabierto2='';$pasoabierto2a=' style="display: none;"';
-    $pasoabierto3='';$pasoabierto3a=' style="display: none;"';
-    $pasoabierto4='titlesCom2';$pasoabierto4a='';
+    $pasoabierto1 = '';
+    $pasoabierto1a = ' style="display: none;"';
+    $pasoabierto2 = '';
+    $pasoabierto2a = ' style="display: none;"';
+    $pasoabierto3 = '';
+    $pasoabierto3a = ' style="display: none;"';
+    $pasoabierto4 = 'titlesCom2';
+    $pasoabierto4a = '';
   } else {
-    $pasoabierto1='';$pasoabierto1a=' style="display: none;"';
-    $pasoabierto2='';$pasoabierto2a=' style="display: none;"';
-    $pasoabierto3='';$pasoabierto3a=' style="display: none;"';
-    $pasoabierto4='';$pasoabierto4a=' style="display: none;"';
+    $pasoabierto1 = '';
+    $pasoabierto1a = ' style="display: none;"';
+    $pasoabierto2 = '';
+    $pasoabierto2a = ' style="display: none;"';
+    $pasoabierto3 = '';
+    $pasoabierto3a = ' style="display: none;"';
+    $pasoabierto4 = '';
+    $pasoabierto4a = ' style="display: none;"';
   }
 
   echo '
@@ -703,8 +784,8 @@ function template_tyc23() {
         Al editar mi apariencia tambi&eacute;n acepto los
         <a href="' . $boardurl . '/terminos-y-condiciones/" target="_blank">T&eacute;rminos de uso</a>.
       </div>
-      <h3 class="titlesCom '.$pasoabierto1.'" style="width: 762px;" onclick="chgsec(this)">1. Formaci&oacute;n y trabajo</h3>
-      <div class="active" id="contennnt"'.$pasoabierto1a.'>';
+      <h3 class="titlesCom ' . $pasoabierto1 . '" style="width: 762px;" onclick="chgsec(this)">1. Formaci&oacute;n y trabajo</h3>
+      <div class="active" id="contennnt"' . $pasoabierto1a . '>';
 
   echo '
     <form action="' . $boardurl . '/accion-apariencia/paso1/" method="post" accept-charset="' . $context['character_set'] . '" enctype="multipart/form-data">
@@ -730,7 +811,7 @@ function template_tyc23() {
             <b>Profesi&oacute;n:</b>
           </td>
           <td width="40%">
-            <input size="30" maxlength="32" name="profesion" id="profesion" value="'.$prof.'" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
+            <input size="30" maxlength="32" name="profesion" id="profesion" value="' . $prof . '" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
           </td>
         </tr>
         <tr>
@@ -738,7 +819,7 @@ function template_tyc23() {
             <b>Empresa:</b>
           </td>
           <td>
-            <input size="30" maxlength="32" name="empresa" id="empresa" value="'.$emp.'" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
+            <input size="30" maxlength="32" name="empresa" id="empresa" value="' . $emp . '" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
           </td>
         </tr>
         <tr>
@@ -935,7 +1016,6 @@ function template_tyc23() {
   foreach ($allComplexiones as $key => $value) {
     echo '<option value="' . $key . '"' . ($key == $complexion ? ' selected="selected"' : '') . '>' . $value . '</option>';
   }
-
 
   echo '
         </select>

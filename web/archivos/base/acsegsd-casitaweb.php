@@ -12,54 +12,84 @@ function template_intro() {
 function template_tyc3() {
   global $tranfer1, $context, $db_prefix, $modSettings;
 
-if($context['user']['is_guest']){fatal_error('Vos no podes estar aca.');}
-$Activo=substr($modSettings['signature_settings'], 0, 1) == 1;
-if($Activo){    
+  if ($context['user']['is_guest']) {
+    fatal_error('Funcionalidad exclusiva de usuarios registrados.');
+  }
 
-$getid=isset($_GET['u']) ? (int)$_GET['u'] : '';
-ditaruser();
-echo'<div style="float:left;width: 776px;">';
-if($getid){$usecc=$getid;}else{$usecc=$context['user']['id'];}
+  $Activo = substr($modSettings['signature_settings'], 0, 1) == 1;
 
-$existe=db_query("
-SELECT signature
-FROM ({$db_prefix}members)
-WHERE ID_MEMBER='$usecc'
-LIMIT 1", __FILE__, __LINE__);
-while ($row = mysqli_fetch_assoc($existe)){$signature=$row['signature'];}
+  if ($Activo) {
+    $getid = isset($_GET['u']) ? (int) $_GET['u'] : '';
 
-echo'<script type="text/javascript">
-function comprobar(firma) {
-if(firma.length>400){ $(\'#MostrarError1\').show();  return false;} else $(\'#MostrarError1\').hide();}
-</script>
+    ditaruser();
 
-<form name="per" method="post" action="/web/cw-firmaEditar.php">';
-echo'<div class="box_780" style="float:left;">
-<div class="box_title" style="width: 774px;"><div class="box_txt box_780-34"><center>';
-if($getid){echo'Editar la firma';}
-else{echo'Editar mi firma';}
-echo'</center></div>';
+    echo '<div style="float: left; width: 776px;">';
 
-echo'<div class="box_rss"><img alt="" src="'.$tranfer1.'/blank.gif" style="width:16px;height:16px;" /></div></div>
-<div class="windowbg" style="width: 766px; padding: 4px;margin-bottom:8px;">
+    $usecc = $getid ? $getid : $context['user']['id'];
 
-<textarea onfocus="foco(this);" onblur="no_foco(this);" name="firma" id="firma" style="width: 758px;height:100px;">'.$signature.'</textarea>
-<div id="MostrarError1" class="capsprotBAJO" style="width: 758px;">La firma no debe tener m&aacute;s de 400 car&aacute;cteres.</div>
-<div class="hrs"></div>
-          
-<div class="noesta">* Si la firma contiene pornografia, es morboso. Se borrar&aacute;.</div><br />'; 
+    $existe = db_query("
+      SELECT signature
+      FROM {$db_prefix}members
+      WHERE ID_MEMBER = $usecc
+      LIMIT 1", __FILE__, __LINE__);
 
-if($getid){echo'
-<input type="hidden" name="admin" value="1" />
-<input type="hidden" name="id_user" value="'.$getid.'" />';
-$titlbotte='Editar el perfil';}else{$titlbotte='Editar mi perfil';}
+    $row = mysqli_fetch_assoc($existe);
+    $signature = $row['signature'];
 
-echo'<center><input onclick="return comprobar(this.form.firma.value);" type="submit" class="button" style="font-size:15px" value="'.$titlbotte.'" title="'.$titlbotte.'" /></center>
-</div></div></div>
-</form>';}else{fatal_error('La firma se encuentra desactivada.');} }
+    mysqli_free_result($existe);
 
+    echo '
+      <script type="text/javascript">
+        function comprobar(firma) {
+          if (firma.length > 400) {
+            $(\'#MostrarError1\').show();
+            return false;
+          } else {
+            $(\'#MostrarError1\').hide();
+          }
+        }
+      </script>
+      <form name="per" method="post" action="' . $boardurl . '/web/cw-firmaEditar.php">
+        <div class="box_780" style="float: left;">
+          <div class="box_title" style="width: 774px;">
+            <div class="box_txt box_780-34">
+              <center>' . ($getid ? 'Editar la firma' : 'Editar mi firma') . '</center>
+            </div>
+            <div class="box_rss">
+              <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" />
+            </div>
+          </div>
+          <div class="windowbg" style="width: 766px; padding: 4px; margin-bottom: 8px;">
+            <textarea onfocus="foco(this);" onblur="no_foco(this);" name="firma" id="firma" style="width: 758px; height: 100px;">' . $signature . '</textarea>
+            <div id="MostrarError1" class="capsprotBAJO" style="width: 758px;">La firma no debe tener m&aacute;s de 400 car&aacute;cteres.</div>
+            <div class="hrs"></div>
+            <div class="noesta">* Si la firma contiene pornograf&iacute;a o es morboso, se borrar&aacute;.</div>
+            <br />';
 
-function template_tyc4(){}
+    if ($getid) {
+      echo '
+        <input type="hidden" name="admin" value="1" />
+        <input type="hidden" name="id_user" value="' . $getid . '" />';
+
+      $titlbotte = 'Editar el perfil';
+    } else {
+      $titlbotte = 'Editar mi perfil';
+    }
+
+    echo '
+              <center>
+                <input onclick="return comprobar(this.form.firma.value);" type="submit" class="button" style="font-size: 15px" value="' . $titlbotte . '" title="' . $titlbotte . '" />
+              </center>
+            </div>
+          </div>
+        </div>
+      </form>';
+  } else {
+    fatal_error('La firma se encuentra desactivada.');
+  }
+}
+
+function template_tyc4() {}
 
 // Moderación de muros
 function template_tyc6() {
@@ -81,14 +111,9 @@ function template_tyc6() {
 
     $RegistrosAMostrar = 25;
     $pag = isset($_GET['pag-seg-157']) ? (int) $_GET['pag-seg-157'] : 1;
+    $dud = $pag < 0 ? 1 : $pag;
 
-    if ($pag < 0) {
-      $dud = 1;
-    } else {
-      $dud = $pag;
-    }
-
-    if(isset($dud)) {
+    if (isset($dud)) {
       $RegistrosAEmpezar = ($dud - 1) * $RegistrosAMostrar;
       $PagAct = $dud;
     } else {
@@ -116,9 +141,9 @@ function template_tyc6() {
         echo '<b style="color: red;"><i>Tipo de muro no conocido ||| </i></b>';
       }
 
-      echo '
+      echo "
           -
-          <a onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas borrar este mensaje?\')) return false; del_coment_muro(\'' . $row['id'] . '\'); return false;" href="#" title="Eliminar mensaje">
+          <a onclick=\"if (!confirm('\\xbfEst&aacute;s seguro que deseas borrar este mensaje?')) return false; del_coment_muro('" . $row['id'] . '\'); return false;" href="#" title="Eliminar mensaje">
             <img alt="Eliminar Mensaje" src="' . $tranfer1 . '/eliminar.gif" width="8px" height="8px" />
           </a>
           <br />
@@ -134,6 +159,8 @@ function template_tyc6() {
           <div class="hrs"></div>
         </div>';
     }
+
+    mysqli_free_result($request);
 
     $request = db_query("
       SELECT id
