@@ -1,19 +1,18 @@
 <?php
 
-function template_intro()
-{
+function template_intro() {
   global $tranfer1, $sourcedir, $no_avatar, $ID_MEMBER, $modSettings, $context, $db_prefix, $boardurl;
 
   arriba();
 
   if (!$context['comuid']) {
     echo '
-      <div style="text-align:left;">
-        <div style="float:left;height:auto;margin-right:6px;">
-          <div class="ultimos_postsa" style="margin-bottom:4px;">
+      <div style="text-align: left;">
+        <div style="float: left; height: auto; margin-right: 6px;">
+          <div class="ultimos_postsa" style="margin-bottom: 4px;">
             <div class="crear_comunidad">
               <a href="' . $boardurl . '/crear-comunidades/">
-                <img src="' . $tranfer1 . '/comunidades/btn-crear_comunidad.png" alt="" class="png" title="Crear Comunidad"/>
+                <img src="' . $tranfer1 . '/comunidades/btn-crear_comunidad.png" alt="" class="png" title="Crear Comunidad" />
               </a>
             </div>
             <div class="box_title" style="width: 378px;">
@@ -30,7 +29,7 @@ function template_intro()
 
     $RegistrosAMostrar = 20;
     $padds = isset($_GET['pag']) ? (int) $_GET['pag'] : '';
-    $per = $padds < 1 ? '1' : $padds;
+    $per = $padds < 1 ? 1 : $padds;
 
     if (isset($per)) {
       $RegistrosAEmpezar = ($per - 1) * $RegistrosAMostrar;
@@ -46,7 +45,8 @@ function template_intro()
     $request = db_query("
       SELECT a.titulo, c.nombre, c.url as url2, a.id, m.realName, b.url, b.nombre as nomb2
       FROM {$db_prefix}comunidades AS c
-      INNER JOIN {$db_prefix}comunidades_articulos AS a ON a.id_com=c.id AND a.eliminado=0
+      INNER JOIN {$db_prefix}comunidades_articulos AS a ON a.id_com = c.id
+      AND a.eliminado = 0
       INNER JOIN {$db_prefix}members AS m ON a.id_user = m.ID_MEMBER
       INNER JOIN {$db_prefix}comunidades_categorias AS b ON c.categoria = b.id
       AND c.acceso <> 4
@@ -73,7 +73,7 @@ function template_intro()
 
     foreach ($context['posts'] as $posts) {
       $tit = $posts['titulo'];
-      $posts['nombre'] = nohtml(nohtml2($posts['nombre']));
+      $posts['nombre'] = $posts['nombre'];
       $tit2 = $posts['titulo'];
       $tit3 = strlen($tit) > 40 ? substr($tit, 0, 37) . '...' : $tit;
 
@@ -84,7 +84,7 @@ function template_intro()
               <img src="' . $tranfer1 . '/comunidades/categorias/' . $posts['url'] . '.png" alt="" title="' . $posts['nomb2'] . '" class="png" />
             </div>
             <div>
-              <a style="color: #D35F2C; font-weight: bold; font-size: 13px;" href="' . $boardurl . '/comunidades/' . $posts['url2'] . '/' . $posts['id'] . '/' . urls($tit2) . '.html" target="_self" title="' . $tit . '">' . $tit3 . '</a>
+              <a style="color: #D35F2C; font-weight: bold; font-size: 13px;" href="' . $boar.durl . '/comunidades/' . $posts['url2'] . '/' . $posts['id'] . '/' . urls($tit2) . '.html" target="_self" title="' . $tit . '">' . $tit3 . '</a>
             </div>
           </div>
           <div class="size10">
