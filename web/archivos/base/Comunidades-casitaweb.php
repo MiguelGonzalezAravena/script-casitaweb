@@ -84,7 +84,7 @@ function template_intro() {
               <img src="' . $tranfer1 . '/comunidades/categorias/' . $posts['url'] . '.png" alt="" title="' . $posts['nomb2'] . '" class="png" />
             </div>
             <div>
-              <a style="color: #D35F2C; font-weight: bold; font-size: 13px;" href="' . $boar.durl . '/comunidades/' . $posts['url2'] . '/' . $posts['id'] . '/' . urls($tit2) . '.html" target="_self" title="' . $tit . '">' . $tit3 . '</a>
+              <a style="color: #D35F2C; font-weight: bold; font-size: 13px;" href="' . $boardurl . '/comunidades/' . $posts['url2'] . '/' . $posts['id'] . '/' . urls($tit2) . '.html" target="_self" title="' . $tit . '">' . $tit3 . '</a>
             </div>
           </div>
           <div class="size10">
@@ -142,9 +142,10 @@ function template_intro() {
       }
     }
 
-    echo '</div>';
-    echo '</div></div>';
     echo '
+          </div>
+        </div>
+      </div>
       <div style="float: left; margin-right: 8px;">
         <div style="margin-bottom: 8px; width: 363px;">
           <ul class="buscadorPlus">
@@ -238,9 +239,15 @@ function template_intro() {
       echo '<div class="noesta-am">No existen comentarios.</div>';
     } else {
       while ($row = mysqli_fetch_assoc($request)) {
-        $ddddsxx = nohtml(nohtml2($row['titulo']));
-        $ddaa = $row['titulo'];
-        echo '<font class="size11"><b><a href="' . $boardurl . '/perfil/' . $row['realName'] . '" target="_self" title="' . $row['realName'] . '">' . $row['realName'] . '</a></b> - <a href="' . $boardurl . '/comunidades/' . $row['url'] . '/' . $row['id'] . '/' . urls($ddaa) . '.html" target="_self" title="' . $ddddsxx . '">' . $ddddsxx . '</a></font><br style="margin: 0px; padding: 0px;">';
+        echo '
+          <font class="size11">
+            <b>
+              <a href="' . $boardurl . '/perfil/' . $row['realName'] . '" target="_self" title="' . $row['realName'] . '">' . $row['realName'] . '</a>
+            </b>
+            -
+            <a href="' . $boardurl . '/comunidades/' . $row['url'] . '/' . $row['id'] . '/' . urls($row['titulo']) . '.html" target="_self" title="' . $row['titulo'] . '">' . $row['titulo'] . '</a>
+          </font>
+          <br style="margin: 0px; padding: 0px;">';
       }
     }
 
@@ -249,9 +256,7 @@ function template_intro() {
     echo '
           </span>
         </div>
-      </div>';
-
-    echo '
+      </div>
       <div class="act_comments">
         <div class="box_title" style="width: 361px;">
           <div class="box_txt ultimos_comments">Destacados</div>
@@ -279,33 +284,26 @@ function template_intro() {
       ORDER BY RAND()
       LIMIT 1", __FILE__, __LINE__);
 
-    while ($row = mysqli_fetch_assoc($request)) {
-      $img_Destacao = nohtml(nohtml2($row['imagen']));
-      $url_Destacao = $row['url'];
-      $nombre_Destacao = nohtml(nohtml2($row['nombre']));
-      $id_Destacao = $row['id'];
-      $fecha_Destacao = $row['cred_fecha'] + 86400;
+    $row = mysqli_fetch_assoc($request);
+    $id_destacado = isset($row['id']) ? $row['id'] : 0;
+    $nombre_destacado = isset($row['nombre']) ? $row['nombre'] : '';
+    $url_destacada = isset($row['url']) ? $row['url'] : '';
+    $imagen_destacada = isset($row['imagen']) ? $row['imagen'] : '';
+    $fecha_destacada = isset($row['cred_fecha']) ? $row['cred_fecha'] + 86400 : INF;
 
-      if (time() > $fecha_Destacao) {
-        db_query("
-          UPDATE {$db_prefix}comunidades
-          SET credito = 0
-          WHERE id = '$id_Destacao'
-          LIMIT 1", __FILE__, __LINE__);
-      }
+    if (time() > $fecha_destacada) {
+      db_query("
+        UPDATE {$db_prefix}comunidades
+        SET credito = 0
+        WHERE id = $id_destacado
+        LIMIT 1", __FILE__, __LINE__);
     }
 
     mysqli_free_result($request);
-    $img_Destacao = isset($img_Destacao) ? $img_Destacao : '';
-    $id_Destacao = isset($id_Destacao) ? $id_Destacao : '';
 
-    if ($img_Destacao) {
-      $img2 = $img_Destacao;
-    } else {
-      $img2 = $no_avatar;
-    }
+    $imagen = $imagen_destacada ? $imagen_destacada : $no_avatar;
 
-    if ($id_Destacao) {
+    if ($id_destacado) {
       echo '
         <div class="img_aletat">
           <div class="box_title" style="width: 163px;">
@@ -316,13 +314,13 @@ function template_intro() {
           </div>
           <div class="windowbg" style="padding: 4px; width: 155px; margin-bottom: 8px;">
             <center>
-              <a href="' . $boardurl . '/comunidades/' . $url_Destacao . '/" title="' . $nombre_Destacao . '">
-                <img src="' . $img2 . '" width="120px" height="120px" alt="" class="avatar" title="' . $nombre_Destacao . '" onerror="error_avatar(this)" />
+              <a href="' . $boardurl . '/comunidades/' . $url_destacada . '/" title="' . $nombre_destacado . '">
+                <img src="' . $imagen . '" width="120px" height="120px" alt="" class="avatar" title="' . $nombre_destacado . '" onerror="error_avatar(this)" />
               </a>
               <br />
               <div class="hrs"></div>
-              <a href="' . $boardurl . '/comunidades/' . $url_Destacao . '/" title="' . $nombre_Destacao . '">
-                <b class="size15">' . $nombre_Destacao . '</b>
+              <a href="' . $boardurl . '/comunidades/' . $url_destacada . '/" title="' . $nombre_destacado . '">
+                <b class="size15">' . $nombre_destacado . '</b>
               </a>
             </center>
           </div>
@@ -425,34 +423,28 @@ function template_intro() {
           AND m.ID_MEMBER = a.id_user
           AND a.eliminado = 0", __FILE__, __LINE__);
 
-        while ($row = mysqli_fetch_assoc($rs)) {
-          $titulo = nohtml2($row['titulo']);
-          $titulo2 = $titulo;
-          $ids = $row['id'];
-          $url = nohtml2($row['url']);
-          $realname = $row['realName'];
+        $rows = mysqli_num_rows($rs);
 
+        while ($row = mysqli_fetch_assoc($rs)) {
           echo '
             <div class="comunidad_tema">
               <div>
                 <div style="float: left; margin-right: 5px;">
-                  <img src="' . $tranfer1 . '/comunidades/temas_fijo.png" alt="" title="' . $titulo . '" />
+                  <img src="' . $tranfer1 . '/comunidades/temas_fijo.png" alt="" title="' . $row['titulo'] . '" />
                 </div>
                 <div>
-                  <a style="color: #D35F2C; font-weight: bold; font-size: 13px;" href="' . $boardurl . '/comunidades/' . $url . '/' . $ids . '/' . urls($titulo2) . '.html" target="_self" title="' . $titulo . '">' . $titulo . '</a>
+                  <a style="color: #D35F2C; font-weight: bold; font-size: 13px;" href="' . $boardurl . '/comunidades/' . $row['url'] . '/' . $row['id'] . '/' . urls($row['titulo']) . '.html" target="_self" title="' . $row['titulo'] . '">' . $row['titulo'] . '</a>
                 </div>
               </div>
               <div class="size10">
                 Por
-                <a href="' . $boardurl . '/perfil/' . $realname . '" target="_self" title="' . $realname . '">' . $realname . '</a>
+                <a href="' . $boardurl . '/perfil/' . $row['realName'] . '" target="_self" title="' . $row['realName'] . '">' . $row['realName'] . '</a>
               </div>
             </div>
             <div class="hrs"></div>';
         }
 
-        $titulo = isset($titulo) ? $titulo : '';
-
-        if (!$titulo) {
+        if ($rows == 0) {
           echo '<div class="noesta">No hay temas fijados.</div>';
         }
 
@@ -474,68 +466,136 @@ function template_intro() {
           </div>
           <div class="windowbg" style="width: 531px; padding: 4px;">';
 
-        $_GET['st'] = isset($_GET['st']) ? $_GET['st'] : '';
-
-        if ($_GET['st'] < 1) {
-          $das = '0';
-        } else {
-          $das = $_GET['st'];
-        }
-
-        if (isset($das)) {
-          $st = (int) $das;
-        } else {
-          $st = 0;
-        }
-
+        $_GET['st'] = isset($_GET['st']) ? (int) $_GET['st'] : 0;
+        $das = $_GET['st'] < 1 ? 0 : $_GET['st'];
+        $st = isset($das) ? (int) $das : 0;
         $pp = 10;
-        $total = mysqli_num_rows(db_query("SELECT a.titulo FROM ({$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades AS c, {$db_prefix}members AS m) WHERE c.url='{$context['url2222']}' AND c.id=a.id_com AND m.ID_MEMBER=a.id_user AND a.eliminado=0", __FILE__, __LINE__));
+
+        $request = db_query("
+          SELECT a.titulo
+          FROM {$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades AS c, {$db_prefix}members AS m
+          WHERE c.url = '{$context['url2222']}'
+          AND c.id = a.id_com
+          AND m.ID_MEMBER = a.id_user
+          AND a.eliminado = 0", __FILE__, __LINE__);
+
+        $total = mysqli_num_rows($request);
+
         $rs44 = db_query("
-        SELECT a.titulo,a.id,c.url,m.realName
-        FROM ({$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades AS c, {$db_prefix}members AS m)
-        WHERE c.url='{$context['url2222']}' AND c.id=a.id_com AND m.ID_MEMBER=a.id_user AND a.eliminado=0
-        ORDER BY a.id DESC
-        LIMIT $st,$pp", __FILE__, __LINE__);
+          SELECT a.titulo, a.id, c.url, m.realName
+          FROM {$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades AS c, {$db_prefix}members AS m
+          WHERE c.url = '{$context['url2222']}'
+          AND c.id = a.id_com
+          AND m.ID_MEMBER = a.id_user
+          AND a.eliminado = 0
+          ORDER BY a.id DESC
+          LIMIT $st, $pp", __FILE__, __LINE__);
+
         while ($row = mysqli_fetch_assoc($rs44)) {
-          $titulo = $row['titulo'];
-          $titulo2 = $row['titulo'];
-          $ids = $row['id'];
-          $url = nohtml($row['url']);
-          $realname = $row['realName'];
-          echo '<div class="comunidad_tema"><div>
-        <div style="float:left;margin-right:5px;"><img src="' . $tranfer1 . '/comunidades/temas.png" alt="" title="' . $titulo . '" /></div><div><a style="color:#D35F2C;font-weight:bold;font-size:13px;" href="' . $boardurl . '/comunidades/' . $url . '/' . $ids . '/' . urls($titulo2) . '.html" target="_self" title="' . $titulo . '">' . $titulo . '</a></div></div>
-        <div class="size10">Por <a href="' . $boardurl . '/perfil/' . $realname . '" target="_self" title="' . $realname . '">' . $realname . '</a></div></div>
-        <div class="hrs"></div>';
+          echo '
+                <div class="comunidad_tema"><div>
+                <div style="float: left; margin-right: 5px;">
+                  <img src="' . $tranfer1 . '/comunidades/temas.png" alt="" title="' . $row['titulo'] . '" />
+                </div>
+                <div>
+                  <a style="color: #D35F2C; font-weight: bold; font-size: 13px;" href="' . $boardurl . '/comunidades/' . $row['url'] . '/' . $row['id'] . '/' . urls($row['titulo']) . '.html" target="_self" title="' . $row['titulo'] . '">' . $row['titulo'] . '</a>
+                </div>
+              </div>
+              <div class="size10">
+                Por
+                <a href="' . $boardurl . '/perfil/' . $row['realName'] . '" target="_self" title="' . $row['realName'] . '">' . $row['realName'] . '</a>
+              </div>
+            </div>
+            <div class="hrs"></div>';
         }
-        if (!$titulo) {
+
+        if ($total == 0) {
           echo '<div class="noesta">No hay temas creados.</div>';
         }
-        echo '</div><div style="width:541px;">';
+
+        echo '
+            </div>
+          <div style="width: 541px;">';
+
         echo paginacion($total, $pp, $st, $boardurl . '/comunidades/' . $context['url2222'] . '/pag-');
-        echo '</div></div>';
-      } elseif ($_GET['miembros'] == 3 && $context['allow_admin']) {
+
+        echo '
+            </div>
+          </div>';
+      } else if ($_GET['miembros'] == 3 && $context['allow_admin']) {
         if (!$context['ddddsaaat']) {
-          echo '<div class="noesta" style="width:541px;margin-bottom:8px;float:left;">Esta comunidad no existe.-</div>';
+          echo '<div class="noesta" style="width: 541px; margin-bottom: 8px; float: left;">Esta comunidad no existe.</div>';
         } else {
-          echo '<div style="margin-bottom:8px;float:left;">
-      <div class="box_title" style="width:539px;"><div class="box_txt">Administrar Comunidad</div><div class="box_rss"><img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div>
-      <div class="windowbg" style="width:531px;padding:4px;">';
-
-          echo '<form style="margin: 0px; padding: 0px;" action="/web/cw-comunidadesAdmCom.php" method="POST" accept-charset="' . $context['character_set'] . '"><table>
-
-      <tr><td style="width:100px;"><b>Comunidad:</b></td> <td>' . $context['nombrecat'] . '</td></tr></table><div class="hrs"></div>';
+          echo '
+            <div style="margin-bottom:8px;float:left;">
+              <div class="box_title" style="width: 539px;">
+                <div class="box_txt">Administrar Comunidad</div>
+                <div class="box_rss">
+                  <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" border="0">
+                </div>
+              </div>
+              <div class="windowbg" style="width: 531px; padding: 4px;">
+                <form style="margin: 0px; padding: 0px;" action="' . $boardurl . '/web/cw-comunidadesAdmCom.php" method="POST" accept-charset="' . $context['character_set'] . '">
+                  <table>
+                    <tr>
+                      <td style="width: 100px;">
+                        <b>Comunidad:</b>
+                      </td>
+                      <td>' . $context['nombrecat'] . '</td>
+                    </tr>
+                  </table>
+                  <div class="hrs"></div>';
 
           if (!$context['ivvvaar']) {
-            echo '<table><tr><td style="width:100px;"><b>Eliminar:</b></td> <td><input name="eliminar" type="checkbox" /><br /></td></tr><tr><td style="width:100px;"><b>Raz&oacute;n:</b></td> <td><input onfocus="foco(this);" onblur="no_foco(this);" title="Raz&oacute;n" value="" type="text" name="razon" /></td></tr></table>';
+            echo '
+              <table>
+                <tr>
+                  <td style="width: 100px;">
+                    <b>Eliminar:</b>
+                  </td>
+                  <td>
+                    <input name="eliminar" type="checkbox" />
+                    <br />
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 100px;">
+                    <b>Raz&oacute;n:</b>
+                  </td>
+                  <td>
+                    <input onfocus="foco(this);" onblur="no_foco(this);" title="Raz&oacute;n" value="" type="text" name="razon" />
+                  </td>
+                </tr>
+              </table>';
           } else {
-            echo '<table><tr><td style="width:100px;"><b>Restaurar Comunidad:</b></td> <td><input name="restaur" type="checkbox" /><br /></td></tr></table>';
+            echo '
+              <table>
+                <tr>
+                  <td style="width:100px;">
+                    <b>Restaurar Comunidad:</b>
+                  </td>
+                  <td>
+                    <input name="restaur" type="checkbox" />
+                    <br />
+                  </td>
+                </tr>
+              </table>';
           }
-          echo '<div class="hrs"></div>
-      <p style="margin:0px;margin:0px;" align="right"><input alt="" class="login" title="Aceptar" value="Aceptar" type="submit" /></p>
-      <input name="comun" value="' . $context['ddddsaaat'] . '" type="hidden" /></form></center>';
-          echo '</div><div class="clearBoth"></div></div>';
+
+          echo '
+                <div class="hrs"></div>
+                    <p style="margin: 0px; margin: 0px;" align="right">
+                      <input alt="" class="login" title="Aceptar" value="Aceptar" type="submit" />
+                    </p>
+                    <input name="comun" value="' . $context['ddddsaaat'] . '" type="hidden" />
+                  </form>
+                </center>
+              </div>
+              <div class="clearBoth"></div>
+            </div>';
         }
-      } elseif ($_GET['miembros'] == '8') {
+      } else if ($_GET['miembros'] == 8) {
+        // TO-DO: Avanzar
         if (!$context['user']['is_guest'] && !$context['permisoCom']) {
           echo '<div style="margin-bottom:8px;float:left;">
       <div class="box_title" style="width:539px;"><div class="box_txt">Denunciar Comunidad</div><div class="box_rss"><img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div>
@@ -599,7 +659,7 @@ function template_intro() {
         } else {
           $valor = $titledsd2;
         }
-        echo '<font class="size11"><b><a href="' . $boardurl . '/perfil/' . $realnames . '" title="' . $realnames . '">' . $realnames . '</a></b> - <a title="' . $titledsd2 . '" href="/comunidades/' . $row['url'] . '/' . $row['id_tema'] . '/' . urls($titledsd2) . '.html#comentarios">' . nohtml(nohtml2($valor)) . '</a></font><br style="margin: 0px; padding: 0px;">';
+        echo '<font class="size11"><b><a href="' . $boardurl . '/perfil/' . $realnames . '" title="' . $realnames . '">' . $realnames . '</a></b> - <a title="' . $titledsd2 . '" href="' . $boardurl . '/comunidades/' . $row['url'] . '/' . $row['id_tema'] . '/' . urls($titledsd2) . '.html#comentarios">' . $valor . '</a></font><br style="margin: 0px; padding: 0px;">';
       }
       $realnames = isset($realnames) ? $realnames : '';
       if (!$realnames)
