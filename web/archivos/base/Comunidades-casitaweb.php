@@ -572,7 +572,7 @@ function template_intro() {
               <table>
                 <tr>
                   <td style="width:100px;">
-                    <b>Restaurar Comunidad:</b>
+                    <b>Restaurar comunidad:</b>
                   </td>
                   <td>
                     <input name="restaur" type="checkbox" />
@@ -597,44 +597,80 @@ function template_intro() {
       } else if ($_GET['miembros'] == 8) {
         // TO-DO: Avanzar
         if (!$context['user']['is_guest'] && !$context['permisoCom']) {
-          echo '<div style="margin-bottom:8px;float:left;">
-      <div class="box_title" style="width:539px;"><div class="box_txt">Denunciar Comunidad</div><div class="box_rss"><img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div>
-      <div class="windowbg" style="width:531px;padding:4px;">';
-          echo '<form style="margin: 0px; padding: 0px;" action="/web/cw-comunidadesDen.php" method="POST" accept-charset="' . $context['character_set'] . '">';
-          echo '<table>
-      <tr><td style="width:100px;"><b>Comunidad:</b></td><td> ' . $context['nombrecat'] . '</td></tr>
-      <tr><td style="width:100px;"><b>Raz&oacute;n:</b></td><td> <input value="" type="text" name="razon" onfocus="foco(this);" onblur="no_foco(this);" style="width:300px;" /> </td></tr>
-      <tr><td style="width:100px;"><b>Comentario:</b></td><td> <textarea onfocus="foco(this);" onblur="no_foco(this);" style="width:300px;" name="comentario"></textarea></td></tr>
-      </table>
-      <input type="hidden" value="' . $context['ddddsaaat'] . '" name="comu" />
-      <p align="right" style="padding:0px;margin:0px;"><input type="submit" class="login" value="Enviar" name="enviar" /></p>';
-          echo '</form>
-
-      </div><div class="clearBoth"></div></div>';
+          echo '
+            <div style="margin-bottom: 8px; float: left;">
+              <div class="box_title" style="width: 539px;">
+                <div class="box_txt">Denunciar comunidad</div>
+                <div class="box_rss">
+                  <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" border="0">
+                </div>
+              </div>
+              <div class="windowbg" style="width: 531px; padding: 4px;">
+                <form style="margin: 0px; padding: 0px;" action="' . $boardurl . '/web/cw-comunidadesDen.php" method="POST" accept-charset="' . $context['character_set'] . '">
+                  <table>
+                    <tr>
+                      <td style="width: 100px;">
+                        <b>Comunidad:</b>
+                      </td>
+                      <td>' . $context['nombrecat'] . '</td>
+                    </tr>
+                    <tr>
+                      <td style="width: 100px;">
+                        <b>Raz&oacute;n:</b>
+                      </td>
+                      <td>
+                        <input value="" type="text" name="razon" onfocus="foco(this);" onblur="no_foco(this);" style="width: 300px;" /> 
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="width: 100px;">
+                        <b>Comentario:</b>
+                      </td>
+                      <td>
+                        <textarea onfocus="foco(this);" onblur="no_foco(this);" style="width: 300px;" name="comentario"></textarea>
+                      </td>
+                    </tr>
+                  </table>
+                  <input type="hidden" value="' . $context['ddddsaaat'] . '" name="comu" />
+                  <p align="right" style="padding: 0px; margin: 0px;">
+                    <input type="submit" class="login" value="Enviar" name="enviar" />
+                  </p>
+                </form>
+              </div>
+              <div class="clearBoth"></div>
+            </div>';
         } else {
-          echo '<div class="noesta" style="width:541px;margin-bottom:8px;float:left;">No podes denunciar esta comunidad.-</div>';
+          echo '<div class="noesta" style="width: 541px; margin-bottom: 8px; float: left;">No puedes denunciar esta comunidad.</div>';
         }
-      } elseif ($_GET['miembros'] == '9') {
+      } else if ($_GET['miembros'] == 9) {
         if ($context['permisoCom'] == 1) {
-          echo '<div style="margin-bottom:8px;float:left;">
-      <div class="box_title" style="width:539px;"><div class="box_txt">Publicitar Comunidad</div><div class="box_rss"><img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div>
-      <div class="windowbg" style="width:531px;padding:4px;">';
-
-          echo '<ul><li>Para publicitar tu comunidadad tienes que tener 500 o m&aacute;s puntos.</li>
-      <li>La publicidad vale 100 puntos.</li>
-      <li>Estar&aacute; a la vista de todos durante 24HS.</li>
-
-      <form style="margin: 0px; padding: 0px;" action="/web/cw-comunidadesPublicitar.php" method="POST" accept-charset="' . $context['character_set'] . '">
-      <input type="hidden" value="' . $context['ddddsaaat'] . '" name="id" />
-      <p align="right" style="padding:0px;margin:0px;"><input type="submit" class="login" value="Publicitar" name="enviar" /></p>';
-          echo '</form>
-
-      </div><div class="clearBoth"></div></div>';
+          echo '
+            <div style="margin-bottom: 8px; float: left;">
+              <div class="box_title" style="width: 539px;">
+                <div class="box_txt">Publicitar comunidad</div>
+                <div class="box_rss">
+                  <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" border="0" />
+                </div>
+              </div>
+              <div class="windowbg" style="width: 531px; padding: 4px;">
+                <ul>
+                  <li>Para publicitar tu comunidadad tienes que tener 500 o m&aacute;s puntos.</li>
+                  <li>La publicidad vale 100 puntos.</li>
+                  <li>Estar&aacute; a la vista de todos durante 24HS.</li>
+                  <form style="margin: 0px; padding: 0px;" action="' . $boardurl . '/web/cw-comunidadesPublicitar.php" method="POST" accept-charset="' . $context['character_set'] . '">
+                    <input type="hidden" value="' . $context['ddddsaaat'] . '" name="id" />
+                    <p align="right" style="padding: 0px; margin: 0px;">
+                      <input type="submit" class="login" value="Publicitar" name="enviar" />
+                    </p>
+                  </form>
+                </div>
+                <div class="clearBoth"></div>
+              </div>';
         } else {
-          echo '<div class="noesta" style="width:541px;margin-bottom:8px;float:left;">No podes publicitar esta comunidad.-</div>';
+          echo '<div class="noesta" style="width: 541px; margin-bottom: 8px; float: left;">No puedes publicitar esta comunidad.</div>';
         }
       } else {
-        echo '<div class="noesta" style="width:541px;margin-bottom:8px;float:left;">Accion no conocida.-</div>';
+        echo '<div class="noesta" style="width: 541px; margin-bottom: 8px; float: left;">Acci&oacute;n no conocida.</div>';
       }
       // ///////////////////////////////////////////////////////////////////////////////////
       // ///////////////////////////////////////////////////////////////////////////////////
@@ -642,69 +678,122 @@ function template_intro() {
       // ///////////////////////////////////////////////////////////////////////////////////
       // ///////////////////////////////////////////////////////////////////////////////////
       // ///////////////////////////////////////////////////////////////////////////////////
-      echo '<div style="float:left;margin-bottom:8px;margin-left:8px;">';
+      echo '
+        <div style="float: left; margin-bottom: 8px; margin-left: 8px;">
+          <div style="margin-bottom: 8px;">
+            <div class="box_title" style="width: 201px;">
+              <div class="box_txt box_perfil2-36">&Uacute;ltimos comentarios</div>
+              <div class="box_rss">
+                <img src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" alt="" />
+              </div>
+            </div>
+            <div class="windowbg" style="width: 193px; padding: 4px;">
+              <span id="ult_comm">';
 
-      echo '<div style="margin-bottom:8px;"><div class="box_title" style="width:201px;"><div class="box_txt box_perfil2-36">&Uacute;ltimos comentarios</div><div class="box_rss"><img src="' . $tranfer1 . '/blank.gif" style="width:16px;height:16px;" border="0" alt="" /></div></div><div class="windowbg" style="width:193px;padding:4px;"><span id="ult_comm">';
       $rs44 = db_query("
-      SELECT m.realName,a.titulo,c.id,c.id_tema,co.url
-      FROM ({$db_prefix}members AS m,{$db_prefix}comunidades_comentarios as c,{$db_prefix}comunidades as co,{$db_prefix}comunidades_articulos as a)
-      WHERE c.id_com='{$context['ddddsaaat']}' AND a.id=c.id_tema AND c.id_user=m.ID_MEMBER AND c.id_com=co.id AND a.eliminado=0
-      ORDER BY c.id DESC
-      LIMIT 10", __FILE__, __LINE__);
+        SELECT m.realName, a.titulo, c.id, c.id_tema, co.url
+        FROM {$db_prefix}members AS m, {$db_prefix}comunidades_comentarios AS c, {$db_prefix}comunidades AS co, {$db_prefix}comunidades_articulos AS a
+        WHERE c.id_com = {$context['ddddsaaat']}
+        AND a.id = c.id_tema
+        AND c.id_user = m.ID_MEMBER
+        AND c.id_com = co.id
+        AND a.eliminado = 0
+        ORDER BY c.id DESC
+        LIMIT 10", __FILE__, __LINE__);
+
+      $rows = mysqli_num_rows($rs44);
+
       while ($row = mysqli_fetch_assoc($rs44)) {
-        $realnames = $row['realName'];
-        $titledsd2 = $row['titulo'];
-        if (strlen($titledsd2) > 20) {
-          $valor = substr($titledsd2, 0, 17) . '...';
-        } else {
-          $valor = $titledsd2;
-        }
-        echo '<font class="size11"><b><a href="' . $boardurl . '/perfil/' . $realnames . '" title="' . $realnames . '">' . $realnames . '</a></b> - <a title="' . $titledsd2 . '" href="' . $boardurl . '/comunidades/' . $row['url'] . '/' . $row['id_tema'] . '/' . urls($titledsd2) . '.html#comentarios">' . $valor . '</a></font><br style="margin: 0px; padding: 0px;">';
+        $title = strlen($row['titulo']) > 20 ? substr($row['titulo'], 0, 17) . '...' : $row['titulo'];
+
+        echo '
+          <font class="size11">
+            <b>
+              <a href="' . $boardurl . '/perfil/' . $row['realName'] . '" title="' . $row['realName'] . '">' . $row['realName'] . '</a>
+            </b>
+            -
+            <a title="' . $row['titulo'] . '" href="' . $boardurl . '/comunidades/' . $row['url'] . '/' . $row['id_tema'] . '/' . urls($row['titulo']) . '.html#comentarios">' . $title . '</a>
+          </font>
+          <br style="margin: 0px; padding: 0px;">';
       }
-      $realnames = isset($realnames) ? $realnames : '';
-      if (!$realnames)
+
+      if ($rows == 0) {
         echo '<div class="noesta">No hay nuevos comentarios.</div>';
-      echo '</span></div></div>';
+      }
 
-      echo '<div style="margin-bottom:8px;"><div class="box_title" style="width:201px;"><div class="box_txt box_perfil2-36">&Uacute;ltimos miembros</div><div class="box_rss"><img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div>
-      <div class="windowbg" style="width:193px;padding:4px;">';
-      $rs44 = db_query("SELECT m.realName,c.fecha
-      FROM ({$db_prefix}members AS m, {$db_prefix}comunidades_miembros as c)
-      WHERE c.id_com='{$context['ddddsaaat']}' AND c.id_user=m.ID_MEMBER AND c.aprobado=1
-      ORDER BY c.id DESC
-      LIMIT 10", __FILE__, __LINE__);
+      echo '
+            </span>
+          </div>
+        </div>
+        <div style="margin-bottom: 8px;">
+          <div class="box_title" style="width: 201px;">
+            <div class="box_txt box_perfil2-36">&Uacute;ltimos miembros</div>
+            <div class="box_rss">
+              <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" border="0" />
+            </div>
+          </div>
+          <div class="windowbg" style="width: 193px; padding: 4px;">';
+
+      $rs44 = db_query("
+        SELECT m.realName, c.fecha
+        FROM {$db_prefix}members AS m, {$db_prefix}comunidades_miembros AS c
+        WHERE c.id_com = {$context['ddddsaaat']}
+        AND c.id_user = m.ID_MEMBER
+        AND c.aprobado = 1
+        ORDER BY c.id DESC
+        LIMIT 10", __FILE__, __LINE__);
+
+      $rows = mysqli_num_rows($rs44);
+
       while ($row = mysqli_fetch_assoc($rs44)) {
-        $realnames = $row['realName'];
-        $fechav = hace($row['fecha']);
-        echo '<font class="size11"><b><a href="' . $boardurl . '/perfil/' . $realnames . '" title="' . $realnames . '">' . $realnames . '</a></b> - ' . $fechav . ' </font><br style="margin: 0px; padding: 0px;">';
+        echo '
+          <font class="size11">
+            <b>
+              <a href="' . $boardurl . '/perfil/' . $row['realName'] . '" title="' . $row['realName'] . '">' . $row['realName'] . '</a>
+            </b>
+            -
+            ' . hace($row['fecha']) . '
+          </font>
+          <br style="margin: 0px; padding: 0px;">';
       }
-      if (!$realnames)
-        echo '<div class="noesta">No hay nuevos miembros.</div>';
-      echo '</div></div>';
 
-      $rs = db_query("SELECT c.url,c.imagen,c.id,c.nombre,c.cred_fecha
-      FROM ({$db_prefix}comunidades AS c)
-      WHERE c.credito=100 AND c.bloquear=0
-      ORDER BY RAND()
-      LIMIT 1", __FILE__, __LINE__);
-      while ($row = mysqli_fetch_assoc($rs)) {
-        $img_Destacao = nohtml(nohtml2($row['imagen']));
-        $url_Destacao = $row['url'];
-        $nombre_Destacao = nohtml(nohtml2($row['nombre']));
-        $id_Destacao = $row['id'];
-        $fecha_Destacao = $row['cred_fecha'] + 86400;
-        if (time() > $fecha_Destacao) {
-          db_query("UPDATE {$db_prefix}comunidades SET credito=0 WHERE id='$id_Destacao' LIMIT 1", __FILE__, __LINE__);
-        }
+      if ($rows == 0) {
+        echo '<div class="noesta">No hay nuevos miembros.</div>';
       }
+
+      echo '
+          </div>
+        </div>';
+
+      $rs = db_query("
+        SELECT url, imagen, id, nombre, cred_fecha
+        FROM {$db_prefix}comunidades
+        WHERE credito = 100
+        AND bloquear = 0
+        ORDER BY RAND()
+        LIMIT 1", __FILE__, __LINE__);
+
+      $row = mysqli_fetch_assoc($rs);
+
+      // TO-DO: Seguir arreglando nombres de variables
+      $img_Destacao = isset($row['imagen']) ? $row['imagen'] : '';
+      $url_Destacao = isset($row['url']) ? $row['url'] : '';
+      $nombre_Destacao = isset($row['nombre']) ? $row['nombre'] : '';
+      $id_Destacao = isset($row['id']) ? $row['id'] : '';
+      $fecha_Destacao = isset($row['cred_fecha']) ? $row['cred_fecha'] + 86400 : INF;
+
+      if (time() > $fecha_Destacao) {
+        db_query("
+          UPDATE {$db_prefix}comunidades
+          SET credito = 0
+          WHERE id = '$id_Destacao'
+          LIMIT 1", __FILE__, __LINE__);
+      }
+
       mysqli_free_result($rs);
-      $img_Destacao = isset($img_Destacao) ? $img_Destacao : '';
-      $id_Destacao = isset($id_Destacao) ? $id_Destacao : '';
-      if ($img_Destacao) {
-        $img2 = $img_Destacao;
-      } else {
-        $img2 = $no_avatar;
-      }
+
+      $img2 = $img_Destacao ? $img_Destacao : $no_avatar;
+
       if ($id_Destacao) {
         echo '<div style="margin-bottom:8px;"><div class="box_title" style="width:201px;"><div class="box_txt box_perfil2-36">Destacados</div><div class="box_rss"><img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div>
         <div class="windowbg" style="width:193px;padding:4px;"><center>';
@@ -720,14 +809,13 @@ function template_intro() {
 }
 
 // / ARTICULOO
-function template_articulo()
-{
+function template_articulo() {
   global $context, $ID_MEMBER, $db_prefix, $user_info, $tranfer1, $sourcedir, $no_avatar, $boardurl;
 
   if (entrar($context['coMdasdasd'])) {
     echo entrar($context['coMdasdasd']);
   } else {
-    echo '<div style="margin-bottom:8px;width:922px;">';
+    echo '<div style="margin-bottom: 8px; width: 922px;">';
 
     arriba('tema', $boardurl . '/comunidades/categoria/' . $context['coMurl2'], $context['coMcnam'], $boardurl . '/comunidades/' . $context['coMurl'], $context['coMnombre'], $context['coMtitulo']);
 
@@ -747,7 +835,7 @@ function template_articulo()
     echo $context['postEliAdm'];
     sidebar($context['coMurl']);
 
-    echo '<div style="float:left;">';
+    echo '<div style="float: left;">';
     // inicio Post
     echo '<div class="post-com">
 
@@ -760,13 +848,16 @@ function template_articulo()
 <td valign="top" style="width:160px;">';
 
     $rs444 = db_query("
-SELECT rango
-FROM ({$db_prefix}comunidades_miembros)
-WHERE id_user='{$context['coMvbvbvki']}' AND id_com='{$context['coMdasdasd']}'
-LIMIT 1", __FILE__, __LINE__);
+      SELECT rango
+      FROM {$db_prefix}comunidades_miembros
+      WHERE id_user = '{$context['coMvbvbvki']}'
+      AND id_com = '{$context['coMdasdasd']}'
+      LIMIT 1", __FILE__, __LINE__);
+
     while ($row3 = mysqli_fetch_assoc($rs444)) {
       $context['rangoos'] = $row3['rango'];
     }
+
     $rango = ranguear($context['rangoos'], $context['coMdasdasd']);
     $rangoIMG = ranguearIMG($context['rangoos'], $context['coMdasdasd']);
 
@@ -895,8 +986,7 @@ LIMIT 1", __FILE__, __LINE__);
 }
 
 // ////////CREAR COMUNIDAD
-function template_crearcomunidad()
-{
+function template_crearcomunidad() {
   global $tranfer1, $func, $ID_MEMBER, $modSettings, $user_settings, $context, $sourcedir, $db_prefix, $boardurl;
 
   if (!$ID_MEMBER) {
@@ -982,16 +1072,15 @@ El permiso seleccionado se le asignar&aacute; autom&aacute;ticamente al usuario 
 <div style="clear: both; margin-bottom: 15px; margin-top: 20px;" class="hrs"></div><div id="buttons" align="right"><input tabindex="14" title="Crear comunidad" value="Crear comunidad" class="login" name="Enviar" type="submit" /></div></form></div></div></div>';
 }
 
-// ////////////CREAR TEMAA
-function template_ctema()
-{
+////////////// CREAR TEMAA
+function template_ctema() {
   global $tranfer1, $ID_MEMBER, $sourcedir, $modSettings, $context, $db_prefix, $boardurl;
 
   if (!$ID_MEMBER) {
     fatal_error('S&oacute;lo para usuarios registrados.');
   }
 
-  require_once ($sourcedir . '/FuncionesCom.php');
+  require_once($sourcedir . '/FuncionesCom.php');
 
   $id = isset($_GET['comun']) ? seguridad($_GET['comun']) : '';
 
@@ -1013,6 +1102,7 @@ function template_ctema()
   $cat = seguridad(nohtml($row['nombre']));
   $rango = $row['rango'];
   $id_comunidad = $row['id'];
+
   arriba('CrearTema', $boardurl . '/comunidades/categoria/' . $row['url_categoria'], $row['nombre_categoria'], $boardurl . '/comunidades/' . $row['url'] . '/', $cat);
 
   if (!$cat) {
@@ -1109,24 +1199,30 @@ function template_ctema()
 }
 
 // /////////////////////////
-function template_etema()
-{
-  global $tranfer1, $func, $ID_MEMBER, $sourcedir, $modSettings, $context, $db_prefix;
+function template_etema() {
+  global $tranfer1, $func, $ID_MEMBER, $sourcedir, $modSettings, $context, $db_prefix, $boardurl;
 
   if (!$ID_MEMBER) {
-    fatal_error('Solo para usuarios registrados.-');
+    fatal_error('Funcionalidad exclusiva de usuarios registrados.');
   }
-  include ($sourcedir . '/FuncionesCom.php');
 
-  $id = (int) $_GET['comun'];
+  require_once($sourcedir . '/FuncionesCom.php');
+
+  $id = isset($_GET['comun']) ? (int) $_GET['comun'] : 0;
+
   if (!$id) {
-    fatal_error('Debes seleccionar el tema.-');
+    fatal_error('Debes seleccionar el tema.');
   }
+
   $rs = db_query("
-SELECT c.nombre,a.titulo, a.id_com, a.id_user,a.cuerpo,a.id, a.nocoment,c.url,a.stiky,ca.url AS urlCat,ca.nombre AS nombreCat
-FROM ({$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades AS c, {$db_prefix}comunidades_categorias AS ca)
-WHERE a.id='$id' AND a.eliminado=0 AND a.id_com=c.id AND c.categoria=ca.url
-LIMIT 1", __FILE__, __LINE__);
+    SELECT c.nombre, a.titulo, a.id_com, a.id_user, a.cuerpo, a.id, a.nocoment, c.url, a.stiky, ca.url AS urlCat, ca.nombre AS nombreCat
+    FROM {$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades AS c, {$db_prefix}comunidades_categorias AS ca
+    WHERE a.id = $id
+    AND a.eliminado = 0
+    AND a.id_com = c.id
+    AND c.categoria = ca.url
+    LIMIT 1", __FILE__, __LINE__);
+
   while ($row = mysqli_fetch_assoc($rs)) {
     $titulo = nohtml(nohtml2($row['titulo']));
     $cuerpo = nohtml(nohtml2($row['cuerpo']));
@@ -1135,18 +1231,18 @@ LIMIT 1", __FILE__, __LINE__);
     $nocoment = $row['nocoment'];
     $id_user = $row['id_user'];
 
-    arriba('EditarTema', '/comunidades/categoria/' . $row['urlCat'] . '', '' . $row['nombreCat'] . '', '/comunidades/' . $row['url'] . '/', '' . nohtml(nohtml2($row['nombre'])) . '', '/comunidades/' . $row['url'] . '/' . $row['id'] . '/' . urls($titulo) . '.html', '' . $titulo . '');
+    arriba('EditarTema', $boardurl . '/comunidades/categoria/' . $row['urlCat'], $row['nombreCat'], $boardurl . '/comunidades/' . $row['url'] . '/', '' . nohtml(nohtml2($row['nombre'])), $boardurl . '/comunidades/' . $row['url'] . '/' . $row['id'] . '/' . urls($titulo) . '.html', $titulo);
   }
 
   if (!$titulo) {
-    fatal_error('No podes editar este tema.-');
+    fatal_error('No puedes editar este tema.');
   }
 
   permisios($idc);
   acces($idc);
 
-  if ($context['permisoCom'] == '1' || $context['permisoCom'] == '3' || $context['permisoCom'] == '2' || $id_user == $ID_MEMBER) {
-    if ($context['puedo'] == '1' || $context['puedo'] == '3') {
+  if ($context['permisoCom'] == 1 || $context['permisoCom'] == 3 || $context['permisoCom'] == 2 || $id_user == $ID_MEMBER) {
+    if ($context['puedo'] == 1 || $context['puedo'] == 3) {
       echo '<div style="width:354px;float:left;margin-right:8px;">
 <div class="box_354"><div class="box_title" style="width:352px;"><div class="box_txt box_354-34">Destacados</div><div class="box_rss"><div class="icon_img"><img src="' . $tranfer1 . '/blank.gif" style="width:16px;height:16px;" border="0" alt="" /></div></div></div>
 <div style="width:344px;padding:4px;" class="windowbg">';
