@@ -175,7 +175,7 @@ function template_intro() {
       }
 
       echo '
-          </div>
+        </div>
         <div class="clearBoth"></div>';
     }
   }
