@@ -17,7 +17,7 @@ function partearriba($sasdde, $lugar) {
     echo '
       <div style="border-bottom: #C8C8C8 solid 1px; width: 541px; padding-bottom: 8px; margin-bottom: 2px;">
         <strong style="font-size: 20px; color:#D35F2C;" title="' . $context['member']['name'] . '">' . $context['member']['name'] . '</strong>
-        <span style="font-size:13px;">
+        <span style="font-size: 13px;">
           ' . nohtml2($row['muro']) . '.
           <span style="color: #C0C0C0; font-size: 11px;">' . hace($row['fecha']) . '</span>
         </span>
@@ -72,12 +72,12 @@ function template_summary() {
 
   $lugar = str_replace('/', '', $_GET['lugar']);
 
-  if ($lugar === '1' || $lugar == 'apariencia') {
-    $tipo = '1';
-  } elseif ($lugar === '2' || $lugar == 'muro') {
-    $tipo = '0';
-  } elseif ($lugar === '5' || $lugar == 'comunidades') {
-    $tipo = '5';
+  if ($lugar === 1 || $lugar == 'apariencia') {
+    $tipo = 1;
+  } else if ($lugar === 2 || $lugar == 'muro') {
+    $tipo = 0;
+  } else if ($lugar === 5 || $lugar == 'comunidades') {
+    $tipo = 5;
   } else {
     $tipo = $lugar;
   }
@@ -86,12 +86,7 @@ function template_summary() {
   $nopost = $context['member']['name'] . ' no tiene ning&uacute;n post hecho';
 
   // CONSULTAS ------------------
-  if (!$context['user']['is_admin']) {
-    $shas = ' AND ID_BOARD<>142';
-  } else {
-    $shas = '';
-  }
-
+  $shas = !$context['user']['is_admin'] ? ' AND ID_BOARD <> 142' : '';
   $pagq1 = isset($_GET['pag-seg-15487135']) ? $_GET['pag-seg-15487135'] : '';
 
   $request = db_query("
@@ -147,7 +142,7 @@ function template_summary() {
 
   echo '<div style="float:left;">';
 
-  if ($context['user']['is_admin'] && $context['member']['is_activated'] == '2') {
+  if ($context['user']['is_admin'] && $context['member']['is_activated'] == 2) {
     echo '
       <script type="text/javascript">
         function ActivarUS(id) {
@@ -155,11 +150,11 @@ function template_summary() {
             type: \'GET\',
             url: \'' . $boardurl . '/web/cw-ActivarUser.php\',
             data: \'u=\' + id,
-            success: function(h){ $("#cdesact").remove(); }
+            success: function(h) { $("#cdesact").remove(); }
           });
         }
       </script>
-      <div class="noesta-am" style="margin-bottom:8px;" id="cdesact">CUENTA DESACTIVADA!!! &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&gt;&gt;&gt; <span onclick="ActivarUS(\'' . $context['member']['id'] . '\'); return false;" class="pointer">activar</span></div>';
+      <div class="noesta-am" style="margin-bottom: 8px;" id="cdesact">CUENTA DESACTIVADA!!! &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&gt;&gt;&gt; <span onclick="ActivarUS(\'' . $context['member']['id'] . '\'); return false;" class="pointer">activar</span></div>';
   }
 
   if ($user_info['is_admin'] || $user_info['is_mods']) {
@@ -181,12 +176,29 @@ function template_summary() {
       $request352 = db_query("
         SELECT realName
         FROM {$db_prefix}members
-        WHERE ID_MEMBER='{$context['notes']}'", __FILE__, __LINE__);
+        WHERE ID_MEMBER = {$context['notes']}", __FILE__, __LINE__);
+
       $row = mysqli_fetch_assoc($request352);
       $moderator = isset($row['realName']) ? $row['realName'] : '';
 
       mysqli_free_result($request352);
-      echo '<div class="noesta" style="margin-bottom:8px;">CUENTA BANEADA!!!<br /><b>Raz&oacute;n:</b> ' . $context['reason'] . ' | <b>El d&iacute;a:</b> ' . timeformat($context['fecha']) . '<br /><b>Por:</b> ' . ($moderator == '' ? ' - ' : '<a href="' . $boardurl . '/perfil/' . $moderator . '" title="' . $moderator . '">' . $moderator . '</a>') . ' | <b>Expira:</b> ' . $context['expira'] . '</div>';
+
+      echo '
+        <div class="noesta" style="margin-bottom: 8px;">
+          &iexcl;&iexcl;&iexcl;CUENTA BANEADA!!!
+          <br />
+          <b>Raz&oacute;n:</b>
+          ' . $context['reason'] . '
+          |
+          <b>El d&iacute;a:</b>
+          ' . timeformat($context['fecha']) . '
+          <br />
+          <b>Por:</b>
+          ' . ($moderator == '' ? ' - ' : '<a href="' . $boardurl . '/perfil/' . $moderator . '" title="' . $moderator . '">' . $moderator . '</a>') . '
+          |
+          <b>Expira:</b>
+          ' . $context['expira'] . '
+        </div>';
     }
   }
 
@@ -197,15 +209,27 @@ function template_summary() {
       $NroRegistros = $cantidaddss;
 
       if (!empty($cantidaddss) == 1) {
-        echo '<p style="font-size:10px;margin:0px;padding:0px;float:left;width:250px;"><a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/amigos-en-comun/">1 amigo en com&uacute;n</a></p>';
-      } elseif (!empty($cantidaddss) >= 2) {
-        echo '<p style="font-size:10px;margin:0px;padding:0px;float:left;width:250px;"><a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/amigos-en-comun/">' . $cantidaddss . ' amigos en com&uacute;n</a></p>';
+        echo '
+          <p style="font-size: 10px; margin: 0px; padding: 0px; float: left; width: 250px;">
+            <a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/amigos-en-comun/">1 amigo en com&uacute;n</a>
+          </p>';
+      } else if (!empty($cantidaddss) >= 2) {
+        echo '
+          <p style="font-size: 10px; margin: 0px; padding: 0px; float: left; width: 250px;">
+            <a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/amigos-en-comun/">' . $cantidaddss . ' amigos en com&uacute;n</a>
+          </p>';
       }
 
       if (!empty($bbvxc) == 1) {
-        echo '<p align="right" style="font-size:10px;margin:0px;padding:0px;width:250px;"><a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/lista-de-amigos/">1 amigo</a></p>';
+        echo '
+          <p align="right" style="font-size: 10px; margin: 0px; padding: 0px; width: 250px;">
+            <a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/lista-de-amigos/">1 amigo</a>
+          </p>';
       } elseif (!empty($bbvxc) >= 2) {
-        echo '<p align="right" style="font-size:10px;margin:0px;padding:0px;"><a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/lista-de-amigos/">' . $bbvxc . ' amigos</a></p>';
+        echo '
+          <p align="right" style="font-size: 10px; margin: 0px; padding: 0px;">
+            <a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/lista-de-amigos/">' . $bbvxc . ' amigos</a>
+          </p>';
       }
 
       if ((!empty($cantidaddss) == 1) || (!empty($cantidaddss) >= 2) || (!empty($bbvxc) == 1) || (!empty($bbvxc) >= 2)) {
@@ -213,11 +237,7 @@ function template_summary() {
       }
 
       $RegistrosAMostrar = 15;
-      if ($pagq1 < 1) {
-        $dud = 1;
-      } else {
-        $dud = $pagq1;
-      }
+      $dud = $pagq1 < 1 ? 1 : $pagq1;
 
       if (isset($dud)) {
         $RegistrosAEmpezar = ($dud - 1) * $RegistrosAMostrar;
@@ -239,7 +259,7 @@ function template_summary() {
           LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
 
         while ($rowd3 = mysqli_fetch_assoc($qd3)) {
-          if ($rowd3['amigo'] <> $context['member']['id']) {
+          if ($rowd3['amigo'] != $context['member']['id']) {
             $sdasdsddvdv = $rowd3['amigo'];
           } else {
             $sdasdsddvdv = $rowd3['user'];
@@ -261,8 +281,8 @@ function template_summary() {
               SELECT fecha
               FROM {$db_prefix}amistad
               INNER JOIN {$db_prefix}members AS m ON amigo = $conejjssuu
-              AND user = {$user_settings['ID_MEMBER']}
-              OR amigo = {$user_settings['ID_MEMBER']}
+              AND user = $ID_MEMBER
+              OR amigo = $ID_MEMBER
               AND user = $conejjssuu
               AND acepto = 1
               LIMIT 1", __FILE__, __LINE__);
@@ -273,31 +293,61 @@ function template_summary() {
 
             mysqli_free_result($dadd);
 
-            $esta = mysqli_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}log_online WHERE ID_MEMBER='$conejjssuu' LIMIT 1", __FILE__, __LINE__));
+            $request = db_query("
+              SELECT ID_MEMBER
+              FROM {$db_prefix}log_online
+              WHERE ID_MEMBER = $conejjssuu
+              LIMIT 1", __FILE__, __LINE__);
 
-            echo '<div class="muroEfect" id="muroEfectAV"><table><tr><td valign="top">';
-            if (empty($avatar)) {
-              echo '<img style="width:50px;height:50px;" class="avatar-box" alt="" src="' . $no_avatar . '" onerror="error_avatar(this)" />';
-            } else {
-              echo '<img style="width:50px;height:50px;" class="avatar-box" alt="" src="' . $avatar . '" onerror="error_avatar(this)" />';
-            }
-            echo '</td><td valign="top" style="margin:0px;padding:4px;">';
-            echo '<a onclick="if (!confirm(\'\xbfEstas seguro que deseas eliminar a este usuario de tus amigos?\')) return false;" href="' . $boardurl . '/web/cw-AmistadBorrar.php?user=' . $nombremem . '" title="Eliminar usuario de mi lista de amigos"><img alt="Eliminar usuario de mi lista de amigos" src="' . $tranfer1 . '/eliminar.gif" width="8px" height="8px" /></a>&#32;-&#32;';
-            echo '<b><span style="font-size:12px;"><a href="/perfil/' . $nombremem . '" title="' . $nombremem . '">' . $nombremem . '</a></b>';
+            $esta = mysqli_num_rows($request);
+
+            echo '
+              <div class="muroEfect" id="muroEfectAV">
+                <table>
+                  <tr>
+                    <td valign="top">
+                      <img style="width: 50px; height: 50px;" class="avatar-box" alt="" src="' . (empty($avatar) ? $no_avatar : $avatar) . '" onerror="error_avatar(this)" />
+                    </td>
+                    <td valign="top" style="margin: 0px; padding: 4px;">
+                      <a onclick="if (!confirm(\'\xbfEst&aacuteMs seguro que deseas eliminar a este usuario de tus amigos?\')) return false;" href="' . $boardurl . '/web/cw-AmistadBorrar.php?user=' . $nombremem . '" title="Eliminar usuario de mi lista de amigos">
+                        <img alt="Eliminar usuario de mi lista de amigos" src="' . $tranfer1 . '/eliminar.gif" width="8px" height="8px" />
+                      </a>
+                      &#32;-&#32;
+                      <b>
+                        <span style="font-size: 12px;">
+                          <a href="' . $boardurl . '/perfil/' . $nombremem . '" title="' . $nombremem . '">' . $nombremem . '</a>
+                        </span>
+                      </b>';
+
             if (!empty($pt)) {
               echo '&#32;-&#32;' . $pt;
             }
-            if ($esta == '1') {
+
+            if ($esta == 1) {
               echo '&#32;-&#32;<img src="' . $tranfer1 . '/icons/bullet-verde.gif" alt="Conectado/a" title="Conectado/a" />';
             }
+
             if (empty($esta)) {
               echo '&#32;-&#32;<img src="' . $tranfer1 . '/icons/bullet-rojo.gif" alt="Desconectado/a" title="Desconectado/a" />';
             }
-            echo '</span><br /><span style="color:green;font-size:10px;"><b>Son amigos ' . $yata . '</b></span></td></tr></table></div><div class="hrs"></div>';
+
+            echo '
+                      </span>
+                      <br />
+                      <span style="color: green; font-size: 10px;">
+                        <b>Son amigos ' . $yata . '</b>
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div class="hrs"></div>';
           }
         }
+
         mysqli_free_result($qd3);
       }
+
       if (empty($conejjssuu)) {
         echo '<div class="noesta">No tienes ning&uacute;n amigo en com&uacute;n con ' . $context['member']['name'] . '</div>';
       }
@@ -306,29 +356,43 @@ function template_summary() {
       $PagSig = $PagAct + 1;
       $PagUlt = $NroRegistros / $RegistrosAMostrar;
       $Res = $NroRegistros % $RegistrosAMostrar;
-      if ($Res > 0)
+
+      if ($Res > 0) {
         $PagUlt = floor($PagUlt) + 1;
+      }
+
       echo '</div>';
+
       if ($PagAct > 1 || $PagAct < $PagUlt) {
-        echo '<div class="windowbgpag" style="width:200px;">';
-        if ($PagAct > 1)
-          echo "<a href='/perfil/{$context['member']['name']}/amigos-en-comun-pag-$PagAnt'>&#171; anterior</a>";
-        if ($PagAct < $PagUlt)
-          echo "<a href='/perfil/{$context['member']['name']}/amigos-en-comun-pag-$PagSig'>siguiente &#187;</a>";
-        echo '</div><div class="clearBoth"></div><div style="clear: both;"></div>';
+        echo '<div class="windowbgpag" style="width: 200px;">';
+
+        if ($PagAct > 1) {
+          echo '<a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/amigos-en-comun-pag-' . $PagAnt . '">&#171; anterior</a>';
+        }
+
+        if ($PagAct < $PagUlt) {
+          echo '<a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/amigos-en-comun-pag-' . $PagSig . '">siguiente &#187;</a>';
+        }
+
+        echo '
+          </div>
+          <div class="clearBoth"></div>
+          <div style="clear: both;"></div>';
       }
     } else {
-      echo '<div class="windowbg" style="border:1px solid #B3A496;width:523px;padding:8px;font-size:11px;"><b class="size11">Acci&oacute;n no reconocida.-</b><hr/></div>';
+      echo '
+        <div class="windowbg" style="border: 1px solid #B3A496; width: 523px; padding: 8px; font-size: 11px;">
+          <b class="size11">Acci&oacute;n no reconocida.</b>
+          <hr />
+        </div>';
     }
-  } elseif ($lugar == 'lista-de-amigos') {
+  } else if ($lugar == 'lista-de-amigos') {
     partearriba($context['member']['name'], $lugar);
+
     $NroRegistros = $bbvxc;
     $RegistrosAMostrar = 15;
-    if ($pagq1 < 1) {
-      $dud = 1;
-    } else {
-      $dud = $pagq1;
-    }
+    $dud = $pagq1 < 1 ? 1 : $pagq1;
+
     if (isset($dud)) {
       $RegistrosAEmpezar = ($dud - 1) * $RegistrosAMostrar;
       $PagAct = $dud;
@@ -338,56 +402,76 @@ function template_summary() {
     }
 
     if ($NroRegistros) {
-      echo '<div class="windowbg" style="border:1px solid #C8C8C8;width:523px;padding:8px;font-size:11px;">';
-      if (!empty($cantidaddss) === '1') {
-        echo '<p style="margin:0px;padding:0px;float:left;width:250px;"><a href="/perfil/' . $context['member']['name'] . '/amigos-en-comun/">1 amigo en com&uacute;n</a></p>';
-      } elseif (!empty($cantidaddss) >= '2') {
-        echo '<p style="margin:0px;padding:0px;float:left;width:250px;"><a href="/perfil/' . $context['member']['name'] . '/amigos-en-comun/">' . $cantidaddss . ' amigos en com&uacute;n</a></p>';
+      echo '<div class="windowbg" style="border: 1px solid #C8C8C8; width: 523px; padding: 8px; font-size: 11px;">';
+
+      if (!empty($cantidaddss) === 1) {
+        echo '
+          <p style="margin: 0px; padding: 0px; float: left; width: 250px;">
+            <a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/amigos-en-comun/">1 amigo en com&uacute;n</a>
+          </p>';
+      } else if (!empty($cantidaddss) >= 2) {
+        echo '
+          <p style="margin: 0px; padding: 0px; float: left; width: 250px;">
+            <a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/amigos-en-comun/">' . $cantidaddss . ' amigos en com&uacute;n</a>
+          </p>';
       }
 
-      if (!empty($bbvxc) === '1') {
-        echo '<p align="right" style="margin:0px;padding:0px;width:250px;"><a href="/perfil/' . $context['member']['name'] . '/lista-de-amigos/">1 amigo</a></p>';
-      } elseif (!empty($bbvxc) >= '2') {
-        echo '<p align="right" style="margin:0px;padding:0px;"><a href="/perfil/' . $context['member']['name'] . '/lista-de-amigos/">' . $bbvxc . ' amigos</a></p>';
+      if (!empty($bbvxc) === 1) {
+        echo '
+          <p align="right" style="margin: 0px; padding: 0px; width: 250px;">
+            <a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/lista-de-amigos/">1 amigo</a>
+          </p>';
+      } else if (!empty($bbvxc) >= 2) {
+        echo '
+          <p align="right" style="margin: 0px; padding: 0px;">
+            <a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/lista-de-amigos/">' . $bbvxc . ' amigos</a>
+          </p>';
       }
-      if ((!empty($cantidaddss) === '1') || (!empty($cantidaddss) >= '2') || (!empty($bbvxc) === '1') || (!empty($bbvxc) >= '2')) {
+
+      if ((!empty($cantidaddss) === 1) || (!empty($cantidaddss) >= 2) || (!empty($bbvxc) === 1) || (!empty($bbvxc) >= 2)) {
         echo '<div class="hrs"></div>';
       }
 
       $mostrarmuros = db_query("
-SELECT a.user,a.id,a.fecha,a.amigo
-FROM ({$db_prefix}amistad AS a)
-WHERE (a.user='{$context['member']['id']}' OR a.amigo='{$context['member']['id']}') AND a.acepto=1
-ORDER BY a.fecha DESC
-LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
+        SELECT user, id, fecha, amigo
+        FROM {$db_prefix}amistad
+        WHERE user = {$context['member']['id']}
+        OR amigo = {$context['member']['id']}
+        AND acepto = 1
+        ORDER BY fecha DESC
+        LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
+
       while ($mostrarmuros1 = mysqli_fetch_array($mostrarmuros)) {
-        if ($mostrarmuros1['amigo'] <> $context['member']['id']) {
-          $sdasdc = $mostrarmuros1['amigo'];
-        } else {
-          $sdasdc = $mostrarmuros1['user'];
-        }
+        $sdasdc = $mostrarmuros1['amigo'] != $context['member']['id'] ? $mostrarmuros1['amigo'] : $mostrarmuros1['user'];
         $ivvd = $mostrarmuros1['id'];
         $yata = timeformat($mostrarmuros1['fecha']);
 
         $datosmem = db_query("
-SELECT m.ID_MEMBER,m.personalText,m.avatar,m.realName
-FROM ({$db_prefix}members as m)
-WHERE m.ID_MEMBER='{$sdasdc}'
-LIMIT 1", __FILE__, __LINE__);
+          SELECT ID_MEMBER, personalText, avatar, realName
+          FROM {$db_prefix}members
+          WHERE ID_MEMBER = $sdasdc
+          LIMIT 1", __FILE__, __LINE__);
+
         while ($data = mysqli_fetch_assoc($datosmem)) {
           $nombremem = $data['realName'];
           $avatar = $data['avatar'];
           $pt = $data['personalText'];
           $conejjssuu = $data['ID_MEMBER'];
         }
-        mysqli_free_result($datosmem);
-        $esta = mysqli_num_rows(db_query("SELECT ID_MEMBER FROM {$db_prefix}log_online WHERE ID_MEMBER='$conejjssuu' LIMIT 1", __FILE__, __LINE__));
 
-        if ($user_settings['ID_MEMBER'] == $context['member']['id']) {
-          $predd = 'Sos ';
-        } else {
-          $predd = 'Es ';
-        }
+        mysqli_free_result($datosmem);
+
+        $request = db_query("
+          SELECT ID_MEMBER
+          FROM {$db_prefix}log_online
+          WHERE ID_MEMBER = $conejjssuu
+          LIMIT 1", __FILE__, __LINE__);
+
+        $esta = mysqli_num_rows($request);
+        $predd = $ID_MEMBER == $context['member']['id'] ? 'Eres ' : 'Es ';
+
+        // TO-DO: Seguir arreglando
+
         echo '<div id="amig_' . $ivvd . '"><div class="muroEfect" id="muroEfectAV"><table><tr><td valign="top">';
         if (empty($avatar)) {
           echo '<img style="width:50px;height:50px;" class="avatar-box" alt="" src="' . $no_avatar . '" onerror="error_avatar(this)" />';
@@ -436,7 +520,7 @@ LIMIT 1", __FILE__, __LINE__);
   }
 
   // Muro
-  elseif ($tipo == '0') {
+  else if ($tipo == 0) {
     partearriba($context['member']['name'], $lugar);
 
     $_GET['ccIDmuro'] = isset($_GET['ccIDmuro']) ? (int) $_GET['ccIDmuro'] : '';
@@ -484,12 +568,12 @@ LIMIT 1", __FILE__, __LINE__);
 <div class="muroBug"><div id="return_agregar_muro"></div>';
 
         $mostrarmuros = db_query("
-SELECT id_user, muro, id, fecha, de, tipo, ccos
-FROM {$db_prefix}muro
-WHERE id_user = {$context['member']['id']}
-AND tipocc = 0
-ORDER BY id DESC
-LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
+          SELECT id_user, muro, id, fecha, de, tipo, ccos
+          FROM {$db_prefix}muro
+          WHERE id_user = {$context['member']['id']}
+          AND tipocc = 0
+          ORDER BY id DESC
+          LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
         while ($mostrarmuros1 = mysqli_fetch_array($mostrarmuros)) {
           $mensaje = nohtml2($mostrarmuros1['muro']);
           $ivvd = $mostrarmuros1['id'];

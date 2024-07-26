@@ -181,7 +181,7 @@ function template_main() {
             <br />
             <br />
             <center style="font-size: 11px;">
-              <img src="' . $tranfer1 . '/icons/no.png" class="png" alt="" width="16px" height="16px" />Cumpliendo estos puntos m&aacute;s teniendo en cuenta el <a href="' . $boardurl . '/protocolo/" target="_blank" title="Protocolo">protocolo</a>, es probable que Tu post no sea eliminado ni editado.
+              <img src="' . $tranfer1 . '/icons/no.png" class="png" alt="" width="16px" height="16px" />Cumpliendo estos puntos m&aacute;s teniendo en cuenta el <a href="' . $boardurl . '/protocolo/" target="_blank" title="Protocolo">protocolo</a>, es probable que tu post no sea eliminado ni editado.
             </center>
             <p align="right" style="margin: 0px; padding: 0px; font-size: 11px;">Muchas gracias.</p>
           </div>
@@ -264,7 +264,7 @@ function template_main() {
         <br />
         <b class="size11">Color:</b>
         <br />
-        <input type="text" value="' . $context['color'] . '" onfocus="foco(this);" onblur="no_foco(this);" name="colorsticky" size="15" onclick="startColorPicker(this)"id="colorsticky"  onkeyup="maskedHex(this)" />
+        <input type="text" value="' . $context['color'] . '" onfocus="foco(this);" onblur="no_foco(this);" name="colorsticky" size="15" onclick="startColorPicker(this)"id="colorsticky" onkeyup="maskedHex(this)" />
         <div id="coloraca" style="display: none; margin-top: 0px; padding: 0px;"></div>';
     }
 
@@ -275,76 +275,38 @@ function template_main() {
       </font>';
 
     if ($context['allow_admin']) {
-      if ($context['sticky']) {
-        echo '
-          <br />
-          <label for="principal">
-            <input checked="checked" type="checkbox" name="principal" id="principal" value="1" />
-            Agregar a Sticky
-          </label>';
-      } else {
-        echo '
-          <br />
-          <label for="principal">
-            <input type="checkbox" name="principal" id="principal" value="1" />
-            Agregar a Sticky
-          </label>';
-      }
+      echo '
+        <br />
+        <label for="principal">
+          <input type="checkbox" name="principal" id="principal" value="1"' . ($context['sticky'] ? ' checked="checked"' : '') . ' />
+          Agregar a Sticky.
+        </label>';
     }
 
     if ($context['user']['is_admin']) {
-      if ($context['anuncio'] == 1) {
-        echo '
-          <br />
-          <label for="anuncio">
-            <input checked="checked" type="checkbox" name="anuncio" id="anuncio" value="1" />
-            Mostrar post como Anuncio
-          </label>';
-      } else {
-        echo '
-          <br />
-          <label for="anuncio">
-            <input type="checkbox" name="anuncio" id="anuncio" value="1" />
-            Mostrar post como Anuncio
-          </label>';
-      }
+      echo '
+        <br />
+        <label for="anuncio">
+          <input type="checkbox" name="anuncio" id="anuncio" value="1"' . ($context['anuncio'] == 1 ? ' checked="checked"' : '') . ' />
+          Mostrar post como Anuncio.
+        </label>';
     }
 
     if ($user_settings['posts'] >= 200) {
-      if ($context['locked']) {
-        echo '
-          <br />
-          <label for="nocom">
-            <input checked="checked" type="checkbox" name="nocom" id="nocom" value="1" />
-            No permitir comentarios
-          </label>';
-      } else {
-        echo '
-          <br />
-          <label for="nocom">
-            <input type="checkbox" name="nocom" id="nocom" value="1" />
-            No permitir comentarios
-          </label>';
-      }
-    }
-
-    if ($context['privado'] == 1) {
       echo '
         <br />
-        <label for="privado">
-          <input checked="checked" type="checkbox" name="privado" id="privado" value="1" />
-          S&oacute;lo usuarios registrados.
-        </label>';
-    } else {
-      echo '
-        <br />
-        <label for="privado">
-          <input type="checkbox" name="privado" id="privado" value="1" />
-          S&oacute;lo usuarios registrados.
+        <label for="nocom">
+          <input type="checkbox" name="nocom" id="nocom" value="1"' . ($context['locked'] ? ' checked="checked"' : '') . ' />
+          No permitir comentarios.
         </label>';
     }
 
     echo '
+            <br />
+            <label for="privado">
+              <input type="checkbox" name="privado" id="privado" value="1"' . ($context['privado'] == 1 ? ' checked="checked"' : '') . ' />
+              S&oacute;lo usuarios registrados.
+            </label>
             <center>
               <input onclick="vprevia(this.form.titulo.value, this.form.contenido.value' . ($context['id_user'] != $context['user']['id'] ? ', this.form.causa.value' : '') . ', this.form.tags.value, this.form);" class="button" style="font-size: 15px;" value="Previsualizar" title="Previsualizar" type="button" tabindex="8" />
             </center>

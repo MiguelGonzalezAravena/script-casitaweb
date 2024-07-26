@@ -15,7 +15,7 @@ function template_main() {
         function EliminarHM(){
           $.ajax({
             type: \'GET\',
-            url: urlWEB + \'/web/cw-EliminarMODlog.php\',
+            url: \'' . $boardurl . '/web/cw-EliminarMODlog.php\',
             success: function(h) {
               location.reload();
             }

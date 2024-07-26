@@ -10,27 +10,53 @@ function template_main() {
   $rowlevel = 0;
   $userid = $context['gallery_userid'];
 
-  echo '<style type="text/css">.photo_small{width:90px;margin:6px;padding:2px;text-align:left;background:#FFFFFF none repeat scroll 0%;border:1px solid #000000;}</style>';
+  echo '
+    <style type="text/css">
+      .photo_small {
+        width: 90px;
+        margin: 6px;
+        padding: 2px;
+        text-align: left;
+        background: #FFFFFF none repeat scroll 0%;
+        border: 1px solid #000000;
+      }
+    </style>';
 
   if ($context['user']['id'] == $userid) {
     ditaruser();
+
     echo '
-      <div style="float:left;width: 776px;" >
-        <div class="box_780"><div class="box_title" style="width: 774px;"><div class="box_txt box_780-34"><center>Mis im&aacute;genes</center></div><div class="box_rss"><img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" /></div></div><div class="windowbg" style="width:766px;padding:4px;">';
+      <div style="float: left; width: 776px;" >
+        <div class="box_780">
+          <div class="box_title" style="width: 774px;">
+            <div class="box_txt box_780-34">
+              <center>Mis im&aacute;genes</center>
+            </div>
+            <div class="box_rss">
+              <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
+            </div>
+          </div>
+          <div class="windowbg" style="width: 766px; padding: 4px;">';
   } else {
-    echo '<div style="float:left;width: 922px;" ><div class="box_buscador"><div class="box_title" style="width: 920px;"><div class="box_txt box_buscadort"><center>Im&aacute;genes de ' . $context['gallery_usergallery_name'] . '</center></div><div class="box_rss"><img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" border="0" /></div></div><div style="width:912px;padding:4px;" class="windowbg">';
+    echo '
+      <div style="float: left; width: 922px;">
+        <div class="box_buscador">
+          <div class="box_title" style="width: 920px;">
+            <div class="box_txt box_buscadort">
+              <center>Im&aacute;genes de ' . $context['gallery_usergallery_name'] . '</center>
+            </div>
+            <div class="box_rss">
+              <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" border="0" />
+            </div>
+          </div>
+          <div style="width: 912px; padding: 4px;" class="windowbg">';
   }
 
   echo '<table border="0" width="100%">';
 
   $RegistrosAMostrar = 9;
   $pag = isset($_GET['pag-seg-154s87135']) ? (int) $_GET['pag-seg-154s87135'] : 0;
-
-  if ($pag < 1) {
-    $dev = 1;
-  } else {
-    $dev = $pag;
-  }
+  $dev = $pag < 1 ? 1 : $pag;
 
   if (isset($dev)) {
     $RegistrosAEmpezar = ($dev - 1) * $RegistrosAMostrar;
@@ -42,9 +68,10 @@ function template_main() {
 
   if ($ID_MEMBER == $userid) {
     $dbresult = db_query("
-      SELECT p.title,p.filename,p.ID_PICTURE
-      FROM {$db_prefix}gallery_pic as p, {$db_prefix}members AS m 
-      WHERE p.ID_MEMBER='$userid' AND p.ID_MEMBER=m.ID_MEMBER 
+      SELECT p.title, p.filename, p.ID_PICTURE
+      FROM {$db_prefix}gallery_pic AS p, {$db_prefix}members AS m 
+      WHERE p.ID_MEMBER = m.ID_MEMBER
+      AND p.ID_MEMBER = $userid
       ORDER BY p.ID_PICTURE DESC
       LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
   }
@@ -62,67 +89,103 @@ function template_main() {
     $row['title'] = str_replace('<', '&#60;', $row['title']);
     $row['title'] = str_replace('>', '&#62;', $row['title']);
 
-    $context['dato'] = mysqli_num_rows(db_query("
-      SELECT c.ID_PICTURE
-      FROM ({$db_prefix}gallery_comment AS c)
-      WHERE c.ID_PICTURE='{$row['ID_PICTURE']}'", __FILE__, __LINE__));
+    $request = db_query("
+      SELECT ID_PICTURE
+      FROM {$db_prefix}gallery_comment
+      WHERE ID_PICTURE = {$row['ID_PICTURE']}", __FILE__, __LINE__);
 
-    echo '<td width="70px"><div style="width:90px;"><div class="photo_small"><a href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '"><img src="' . $row['filename'] . '" title="' . $row['title'] . '" onload="if(this.height > 68) {this.height=68}" style="width:90px;" border="0"/></a></div><div class="smalltext"><center>Comentarios: (<a href="/imagenes/ver/' . $row['ID_PICTURE'] . '#comentarios">' . $context['dato'] . '</a>)</center></div></div>';
-    echo '</td>';
+    $context['dato'] = mysqli_num_rows($request);
 
-    if ($rowlevel < ($maxrowlevel + 1))
+    mysqli_free_result($request);
+
+    echo '
+      <td width="70px">
+        <div style="width: 90px;">
+          <div class="photo_small">
+            <a href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '">
+              <img src="' . $row['filename'] . '" title="' . $row['title'] . '" onload="if (this.height > 68) { this.height = 68 }" style="width: 90px;" border="0" />
+            </a>
+          </div>
+          <div class="smalltext">
+            <center>
+              Comentarios: (<a href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '#comentarios">' . $context['dato'] . '</a>)
+            </center>
+          </div>
+        </div>
+      </td>';
+
+    if ($rowlevel < ($maxrowlevel + 1)) {
       $rowlevel++;
-    else {
+    } else {
       echo '</tr>';
       $rowlevel = 0;
     }
   }
+
   mysqli_free_result($dbresult);
+
   echo '</table>';
 
-  $NroRegistros = mysqli_num_rows(db_query("
- SELECT p.ID_MEMBER,m.ID_MEMBER
-FROM {$db_prefix}gallery_pic as p, {$db_prefix}members AS m 
-WHERE p.ID_MEMBER='$userid' AND p.ID_MEMBER=m.ID_MEMBER", __FILE__, __LINE__));
+  $request = db_query("
+    SELECT p.ID_MEMBER, m.ID_MEMBER
+    FROM {$db_prefix}gallery_pic AS p, {$db_prefix}members AS m 
+    WHERE p.ID_MEMBER = m.ID_MEMBER
+    AND p.ID_MEMBER = $userid", __FILE__, __LINE__);
+
+  $NroRegistros = mysqli_num_rows($request);
 
   $PagAnt = $PagAct - 1;
   $PagSig = $PagAct + 1;
   $PagUlt = $NroRegistros / $RegistrosAMostrar;
   $Res = $NroRegistros % $RegistrosAMostrar;
-  if ($Res > 0)
+
+  if ($Res > 0) {
     $PagUlt = floor($PagUlt) + 1;
+  }
+
   if (empty($NroRegistros)) {
-  } elseif ($PagAct > $PagUlt) {
-    echo '<div class="noesta">Est&aacute; p&aacute;gina no existe.</div>';
+    // ¿Se hace algo aquí?
+  } else if ($PagAct > $PagUlt) {
+    echo '<div class="noesta">Esta p&aacute;gina no existe.</div>';
   }
 
   if ($context['user']['name'] == $context['gallery_usergallery_name']) {
-    // aviso de no hay imagen en galeria
-    if (!$NroRegistros)
-      echo '<div class="noesta">No tienes ning&uacute;na imagen - <a href="/imagenes/agregar/" style="color:red;text-decorative:none;">AGREGAR AQU&Iacute;</a></div>';
-  } elseif (!$NroRegistros)
-    echo '<div class="noesta">' . $context['gallery_usergallery_name'] . ' no tiene ning&uacute;na imagen.</div>';
+    // Avisar de que no hay imagen en galería
+    if (!$NroRegistros) {
+      echo '<div class="noesta">No tienes ninguna imagen - <a href="' . $boardurl . '/imagenes/agregar/" style="color: red; text-decorative: none;">AGREGAR AQU&Iacute;</a></div>';
+    }
+  } else if (!$NroRegistros) {
+    echo '<div class="noesta">' . $context['gallery_usergallery_name'] . ' no tiene ninguna imagen.</div>';
+  }
 
   echo '</div>';
+
   if ($PagAct > $PagUlt) {
-  } elseif ($PagAct > 1 || $PagAct < $PagUlt) {
-    echo '<div class="windowbgpag" style="width:';
-    if ($context['user']['name'] == $context['gallery_usergallery_name']) {
-      echo '780';
-    } else {
-      echo '921';
+    // ¿Acá se hace algo?
+  } else if ($PagAct > 1 || $PagAct < $PagUlt) {
+    echo '<div class="windowbgpag" style="width: ' . ($context['user']['name'] == $context['gallery_usergallery_name'] ? '780' : '921') . 'px;">';
+
+    if ($PagAct > 1) {
+      echo '<a href="' . $boardurl . '/imagenes/' . $context['gallery_usergallery_name'] . '/pag-' . $PagAnt . '">&#171; anterior</a>';
     }
-    echo 'px;">';
-    if ($PagAct > 1)
-      echo "<a href='/imagenes/{$context['gallery_usergallery_name']}/pag-$PagAnt'>&#171; anterior</a>";
-    if ($PagAct < $PagUlt)
-      echo "<a href='/imagenes/{$context['gallery_usergallery_name']}/pag-$PagSig'>siguiente &#187;</a>";
-    echo '</div><div class="clearBoth"></div><div style="clear: both;"></div>';
+
+    if ($PagAct < $PagUlt) {
+      echo '<a href="' . $boardurl . '/imagenes/' . $context['gallery_usergallery_name'] . '/pag-' . $PagSig . '">siguiente &#187;</a>';
+    }
+
+    echo '
+      </div>
+      <div class="clearBoth"></div>
+      <div style="clear: both;"></div>';
   }
-  echo '</div></div>';
+
+  echo '
+      </div>
+    </div>';
 }
 
-function template_view_picture() {
+function template_view_picture()
+{
   global $tranfer1, $context, $db_prefix, $user_settings, $options, $ID_MEMBER, $modSettings, $ie, $boardurl;
 
   $context['contando'] = mysqli_num_rows(db_query("

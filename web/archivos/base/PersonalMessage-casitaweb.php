@@ -44,7 +44,7 @@ function template_intro() {
         </div>
       </div>
       <div class="windowbg" style="font-size: 13px; width: 150px; padding: 4px;">';
-      
+
   anuncio1_120x240();
 
   echo '
@@ -191,7 +191,7 @@ function recibidos() {
   $NroRegistros = mysqli_num_rows($request);
 
   if (empty($NroRegistros)) {
-    echo'<div class="noesta" style="width:754px;">No hay mensajes recibidos...</div>';
+    echo'<div class="noesta" style="width: 754px;">No hay mensajes recibidos...</div>';
   } else {
     $request = db_query("
       SELECT id, leido, titulo, name_de, fecha
