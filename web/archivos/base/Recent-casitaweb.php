@@ -376,7 +376,7 @@ function template_main() {
   echo '
     <div class="img_aletat">
       <div class="box_title" style="width: 161px;">
-        <div class="box_txt img_aletat">User de la semana ' . count($context['top_posters_week']) . '</div>
+        <div class="box_txt img_aletat">User de la semana</div>
         <div class="box_rss">
           <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
         </div>
