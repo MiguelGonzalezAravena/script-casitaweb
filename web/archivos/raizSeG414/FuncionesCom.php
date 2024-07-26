@@ -230,7 +230,7 @@ function permisios($id) {
   global $context, $user_info, $ID_MEMBER, $db_prefix;
 
   if ($user_info['is_guest']) {
-    $context['permisoCom'] = '0';
+    $context['permisoCom'] = 0;
   } else {
     $rs44 = db_query("
       SELECT rango
@@ -247,9 +247,9 @@ function permisios($id) {
 
     if ($rango == 1) {
       $context['permisoCom'] = 1;
-    } elseif ($rango == 5) {
+    } else if ($rango == 5) {
       $context['permisoCom'] = 3;
-    } elseif (($user_info['is_admin'] || $user_info['is_mods'])) {
+    } else if (($user_info['is_admin'] || $user_info['is_mods'])) {
       $context['permisoCom'] = 2;
     } else {
       $context['permisoCom'] = 0;
@@ -401,7 +401,7 @@ function entrar($id, $t = '') {
             <div class="noesta-am" style="width: 922px;">
               S&oacute;lo miembros de esta comunidad pueden acceder.
               <br />
-              <a href="#" onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas unirte a esta comunidad?\')) return false; javascript:window.location.href=\'' . $boardurl . '/web/cw-comunidadesUnirCom.php?id=' . $url . '\'" >&Uacute;NETE a esta comunidad</a>
+              <a href="#" onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas unirte a esta comunidad?\')) return false; javascript:window.location.href=\'' . $boardurl . '/web/cw-comunidadesUnirCom.php?id=' . $url . '\'">&Uacute;NETE a esta comunidad</a>
             </div>';
         }
       }

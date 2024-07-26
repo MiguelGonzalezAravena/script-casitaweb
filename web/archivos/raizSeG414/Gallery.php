@@ -47,10 +47,10 @@ function main() {
     LIMIT 1", __FILE__, __LINE__);
 
   $row = mysqli_fetch_assoc($dbresult);
-  $context['gallery_userid'] = $row['ID_MEMBER'];
+  $context['gallery_userid'] = isset($row['ID_MEMBER']) ? $row['ID_MEMBER'] : '';
 
   if (!$context['gallery_userid']) {
-    fatal_error('Este usuario no existe.-', false);
+    fatal_error('Este usuario no existe.', false);
   }
 
   $context['gallery_usergallery_name'] = $row['realName'];

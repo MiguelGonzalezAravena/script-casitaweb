@@ -9,7 +9,7 @@ if (empty($context['ajax'])) {
   die('Error de ajax.');
 }
 ?>
-<script type="text/javascript" >
+<script type="text/javascript">
   // Eliminar baneo
   function EliminarBan(id, a) {
     if (a == 1) {

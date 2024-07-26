@@ -17,8 +17,8 @@ function template_main() {
   menuser($context['user_ID']);
   $message['body'] = hides($context['contenido']);
 
-  echo '<div style="float:left;width: 774px;" >';
-  echo '<div class="box_780" ><div class="box_title" style="width: 772px;"><div class="box_txt box_780-34"><center>' . $context['titulo'] . '</center></div><div class="box_rss">
+  echo '<div style="float:left;width: 774px;">';
+  echo '<div class="box_780"><div class="box_title" style="width: 772px;"><div class="box_txt box_780-34"><center>' . $context['titulo'] . '</center></div><div class="box_rss">
 <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" /></div></div><div class="windowbg" style="width:772px;overflow: hidden;" id="post_' . $context['id-post'] . '">
 <div class="post-contenido" property="dc:content">';
 
@@ -114,7 +114,7 @@ function template_main() {
     if ($context['user']['is_logged']) {
       echo '<center><span id="span_opciones2" style="text-align: center; display: block;">
 
-<a class="Iagregar_favoritos png" href="#" onclick="add_favoritos(\'' . $context['id-post'] . '\'); return false;" >Agregar a Favoritos</a>&nbsp;&#124;&nbsp;<a class="Idenunciar_post boxy png" title="Denunciar ' . $context['titulo'] . '" href="' . $boardurl . '/web/cw-denunciaTEMP.php?t=1;d=' . $context['id-post'] . '">Denunciar post</a>&nbsp;&#124;&nbsp;';
+<a class="Iagregar_favoritos png" href="#" onclick="add_favoritos(\'' . $context['id-post'] . '\'); return false;">Agregar a Favoritos</a>&nbsp;&#124;&nbsp;<a class="Idenunciar_post boxy png" title="Denunciar ' . $context['titulo'] . '" href="' . $boardurl . '/web/cw-denunciaTEMP.php?t=1;d=' . $context['id-post'] . '">Denunciar post</a>&nbsp;&#124;&nbsp;';
     }
 
     echo '<a class="Irecomendar_post png boxy" href="' . $boardurl . '/web/cw-TEMPenviarPost.php?id=' . $context['id-post'] . '" title="Recomendar ' . $context['titulo'] . '">Enviar a un amigo</a>';
@@ -327,7 +327,7 @@ function template_main() {
       if ($context['user']['is_logged']) {
         echo '<a href="' . $boardurl . '/web/cw-TEMPenviarMP.php?user=' . $coment['nomuser'] . '" title="Enviar MP a ' . $coment['nomuser'] . '" class="boxy"><img alt="" src="' . $tranfer1 . '/icons/mensaje_para.gif" border="0" /></a>';
         if (!$context['is_locked']) {
-          echo '&#32;<a onclick="citar_comment(' . $coment['id'] . ')" href="javascript:void(0)" title="Citar Comentario"><img alt="" src="' . $tranfer1 . '/comunidades/respuesta.png" class="png" border="0" /></a>';
+          echo '&#32;<a onclick="citar_comment(' . $coment['id'] . ')" href="javascript:void(0)" title="Citar comentario"><img alt="" src="' . $tranfer1 . '/comunidades/respuesta.png" class="png" border="0" /></a>';
         }
         if ($context['user_ID'] == $context['user']['id'] || $context['allow_admin']) {
           echo '&#32;<a href="#" onclick="del_coment_post(' . $coment['id'] . ',' . $context['id-post'] . '); return false;" title="Eliminar Comentario"><img alt="" src="' . $tranfer1 . '/comunidades/eliminar.png" class="png" style="width:16px;height:16px;" border="0" /></a>';

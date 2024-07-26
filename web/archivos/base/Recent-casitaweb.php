@@ -6,10 +6,10 @@ function template_main() {
     <div style="text-align:left;">
       <div style="float: left; height: auto; margin-right: 8px;">
         <div class="ultimos_postsa" style="margin-bottom: 4px;">
-          <div class="box_title" style="width:378px;">
+          <div class="box_title" style="width: 378px;">
             <div class="box_txt ultimos_posts">&Uacute;ltimos posts</div>
             <div class="box_rss">
-              <a href="/rss/ultimos-post/">
+              <a href="' . $boardurl . '/rss/ultimos-post/">
                 <div style="height: 16px; width: 16px; cursor: pointer;" class="feed png">
                   <img alt="" src="' . $tranfer1 . '/espacio.gif" class="png" height="16px" width="16px" />
                 </div>
@@ -31,7 +31,12 @@ function template_main() {
   }
 
   if ($context['PagAct'] > $context['PagUlt']) {
-    echo '<div class="noesta"><br /><br /><br /><br />Esta p&aacute;gina no existe.<br /><br /><br /><br /><br /></div>';
+    echo '
+      <div class="noesta">
+        <br /><br /><br /><br />
+        Esta p&aacute;gina no existe.
+        <br /><br /><br /><br /><br />
+      </div>';
   } else {
     foreach ($context['posts'] as $posts) {
       echo '
@@ -76,30 +81,30 @@ function template_main() {
   }
 
   echo '
-    </div>
-    <div class="clearBoth"></div>
-  </div>
-  <div style="float: left; margin: 0px; padding: 0px; height: 90px; margin-bottom: 8px;" align="center">
-    <a href="' . $boardurl . '/chat/" target="_blank">
-      <img alt="" src="' . $tranfer1 . '/sala-chat.gif" width="534px" height="90px" />
-    </a>
-  </div>
-  <div style="float: left; margin-right: 8px;">
-    <div style="margin-bottom: 8px; width: 363px;">
-      <ul class="buscadorPlus">
-        <li id="gb" class="activo" onclick="elegir(\'google\')">Google</li>
-        <li id="cwb" onclick="elegir(\'casitaweb\')">' . $mbname . '</li>
-        <div class="clearBoth"></div>
-      </ul>
-      <div class="clearBoth"></div>
-      <div style="margin-top: -1px;clear:both;">
-        <form style="margin: 0px; padding: 0px;" action="' . $boardurl . '/buscar.php" method="get" accept-charset="' . $context['character_set'] . '">
-          <input type="text" name="q" id="q" class="ibuscador" style="height: 32px;" />
-          <input onclick="return errorrojos(this.form.q.value);" alt="" class="bbuscador png" title="Buscar" value=" " type="submit" align="top" style="height: 34px;" />
-          <input name="buscador_tipo" value="g" checked="checked" type="hidden" />
-        </form>
       </div>
-    </div>';
+      <div class="clearBoth"></div>
+    </div>
+    <div style="float: left; margin: 0px; padding: 0px; height: 90px; margin-bottom: 8px;" align="center">
+      <a href="' . $boardurl . '/chat/" target="_blank">
+        <img alt="" src="' . $tranfer1 . '/sala-chat.gif" width="534px" height="90px" />
+      </a>
+    </div>
+    <div style="float: left; margin-right: 8px;">
+      <div style="margin-bottom: 8px; width: 363px;">
+        <ul class="buscadorPlus">
+          <li id="gb" class="activo" onclick="elegir(\'google\')">Google</li>
+          <li id="cwb" onclick="elegir(\'casitaweb\')">' . $mbname . '</li>
+          <div class="clearBoth"></div>
+        </ul>
+        <div class="clearBoth"></div>
+        <div style="margin-top: -1px;clear:both;">
+          <form style="margin: 0px; padding: 0px;" action="' . $boardurl . '/buscar.php" method="get" accept-charset="' . $context['character_set'] . '">
+            <input type="text" name="q" id="q" class="ibuscador" style="height: 32px;" />
+            <input onclick="return errorrojos(this.form.q.value);" alt="" class="bbuscador png" title="Buscar" value=" " type="submit" align="top" style="height: 34px;" />
+            <input name="buscador_tipo" value="g" checked="checked" type="hidden" />
+          </form>
+        </div>
+      </div>';
 
   if (!empty($modSettings['radio'])) {
     if ($modSettings['radio'] == 1) {
@@ -356,6 +361,7 @@ function template_main() {
 
   if (!empty($context['user']['id'])) {
     echo '
+      <div class="hrs"></div>
       <center>
         <a href="' . $boardurl . '/web/cw-TEMPAgregarIMG.php" class="boxy" title="Agrega tu imagen">Agrega tu imagen</a>
       </center>';
@@ -370,12 +376,18 @@ function template_main() {
   echo '
     <div class="img_aletat">
       <div class="box_title" style="width: 161px;">
-        <div class="box_txt img_aletat">User de la semana</div>
+        <div class="box_txt img_aletat">User de la semana ' . count($context['top_posters_week']) . '</div>
         <div class="box_rss">
           <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
         </div>
       </div>
       <div class="windowbg" style="padding: 4px; width: 153px; margin-bottom: 8px;">';
+
+  $rows = count($context['top_posters_week']);
+
+  if ($rows == 0) {
+    echo '<div class="noesta">Nada por ac&aacute;...</div>';
+  }
 
   foreach ($context['top_posters_week'] as $row) {
     echo '

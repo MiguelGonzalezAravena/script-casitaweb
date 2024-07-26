@@ -194,7 +194,7 @@ var buscador = {
   echo '
     <div id="buscadorLite" style="width: 922px;">
       <div class="clearBoth"></div>
-      <ul class="searchTabs" >
+      <ul class="searchTabs">
         <li' . $activo . '><a' . $activo2 . '>Posts</a></li>
         <li' . $activo3 . '><a' . $activo4 . '>Comunidades</a></li>
         <div class="clearBoth"></div>

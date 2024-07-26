@@ -1180,7 +1180,7 @@ function template_crearcomunidad() {
         <option value="-1" selected="true">Elegir una categor&iacute;a</option>';
 
   while ($row = mysqli_fetch_assoc($request)) {
-    echo '<option value="' . $row['url'] . '" >' . $row['nombre'] . '</option>';
+    echo '<option value="' . $row['url'] . '">' . $row['nombre'] . '</option>';
   }
 
   echo '
@@ -1639,7 +1639,7 @@ function template_etema() {
 
 // Editar comunidad
 function template_ecomunidad() {
-  global $tranfer1, $context, $db_prefix, $boardurl;
+  global $tranfer1, $context, $db_prefix, $boardurl, $mbname;
 
   arriba('EditarCom', $boardurl . '/comunidades/categoria/' . $context['COMediTurlCat'], $context['COMediTnombreCat'], $boardurl . '/comunidades/' . $context['COMediTurl'], $context['COMediTnombre']);
 
@@ -1754,7 +1754,7 @@ function template_ecomunidad() {
                   <input name="privada" id="privada_2" value="2" type="radio" ' . ($context['COMediTacceso'] == 2 ? 'checked="checked" ' : '') . '/>
                 </td>
                 <td>
-                  <p class="descRadio">Todo aquel que no est&eracute; registrado en ' . $mbname . ' no podr&aacute; ver el contenido de tu comunidad.</p>
+                  <p class="descRadio">Todo aquel que no est&eacute; registrado en ' . $mbname . ' no podr&aacute; ver el contenido de tu comunidad.</p>
                 </td>
               </tr>
             </table>

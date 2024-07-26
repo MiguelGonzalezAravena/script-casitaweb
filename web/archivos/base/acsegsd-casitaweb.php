@@ -10,7 +10,7 @@ function template_intro() {
 
 // Editar firma
 function template_tyc3() {
-  global $tranfer1, $context, $db_prefix, $modSettings;
+  global $tranfer1, $context, $db_prefix, $modSettings, $boardurl;
 
   if ($context['user']['is_guest']) {
     fatal_error('Funcionalidad exclusiva de usuarios registrados.');
@@ -134,9 +134,9 @@ function template_tyc6() {
       $nick3 = getUsername($row['de']);
 
       if ($row['tipo'] == 0) {
-        echo '<img src="' . $tranfer1 . '/icons/bullet-verde.gif" alt="Escrito" title="Escrito" />';
+        echo '<img src="' . $tranfer1 . '/icons/si.png" alt="Escrito" title="Escrito" />';
       } else if ($row['tipo'] == 1) {
-        echo '<img src="' . $tranfer1 . '/icons/bullet-rojo.gif" alt="Est&aacute; haciendo..." title="Est&aacute; haciendo..." />';
+        echo '<img src="' . $tranfer1 . '/icons/no.png" alt="Est&aacute; haciendo..." title="Est&aacute; haciendo..." />';
       } else {
         echo '<b style="color: red;"><i>Tipo de muro no conocido ||| </i></b>';
       }
@@ -144,7 +144,7 @@ function template_tyc6() {
       echo "
           -
           <a onclick=\"if (!confirm('\\xbfEst&aacute;s seguro que deseas borrar este mensaje?')) return false; del_coment_muro('" . $row['id'] . '\'); return false;" href="#" title="Eliminar mensaje">
-            <img alt="Eliminar Mensaje" src="' . $tranfer1 . '/eliminar.gif" width="8px" height="8px" />
+            <img alt="Eliminar mensaje" src="' . $tranfer1 . '/eliminar.gif" width="8px" height="8px" />
           </a>
           <br />
           <b>Por:</b>
@@ -155,7 +155,7 @@ function template_tyc6() {
           <br />
           <b>Mensaje:</b>
           <br />
-          ' . censorText(parse_bbc(str_replace('<br/>', "\n", $row['muro']))) . '
+          ' . parse_bbc(str_replace('<br/>', "\n", $row['muro'])) . '
           <div class="hrs"></div>
         </div>';
     }

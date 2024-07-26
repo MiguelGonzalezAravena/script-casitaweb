@@ -140,7 +140,7 @@ function post_error($titulo = '') {
         LIMIT 1", __FILE__, __LINE__);
 
       while ($row = mysqli_fetch_assoc($request)) {
-        echo '<tr><td style="text-align:left;" ><a rel="dc:relation" class="categoriaPost ' . $row['description'] . '" href="/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . urls($row['subject']) . '.html" title="' . $row['subject'] . '">' . $row['subject'] . '</a></td>
+        echo '<tr><td style="text-align:left;"><a rel="dc:relation" class="categoriaPost ' . $row['description'] . '" href="/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . urls($row['subject']) . '.html" title="' . $row['subject'] . '">' . $row['subject'] . '</a></td>
 <td title="' . $row['posterName'] . '"><a href="' . $boardurl . '/perfil/' . $row['posterName'] . '">' . $row['posterName'] . '</a></td>
 <td title="' . timeformat($row['posterTime']) . '">' . hace($row['posterTime'], true) . '</td></tr>';
       }
@@ -156,7 +156,7 @@ function post_error($titulo = '') {
       LIMIT 10", __FILE__, __LINE__);
 
     while ($row44 = mysqli_fetch_assoc($request3)) {
-      echo '<tr><td style="text-align:left;" ><a rel="dc:relation" class="categoriaPost ' . $row44['description'] . '" href="/post/' . $row44['ID_TOPIC'] . '/' . $row44['description'] . '/' . urls($row44['subject']) . '.html" title="' . $row44['subject'] . '">' . $row44['subject'] . '</a></td>
+      echo '<tr><td style="text-align:left;"><a rel="dc:relation" class="categoriaPost ' . $row44['description'] . '" href="/post/' . $row44['ID_TOPIC'] . '/' . $row44['description'] . '/' . urls($row44['subject']) . '.html" title="' . $row44['subject'] . '">' . $row44['subject'] . '</a></td>
 <td title="' . $row44['posterName'] . '"><a href="' . $boardurl . '/perfil/' . $row44['posterName'] . '">' . $row44['posterName'] . '</a></td>
 <td title="' . timeformat($row44['posterTime']) . '">' . hace($row44['posterTime'], true) . '</td></tr>';
     }

@@ -24,7 +24,7 @@ $tranfer1 = $boardurl . '/images';
 
 $internetNO = '<!--[if lt IE 7.]>
 <style rel="stylesheet" type="text/css">.warningMessage{border-bottom:6px solid #D35F2C;border-left:6px solid #D35F2C;border-right:6px solid #D35F2C;background:#FFF;width: 917px;text-align:center;margin-bottom:5px;}</style>
-<div align="center"><div class="warningMessage"><div style="float:left;"><img src="'.$tranfer1.'/alerta.png" alt="" style="margin-bottom:1px;margin-left:1px;" /></div><div style="padding-top: 10px;">Est&aacute;s usando una versi&oacute;n antigua de tu navegador, por favor actual&iacute;zalo a una de estas alternativas: <a href="http://www.microsoft.com/spain/windows/downloads/ie/getitnow.mspx" title="Internet Explorer 8" target="_blank" >Internet Explorer 8</a> o <a href="http://www.mozilla-europe.org/es/firefox/" target="_blank" title="FireFox 3">FireFox 3</a></div></div></div>
+<div align="center"><div class="warningMessage"><div style="float:left;"><img src="'.$tranfer1.'/alerta.png" alt="" style="margin-bottom:1px;margin-left:1px;" /></div><div style="padding-top: 10px;">Est&aacute;s usando una versi&oacute;n antigua de tu navegador, por favor actual&iacute;zalo a una de estas alternativas: <a href="http://www.microsoft.com/spain/windows/downloads/ie/getitnow.mspx" title="Internet Explorer 8" target="_blank">Internet Explorer 8</a> o <a href="http://www.mozilla-europe.org/es/firefox/" target="_blank" title="FireFox 3">FireFox 3</a></div></div></div>
 <![endif]-->';
 
 require($sourcedir . '/Ursl.php');

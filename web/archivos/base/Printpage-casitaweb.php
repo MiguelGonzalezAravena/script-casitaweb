@@ -6,7 +6,7 @@ function template_print_above() {
 
   echo '
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-    <html version="XHTML+RDFa 1.0" xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es" >
+    <html version="XHTML+RDFa 1.0" xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es">
     <!--2009 casitaweb.net/por rigo-->
     <head profile="http://purl.org/NET/erdf/profile">
       <link rel="schema.dc" href="http://purl.org/dc/elements/1.1/" />

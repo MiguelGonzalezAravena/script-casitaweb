@@ -9,7 +9,7 @@ if (empty($context['ajax'])) {
 
 if (($user_info['is_admin'] || $user_info['is_mods'])) {
 ?>
-<script type="text/javascript" >
+<script type="text/javascript">
   // Enviar anuncio
   function EnviarAnuncio() {
     $('#cargandoBoxyc').css('display','none');

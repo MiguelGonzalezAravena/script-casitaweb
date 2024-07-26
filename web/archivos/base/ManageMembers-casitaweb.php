@@ -143,7 +143,7 @@ function template_search_members(){global $context, $settings, $options, $script
 			</tr>
 			<tr>
 				<td class="windowbg" width="50%" valign="top">
-					<table width="100%" cellpadding="3" cellspacing="1" border="0" >
+					<table width="100%" cellpadding="3" cellspacing="1" border="0">
 						<tr class="titlebg">
 							<th>', $txt['membergroups'], '</th>
 							<th width="40">', $txt['primary'], '</th>

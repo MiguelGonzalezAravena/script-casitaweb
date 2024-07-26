@@ -189,7 +189,7 @@ function template_tyc12() {
         <br />
         <b>Mensaje:</b>
         <br />
-        ' . censorText(parse_bbc(str_replace('<br/>', "\n", $row['mensaje']))) . '
+        ' . parse_bbc(str_replace('<br/>', "\n", $row['mensaje'])) . '
         <div class="hrs"></div>';
     }
 

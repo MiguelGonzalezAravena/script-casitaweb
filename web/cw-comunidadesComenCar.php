@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-global $db_prefix, $context, $user_info, $sourcedir, $user_settings;
+global $db_prefix, $context, $user_info, $sourcedir, $user_settings, $boardurl;
 
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
@@ -29,17 +29,8 @@ permisios($dasdasd);
 acces($dasdasd);
 
 $pp = $context['cc'];
-if ($_GET['pag'] < 1) {
-  $per = 1;
-} else {
-  $per = $_GET['pag'];
-}
-
-if (isset($per)) {
-  $st = ($per - 1) * $pp;
-} else {
-  $st = 1;
-}
+$per = $_GET['pag'] < 1 ? 1 : $_GET['pag'];
+$st = isset($per) ? ($per - 1) * $pp : 1;
 
 echo '
   <div class="post-com" id="carando" style="display: none; padding: 4px 0px 4px 0px; margin-bottom: 4px;">
@@ -65,13 +56,7 @@ $request2 = db_query("
   LIMIT $st, $pp", __FILE__, __LINE__);
 
 $emrr = $pp * ($per - 1);
-
-if ($emrr < 2) {
-  $emrr = 1;
-} else {
-  $emrr = $emrr + 1;
-}
-
+$emrr = $emrr < 2 ? 1 : $emrr + 1;
 $caste = $emrr;
 $caste32 = $emrr;
 $caste2 = $emrr;
@@ -88,28 +73,70 @@ while ($row = mysqli_fetch_assoc($request2)) {
   $comene = parse_bbc(nohtml(nohtml2($row['comentario'])));
   $comene2 = nohtml(nohtml2($row['comentario']));
 
-  echo '<div class="coment-user" id="' . $caste2++ . '" ><div style="float:left;"><div class="com-com-info"><a href="#' . $caste32++ . '">#' . $caste++ . '</a></div><b id="autor_cmnt_' . $dasd . '" user_comment="' . $row['realName'] . '" text_comment=\'' . $comene2 . '\'><a href="/perfil/' . $row['realName'] . '" title="' . $row['realName'] . '">' . $row['realName'] . '</a></b> | <span class="size10">' . $diames2 . '.' . $mesesano2[$mesano2] . '.' . $ano2 . ' ' . $hora2 . ':' . $min2 . ':' . $seg2 . '</span> dijo:</div><div style="float:right;">';
+  echo '
+    <div class="coment-user" id="' . $caste2++ . '">
+      <div style="float: left;">
+        <div class="com-com-info">
+          <a href="#' . $caste32++ . '">#' . $caste++ . '</a>
+        </div>
+        <b id="autor_cmnt_' . $dasd . '" user_comment="' . $row['realName'] . '" text_comment="' . $comene2 . '">
+          <a href="' . $boardurl . '/perfil/' . $row['realName'] . '" title="' . $row['realName'] . '">' . $row['realName'] . '</a>
+        </b>
+        |
+        <span class="size10">' . tiempo2($row['fecha']) . '</span>
+        dijo:
+      </div>
+      <div style="float: right;">';
+
   if (!$user_info['is_guest']) {
-    echo '<a href="/mensajes/a/' . $row['realName'] . '" title="Enviar MP a: ' . $row['realName'] . '"><img src="' . $tranfer1 . '/icons/mensaje_para.gif" alt="" /></a>';
+    echo '
+      <a href="' . $boardurl . '/mensajes/a/' . $row['realName'] . '" title="Enviar MP a: ' . $row['realName'] . '">
+        <img src="' . $tranfer1 . '/icons/mensaje_para.gif" alt="" />
+      </a>';
   }
 
   if (!$nocoment && ($context['puedo'] == '1' || $context['puedo'] == '2' || $context['puedo'] == '3')) {
-    echo ' <a onclick="citar_comment(' . $dasd . ')" href="javascript:void(0)" title="Citar Comentario"><img src="' . $tranfer1 . '/comunidades/respuesta.png" alt="" /></a>';
+    echo '
+      &nbsp;
+      <a onclick="citar_comment(' . $dasd . ')" href="javascript:void(0)" title="Citar comentario">
+        <img src="' . $tranfer1 . '/comunidades/respuesta.png" alt="" />
+      </a>';
   }
 
-  if ($context['permisoCom'] == '1' || $context['permisoCom'] == '3' || $context['permisoCom'] == '2' || $row['ID_MEMBER'] == $ID_MEMBER) {
-    echo ' <a href="' . $boardurl . '/web/cw-comunidadesEliCom.php?id=' . $dasd . '" title="Eliminar Comentario" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este comentario?\')) return false;"><img src="' . $tranfer1 . '/comunidades/eliminar.png" alt="" /></a>';
+  if (in_array($context['permisoCom'], [1, 2, 3]) || $row['ID_MEMBER'] == $ID_MEMBER) {
+    echo '
+      &nbsp;
+      <a href="' . $boardurl . '/web/cw-comunidadesEliCom.php?id=' . $dasd . '" title="Eliminar comentario" onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas eliminar este comentario?\')) return false;">
+        <img src="' . $tranfer1 . '/comunidades/eliminar.png" alt="" />
+      </a>';
   }
 
-  echo '</div><div style="clear:both"></div></div>
-<div class="post-contenido">' . $comene . '<div class="clearBoth"></div></div>
-<div align="right" style="padding:0px 4px 4px 0px;"><a href="#top" title="Ir arriba"><img src="' . $tranfer1 . '/comunidades/arriba-com.png" alt="" /></a></div>';
+  echo '
+      </div>
+      <div style="clear:both"></div>
+    </div>
+    <div class="post-contenido">
+      ' . $comene . '
+      <div class="clearBoth"></div>
+    </div>
+    <div align="right" style="padding: 0px 4px 4px 0px;">
+      <a href="#top" title="Ir arriba">
+        <img src="' . $tranfer1 . '/comunidades/arriba-com.png" alt="" />
+      </a>
+    </div>';
 }
+
 if (!$dasd) {
-  echo '<div class="coment-user"><div class="noesta">Este tema no tiene comentarios.-</div></div>';
+  echo '
+    <div class="coment-user">
+      <div class="noesta">Este tema no tiene comentarios.</div>
+    </div>';
 }
+
 echo '</div>';
+
 echo ddsss($cant, $pp, $st, $id);
+
 die();
 
 ?>

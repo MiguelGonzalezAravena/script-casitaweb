@@ -43,7 +43,7 @@ function template_admin_above() {
         } else {
           echo '
             <td valign="top" class="maintab_back">
-              <a href="', $tab['href'], '" >', $tab['title'], '</a>
+              <a href="', $tab['href'], '">', $tab['title'], '</a>
             </td>';
         }
       }

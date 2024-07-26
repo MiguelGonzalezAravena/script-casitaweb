@@ -41,7 +41,7 @@ if(!empty($usuario)){
   $row = mysqli_fetch_assoc($request352);
   $nameesss = $row['realName'];
 
-  echo'<tr style="margin:0px;padding:0px;" class="fondoplano" id="ban_'.$idN.'"><td align="left" class="size11" valign="top" >Usuario: <b><a href="' . $boardurl . '/perfil/'.$ban['name'].'">'.$ban['name'].'</a></b> Suspendido por: <b><a href="' . $boardurl . '/perfil/'.$nameesss.'" target="_blank">'.$nameesss.'</a></b> <b>'.$ban['ban_time'].'</b> | <b class="pointer" onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPbanUser.php?sa=edit;bg='.$idN.'\', { title : \'Editar ban de ', $ban['name'], '\'});" style="color:green;">Editar</b> | <b class="pointer" onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPeliminarBan.php?id='.$idN.'\', { title : \'Eliminar ban\'});" style="color:red;">Eliminar</b>';
+  echo'<tr style="margin:0px;padding:0px;" class="fondoplano" id="ban_'.$idN.'"><td align="left" class="size11" valign="top">Usuario: <b><a href="' . $boardurl . '/perfil/'.$ban['name'].'">'.$ban['name'].'</a></b> Suspendido por: <b><a href="' . $boardurl . '/perfil/'.$nameesss.'" target="_blank">'.$nameesss.'</a></b> <b>'.$ban['ban_time'].'</b> | <b class="pointer" onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPbanUser.php?sa=edit;bg='.$idN.'\', { title : \'Editar ban de ', $ban['name'], '\'});" style="color:green;">Editar</b> | <b class="pointer" onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPeliminarBan.php?id='.$idN.'\', { title : \'Eliminar ban\'});" style="color:red;">Eliminar</b>';
   if($context['user']['id']==$ban['notes'] || $context['user']['is_admin']){echo' | <b>Clave:</b> '.$ban['clave'];}
 
   echo'<br/>Raz&oacute;n: <b style="color:red;">'.nohtml1(nohtml($ban['reason'])).'</b><br/>Expira: ', $ban['expires'], '</td>

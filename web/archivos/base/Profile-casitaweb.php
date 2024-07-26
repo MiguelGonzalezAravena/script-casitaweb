@@ -470,67 +470,89 @@ function template_summary() {
         $esta = mysqli_num_rows($request);
         $predd = $ID_MEMBER == $context['member']['id'] ? 'Eres ' : 'Es ';
 
-        // TO-DO: Seguir arreglando
-
-        echo '<div id="amig_' . $ivvd . '"><div class="muroEfect" id="muroEfectAV"><table><tr><td valign="top">';
-        if (empty($avatar)) {
-          echo '<img style="width:50px;height:50px;" class="avatar-box" alt="" src="' . $no_avatar . '" onerror="error_avatar(this)" />';
-        } else {
-          echo '<img style="width:50px;height:50px;" class="avatar-box" alt="" src="' . $avatar . '" onerror="error_avatar(this)" />';
-        }
-        echo '</td><td valign="top" style="margin:0px;padding:4px;">';
-        if ($user_settings['ID_MEMBER'] == $context['member']['id']) {
-          echo "<img onclick=\"if (!confirm('\\xbfEstas seguro que deseas eliminar a este usuario de tus amigos?')) return false;EliminarAmistad('" . $conejjssuu . "','" . $ivvd . '\'); return false;" style="cursor:pointer;" alt="" title="Eliminar usuario de mi lista de amigos" src="' . $tranfer1 . '/comunidades/eliminar.png" class="png" width="16px" height="16px" />&#32;-&#32;';
-        }
-        echo '<b><span style="font-size:12px;"><a href="/perfil/' . $nombremem . '" title="' . $nombremem . '" style="font-size:13px;color:#666666;">' . $nombremem . '</a></b>';
+        echo '
+          <div id="amig_' . $ivvd . '">
+            <div class="muroEfect" id="muroEfectAV">
+              <table>
+                <tr>
+                  <td valign="top">
+                    <img style="width: 50px; height: 50px;" class="avatar-box" alt="" src="' . (empty($avatar) ? $no_avatar : $avatar) . '" onerror="error_avatar(this)" />
+                  </td>
+                  <td valign="top" style="margin: 0px; padding: 4px;">
+                    ' . ($user_settings['ID_MEMBER'] == $context['member']['id'] ? '<img onclick="if (!confirm(\'\\xbfEst&aacute;s seguro que deseas eliminar a este usuario de tus amigos?\')) return false; EliminarAmistad(\'' . $conejjssuu . '\', \'' . $ivvd . '\'); return false;" style="cursor: pointer;" alt="" title="Eliminar usuario de mi lista de amigos" src="' . $tranfer1 . '/comunidades/eliminar.png" class="png" width="16px" height="16px" />&#32;-&#32;' : '') . '
+                    <b>
+                      <span style="font-size: 12px;">
+                        <a href="' . $boardurl . '/perfil/' . $nombremem . '" title="' . $nombremem . '" style="font-size: 13px; color: #666666;">' . $nombremem . '</a>
+                      </span>
+                    </b>';
         if (!empty($pt)) {
-          echo '<span style="font-size:11px;">&#32;-&#32;' . $pt . '</span>';
+          echo '<span style="font-size: 11px;">&#32;-&#32;' . $pt . '</span>';
         }
+
         if ($user_settings['ID_MEMBER'] == $context['member']['id']) {
-          if ($esta == '1') {
+          if ($esta == 1) {
             echo '&#32;-&#32;<img src="' . $tranfer1 . '/icons/si.png" alt="" class="png" width="16px" height="16px" title="Conectado/a" />';
           }
           if (empty($esta)) {
             echo '&#32;-&#32;<img src="' . $tranfer1 . '/icons/no.png" alt="" width="16px" height="16px" class="png" title="Desconectado/a" />';
           }
         }
-        echo '</span><br /><span style="color:green;font-size:11px;"><b>' . $predd . ' amigo desde:</b> ' . $yata . ' </span></td></tr></table></div></div><div class="noesta" id="error_' . $ivvd . '" style="display:none;filter: alpha(opacity=65);-moz-opacity: .65;opacity: .65;"></div><div class="hrs"></div>';
+        echo '
+                    </span>
+                    <br />
+                    <span style="color: green; font-size: 11px;">
+                      <b>' . $predd . ' amigo desde:</b>
+                      ' . $yata . '
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="noesta" id="error_' . $ivvd . '" style="display: none; filter: alpha(opacity=65); -moz-opacity: .65; opacity: .65;"></div>
+          <div class="hrs"></div>';
       }
+
       mysqli_free_result($mostrarmuros);
 
       echo '</div>';
     } else {
-      echo '<div class="noestaGR" style="width:541px;">' . $context['member']['name'] . ' no tiene ning&uacute;n amigos.</div>';
+      echo '<div class="noestaGR" style="width: 541px;">' . $context['member']['name'] . ' no tiene ning&uacute;n amigo.</div>';
     }
 
     $PagAnt = $PagAct - 1;
     $PagSig = $PagAct + 1;
     $PagUlt = $NroRegistros / $RegistrosAMostrar;
     $Res = $NroRegistros % $RegistrosAMostrar;
-    if ($Res > 0)
-      $PagUlt = floor($PagUlt) + 1;
-    if ($PagAct > 1 || $PagAct < $PagUlt) {
-      echo '<div class="windowbgpag" style="width:200px;">';
-      if ($PagAct > 1)
-        echo "<a href='/perfil/{$context['member']['name']}/lista-de-amigos-pag-$PagAnt'>&#171; anterior</a>";
-      if ($PagAct < $PagUlt)
-        echo "<a href='/perfil/{$context['member']['name']}/lista-de-amigos-pag-$PagSig'>siguiente &#187;</a>";
-      echo '<div class="clearBoth"></div></div>';
-    }
-  }
 
-  // Muro
-  else if ($tipo == 0) {
+    if ($Res > 0) {
+      $PagUlt = floor($PagUlt) + 1;
+    }
+
+    if ($PagAct > 1 || $PagAct < $PagUlt) {
+      echo '<div class="windowbgpag" style="width: 200px;">';
+
+      if ($PagAct > 1) {
+        echo '<a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/lista-de-amigos-pag-' . $PagAnt . '">&#171; anterior</a>';
+      }
+
+      if ($PagAct < $PagUlt) {
+        echo '<a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/lista-de-amigos-pag-' . $PagSig . '">siguiente &#187;</a>';
+      }
+
+      echo '
+          <div class="clearBoth"></div>
+        </div>';
+    }
+  } else if ($tipo == 0) {
+    // Muro
     partearriba($context['member']['name'], $lugar);
 
     $_GET['ccIDmuro'] = isset($_GET['ccIDmuro']) ? (int) $_GET['ccIDmuro'] : '';
+
     if (empty($_GET['ccIDmuro'])) {
       $RegistrosAMostrar = 15;
-      if ($pagq1 < 1) {
-        $dud = 1;
-      } else {
-        $dud = $pagq1;
-      }
+      $dud = $pagq1 < 1 ? 1 : $pagq1;
 
       if (isset($dud)) {
         $RegistrosAEmpezar = ($dud - 1) * $RegistrosAMostrar;
@@ -541,31 +563,58 @@ function template_summary() {
       }
 
       if ($context['user']['is_guest']) {
-        echo '<div style="clear: left;"><div class="noesta-am" style="width:541px;margin-bottom:8px;">Para poder comentar este muro es necesarios estar <a href="/registrarse/" style="color:#FFB600;" title="Registrarse">Registrado</a>.<br />Si ya tenes usuario <a href="javascript:irAconectarse();" style="color:#FFB600;" title="Conectarse">Conectate!</a></div></div>';
+        echo '
+          <div style="clear: left;">
+            <div class="noesta-am" style="width: 541px; margin-bottom: 8px;">
+              Para poder comentar este muro es necesario estar <a href="' . $boardurl . '/registrarse/" style="color: #FFB600;" title="Registrarse">REGISTRADO</a>.
+              <br />
+              Si ya tienes usuario <a href="javascript:irAconectarse();" style="color:#FFB600;" title="Conectarse">&iexcl;CON&Eacute;CTATE!</a>
+            </div>
+          </div>';
       } else {
         if ($user_settings['ID_MEMBER'] === $context['member']['id']) {
-          echo '<form action="' . $boardurl . '/web/cw-comentarMuro.php" method="post" accept-charset="', $context['character_set'], '" style="margin:0px;padding:0px;"><div class="muroQh">
-<input title="&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;" onfocus="if(this.value==\'&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;\') this.value=\'\';$(\'#qh_publicar_bottom\').css(\'display\', \'block\');foco(this);" onblur="if(this.value==\'\'){$(\'#qh_publicar_bottom\').css(\'display\', \'none\'); this.value=\'&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;\';}no_foco(this);" style="width:517px;font-size:11px;font-family:Arial,FreeSans;" name="quehago" value="&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;" type="text" />
-
-<p style="padding:0px;margin:0px;display:none;" id="qh_publicar_bottom" align="right">
-<input class="login" style="margin-top:2px;" value="Publicar" type="submit" />
-</p>
-<div class="clearBoth"></div></div></form>';
+          echo '
+            <form action="' . $boardurl . '/web/cw-comentarMuro.php" method="post" accept-charset="', $context['character_set'], '" style="margin: 0px; padding: 0px;">
+              <div class="muroQh">
+                <input title="&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;" onfocus="if (this.value == \'&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;\') this.value = \'\'; $(\'#qh_publicar_bottom\').css(\'display\', \'block\'); foco(this);" onblur="if (this.value == \'\') { $(\'#qh_publicar_bottom\').css(\'display\', \'none\'); this.value = \'&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;\'; } no_foco(this);" style="width: 517px; font-size: 11px; font-family: Arial,FreeSans;" name="quehago" value="&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;" type="text" />
+                <p style="padding: 0px; margin: 0px; display: none;" id="qh_publicar_bottom" align="right">
+                  <input class="login" style="margin-top: 2px;" value="Publicar" type="submit" />
+                </p>
+                <div class="clearBoth"></div>
+              </div>
+            </form>';
         }
 
-        $ignorado = mysqli_num_rows(db_query("SELECT id_user FROM ({$db_prefix}pm_admitir) WHERE id_user='{$context['member']['id']}' AND quien='{$user_settings['ID_MEMBER']}' LIMIT 1", __FILE__, __LINE__));
+        $request = db_query("
+          SELECT id_user
+          FROM {$db_prefix}pm_admitir
+          WHERE id_user = {$context['member']['id']}
+          AND quien = $ID_MEMBER
+          LIMIT 1", __FILE__, __LINE__);
+
+        $ignorado = mysqli_num_rows($request);
 
         if (!$ignorado) {
-          echo '<div class="muroEscribir"><textarea title="Escribe algo..." onfocus="if(this.value==\'Escribe algo...\') this.value=\'\';$(\'#muro_publicar_bottom\').css(\'display\', \'block\');foco(this);" onblur="if(this.value==\'\'){$(\'#muro_publicar_bottom\').css(\'display\', \'none\');this.value=\'Escribe algo...\';}no_foco(this);" style="height:30px;overflow:visible;width:517px;font-size:11px;font-family:Arial,FreeSans;" name="muro" id="muro">Escribe algo...</textarea><p style="padding:0px;margin:0px;display:none;" id="muro_publicar_bottom" align="right"><input class="login" value="Publicar" style="margin-top:2px;" onclick="add_muro(\'' . $context['member']['id'] . '\'); return false;" type="button" id="button_add_muro" /><input value="' . $PagAct . '" type="hidden" name="datapagss" id="datapagss" /><img alt="" src="' . $tranfer1 . '/icons/cargando.gif" style="width: 16px; height: 16px;display: none;" id="gif_cargando_add_muro" border="0"></p>
-<div class="clearBoth"></div></div>
-<div class="msg_add_muro" style="width:541px;margin-bottom:4px;display:none;"></div>';
+          echo '
+            <div class="muroEscribir">
+              <textarea title="Escribe algo..." onfocus="if (this.value == \'Escribe algo...\') this.value = \'\'; $(\'#muro_publicar_bottom\').css(\'display\', \'block\'); foco(this);" onblur="if (this.value == \'\') { $(\'#muro_publicar_bottom\').css(\'display\', \'none\'); this.value = \'Escribe algo...\'; } no_foco(this);" style="height: 30px; overflow: visible; width: 517px; font-size: 11px; font-family: Arial,FreeSans;" name="muro" id="muro">Escribe algo...</textarea>
+              <p style="padding: 0px; margin: 0px; display: none;" id="muro_publicar_bottom" align="right">
+                <input class="login" value="Publicar" style="margin-top: 2px;" onclick="add_muro(\'' . $context['member']['id'] . '\'); return false;" type="button" id="button_add_muro" />
+                <input value="' . $PagAct . '" type="hidden" name="datapagss" id="datapagss" />
+                <img alt="" src="' . $tranfer1 . '/icons/cargando.gif" style="width: 16px; height: 16px;display: none;" id="gif_cargando_add_muro" border="0" />
+              </p>
+              <div class="clearBoth"></div>
+            </div>
+            <div class="msg_add_muro" style="width: 541px; margin-bottom: 4px; display: none;"></div>';
         }
       }
 
       if ($cantidadmuro) {
-        echo '<div class="clearBoth"></div>
-<div class="windowbg" style="border-top:#C8C8C8 solid 1px;width:523px;padding:8px;font-size:11px;">
-<div class="muroBug"><div id="return_agregar_muro"></div>';
+        echo '
+          <div class="clearBoth"></div>
+            <div class="windowbg" style="border-top: #C8C8C8 solid 1px; width: 523px; padding: 8px; font-size: 11px;">
+              <div class="muroBug">
+                <div id="return_agregar_muro"></div>';
 
         $mostrarmuros = db_query("
           SELECT id_user, muro, id, fecha, de, tipo, ccos
@@ -574,6 +623,7 @@ function template_summary() {
           AND tipocc = 0
           ORDER BY id DESC
           LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
+
         while ($mostrarmuros1 = mysqli_fetch_array($mostrarmuros)) {
           $mensaje = nohtml2($mostrarmuros1['muro']);
           $ivvd = $mostrarmuros1['id'];
@@ -600,8 +650,28 @@ function template_summary() {
               <div id="muroEfectAV">
                 <table>
                   <tr>
-                    <td valign="top"><a href="' . $boardurl . '/perfil/' . $nombremem . '"><img src="' . (!empty($avatar) ? $avatar : $no_avatar) . '" class="avatar-box" onerror="error_avatar(this)" width="50" height="50" alt="" /></a></td>
-                    <td valign="top" style="margin: 0px; font-size: 11px;"><strong><a href="' . $boardurl . '/perfil/' . $nombremem . '" title="' . $nombremem . '" style="font-size: 14px; color: #D35F2C;">' . $nombremem . '</a></strong><br />' . VideosMuro($filtrado) . '<div style="margin-top: 6px;">' . $yata . ' - <span onclick="boxHablar(\'' . $ivvd . '\');" style="cursor: pointer; color: #424242;" id="c-' . $ivvd . '">Comentar</span><span style="display: ' . ($cmntarioss ? 'inline' : 'none') . '" id="vmam_' . $ivvd . '"> - <a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/muro;ccIDmuro=' . $ivvd . '">Ver muro a muro</a></span>' . ($user_settings['ID_MEMBER'] == $context['member']['id'] || ($user_info['is_admin'] || $user_info['is_mods']) ? ' - <span class="pointer" onclick="Boxy.confirm(\'&iquest;Est&aacute;s seguro que deseas borrar este mensaje?\', function() { del_coment_muro(\'' . $ivvd . '\'); }, {title: \'Eliminar mensaje\'}); " title="Eliminar mensaje">Eliminar</span>' : '') . '</div></td>
+                    <td valign="top">
+                      <a href="' . $boardurl . '/perfil/' . $nombremem . '">
+                        <img src="' . (!empty($avatar) ? $avatar : $no_avatar) . '" class="avatar-box" onerror="error_avatar(this)" width="50" height="50" alt="" />
+                      </a>
+                    </td>
+                    <td valign="top" style="margin: 0px; font-size: 11px;">
+                      <strong>
+                        <a href="' . $boardurl . '/perfil/' . $nombremem . '" title="' . $nombremem . '" style="font-size: 14px; color: #D35F2C;">' . $nombremem . '</a>
+                      </strong>
+                      <br />
+                      ' . VideosMuro($filtrado) . '
+                      <div style="margin-top: 6px;">
+                        ' . $yata . '
+                        -
+                        <span onclick="boxHablar(\'' . $ivvd . '\');" style="cursor: pointer; color: #424242;" id="c-' . $ivvd . '">Comentar</span>
+                        <span style="display: ' . ($cmntarioss ? 'inline' : 'none') . '" id="vmam_' . $ivvd . '">
+                          -
+                          <a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/muro;ccIDmuro=' . $ivvd . '">Ver muro a muro</a>
+                        </span>
+                        ' . ($user_settings['ID_MEMBER'] == $context['member']['id'] || ($user_info['is_admin'] || $user_info['is_mods']) ? ' - <span class="pointer" onclick="Boxy.confirm(\'&iquest;Est&aacute;s seguro que deseas borrar este mensaje?\', function() { del_coment_muro(\'' . $ivvd . '\'); }, { title: \'Eliminar mensaje\' }); " title="Eliminar mensaje">Eliminar</span>' : '') . '
+                      </div>
+                    </td>
                   </tr>
                 </table>';
 
@@ -636,7 +706,15 @@ function template_summary() {
 
               echo '
                 <div id="SETcto_' . $sdddd . '">
-                  <div id="cto_' . $ivvd . '" class="muroCcs" style="text-align: left; color: #666666; margin-bottom: 3px;"><strong><a href="' . $boardurl . '/perfil/' . $nombremem . '" style="color: #666666;" title="' . $nombremem . '">' . $nombremem . '</a></strong> - ' . $haces . ($user_settings['ID_MEMBER'] == $context['member']['id'] || ($user_info['is_admin'] || $user_info['is_mods']) ? ' - <span class="pointer" onclick="Boxy.confirm(\'&iquest;Est&aacute;s seguro que deseas borrar este comentario?\', function() { del_comentCC_muro(\'' . $sdddd . '\'); }, { title: \'Eliminar comentario\' });" title="Eliminar comentario">Eliminar</span>' : '') . '<br />' . $mensaje2 . '</div>
+                  <div id="cto_' . $ivvd . '" class="muroCcs" style="text-align: left; color: #666666; margin-bottom: 3px;">
+                    <strong>
+                      <a href="' . $boardurl . '/perfil/' . $nombremem . '" style="color: #666666;" title="' . $nombremem . '">' . $nombremem . '</a>
+                    </strong>
+                    -
+                    ' . $haces . ($user_settings['ID_MEMBER'] == $context['member']['id'] || ($user_info['is_admin'] || $user_info['is_mods']) ? ' - <span class="pointer" onclick="Boxy.confirm(\'&iquest;Est&aacute;s seguro que deseas borrar este comentario?\', function() { del_comentCC_muro(\'' . $sdddd . '\'); }, { title: \'Eliminar comentario\' });" title="Eliminar comentario">Eliminar</span>' : '') . '
+                    <br />
+                    ' . $mensaje2 . '
+                  </div>
                 </div>
                 <div class="noestaGR" id="SETcto2_' . $sdddd . '" style="display: none; width: 416px; margin-bottom: 3px;"></div>';
             }
@@ -693,14 +771,16 @@ function template_summary() {
         echo '<div class="windowbgpag" style="width: 524px;">';
 
         if ($PagAct > 1) {
-          echo "<a href='/perfil/{$context['member']['name']}/muro-pag-$PagAnt'>&#171; anterior</a>";
+          echo '<a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/muro-pag-' . $PagAnt . '">&#171; anterior</a>';
         }
 
         if ($PagAct < $PagUlt) {
-          echo "<a href='/perfil/{$context['member']['name']}/muro-pag-$PagSig'>siguiente &#187;</a>";
+          echo '<a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/muro-pag-' . $PagSig . '">siguiente &#187;</a>';
         }
 
-        echo '<div class="clearBoth"></div></div>';
+        echo '
+            <div class="clearBoth"></div>
+          </div>';
       }
     } else {
       // SOLO 1 comentario////////////////////////////
@@ -722,29 +802,46 @@ function template_summary() {
         $filtrado = str_replace("\n", '<br />', $mensaje);
 
         echo '
-          <div class="windowbg" style="border-top:#C8C8C8 solid 1px;width:523px;padding:8px;font-size:11px;">
+          <div class="windowbg" style="border-top: #C8C8C8 solid 1px; width: 523px; padding: 8px; font-size: 11px;">
             <div class="muroBug">';
+
         $datosmem = db_query("
-SELECT realName,avatar
-FROM ({$db_prefix}members)
-WHERE ID_MEMBER='{$mostrarmuros1['de']}' LIMIT 1", __FILE__, __LINE__);
+          SELECT realName, avatar
+          FROM {$db_prefix}members
+          WHERE ID_MEMBER = {$mostrarmuros1['de']}
+          LIMIT 1", __FILE__, __LINE__);
+
         while ($data = mysqli_fetch_assoc($datosmem)) {
           $nombremem = $data['realName'];
           $avatar = $data['avatar'];
         }
+
         mysqli_free_result($datosmem);
 
-        echo '<div id="muro-' . $ivvd . '"><div id="muroEfectAV" >';
-        echo '<table><tr><td valign="top">';
+        // TO-DO: Seguir arreglando 2
+        echo '
+          <div id="muro-' . $ivvd . '">
+            <div id="muroEfectAV">
+              <table>
+                <tr>
+                  <td valign="top">';
         if (empty($avatar)) {
           $AVA = $no_avatar;
         } else {
           $AVA = $avatar;
         }
-        echo '<a href="/perfil/' . $nombremem . '"><img src="' . $AVA . '" class="avatar-box" onerror="error_avatar(this)" width="50" height="50" alt="" /></a>';
-
-        echo '</td><td valign="top" style="margin:0px;font-size:11px;"><strong><a href="/perfil/' . $nombremem . '" title="' . $nombremem . '" style="font-size:14px;color:#D35F2C;">' . $nombremem . '</a></strong><br />' . VideosMuro($filtrado);
-        echo '<div style="margin-top:6px;">';
+        echo '
+          <a href="' . $boardurl . '/perfil/' . $nombremem . '">
+            <img src="' . $AVA . '" class="avatar-box" onerror="error_avatar(this)" width="50" height="50" alt="" />
+          </a>
+        </td>
+        <td valign="top" style="margin: 0px; font-size: 11px;">
+          <strong>
+            <a href="' . $boardurl . '/perfil/' . $nombremem . '" title="' . $nombremem . '" style="font-size: 14px; color: #D35F2C;">' . $nombremem . '</a>
+          </strong>
+          <br />
+          ' . VideosMuro($filtrado) . '
+          <div style="margin-top: 6px;">';
         echo $yata . '&#32;-&#32;<span onclick="boxHablar(\'' . $ivvd . '\');" style="cursor:pointer;color:#424242;" id="c-' . $ivvd . '">Comentar</span>';
         if ($user_settings['ID_MEMBER'] == $context['member']['id'] || ($user_info['is_admin'] || $user_info['is_mods'])) {
           echo "&#32;-&#32;<a onclick=\"Boxy.confirm('&iquest;Estas seguro que deseas borrar este mensaje?', function() { del_coment_muro('" . $ivvd . '\'); }, {title: \'Eliminar Mensaje\'}); " href="#" title="Eliminar Mensaje">eliminar</a>';
@@ -752,19 +849,23 @@ WHERE ID_MEMBER='{$mostrarmuros1['de']}' LIMIT 1", __FILE__, __LINE__);
         echo '</div></td></tr></table>';
 
         $mostrarcmtarios = db_query("
-SELECT m.id_user,m.muro,m.id,m.fecha,m.de
-FROM ({$db_prefix}muro AS m)
-WHERE m.id_cc='{$ivvd}' AND m.tipocc=1
-ORDER BY m.id ASC", __FILE__, __LINE__);
+          SELECT m.id_user, m.muro, m.id, m.fecha, m.de
+          FROM ({$db_prefix}muro AS m)
+          WHERE m.id_cc = '{$ivvd}'
+          AND m.tipocc = 1
+          ORDER BY m.id ASC", __FILE__, __LINE__);
+
         while ($mostrarcmtarios1 = mysqli_fetch_array($mostrarcmtarios)) {
           echo '<div align="center">';
           $sdddd = $mostrarcmtarios1['id'];
           $haces = hace($mostrarcmtarios1['fecha']);
           $mensaje2 = moticon(nohtml2(nohtml($mostrarcmtarios1['muro'])), true);
           $datosmem = db_query("
-SELECT ID_MEMBER,realName,avatar
-FROM ({$db_prefix}members)
-WHERE ID_MEMBER='{$mostrarcmtarios1['de']}' LIMIT 1", __FILE__, __LINE__);
+            SELECT ID_MEMBER, realName, avatar
+            FROM {$db_prefix}members
+            WHERE ID_MEMBER = '{$mostrarcmtarios1['de']}'
+            LIMIT 1", __FILE__, __LINE__);
+
           while ($data = mysqli_fetch_assoc($datosmem)) {
             $nombremem = $data['realName'];
             $avatar = $data['avatar'];
@@ -793,7 +894,7 @@ WHERE ID_MEMBER='{$mostrarcmtarios1['de']}' LIMIT 1", __FILE__, __LINE__);
   }
 
   // Apariencia
-  elseif ($tipo == '1') {
+  elseif ($tipo == 1) {
     partearriba($context['member']['name'], $lugar);
 
     function apariencia($user)
@@ -1082,7 +1183,7 @@ WHERE ID_MEMBER='{$mostrarcmtarios1['de']}' LIMIT 1", __FILE__, __LINE__);
 
   if (!$user_info['is_guest']) {
     if ($user_settings['ID_MEMBER'] <> $context['member']['id']) {
-      echo '<div class="AccionMem"><a href="' . $boardurl . '/web/cw-TEMPenviarMP.php?user=' . $context['member']['name'] . '" title="Enviar MP a ' . $context['member']['name'] . '" class="boxy" >Enviarle MP</a></div>';
+      echo '<div class="AccionMem"><a href="' . $boardurl . '/web/cw-TEMPenviarMP.php?user=' . $context['member']['name'] . '" title="Enviar MP a ' . $context['member']['name'] . '" class="boxy">Enviarle MP</a></div>';
 
       if (!$context['yadio2']) {
         echo '<div class="AccionMem">';
@@ -1108,7 +1209,7 @@ WHERE ID_MEMBER='{$mostrarcmtarios1['de']}' LIMIT 1", __FILE__, __LINE__);
         <div class="AccionMem" id="admitir"' . $nostyle2 . '><a  href="#" onclick="ignorar(\'' . $context['member']['id'] . '\',\'1\'); return false;" title="Admitir usuario">Admitir usuario</a></div>';
 
       if (($user_info['is_admin'] || $user_info['is_mods']) && $context['member']['id'] <> 1) {
-        echo '<div class="AccionMem"><a href="' . $boardurl . '/moderacion/edit-user/perfil/', $context['member']['id'], '" >Moderar usuario</a></div>';
+        echo '<div class="AccionMem"><a href="' . $boardurl . '/moderacion/edit-user/perfil/', $context['member']['id'], '">Moderar usuario</a></div>';
       }
     }
   }
