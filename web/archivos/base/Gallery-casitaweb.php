@@ -66,7 +66,8 @@ function template_main() {
     $PagAct = 1;
   }
 
-  if ($ID_MEMBER == $userid) {
+  // TO-DO: Verificar si esto tiene algún valor o no
+  // if ($ID_MEMBER == $userid) {
     $dbresult = db_query("
       SELECT p.title, p.filename, p.ID_PICTURE
       FROM {$db_prefix}gallery_pic AS p, {$db_prefix}members AS m 
@@ -74,7 +75,7 @@ function template_main() {
       AND p.ID_MEMBER = $userid
       ORDER BY p.ID_PICTURE DESC
       LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
-  }
+  // }
 
   while ($row = mysqli_fetch_assoc($dbresult)) {
     if ($rowlevel < ($maxrowlevel + 1)) {
@@ -267,7 +268,8 @@ function template_view_picture() {
       </div>';
   }
 
-  $imgc = getimagesize($context['gallery_pic']['filename']);
+  // TO-DO: ¿Está bien usar un @ para mitigar el error en localhost? ¿Funcionará bien en un servidor remoto sin el @?
+  $imgc = @getimagesize($context['gallery_pic']['filename']);
   // var_dump($imgc);
   $w = is_array($imgc) && $imgc[0] > '748' ? 'width="748px" ' : '';
 
