@@ -11,6 +11,34 @@ $txt['days_short'] = array('Dom', 'Lun', 'Mar', 'Mi&eacute;', 'Jue', 'Vie', 'S&a
 $txt['months'] = array(1 => 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
 $txt['months_titles'] = array(1 => 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
 $txt['months_short'] = array(1 => 'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic');
+$txt['countries'] = [
+  'ar' => 'Argentina',
+  'bo' => 'Bolivia',
+  'br' => 'Brasil',
+  'cl' => 'Chile',
+  'co' => 'Colombia',
+  'cr' => 'Costa Rica',
+  'cu' => 'Cuba',
+  'ec' => 'Ecuador',
+  'es' => 'Espa&ntilde;a',
+  'gt' => 'Guatemala',
+  'it' => 'Italia',
+  'mx' => 'M&eacute;xico',
+  'py' => 'Paraguay',
+  'pe' => 'Per&uacute;',
+  'pt' => 'Portugal',
+  'pr' => 'Puerto Rico',
+  'uy' => 'Uruguay',
+  've' => 'Venezuela',
+  'ot' => 'Otro'
+];
+
+$txt['privacy'] = [
+  0 => 'A todos',
+  1 => 'Nadie',
+  2 => 'Amigos',
+  3 => 'Registrados'
+];
 
 $txt['newmessages0'] = 'es nuevo';
 $txt['newmessages1'] = 'son nuevos';
@@ -469,7 +497,7 @@ $txt['activate_code'] = 'Tu c&#243;digo de activaci&#243;n es';
 
 $txt['change_color'] = 'Cambiar Color';
 
-$txt['show_personal_messages'] = 'Has recibido uno o más mensajes privados.\\n&#191;Deseas verlos ahora (en una nueva ventana)?';
+$txt['show_personal_messages'] = 'Has recibido uno o mï¿½s mensajes privados.\\n&#191;Deseas verlos ahora (en una nueva ventana)?';
 
 $txt['ssi_not_direct'] = 'Problema #15512';
 $txt['ssi_session_broken'] = 'Problema #1542';

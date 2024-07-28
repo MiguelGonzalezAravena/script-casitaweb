@@ -106,7 +106,7 @@ function template_summary() {
   $bbvxc = mysqli_num_rows($request);
 
   if (!$user_info['is_guest']) {
-    if ($user_settings['ID_MEMBER'] <> $context['member']['id']) {
+    if ($user_settings['ID_MEMBER'] != $context['member']['id']) {
       $q = db_query("
         SELECT amigo, user
         FROM {$db_prefix}amistad
@@ -115,7 +115,7 @@ function template_summary() {
         AND acepto = 1", __FILE__, __LINE__);
 
       while ($r = mysqli_fetch_array($q)) {
-        if ($r['amigo'] <> $user_settings['ID_MEMBER']) {
+        if ($r['amigo'] != $user_settings['ID_MEMBER']) {
           $sdasds = $r['amigo'];
         } else {
           $sdasds = $r['user'];
@@ -203,7 +203,7 @@ function template_summary() {
   }
 
   if ($lugar == 'amigos-en-comun') {
-    if ($user_settings['ID_MEMBER'] <> $context['member']['id']) {
+    if ($user_settings['ID_MEMBER'] != $context['member']['id']) {
       echo '<div class="windowbg" style="border-top: 1px solid #C8C8C8; width: 523px; padding: 8px;">';
 
       $NroRegistros = $cantidaddss;
@@ -574,7 +574,7 @@ function template_summary() {
       } else {
         if ($user_settings['ID_MEMBER'] === $context['member']['id']) {
           echo '
-            <form action="' . $boardurl . '/web/cw-comentarMuro.php" method="post" accept-charset="', $context['character_set'], '" style="margin: 0px; padding: 0px;">
+            <form action="' . $boardurl . '/web/cw-comentarMuro.php" method="post" accept-charset="' . $context['character_set'] . '" style="margin: 0px; padding: 0px;">
               <div class="muroQh">
                 <input title="&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;" onfocus="if (this.value == \'&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;\') this.value = \'\'; $(\'#qh_publicar_bottom\').css(\'display\', \'block\'); foco(this);" onblur="if (this.value == \'\') { $(\'#qh_publicar_bottom\').css(\'display\', \'none\'); this.value = \'&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;\'; } no_foco(this);" style="width: 517px; font-size: 11px; font-family: Arial,FreeSans;" name="quehago" value="&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;" type="text" />
                 <p style="padding: 0px; margin: 0px; display: none;" id="qh_publicar_bottom" align="right">
@@ -721,8 +721,9 @@ function template_summary() {
 
             mysqli_free_result($mostrarcmtarios);
 
-            if ($cmntarioss > 2 && $jsAP <> $ivvd) {
+            if ($cmntarioss > 2 && $jsAP != $ivvd) {
               $leerTXT = 'Leer m&aacute;s (' . ($cmntarioss - 2) . ')';
+
               if (empty($PagAct)) {
                 echo '<a style="color: #D35F2C;" href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/muro;jsAP=' . $ivvd . '#cto_' . $ivvd . '">' . $leerTXT . '</a>';
               } elseif (!empty($PagAct)) {
@@ -1130,10 +1131,10 @@ function template_summary() {
           <a  href="#" onclick="ignorar(\'' . $context['member']['id'] . '\', \'1\'); return false;" title="Admitir usuario">Admitir usuario</a>
         </div>';
 
-      if (($user_info['is_admin'] || $user_info['is_mods']) && $context['member']['id'] <> 1) {
+      if (($user_info['is_admin'] || $user_info['is_mods']) && $context['member']['id'] != 1) {
         echo '
           <div class="AccionMem">
-            <a href="' . $boardurl . '/moderacion/edit-user/perfil/', $context['member']['id'], '">Moderar usuario</a>
+            <a href="' . $boardurl . '/moderacion/edit-user/perfil/' . $context['member']['id'] . '">Moderar usuario</a>
           </div>';
       }
     }
@@ -1700,6 +1701,7 @@ function template_perfil() {
     <script type="text/javascript">
       <!-- // --><![CDATA[
         function checkProfileSubmit() {';
+
   if ($context['user']['is_owner'] && $context['require_password']) {
     echo '
           if (document.forms.creator.oldpasswrd.value == \'\') {
@@ -1808,6 +1810,7 @@ function template_perfil() {
         </td>
         <td>
           <select name="ID_GROUP">';
+
     foreach ($context['member_groups'] as $member_group) {
       echo '
         <option value="' . $member_group['id'] . '"' . ($member_group['is_primary'] ? ' selected="selected"' : '') . '>
@@ -1828,81 +1831,29 @@ function template_perfil() {
         <div class="smalltext">&#40;' . $txt[565] . '&#47;' . $txt[564] . '&#47;' . $txt[566] . '&#41;</div>
       </td>
       <td>
-      <select tabindex="', $context['tabindex']++, '" name="bday2" id="bday2" autocomplete="off">
-        <option value="">D&iacute;a:</option>';
+      <select tabindex="' . $context['tabindex']++ . '" name="bday2" id="bday2" autocomplete="off">
+        <option value="' . $context['member']['birth_date']['day'] . '">D&iacute;a:</option>';
 
   for ($i = 1; $i < 32; $i++) {
     echo '<option value="' . $i . '"' . ($context['member']['birth_date']['day'] == $i ? ' selected="selected"' : '') . '>' . $i . '</option>';
   }
 
-  // TO-DO: Seguir arreglando 3
+  // Generar el arreglo de meses con posición corrida - 1 valores;
+  $months = $txt['months'];
+
   echo '
     </select>
-    <select tabindex="', $context['tabindex']++, '" name="bday1" id="bday1" autocomplete="off">
-      <option value="">Mes:</option>
-<option ';
-  if ($context['member']['birth_date']['month'] == '1') {
-    echo 'selected="selected"';
+    <select tabindex="' . $context['tabindex']++ . '" name="bday1" id="bday1" autocomplete="off">
+      <option value="' . $context['member']['birth_date']['month'] . '">Mes:</option>';
+
+  for ($i = 1; $i <= count($months); $i++) {
+    echo '<option value="' . $i . '"' . ($context['member']['birth_date']['month'] == $i ? ' selected="selected"' : '') . '>' . strtolower($months[$i]) . '</option>';
   }
-  echo ' value="1">enero</option>
-<option ';
-  if ($context['member']['birth_date']['month'] == '2') {
-    echo 'selected="selected"';
-  }
-  echo ' value="2">febrero</option>
-<option ';
-  if ($context['member']['birth_date']['month'] == '3') {
-    echo 'selected="selected"';
-  }
-  echo ' value="3">marzo</option>
-<option ';
-  if ($context['member']['birth_date']['month'] == '4') {
-    echo 'selected="selected"';
-  }
-  echo ' value="4">abril</option>
-<option ';
-  if ($context['member']['birth_date']['month'] == '5') {
-    echo 'selected="selected"';
-  }
-  echo ' value="5">mayo</option>
-<option ';
-  if ($context['member']['birth_date']['month'] == '6') {
-    echo 'selected="selected"';
-  }
-  echo ' value="6">junio</option>
-<option ';
-  if ($context['member']['birth_date']['month'] == '7') {
-    echo 'selected="selected"';
-  }
-  echo ' value="7">julio</option>
-<option ';
-  if ($context['member']['birth_date']['month'] == '8') {
-    echo 'selected="selected"';
-  }
-  echo ' value="8">agosto</option>
-<option ';
-  if ($context['member']['birth_date']['month'] == '9') {
-    echo 'selected="selected"';
-  }
-  echo ' value="9">septiembre</option>
-<option ';
-  if ($context['member']['birth_date']['month'] == '10') {
-    echo 'selected="selected"';
-  }
-  echo ' value="10">octubre</option>
-<option ';
-  if ($context['member']['birth_date']['month'] == '11') {
-    echo 'selected="selected"';
-  }
-  echo ' value="11">noviembre</option>
-<option ';
-  if ($context['member']['birth_date']['month'] == '12') {
-    echo 'selected="selected"';
-  }
-  echo ' value="12">diciembre</option>
-</select>
-<select tabindex="', $context['tabindex']++, '" name="bday3" id="bday3" autocomplete="off">
-  <option value="">A&ntilde;o:</option>';
+
+  echo '
+    </select>
+    <select tabindex="' . $context['tabindex']++ . '" name="bday3" id="bday3" autocomplete="off">
+      <option value="' . $context['member']['birth_date']['year'] . '">A&ntilde;o:</option>';
 
   for ($i = date('Y') - 18; $i > 1899; $i--) {
     echo '<option value="' . $i . '"' . ($context['member']['birth_date']['year'] == $i ? ' selected="selected"' : '') . '>' . $i . '</option>';
@@ -1916,200 +1867,161 @@ function template_perfil() {
       <td width="40%">
         <b class="size11">Pa&iacute;s:</b>
       </td>
-      <td
+      <td>
         <select name="usertitle" id="usertitle">
-            <option value="' . $context['member']['title'] . '">Pa&iacute;s</option>
-            <option ';
-  if ($context['member']['title'] == 'ar') {
-    echo 'selected="selected"';
-  }
-  echo ' value="ar">Argentina</option>
-            <option ';
-  if ($context['member']['title'] == 'bo') {
-    echo 'selected="selected"';
-  }
-  echo ' value="bo">Bolivia</option>
-            <option ';
-  if ($context['member']['title'] == 'br') {
-    echo 'selected="selected"';
-  }
-  echo ' value="br">Brasil</option>
-            <option ';
-  if ($context['member']['title'] == 'cl') {
-    echo 'selected="selected"';
-  }
-  echo ' value="cl">Chile</option>
-            <option ';
-  if ($context['member']['title'] == 'co') {
-    echo 'selected="selected"';
-  }
-  echo ' value="co">Colombia</option>
-            <option ';
-  if ($context['member']['title'] == 'cr') {
-    echo 'selected="selected"';
-  }
-  echo ' value="cr">Costa Rica</option>
-            <option ';
-  if ($context['member']['title'] == 'cu') {
-    echo 'selected="selected"';
-  }
-  echo ' value="cu">Cuba</option>
-            <option ';
-  if ($context['member']['title'] == 'ec') {
-    echo 'selected="selected"';
-  }
-  echo ' value="ec">Ecuador</option>
-            <option ';
-  if ($context['member']['title'] == 'as') {
-    echo 'selected="selected"';
-  }
-  echo ' value="es">Espa&ntilde;a</option>
-            <option ';
-  if ($context['member']['title'] == 'gt') {
-    echo 'selected="selected"';
-  }
-  echo ' value="gt">Guatemala</option>
-            <option ';
-  if ($context['member']['title'] == 'it') {
-    echo 'selected="selected"';
-  }
-  echo ' value="it">Italia</option>
-            <option ';
-  if ($context['member']['title'] == 'mx') {
-    echo 'selected="selected"';
-  }
-  echo ' value="mx">Mexico</option>
-            <option ';
-  if ($context['member']['title'] == 'py') {
-    echo 'selected="selected"';
-  }
-  echo ' value="py">Paraguay</option>
-            <option ';
-  if ($context['member']['title'] == 'pe') {
-    echo 'selected="selected"';
-  }
-  echo ' value="pe">Peru</option>
-            <option ';
-  if ($context['member']['title'] == 'pt') {
-    echo 'selected="selected"';
-  }
-  echo ' value="pt">Portugal</option>
-            <option ';
-  if ($context['member']['title'] == 'pr') {
-    echo 'selected="selected"';
-  }
-  echo ' value="pr">Puerto Rico</option>
-            <option ';
-  if ($context['member']['title'] == 'uy') {
-    echo 'selected="selected"';
-  }
-  echo ' value="uy">Uruguay</option>
-            <option ';
-  if ($context['member']['title'] == 've') {
-    echo 'selected="selected"';
-  }
-  echo ' value="ve">Venezuela</option>
-            <option ';
-  if ($context['member']['title'] == 'ot') {
-    echo 'selected="selected"';
-  }
-  echo " value=\"ot\">Otro</option>\t\t\t\t\t\t
-            </select></td>
-              </tr>
-              <tr>
-                <td width=\"40%\"><b class=\"size11\">", $txt[227], ': </b></td>
-                <td><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="location" size="30" value="', $context['member']['location'], '" /></td>
-              </tr>
-              <tr>
-                <td width="40%"><b class="size11">', $txt[231], ': </b></td>
-                <td>
-                  <select name="gender" size="1">
-                          <option value="1"', ($context['member']['gender']['name'] == 'm' ? ' selected="selected"' : ''), '>', $txt[238], '</option>
-                    <option value="2"', ($context['member']['gender']['name'] == 'f' ? ' selected="selected"' : ''), '>', $txt[239], '</option>
-                  </select>
-                </td>
-              </tr>';
+          <option value="' . $context['member']['title'] . '">Pa&iacute;s</option>';
 
-  $Dfa = db_query("SELECT a_quien FROM ({$db_prefix}infop) WHERE id_user='{$context['member']['id']}'", __FILE__, __LINE__);
+  $countries = $txt['countries'];
+  $countries_keys = array_keys($countries);
+
+  for ($i = 0; $i < count($countries_keys); $i++) {
+    $value = $countries_keys[$i];
+    echo '<option value="' . $value . '"' . ($context['member']['title'] == $value ? ' selected="selected"' : '') . '>' . $countries[$value] . '</option>';
+  }
+
+  echo '
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td width="40%">
+        <b class="size11">' . $txt[227] . ':</b>
+      </td>
+      <td>
+        <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="location" size="30" value="' . $context['member']['location'] . '" />
+      </td>
+    </tr>
+    <tr>
+      <td width="40%">
+        <b class="size11">' . $txt[231] . ':</b>
+      </td>
+      <td>
+        <select name="gender" size="1">
+          <option value="1"' . ($context['member']['gender']['name'] == 'm' ? ' selected="selected"' : '') . '>' . $txt[238] . '</option>
+          <option value="2"' . ($context['member']['gender']['name'] == 'f' ? ' selected="selected"' : '') . '>' . $txt[239] . '</option>
+        </select>
+      </td>
+    </tr>';
+
+  $Dfa = db_query("
+    SELECT a_quien
+    FROM {$db_prefix}infop
+    WHERE id_user = {$context['member']['id']}", __FILE__, __LINE__);
+
   while ($das343 = mysqli_fetch_array($Dfa)) {
     $quien = $das343['a_quien'];
   }
-  $quien = isset($quien) ? $quien : '0';
 
-  echo "<tr>\t\t\t\t\t\t<td width=\"40%\"><b class=\"size11\">Mostrar apariencia a:</b></td>
-                <td><select name=\"quienve\" size=\"1\">
-                <option value=\"0\" ";
-  if (!$quien) {
-    echo 'selected="selected"';
-  }
-  echo '>A todos</option>
-                <option value="1" ';
-  if ($quien == '1') {
-    echo 'selected="selected"';
-  }
-  echo '>Nadie</option>
-                <option value="2" ';
-  if ($quien == '2') {
-    echo 'selected="selected"';
-  }
-  echo '>Amigos</option>
-                <option value="3" ';
-  if ($quien == '3') {
-    echo 'selected="selected"';
-  }
-  echo '>Registrados</option>
-                </select>
-                </td>
-              </tr>
+  $quien = isset($quien) ? $quien : 0;
 
-              <tr>
-                <td width="40%"><b class="size11">Avisar si me borran posts e im&aacute;genes:</b></td>
-                <td><select name="recibir" id="recibir" size="1">';
-  echo '<option value="0" ';
-  if (!$recibirmail) {
-    echo 'selected="selected"';
+  echo '
+    <tr>
+      <td width="40%">
+        <b class="size11">Mostrar apariencia a:</b>
+      </td>
+      <td>
+        <select name="quienve" size="1">';
+
+  $privacy = $txt['privacy'];
+  $privacy_keys = array_keys($privacy);
+
+  for ($i = 0; $i < count($privacy_keys); $i++) {
+    $value = $privacy_keys[$i];
+    echo '<option value="' . $value . '"' . ($quien == $value ? ' selected="selected"' : '') . '>' . $privacy[$value] . '</option>';
   }
-  echo '>No</option>
-<option value="1" ';
-  if ($recibirmail == '1') {
-    echo 'selected="selected"';
-  }
-  echo '>Si</option>
-                </select>
-                </td>
-              </tr>
 
-              <tr>
-                <td width="20%"><b class="size11">', $txt[228], ':</b><div class="smalltext">(aparecera debajo del avatar)</div></td>
-                <td><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="personalText" size="30" maxlength="21" value="', $context['member']['blurb'], '" /></td>
-              </tr>';
-
-  echo '<tr><td width="20%"><b class="size11">', $txt['MSN'], ': </b><div class="smalltext">', $txt['smf237'], '</div></td><td><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="MSN" value="' . $MSN . '" size="30"/></td></tr>
-
-<tr><td width="20%"><b class="size11">', $txt[84], ': </b><div class="smalltext">', $txt[599], '</div></td>
-<td><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="websiteTitle" size="30" value="', $context['member']['website']['title'], '" /></td></tr>';
+  echo '
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td width="40%">
+        <b class="size11">Avisar si me borran posts e im&aacute;genes:</b>
+      </td>
+      <td>
+        <select name="recibir" id="recibir" size="1">
+          <option value="0"' . (!$recibirmail ? ' selected="selected"' : '') . '>No</option>
+          <option value="1"' . ($recibirmail == 1 ? ' selected="selected"' : '') . '>S&iacute;</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td width="20%">
+        <b class="size11">' . $txt[228] . ':</b>
+        <div class="smalltext">(aparecer&aacute; debajo del avatar)</div>
+      </td>
+      <td>
+        <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="personalText" size="30" maxlength="21" value="' . $context['member']['blurb'] . '" />
+      </td>
+    </tr>
+    <tr>
+      <td width="20%">
+        <b class="size11">' . $txt['MSN'] . ':</b>
+        <div class="smalltext">' . $txt['smf237'] . '</div>
+      </td>
+      <td>
+        <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="MSN" value="' . $MSN . '" size="30"/>
+      </td>
+    </tr>
+    <tr>
+      <td width="20%">
+        <b class="size11">' . $txt[84] . ':</b>
+        <div class="smalltext">' . $txt[599] . '</div>
+      </td>
+      <td>
+        <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="websiteTitle" size="30" value="' . $context['member']['website']['title'] . '" />
+      </td>
+    </tr>';
 
   if ($context['user']['is_admin']) {
-    echo '<tr><td width="20%"><b class="size11">Puntos: </b></td><td><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="puntos" style="width:35px;" value="' . $context['member']['posts'] . '" /></td></tr>';
-  }
-  if ($context['allow_edit_account']) {
-    echo '<tr><td width="40%"><b class="size11" ', (isset($context['modify_error']['bad_email']) || isset($context['modify_error']['no_email']) || isset($context['modify_error']['email_taken']) ? ' style="color: red;"' : ''), '>', $txt[69], ': </b><div class="smalltext">', $txt[679], '</div></td>
-                <td><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="emailAddress" size="30" value="', $context['member']['email'], '" /></td>
-              </tr>';
-
     echo '
-            <td width="40%"><b class="size11">', $txt[81], ': </b></td>
-                <td><input type="password" onfocus="foco(this);" onblur="no_foco(this);" name="passwrd1" size="20" /></td>
-              </tr><tr>
-                <td width="40%"><b class="size11">', $txt[82], ': </b></td>
-                <td><input type="password" onfocus="foco(this);" onblur="no_foco(this);" name="passwrd2" size="20" /></td>
-                                </tr>';
+      <tr>
+        <td width="20%">
+          <b class="size11">Puntos:</b>
+        </td>
+        <td>
+          <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="puntos" style="width: 35px;" value="' . $context['member']['posts'] . '" />
+        </td>
+      </tr>';
+  }
+
+  if ($context['allow_edit_account']) {
+    echo '
+      <tr>
+        <td width="40%">
+          <b class="size11" ' . (isset($context['modify_error']['bad_email']) || isset($context['modify_error']['no_email']) || isset($context['modify_error']['email_taken']) ? ' style="color: red;"' : '') . '>' . $txt[69] . ':</b>
+          <div class="smalltext">' . $txt[679] . '</div>
+        </td>
+        <td>
+          <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="emailAddress" size="30" value="' . $context['member']['email'] . '" />
+        </td>
+      </tr>
+      <tr>
+        <td width="40%">
+          <b class="size11">' . $txt[81] . ':</b>
+        </td>
+        <td>
+          <input type="password" onfocus="foco(this);" onblur="no_foco(this);" name="passwrd1" size="20" />
+        </td>
+      </tr>
+      <tr>
+        <td width="40%">
+          <b class="size11">' . $txt[82] . ':</b>
+        </td>
+        <td>
+          <input type="password" onfocus="foco(this);" onblur="no_foco(this);" name="passwrd2" size="20" />
+        </td>
+      </tr>';
   }
 
   template_profile_save();
 
-  echo '</table></div></div></form>
-</div>';
+  echo '
+            </table>
+          </div>
+        </div>
+      </form>
+    </div>';
 }
 
 function template_profile_save() {
