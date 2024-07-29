@@ -42,55 +42,50 @@ function template_tyc24() {
       <div style="width: 922px;">
         <strong class="size17">' . $title . '</strong>
         <div class="hrs"></div>
-        ' . $texto;
+        ' . $texto . '
+        <script type="text/javascript">
+          // Recargar puntos
+          function recargarPTS() {
+            if ($(\'#user\').val() == \'\') {
+              $(\'#user\').focus();
+              return false;
+            }
 
-?>
+            $(\'#cargandoBoxyc\').css(\'display\', \'none\');
+            $(\'#cargandoBoxy\').css(\'display\', \'block\');
 
-<script type="text/javascript">
-  // Recargar puntos
-  function recargarPTS() {
-    if ($('#user').val() == '') {
-      $('#user').focus();
-      return false;
-    }
+            $.ajax({
+              type: \'POST\',
+              url: \'' . $boardurl . '/web/cw-recargarPts.php\',
+              cache: false,
+              data: \'user=\' +  encodeURIComponent($(\'#user\').val()),
+              success: function(h) {
+                $(\'#cargandoBoxy\').css(\'display\', \'none\');
+                $(\'#cargandoBoxyc\').css(\'display\', \'block\');
+                $(\'#contenidoRE\').remove();
 
-    $('#cargandoBoxyc').css('display', 'none');
-    $('#cargandoBoxy').css('display', 'block');
-
-    $.ajax({
-      type: 'POST',
-      url: '<?php echo $boardurl; ?>/web/cw-recargarPts.php',
-      cache: false,
-      data: 'user=' +  encodeURIComponent($('#user').val()),
-      success: function(h) {
-        $('#cargandoBoxy').css('display', 'none');
-        $('#cargandoBoxyc').css('display', 'block');
-        $('#contenidoRE').remove();
-
-        if (h.charAt(0) == 0) {
-          // Datos incorrectos
-          $('#resultadoRE').addClass('noesta');
-          $('#resultadoRE').html(h.substring(3)).fadeIn('fast');
-        } else if (h.charAt(0) == 1) {
-          // OK
-          $('#resultadoRE').removeClass('noesta');
-          $('#resultadoRE').addClass('noesta-ve');
-          $('#resultadoRE').html(h.substring(3)).fadeIn('fast');
-        }
-      },
-      error: function() {
-        Boxy.alert('Error, volver a intentar...', null, { title: 'Alerta' });
-      }
-    });
-  }
-</script>
-
-<?php
-    echo '
-        <br /><br />
+                if (h.charAt(0) == 0) {
+                  // Datos incorrectos
+                  $(\'#resultadoRE\').addClass(\'noesta\');
+                  $(\'#resultadoRE\').html(h.substring(3)).fadeIn(\'fast\');
+                } else if (h.charAt(0) == 1) {
+                  // OK
+                  $(\'#resultadoRE\').removeClass(\'noesta\');
+                  $(\'#resultadoRE\').addClass(\'noesta-ve\');
+                  $(\'#resultadoRE\').html(h.substring(3)).fadeIn(\'fast\');
+                }
+              },
+              error: function() {
+                Boxy.alert(\'Error, volver a intentar...\', null, { title: \'Alerta\' });
+              }
+            });
+          }
+        </script>
+        <br />
+        <br />
         <strong class="size17">Recargar puntos</strong>
         <span id="cargandoBoxy" style="display: none;">
-          <img alt="" src="' . $tranfer1 . '/icons/cargando.gif" style="width: 16px; height: 16px;" border="0">
+          <img alt="" src="' . $tranfer1 . '/icons/cargando.gif" style="width: 16px; height: 16px;" border="0" />
         </span>
         <div class="hrs"></div>
         <div id="resultadoRE" style="display: none;"></div>
@@ -333,11 +328,11 @@ function template_tyc999() {
         echo '<div class="windowbgpag" style="width: 698px;">';
 
         if ($PagAct > 1) {
-          echo `<a href="$boardurl/tags/buscar/&q=$pasda&orden=$order&categoria=$cat2&pag=$PagAnt">&#171; anterior</a>`;
+          echo '<a href="' . $boardurl . '/tags/buscar/&q=' . $pasda . '&orden=' . $order . '&categoria=' . $cat2 . '&pag=' . $PagAnt . '">&#171; anterior</a>';
         }
 
         if ($PagAct < $PagUlt) {
-          echo `<a href="$boardurl/tags/buscar/&q=$pasda&orden=$order&categoria=$cat2&pag=$PagSig">siguiente &#187;</a>`;
+          echo '<a href="' . $boardurl . '/tags/buscar/&q=' . $pasda . '&orden=' . $order . '&categoria=' . $cat2 . '&pag=' . $PagSig . '">siguiente &#187;</a>';
         }
 
         echo '
@@ -390,7 +385,7 @@ function template_tyc666() {
     }
 
     if (!$context['user']['is_admin']) {
-      $shas = ' AND p.ID_BOARD<>142 ';
+      $shas = ' AND p.ID_BOARD <> 142 ';
     } else {
       $shas = '';
     }
@@ -465,28 +460,36 @@ function template_tyc666() {
         echo '<a rel="dc:relation" target="_self" href="' . $boardurl . '/post/' . $tag['id'] . '/' . $tag['description'] . '/' . urls(censorText($tag['subject'])) . '.html" title="' . censorText($tag['subject']) . '" class="categoriaPost ' . $tag['description'] . '">' . censorText($tag['subject']) . '</a></td><td title="' . timeformat($tag['posterTime']) . '">' . timeformat($tag['posterTime']) . '</td><td title="' . $tag['puntos'] . ' Puntos" style="color:green;">' . $tag['puntos'] . '</td>';
       }
 
-      echo '</tbody></table>';
+      echo '
+          </tbody>
+        </table>';
+
       $PagAnt = $PagAct - 1;
       $PagSig = $PagAct + 1;
       $PagUlt = $NroRegistros / $RegistrosAMostrar;
       $Res = $NroRegistros % $RegistrosAMostrar;
-      if ($Res > 0)
+
+      if ($Res > 0) {
         $PagUlt = floor($PagUlt) + 1;
+      }
 
       if ($PagAct > $PagUlt) {
         echo '';
       } else if ($PagAct > 1 || $PagAct < $PagUlt) {
         echo '<div class="windowbgpag" style="width: 910px;">';
+
         if ($PagAct > 1) {
-          echo "<a href='/tags/buscar/&q=$pssads&orden=$order&categoria=$cat2&pag=$PagAnt'>&#171; anterior</a>";
+          echo '<a href="' . $boardurl . '/tags/buscar/&q=' . $pssads . '&orden=' . $order . '&categoria=' . $cat2 . '&pag=' . $PagAnt . '">&#171; anterior</a>';
         }
 
         if ($PagAct < $PagUlt) {
-          echo "<a href='/tags/buscar/&q=$pssads&orden=$order&categoria=$cat2&pag=$PagSig'>siguiente &#187;</a>";
+          echo '<a href="' . $boardurl . '/tags/buscar/&q=' . $pssads . '&orden=' . $order . '&categoria=' . $cat2 . '&pag=' . $PagSig . '">siguiente &#187;</a>';
         }
-        echo '<div class="clearBoth"></div></div>';
-      }
 
+        echo '
+            <div class="clearBoth"></div>
+          </div>';
+      }
       // fin div grande
     }
   }
@@ -566,7 +569,7 @@ Saludos!
 
 ' . $context['user']['name'] . '</textarea>
               <br /><br />
-              <b style="font-size: 11px;">C&oacute;digo de la im&aacute;gen</b>
+              <b style="font-size: 11px;">C&oacute;digo de la imagen</b>
               <br />';
 
   captcha(1);
@@ -585,39 +588,37 @@ Saludos!
 }
 
 function template_tyc6() {
-  global $tranfer1, $context;
+  global $tranfer1, $context, $boardurl;
 
   $ok = isset($_GET['ok']) ? $_GET['ok'] : '';
 
   if ($ok == 'ok') {
     fatal_error('Muchas gracias, el mensaje se ha enviado correctamente.', false, '&#161;Mensaje enviado!');
   } else {
-    echo "
-      <script>
+    echo '
+      <script type="text/javascript">
         function error(nombre, email, comentario, code) {
-          if (nombre == '') {
-            document.getElementById('nombre').innerHTML = '<br /><font class=\"size10\" style=\"color: red;\">Debes agregar tu nombre y apellido.</font>';
+          if (nombre == \'\') {
+            document.getElementById(\'nombre\').innerHTML = \'<br /><font class="size10" style="color: red;">Debes agregar tu nombre y apellido.</font>\';
             return false;
           }
 
-          if (email == '') {
-            document.getElementById('errorr').innerHTML = '<br /><font class=\"size10\" style=\"color: red;\">Debes agregar tu e-mail.</font>';
+          if (email == \'\') {
+            document.getElementById(\'errorr\').innerHTML = \'<br /><font class="size10" style="color: red;">Debes agregar tu e-mail.</font>\';
             return false;
           }
 
-          if (comentario == '') {
-            document.getElementById('comentario').innerHTML = '<font class=\"size10\" style=\"color: red;\"><br />Debes agregar el comentario.</font>';
+          if (comentario == \'\') {
+            document.getElementById(\'comentario\').innerHTML = \'<font class="size10" style="color: red;"><br />Debes agregar el comentario.</font>\';
             return false;
           }
 
-          if (code == '') {
-            document.getElementById('visual_verification_code').innerHTML = '<font class=\"size10\" style=\"color: red;\"><br />Debes insertar el codigo.</font>';
+          if (code == \'\') {
+            document.getElementById(\'visual_verification_code\').innerHTML = \'<font class="size10" style="color: red;"><br />Debes insertar el codigo.</font>\';
             return false;
           }
         }
-      </script>";
-
-    echo '
+      </script>
       <div>
         <form action="' . $boardurl . '/web/cw-Contactar.php" method="post" accept-charset="' . $context['character_set'] . '">
           <div class="box_buscador">
