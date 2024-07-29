@@ -30,7 +30,7 @@ echo'<channel>
 <description>Ultimos 25 post creados por el usuario '.$userpost. ' en casitaweb.net</description>';
 $existe=db_query("SELECT m.body,m.ID_TOPIC,c.description,m.subject,m.hiddenOption
 FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS c)
-WHERE m.ID_MEMBER='$u' AND m.ID_BOARD=c.ID_BOARD
+WHERE m.ID_MEMBER = '$u' AND m.ID_BOARD=c.ID_BOARD
 ORDER BY m.ID_TOPIC DESC LIMIT 25",__FILE__, __LINE__);
 $context['rssuser'] = array();
 while ($row = mysqli_fetch_assoc($existe))

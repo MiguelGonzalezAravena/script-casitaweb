@@ -187,7 +187,7 @@ function template_main_above() {
   if (empty($ID_MEMBER)) {
     echo '
       <li>
-        <a href="' . $boardurl . '/registrarse/" title="Reg&iacute;strate GRATIS!!!" class="registrarse">&iexcl;&iexcl;&iexcl;Reg&iacute;strate!!!</a>
+        <a href="' . $boardurl . '/registrarse/" title="&iexcl;&iexcl;&iexcl;Reg&iacute;strate GRATIS!!!" class="registrarse">&iexcl;&iexcl;&iexcl;Reg&iacute;strate!!!</a>
       </li>
       <li class="clientarea" id="areaClient">
         <span id="hdLoglink" class="hdLoglink" onclick="javascript:servicenavlogin();">Iniciar sesi&oacute;n</span>

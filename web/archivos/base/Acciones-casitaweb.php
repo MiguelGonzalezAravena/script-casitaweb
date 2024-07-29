@@ -634,21 +634,21 @@ function template_tyc6() {
               <center>
                 <b class="size11">* Nombre y apellido:</b>
                 <br />
-                <input style="width:184px;" name="nombre" tabindex="1" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
+                <input style="width: 184px;" name="nombre" tabindex="1" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
                 <label id="nombre"></label>
                 <br />
                 <b class="size11">* Correo electr&oacute;nico:</b>
                 <br />
-                <input style="width:184px;" name="email" tabindex="2" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
+                <input style="width: 184px;" name="email" tabindex="2" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
                 <label id="errorr"></label>
                 <br />
                 <b class="size11">Empresa:</b>
                 <br />
-                <input style="width:184px;" name="empresa" tabindex="3" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
+                <input style="width: 184px;" name="empresa" tabindex="3" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
                 <br />
                 <b class="size11">Tel&eacute;fono:</b>
                 <br />
-                <input style="width:184px;" name="tel" value=" tabindex="4" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
+                <input style="width: 184px;" name="tel" value="" tabindex="4" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
                 <br />
                 <b class="size11">Motivo:</b>
                 <br />
@@ -669,7 +669,7 @@ function template_tyc6() {
                 <textarea onfocus="foco(this);" onblur="no_foco(this);" name="comentario" style="width: 249px;" cols="40" rows="5" tabindex="7"></textarea>
                 <label id="comentario"></label>
                 <br />
-                <b class="size11">* C&oacute;digo de la im&aacute;gen</b>
+                <b class="size11">* C&oacute;digo de la imagen</b>
                 <br />';
 
     captcha(1);

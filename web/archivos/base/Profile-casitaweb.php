@@ -1451,9 +1451,9 @@ function template_summary() {
           }
 
           $q1 = db_query("
-            SELECT m.avatar, m.realName
-            FROM ({$db_prefix}members as m)
-            WHERE m.ID_MEMBER='$sdasdsddvv'
+            SELECT avatar, realName
+            FROM {$db_prefix}members
+            WHERE ID_MEMBER = $sdasdsddvv
             LIMIT 1", __FILE__, __LINE__);
 
           $row = mysqli_fetch_assoc($q1);

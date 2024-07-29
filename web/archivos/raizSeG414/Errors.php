@@ -136,7 +136,7 @@ function db_error($db_string, $file, $line) {
 }
 
 function fatal_error($error, $log = false, $title = null, $botn = null) {
-  global $txt, $context, $db_prefix, $modSettings, $tranfer1, $boardurl;
+  global $txt, $context, $db_prefix, $modSettings, $tranfer1, $boardurl, $themedir;
 
   if (empty($title)) {
     $title = '&iexcl;Atenci&oacute;n!';
@@ -151,7 +151,9 @@ function fatal_error($error, $log = false, $title = null, $botn = null) {
     cw_header();
     loadTheme(0);
   }
-  
+
+  // TO-DO: Solucionar error en enlaces /noestilo/post/8158
+  require_once($themedir . '/index-casitaweb.php');
   echo template_main_above();
   
   if (empty($botn) || $botn == '1') {
@@ -179,10 +181,9 @@ function fatal_error($error, $log = false, $title = null, $botn = null) {
         AND b.ID_BOARD = p.ID_BOARD
         LIMIT 1", __FILE__, __LINE__);
 
-      while ($data3 = mysqli_fetch_assoc($datosmem2)) {
-        $cat = $data3['description'];
-        $title = $data3['subject'];
-      }
+      $data3 = mysqli_fetch_assoc($datosmem2);
+      $cat = isset($data3['description']) ? $data3['description'] : '';
+      $title = isset($data3['subject']) ? $data3['subject'] : '';
 
       $context['boton'] = '<input class="login" style="font-size: 11px;" type="submit" title="Volver al post" value="Volver al post" onclick="location.href=\'' . $boardurl . '/post/'. $topic . '/' . $cat . '/' . urls(censorText($title)) . '.html\'" /> <input class="login" style="font-size: 11px;" type="submit" title="Ir a la P&aacute;gina principal" value="Ir a la P&aacute;gina principal" onclick="location.href=\'' . $boardurl . '/\'" />';
     }
@@ -237,15 +238,17 @@ function fatal_error($error, $log = false, $title = null, $botn = null) {
           <div class="box_title" style="width: 388px">
             <div class="box_txt box_error" align="left">' . $title . '</div>
             <div class="box_rss">
-              <img alt="" src="'.$tranfer1.'/blank.gif" style="width: 14px; height: 12px;" border="0" />
+              <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" border="0" />
             </div>
           </div>
           <div class="windowbg" style="width: 380px; padding: 4px;">
             <br />
             ' . $error . '
-            <br /><br />
+            <br />
+            <br />
             ' . $context['boton'] . '
-            <br /><br />
+            <br />
+            <br />
           </div>
         </div>
         <br />

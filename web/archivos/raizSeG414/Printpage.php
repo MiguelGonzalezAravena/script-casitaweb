@@ -14,12 +14,15 @@ function PrintTopic() {
   }
 
   $request = db_query("
-    SELECT m.posterTime, IFNULL(mem.realName, m.posterName) AS posterName, b.description, m.ID_TOPIC, b.name, m.subject, m.posterName, m.body, m.hiddenOption
-    FROM {$db_prefix}messages AS m, {$db_prefix}boards AS b
+    SELECT 
+      m.posterTime, IFNULL(mem.realName, m.posterName) AS posterName,
+      b.description, m.ID_TOPIC, b.name, m.subject, m.posterName, m.body,
+      m.hiddenOption, m.ID_MEMBER, mem.ID_MEMBER
+    FROM {$db_prefix}messages AS m
+    INNER JOIN {$db_prefix}boards AS b ON b.ID_BOARD = m.ID_BOARD
     LEFT JOIN {$db_prefix}members AS mem ON mem.ID_MEMBER = m.ID_MEMBER
-    WHERE m.ID_TOPIC = '$topics'
+    WHERE m.ID_TOPIC = $topics
     AND m.ID_BOARD <> 142
-    AND m.ID_BOARD = b.ID_BOARD
     ORDER BY m.ID_TOPIC
     LIMIT 1", __FILE__, __LINE__);
 

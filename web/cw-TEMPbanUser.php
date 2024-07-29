@@ -16,7 +16,7 @@ if (($user_info['is_admin'] || $user_info['is_mods'])) {
     $usersta = db_query("
       SELECT m.realName, m.ID_MEMBER
       FROM {$db_prefix}ban_groups AS b, {$db_prefix}members AS m
-      WHERE m.ID_MEMBER = '$user'", __FILE__, __LINE__);
+      WHERE m.ID_MEMBER = $user", __FILE__, __LINE__);
 
     while ($ban = mysqli_fetch_array($usersta)) {
       $name = $ban['realName'];

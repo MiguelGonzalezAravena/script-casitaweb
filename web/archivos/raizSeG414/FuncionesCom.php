@@ -386,7 +386,7 @@ function entrar($id, $t = '') {
       LIMIT 1", __FILE__, __LINE__);
 
     $row = mysqli_fetch_assoc($request);
-    $id_miembro = $row['id'];
+    $id_miembro = isset($row['id']) ? $row['id'] : '';
 
     mysqli_free_result($request);
 

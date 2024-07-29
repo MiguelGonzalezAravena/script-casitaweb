@@ -155,7 +155,7 @@ mysqli_free_result($murosc);
 $masi=db_query("
 SELECT COUNT(m.ID_MEMBER) as Cuenta,u.realName,u.ID_MEMBER
 From ({$db_prefix}gallery_pic as m, {$db_prefix}members as u)
-WHERE m.ID_MEMBER=u.ID_MEMBER
+WHERE m.ID_MEMBER = u.ID_MEMBER
 GROUP BY m.ID_MEMBER
 ORDER BY Cuenta DESC
 LIMIT 10", __FILE__, __LINE__);

@@ -39,7 +39,7 @@ function template_Boards() {
           <br />
           <a href="' . $boardurl . '/contactanos/" title="Contacto">Contacto</a>
           <br />
-          <a href="' . $boardurl . '/enlazanos/" title="Enlazanos">Enlazanos</a>
+          <a href="' . $boardurl . '/enlazanos/" title="Enl&aacute;zanos">Enl&aacute;zanos</a>
           <br />
           <a href="' . $boardurl . '/protocolo/" title="Protocolo">Protocolo</a>
           <br />
