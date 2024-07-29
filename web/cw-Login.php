@@ -100,7 +100,7 @@ if ($user_settings['passwd'] != $sha_passwd) {
     $user_settings['passwordSalt'] = substr(md5(rand()), 0, 4);
     updateMemberData($user_settings['ID_MEMBER'], array('passwd' => '\'' . $user_settings['passwd'] . '\'', 'passwordSalt' => '\'' . $user_settings['passwordSalt'] . '\''));
   } else {
-    var_dump($other_passwords);
+    // var_dump($other_passwords);
     $_SESSION['failed_login'] = @$_SESSION['failed_login'] + 1;
 
     if ($_SESSION['failed_login'] >= 5) {
