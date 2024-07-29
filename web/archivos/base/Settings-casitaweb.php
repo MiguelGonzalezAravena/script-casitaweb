@@ -1,8 +1,6 @@
 <?php
 
-
-function template_options()
-{
+function template_options() {
 	global $context, $settings, $options, $scripturl, $txt;
 
 	$context['theme_options'] = array(
@@ -99,8 +97,7 @@ function template_options()
 	);
 }
 
-function template_settings()
-{
+function template_settings() {
 	global $context, $settings, $options, $scripturl, $txt;
 
 	$context['theme_settings'] = array(

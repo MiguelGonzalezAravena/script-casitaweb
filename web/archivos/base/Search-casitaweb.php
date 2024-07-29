@@ -122,39 +122,59 @@ function template_main() {
       } else {
         $daasdasda4 = $daasdasda2;
       }
-      echo '<table class="linksList" style="width: 922px;"><thead><tr>
-          <th style="text-align: left;">Mostrando <strong>' . ($daasdasda) . ' de ' . ($daasdasda4) . '</strong> resultados de <strong>' . $NroRegistros . '</strong></th>
-          <th>Fecha</th>
-          <th>Puntos</th>
-          <th>Relevancia</th>
-        </tr></thead><tbody>';
+      echo '
+        <table class="linksList" style="width: 922px;">
+          <thead>
+            <tr>
+              <th style="text-align: left;">
+                Mostrando <strong>' . ($daasdasda) . ' de ' . ($daasdasda4) . '</strong> resultados de <strong>' . $NroRegistros . '</strong>
+              </th>
+              <th>Fecha</th>
+              <th>Puntos</th>
+              <th>Relevancia</th>
+            </tr>
+          </thead>
+          <tbody>';
 
       foreach ($context['posts'] as $sticky) {
-        echo '<tr id="div_' . $sticky['id'] . '">
-          <td style="text-align: left;">';
+        echo '
+          <tr id="div_' . $sticky['id'] . '">
+            <td style="text-align: left;">';
 
         if ($sticky['hiddenOption'] && $context['user']['is_guest'])
           echo '<img alt="" src="' . $tranfer1 . '/comunidades/registrado.png" /> ';
 
-        echo '<a title="' . $sticky['titulo'] . '" href="' . $boardurl . '/post/' . $sticky['id'] . '/' . $sticky['description'] . '/' . urls($sticky['titulo']) . '.html" class="categoriaPost ' . $sticky['description'] . '">' . $sticky['titulo'] . '</a></td>
+        echo '
+            <a title="' . $sticky['titulo'] . '" href="' . $boardurl . '/post/' . $sticky['id'] . '/' . $sticky['description'] . '/' . urls($sticky['titulo']) . '.html" class="categoriaPost ' . $sticky['description'] . '">' . $sticky['titulo'] . '</a>
+          </td>
           <td title="' . $sticky['posterTime'] . '">' . $sticky['posterTime'] . '</td>
-          <td><span style="color:green;">' . $sticky['puntos'] . '</span></td>
+          <td>
+            <span style="color: green;">' . $sticky['puntos'] . '</span>
+          </td>
           <td>' . relevancia($sticky['relevancia']) . '</td>
         </tr>';
       }
 
-      echo '</tbody></table>';
+      echo '
+          </tbody>
+        </table>';
 
       if ($PagAct > $PagUlt) {
         echo '';
-      } elseif ($PagAct > 1 || $PagAct < $PagUlt) {
+      } else if ($PagAct > 1 || $PagAct < $PagUlt) {
         echo '<div class="windowbgpag" style="width: 910px;">';
-        if ($PagAct > 1)
-          echo "<a href='$boardurl/buscador/&q=$busqueda&autor=$usuario&orden=$orden&categoria=$cat&pag=$PagAnt'>&#171; anterior</a>";
-        if ($PagAct < $PagUlt)
-          echo "<a href='$boardurl/buscador/&q=$busqueda&autor=$usuario&orden=$orden&categoria=$cat&pag=$PagSig'>siguiente &#187;</a>";
 
-        echo '<div class="clearBoth"></div></div>';
+        if ($PagAct > 1) {
+          echo '<a href="' . $boardurl . '/buscador/&q=' . $busqueda . '&autor=' . $usuario . '&orden=' . $orden . '&categoria=' . $cat . '&pag=' . $PagAnt . '">&#171; anterior</a>';
+        }
+
+        if ($PagAct < $PagUlt) {
+          echo '<a href="' . $boardurl . '/buscador/&q=' . $busqueda . '&autor=' . $usuario . '&orden=' . $orden . '&categoria=' . $cat . '&pag=' . $PagSig . '">siguiente &#187;</a>';
+        }
+
+        echo '
+            <div class="clearBoth"></div>
+          </div>';
       }
     }
   }

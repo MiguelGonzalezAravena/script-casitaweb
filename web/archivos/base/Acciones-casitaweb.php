@@ -644,7 +644,7 @@ function template_tyc6() {
                 <b class="size11">Empresa:</b>
                 <br />
                 <input style="width:184px;" name="empresa" tabindex="3" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
-                <br />\t\t\t
+                <br />
                 <b class="size11">Tel&eacute;fono:</b>
                 <br />
                 <input style="width:184px;" name="tel" value=" tabindex="4" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
@@ -730,7 +730,7 @@ function template_tyc3() {
         }
 
         if (document.getElementById(\'cantidad\').value > 50){
-          alert(\'La cantidad m&aacute;xima de posts listados es 50\t\');
+          alert(\'La cantidad m&aacute;xima de posts listados es 50\');
           document.getElementById(\'cantidad\').focus();
           return;
         }
@@ -884,10 +884,9 @@ function template_vr2965() {
     WHERE id_contenido = $getid
     LIMIT 1", __FILE__, __LINE__);
 
-  while ($row = mysqli_fetch_array($request)) {
-    $cerrar = $row['cerrado'];
-    $id_user = $row['id_user'];
-  }
+  $row = mysqli_fetch_array($request);
+  $cerrar = isset($row['cerrado']) ? $row['cerrado'] : '';
+  $id_user = isset($row['id_user']) ? $row['id_user'] : '';
 
   mysqli_free_result($request);
 
@@ -930,8 +929,8 @@ function template_vr2965() {
           <span class="size11">
             [
               <b>
-                <a href="' . $boardurl . '/web/cw-ComunicacionAdm-EliPost.php?post=' . $row['id_contenido'] . '" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este post?\')) return false;">X</a></b>]</span>';
-      } elseif ($context['user']['id'] == $id_user) {
+                <a href="' . $boardurl . '/web/cw-ComunicacionAdm-EliPost.php?post=' . $row['id_contenido'] . '" onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas eliminar este post?\')) return false;">X</a></b>]</span>';
+      } else if ($context['user']['id'] == $id_user) {
         echo ' - <span class="size11">[<b><a href="' . $boardurl . '/moderacion/comunicacion-mod/post/eliminar/' . $row['id_contenido'] . '" onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas eliminar este post?\')) return false;">X</a>
               </b>
             ]
@@ -1208,40 +1207,39 @@ function template_denuncias() {
     FROM {$db_prefix}denuncias", __FILE__, __LINE__);
 
   $NroRegistros = mysqli_num_rows($request);
-?>
-<script type="text/javascript">
-  function actuarDenuncia(a, id, den, ident) {
-    $('#cargando_' + id).css('display', 'block');
 
-    $.ajax({
-      type: 'GET',
-      url: '<?php echo $boardurl; ?>/web/cw-denunciaAdm' + a + '.php',
-      cache: false,
-      data: 'id=' + id + '&den=' + den + '&ident=' +  ident,
-      success: function(h) {
-        $('#cargando_' + id).css('display', 'none');
-        $('#contentv_' + id).remove();
-        $('#resultado_' + id).css('display', 'block');
-
-        if (h.charAt(0) == 0) {
-          // Datos incorrectos
-          $('#resultado_' + id).addClass('noesta');
-          $('#resultado_' + id).html(h.substring(3)).show();
-        } else if (h.charAt(0) == 1) {
-          // OK
-          $('#resultado_' + id).removeClass('noesta');
-          $('#resultado_' + id).addClass('noesta-ve');
-          $('#resultado_' + id).html(h.substring(3)).show();
-        }
-      },
-      error: function() {
-        Boxy.alert('Error, volver a intentar...', null, { title: 'Alerta' });
-      }
-    });
-  }
-</script>
-<?php
   echo '
+    <script type="text/javascript">
+      function actuarDenuncia(a, id, den, ident) {
+        $(\'#cargando_\' + id).css(\'display\', \'block\');
+
+        $.ajax({
+          type: \'GET\',
+          url: \'' . $boardurl . '/web/cw-denunciaAdm\' + a + \'.php\',
+          cache: false,
+          data: \'id=\' + id + \'&den=\' + den + \'&ident=\' +  ident,
+          success: function(h) {
+            $(\'#cargando_\' + id).css(\'display\', \'none\');
+            $(\'#contentv_\' + id).remove();
+            $(\'#resultado_\' + id).css(\'display\', \'block\');
+
+            if (h.charAt(0) == 0) {
+              // Datos incorrectos
+              $(\'#resultado_\' + id).addClass(\'noesta\');
+              $(\'#resultado_\' + id).html(h.substring(3)).show();
+            } else if (h.charAt(0) == 1) {
+              // OK
+              $(\'#resultado_\' + id).removeClass(\'noesta\');
+              $(\'#resultado_\' + id).addClass(\'noesta-ve\');
+              $(\'#resultado_\' + id).html(h.substring(3)).show();
+            }
+          },
+          error: function() {
+            Boxy.alert(\'Error, volver a intentar...\', null, { title: \'Alerta\' });
+          }
+        });
+      }
+    </script>
     <div style="width: 922px;">
       <div class="box_title">
         <div class="box_txt box_buscadort">
@@ -1254,12 +1252,7 @@ function template_denuncias() {
   if ($NroRegistros) {
     $RegistrosAMostrar = 25;
     $_GET['pag'] = isset($_GET['pag']) ? $_GET['pag'] : '';
-
-    if ($_GET['pag'] < 1) {
-      $dda = 1;
-    } else {
-      $dda = $_GET['pag'];
-    }
+    $dda = $_GET['pag'] < 1 ? 1 : $_GET['pag'];
 
     if (isset($dda)) {
       $RegistrosAEmpezar = ($dda - 1) * $RegistrosAMostrar;
@@ -1270,9 +1263,9 @@ function template_denuncias() {
     }
 
     $request = db_query("
-      SELECT den.borrado,den.id_post,den.name_post, c.description, den.id_user, den.tipo, den.atendido, den.id_denuncia, COUNT(den.id_post) as cont
-      FROM ({$db_prefix}denuncias AS den, {$db_prefix}boards c)
-      WHERE den.cat=c.ID_BOARD
+      SELECT den.borrado, den.id_post,den.name_post, c.description, den.id_user, den.tipo, den.atendido, den.id_denuncia, COUNT(den.id_post) AS cont
+      FROM {$db_prefix}denuncias AS den, {$db_prefix}boards AS c
+      WHERE den.cat = c.ID_BOARD
       GROUP BY den.id_post
       ORDER BY den.borrado ASC
       LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
@@ -1418,12 +1411,13 @@ function template_denuncias() {
 
   if ($PagAct > 1 || $PagAct < $PagUlt) {
     echo '<div class="windowbgpag" style="width: 378px;">';
+
     if ($PagAct > 1) {
-      echo `<a href="$boardurl/moderacion/denuncias/pag-$PagAnt">&#171; anterior</a>`;
+      echo '<a href="' . $boardurl . '/moderacion/denuncias/pag-' . $PagAnt . '">&#171; anterior</a>';
     }
 
     if ($PagAct < $PagUlt) {
-      echo `<a href="$boardurl/moderacion/denuncias/pag-$PagSig">siguiente &#187;</a>`;
+      echo '<a href="' . $boardurl . '/moderacion/denuncias/pag-' . $PagSig . '">siguiente &#187;</a>';
     }
 
     echo '</div>';
@@ -1433,8 +1427,15 @@ function template_denuncias() {
 function template_quickreply_box() {
   global $tranfer1, $db_prefix, $context, $txt;
 
-  echo '<b class="size11">Titulo:</b><br /><input name="titulo" tabindex="1" size="60" maxlength="60" type="text" onfocus="foco(this);" onblur="no_foco(this);" /><br /><b class="size11">Mensaje del post:</b><br />';
-  echo '<textarea style="height:300px;width:615px;" id="editorCW" name="texto" cols="125" rows="25" tabindex="2"></textarea>';
+  echo '
+    <b class="size11">Titulo:</b>
+    <br />
+    <input name="titulo" tabindex="1" size="60" maxlength="60" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
+    <br />
+    <b class="size11">Mensaje del post:</b>
+    <br />
+    <textarea style="height: 300px; width: 615px;" id="editorCW" name="texto" cols="125" rows="25" tabindex="2"></textarea>';
+
   $existe = db_query("
     SELECT hidden, ID_SMILEY, description, filename, code
     FROM {$db_prefix}smileys
@@ -1442,7 +1443,10 @@ function template_quickreply_box() {
     ORDER BY ID_SMILEY ASC", __FILE__, __LINE__);
 
   while ($row = mysqli_fetch_assoc($existe)) {
-    echo '<span style="cursor:pointer;" onclick="replaceText(\' ', $row['code'], '\', document.forms.agregarp.texto); return false;"><img class="png" src="' . $tranfer1 . '/emoticones/' . $row['filename'] . '" align="bottom" alt="" title="', $row['description'], '" /></span> ';
+    echo '
+      <span style="cursor: pointer;" onclick="replaceText(\' ', $row['code'], '\', document.forms.agregarp.texto); return false;">
+        <img class="png" src="' . $tranfer1 . '/emoticones/' . $row['filename'] . '" align="bottom" alt="" title="', $row['description'], '" />
+      </span> ';
   }
 
   mysqli_free_result($existe);
@@ -1451,7 +1455,16 @@ function template_quickreply_box() {
     echo '<a href="javascript:moticonup()">[', $txt['more_smileys'], ']</a>';
   }
 
-  echo '<br /><label id="cerrado"><input class="check" tabindex="3" name="cerrado" value="1" type="checkbox"> No permitir comentarios</label><br /><center><input class="login" type="submit" value="Postear"></center>';
+  echo '
+    <br />
+    <label id="cerrado">
+      <input class="check" tabindex="3" name="cerrado" value="1" type="checkbox">
+      No permitir comentarios
+    </label>
+    <br />
+    <center>
+      <input class="login" type="submit" value="Postear" />
+    </center>';
 }
 
 ?>
