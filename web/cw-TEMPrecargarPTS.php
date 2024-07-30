@@ -8,6 +8,7 @@ if (empty($context['ajax'])) {
 }
 
 if (($user_info['is_admin'] || $user_info['is_mods'])) {
+  // TO-DO: Colocar javascript en un echo
 ?>
 <script type="text/javascript">
   // Recargar puntos

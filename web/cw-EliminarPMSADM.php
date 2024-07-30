@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-global $ID_MEMBER, $db_prefix;
+global $ID_MEMBER, $db_prefix, $boardurl;
 
 $aLista = isset($_POST['campos']) ? array_keys($_POST['campos']) : '';
 $pag = isset($_POST['pag']) ? (int) $_POST['pag'] : 0;

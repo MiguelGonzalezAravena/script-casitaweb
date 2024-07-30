@@ -14,7 +14,7 @@ if (!$user_info['is_admin']) {
 }
 
 if (empty($memID)) {
-  die('<div class="noesta" style="width:552px;">Debes especificar el usuario al cual deseas rastrear.</div>');
+  die('<div class="noesta" style="width: 552px;">Debes especificar el usuario al cual deseas rastrear.</div>');
 }
 
 $request = db_query("

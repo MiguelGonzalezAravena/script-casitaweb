@@ -53,12 +53,15 @@ $principal = 0;
 if (empty($titulo)) {
   header("Location: $url");
 }
+
 if (empty($post)) {
   header("Location: $url");
 }
+
 if (empty($categorias)) {
   header("Location: $url");
 }
+
 if (empty($tags)) {
   header("Location: $url");
 }
@@ -66,12 +69,15 @@ if (empty($tags)) {
 if (strlen($_POST['titulo']) < 3) {
   header("Location: $url");
 }
+
 if (strlen($_POST['titulo']) >= 61) {
   header("Location: $url");
 }
+
 if (strlen($_POST['contenido']) <= 60) {
   header("Location: $url");
 }
+
 if (strlen($_POST['contenido']) > $modSettings['max_messageLength']) {
   header("Location: $url");
 }

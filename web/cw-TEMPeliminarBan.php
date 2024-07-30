@@ -8,6 +8,8 @@ if (empty($context['ajax'])) {
   echo $ajaxError;
   die('Error de ajax.');
 }
+
+// TO-DO: Colocar javascript en un echo
 ?>
 <script type="text/javascript">
   // Eliminar baneo

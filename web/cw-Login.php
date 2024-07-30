@@ -11,7 +11,7 @@ $userlimpio = isset($_POST['nick']) ? seguridad($_POST['nick']) : '';
 $passrlimpio = isset($_POST['pass']) ? seguridad($_POST['pass']) : '';
 
 if (!$user_info['is_guest']) {
-  die('0: <div class="noesta">Ya iniciastes sesi&oacute;n.</div>');
+  die('0: <div class="noesta">Ya iniciaste sesi&oacute;n.</div>');
 }
 
 if (isset($_SESSION['failed_login']) && $_SESSION['failed_login'] >= $modSettings['failed_login_threshold'] * 3) {

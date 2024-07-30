@@ -114,7 +114,11 @@ if ($context['permisoCom'] == 1) {
     echo '</div>';
 
     if(($PagAct > 1 || $PagAct < $PagUlt) && $PagAct < $PagUlt) {
-      echo '<div class="panador" onclick="pagComunidad2(\'' . $_GET['c'] . '\', \'' . $PagSig . '\')"><div class="clearfix"></div>siguiente &#187;</div>';
+      echo '
+        <div class="panador" onclick="pagComunidad2(\'' . $_GET['c'] . '\', \'' . $PagSig . '\')">
+          <div class="clearfix"></div>
+          siguiente &#187;
+        </div>';
     }
   }
 

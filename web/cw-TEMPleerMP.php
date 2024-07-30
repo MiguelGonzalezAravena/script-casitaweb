@@ -14,7 +14,7 @@ if (empty($id)) {
 }
 
 if (empty($ID_MEMBER)) {
-  die('<div class="noesta" style="width:552px;">Funcionalidad exclusiva de usuarios registrados.</div>');
+  die('<div class="noesta" style="width: 552px;">Funcionalidad exclusiva de usuarios registrados.</div>');
 }
 
 $request = db_query("
@@ -55,7 +55,7 @@ while ($row = mysqli_fetch_array($request)) {
             <strong>Por:</strong>
           </div>
           <div style="padding:4px 0 4px 2px;">
-            <a href="/perfil/'.$row['name_de'].'">'.$row['name_de'].'</a>
+            <a href="' . $boardurl . '/perfil/' . $row['name_de'] . '">' . $row['name_de'] . '</a>
           </div>
           <div style="padding: 4px 0 4px 2px; background-color: #F6F6F6;">
             <strong>Recibido:</strong>

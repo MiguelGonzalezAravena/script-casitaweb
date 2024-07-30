@@ -6,8 +6,15 @@ $seg = isset($_GET['seg']) ? seguridad($_GET['seg']) : '';
 $verificacion = isset($_POST['verificacion']) ? seguridad($_POST['verificacion']) : '';
 $email = isset($_POST['emailverificar']) ? seguridad($_POST['emailverificar']) : '';
 
-$no = '<div style="float: left;"><img alt="" src="' . $tranfer1 . '/icons/no.png" class="png" width="16px" height="16px" /></div>';
-$si = '<div style="float: left;"><img alt="" src="' . $tranfer1 . '/icons/si.png" class="png" width="16px" height="16px" /></div>';
+$no = '
+  <div style="float: left;">
+    <img alt="" src="' . $tranfer1 . '/icons/no.png" class="png" width="16px" height="16px" />
+  </div>';
+
+$si = '
+  <div style="float: left;">
+    <img alt="" src="' . $tranfer1 . '/icons/si.png" class="png" width="16px" height="16px" />
+  </div>';
 
 if (!$user_info['is_guest']) {
   die('<div style="height: 14px; width: 122px; border: solid 1px #C25B43; background-color: #F7ABA1; font-size: 11px; font-family: Arial; padding: 2px;">' . $no . '  Funcionalidad exclusiva de visitantes.</div>');

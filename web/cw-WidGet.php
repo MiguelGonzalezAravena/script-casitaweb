@@ -58,7 +58,7 @@ echo '
       <style type="text/css">
         body {
           font-family: Arial, Helvetica, sans-serif;
-          font-size:12px;
+          font-size: 12px;
           margin: 0px;
           padding: 0px;
           background: #E1E1E1 url(\'' . $tranfer1 . '/bg_widget.gif\') repeat-x;
@@ -78,11 +78,11 @@ echo '
         }
 
         .item {
-          width:' . $an . 'px;
-          overflow:hidden;
-          height:16px;
+          width: ' . $an . 'px;
+          overflow: hidden;
+          height: 16px;
           margin: 2px 0px 0px 0px;
-          padding:0px;
+          padding: 0px;
           border-bottom: 1px solid #F4F4F4;
         }
 

@@ -41,7 +41,9 @@ if ($Res > 0) {
   $PagUlt = floor($PagUlt) + 1;
 }
 
-echo '<div><div id="contenidoPG" style="width: 510px; _width: 515px; height: 340px; overflow-y: auto; overflow-x: hidden;">';
+echo '
+  <div>
+    <div id="contenidoPG" style="width: 510px; _width: 515px; height: 340px; overflow-y: auto; overflow-x: hidden;">';
 
 if (empty($NroRegistros)) {
   echo '<div class="noesta" style="width: 510px;">No hay miembros.</div>';
@@ -112,7 +114,11 @@ if (empty($NroRegistros)) {
   echo '</div>';
 
   if (($PagAct > 1 || $PagAct < $PagUlt) && $PagAct < $PagUlt) {
-    echo '<div class="panador" onclick="pagComunidad(\'' . $_GET['c'] . '\', \'' . $PagSig . '\')"><div class="clearfix"></div>siguiente &#187;</div>';
+    echo '
+      <div class="panador" onclick="pagComunidad(\'' . $_GET['c'] . '\', \'' . $PagSig . '\')">
+        <div class="clearfix"></div>
+        siguiente &#187;
+      </div>';
   }
 }
 
