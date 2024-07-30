@@ -1,12 +1,16 @@
 <?php
-//Pagina de Rodrigo Zaupa (rigo@casitaweb.net)
-if (!defined('CasitaWeb!-PorRigo'))die(base64_decode("d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv"));
-function preparsecode(&$message, $previewing = false){}
-function un_preparsecode($message){}
+// Página de Rodrigo Zaupa (rigo@casitaweb.net)
+if (!defined('CasitaWeb!-PorRigo')) {
+  die(base64_decode('d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv'));
+}
+
+function preparsecode(&$message, $previewing = false) {}
+function un_preparsecode($message) {}
 
 function fixTags(&$message)
 {
   global $modSettings;
+
   $fixArray = array(
     array(
       'tag' => 'img',
@@ -60,16 +64,16 @@ function fixTags(&$message)
   foreach ($fixArray as $param)
     fixTag($message, $param['tag'], $param['protocols'], $param['embeddedUrl'], $param['hasEqualSign'], !empty($param['hasExtra']));
 
-  $message = preg_replace('~(\[img.*?\])(.+?)\[/img\]~eis', '\'$1\' . preg_replace(\'~action(=|%3d)(?!dlattach)~i\', \'action-\', \'$2\') . \'[/img]\'', $message);
+  $message = preg_replace('~(\[img.*?\])(.+?)\[/img\]~eis', "'\$1' . preg_replace('~action(=|%3d)(?!dlattach)~i', 'action-', '\$2') . '[/img]'", $message);
 
-  if (!empty($modSettings['max_image_width']) || !empty($modSettings['max_image_height']))
-  {
+  if (!empty($modSettings['max_image_width']) || !empty($modSettings['max_image_height'])) {
     preg_match_all('~\[img(\s+width=\d+)?(\s+height=\d+)?(\s+width=\d+)?\](.+?)\[/img\]~is', $message, $matches, PREG_PATTERN_ORDER);
 
     $replaces = array();
 
     if (!empty($replaces))
-      $message = strtr($message, $replaces);}
+      $message = strtr($message, $replaces);
+  }
 }
 
 function fixTag(&$message, $myTag, $protocols, $embeddedUrl = false, $hasEqualSign = false, $hasExtra = false)
@@ -88,8 +92,7 @@ function fixTag(&$message, $myTag, $protocols, $embeddedUrl = false, $hasEqualSi
   else
     preg_match_all('~\[(' . $myTag . ($hasExtra ? '(?:[^\]]*?)' : '') . ')\](.+?)\[/(' . $myTag . ')\]~is', $message, $matches);
 
-  foreach ($matches[0] as $k => $dummy)
-  {
+  foreach ($matches[0] as $k => $dummy) {
     // Remove all leading and trailing whitespace.
     $replace = trim($matches[2][$k]);
     $this_tag = $matches[1][$k];
@@ -99,21 +102,18 @@ function fixTag(&$message, $myTag, $protocols, $embeddedUrl = false, $hasEqualSi
       $this_close = $matches[4][$k];
 
     $found = false;
-    foreach ($protocols as $protocol)
-    {
+    foreach ($protocols as $protocol) {
       $found = strncasecmp($replace, $protocol . '://', strlen($protocol) + 3) === 0;
       if ($found)
         break;
     }
 
-    if (!$found && $protocols[0] == 'http')
-    {
+    if (!$found && $protocols[0] == 'http') {
       if (substr($replace, 0, 1) == '/')
         $replace = $domain_url . $replace;
       elseif (substr($replace, 0, 1) == '?')
         $replace = $scripturl . $replace;
-      elseif (substr($replace, 0, 1) == '#' && $embeddedUrl)
-      {
+      elseif (substr($replace, 0, 1) == '#' && $embeddedUrl) {
         $replace = '#' . preg_replace('~[^A-Za-z0-9_\-#]~', '', substr($replace, 1));
         $this_tag = 'iurl';
         $this_close = 'iurl';
@@ -132,11 +132,9 @@ function fixTag(&$message, $myTag, $protocols, $embeddedUrl = false, $hasEqualSi
       $replaces['[' . $matches[1][$k] . ']' . $matches[2][$k] . '[/' . $matches[3][$k] . ']'] = '[' . $this_tag . '=' . $replace . ']' . $matches[2][$k] . '[/' . $this_close . ']';
     else
       $replaces['[' . $matches[1][$k] . ']' . $matches[2][$k] . '[/' . $matches[3][$k] . ']'] = '[' . $this_tag . ']' . $replace . '[/' . $this_close . ']';
-
   }
 
-  foreach ($replaces as $k => $v)
-  {
+  foreach ($replaces as $k => $v) {
     if ($k == $v)
       unset($replaces[$k]);
   }
@@ -145,41 +143,77 @@ function fixTag(&$message, $myTag, $protocols, $embeddedUrl = false, $hasEqualSi
     $message = strtr($message, $replaces);
 }
 
-function sendmail($to, $subject, $message){global $webmaster_email, $mbname, $context, $modSettings, $txt, $scripturl;
-$line_break = "\n";
-$mail_result = true;
-$to_array = is_array($to) ? $to : array($to);
+function sendmail($to, $subject, $message) {
+  global $webmaster_email, $mbname, $context, $modSettings, $txt, $scripturl, $boardurl, $tranfer1;
 
-$headers='From: "'.$mbname.'" <' . (empty($modSettings['mail_from']) ? $webmaster_email : $modSettings['mail_from']) . '>' . $line_break;
-$headers .= 'Reply-To: <soporte@casitaweb.net>'. $line_break;
-$headers .= 'Return-Path: ' . (empty($modSettings['mail_from']) ? $webmaster_email : $modSettings['mail_from']) . $line_break;
-$headers .= 'Date: ' . gmdate('D, d M Y H:i:s') . ' -0000' . $line_break;
+  $line_break = "\n";
+  $mail_result = true;
+  $to_array = is_array($to) ? $to : array($to);
 
-if (empty($modSettings['mail_no_message_id']))
-$headers .= 'Message-ID: <' . md5($scripturl . microtime()) . '-' . strstr(empty($modSettings['mail_from']) ? $webmaster_email : $modSettings['mail_from'], '@') . '>' . $line_break;
-$headers .= 'X-Mailer: CasitaWeb!' . $line_break;
-$headers .= 'Mime-Version: 1.0' . $line_break;
-$headers .= 'Content-Type: text/html; charset=iso-8859-1'. $line_break;
-            
-$message=str_replace("\n","<br />",trim($message));
-if(!$message){fatal_error('Falta el mensaje.');}
-if(strlen($message)>=700){fatal_error('El comentario no puede tener 700 o m&aacute; letras.-');}
+  $headers = 'From: "' . $mbname . '" <' . (empty($modSettings['mail_from']) ? $webmaster_email : $modSettings['mail_from']) . '>' . $line_break;
+  $headers .= 'Reply-To: <soporte@casitaweb.net>' . $line_break;
+  $headers .= 'Return-Path: ' . (empty($modSettings['mail_from']) ? $webmaster_email : $modSettings['mail_from']) . $line_break;
+  $headers .= 'Date: ' . gmdate('D, d M Y H:i:s') . ' -0000' . $line_break;
 
-$messagen='<div style="padding: 8px; border-top:3px solid rgb(255, 157, 3);background-color: rgb(211, 95, 44);width:100%;"><a href="http://casitaweb.net/" target="_blank"><img src="http://casitaweb.net/images/widget-logo.gif" style="border: 0px none;" /></a><div id="ecxbubble"><table style="background-color: rgb(246, 246, 246); color: rgb(34, 34, 34);padding:0pt;" width="100%"><tbody><tr><td style="padding: 8px;" width="100%"><h2 style="margin-bottom: 25px;padding:0pt;">Hola,</h2><p style="padding:0pt;">'.$message.'</p><p style="font-family: \'Lucida Grande\',Lucida Grande,Helvetica,Arial,sans-serif; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: 18px; margin-bottom: 0pt; padding-top: 13px;"><span style="font-family: Georgia,serif; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-style: italic; color: rgb(102, 102, 102);">El Equipo de '.$mbname.'</span></p>';
+  if (empty($modSettings['mail_no_message_id']))
+    $headers .= 'Message-ID: <' . md5($scripturl . microtime()) . '-' . strstr(empty($modSettings['mail_from']) ? $webmaster_email : $modSettings['mail_from'], '@') . '>' . $line_break;
+  $headers .= 'X-Mailer: CasitaWeb!' . $line_break;
+  $headers .= 'Mime-Version: 1.0' . $line_break;
+  $headers .= 'Content-Type: text/html; charset=iso-8859-1' . $line_break;
 
-foreach ($to_array as $to){
-$subject=trim($subject);
-if(!$subject){fatal_error('Falta el asunto.');}
-if(strlen($subject)>=61){fatal_error('El asunto no puede tener m&aacute;s de 60 letras.-');}
-    
-if (!mail($to, $subject, $messagen, $headers)){$mail_result = false;}
-@set_time_limit(300);
-if (function_exists('apache_reset_timeout'))apache_reset_timeout();}    
+  $message = str_replace("\n", '<br />', trim($message));
+  if (!$message) {
+    fatal_error('Falta el mensaje.');
+  }
+  if (strlen($message) >= 700) {
+    fatal_error('El comentario no puede tener 700 o m&aacute; letras.');
+  }
 
-return $mail_result;}
+  $messagen = '
+    <div style="padding: 8px; border-top:3px solid rgb(255, 157, 3); background-color: rgb(211, 95, 44); width: 100%;">
+      <a href="' . $boardurl . '/" target="_blank">
+        <img src="' . $tranfer1 . '/widget-logo.gif" style="border: 0px none;" />
+      </a>
+      <div id="ecxbubble">
+        <table style="background-color: rgb(246, 246, 246); color: rgb(34, 34, 34); padding: 0pt;" width="100%">
+          <tbody>
+            <tr>
+              <td style="padding: 8px;" width="100%">
+                <h2 style="margin-bottom: 25px; padding: 0pt;">
+                  Hola,
+                </h2>
+                <p style="padding: 0pt;">' . $message . '</p>
+                <p style="font-family: \'Lucida Grande\',Lucida Grande,Helvetica,Arial,sans-serif; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: 18px; margin-bottom: 0pt; padding-top: 13px;">
+                  <span style="font-family: Georgia,serif; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-style: italic; color: rgb(102, 102, 102);">El Equipo de ' . $mbname . '</span>
+                </p>';
+
+  foreach ($to_array as $to) {
+    $subject = trim($subject);
+
+    if (!$subject) {
+      fatal_error('Falta el asunto.');
+    }
+
+    if (strlen($subject) >= 61) {
+      fatal_error('El asunto no puede tener m&aacute;s de 60 letras.');
+    }
+
+    if (!mail($to, $subject, $messagen, $headers)) {
+      $mail_result = false;
+    }
+
+    @set_time_limit(300);
+
+    if (function_exists('apache_reset_timeout')) {
+      apache_reset_timeout();
+    }
+  }
+
+  return $mail_result;
+}
 
 function sendpm($titulo, $mensaje, $para, $sis) {
-  global $db_prefix, $context, $scripturl, $txt, $user_info, $language,$user_settings, $modSettings;
+  global $db_prefix, $context, $scripturl, $txt, $user_info, $language, $user_settings, $modSettings;
 
   if ($user_info['is_guest']) {
     die();
@@ -239,11 +273,13 @@ function sendpm($titulo, $mensaje, $para, $sis) {
   }
 }
 
-function mimespecialchars($string, $with_charset = true, $hotmail_fix = false, $line_break = "\r\n"){global $context;
+function mimespecialchars($string, $with_charset = true, $hotmail_fix = false, $line_break = "\r\n")
+{
+  global $context;
 
   $charset = $context['character_set'];
-    if (preg_match_all('~&#(\d{3,8});~', $string, $matches) !== 0 && !$hotmail_fix){
-  $simple = true;
+  if (preg_match_all('~&#(\d{3,8});~', $string, $matches) !== 0 && !$hotmail_fix) {
+    $simple = true;
 
     foreach ($matches[1] as $entity)
       if ($entity > 128)
@@ -251,9 +287,8 @@ function mimespecialchars($string, $with_charset = true, $hotmail_fix = false, $
     unset($matches);
 
     if ($simple)
-      $string = preg_replace('~&#(\d{3,8});~e', 'chr(\'$1\')', $string);
-    else
-    {
+      $string = preg_replace('~&#(\d{3,8});~e', "chr('\$1')", $string);
+    else {
       // Try to convert the string to UTF-8.
       if (!$context['utf8'] && function_exists('iconv'))
         $string = @iconv($context['character_set'], 'UTF-8', $string);
@@ -276,8 +311,7 @@ function mimespecialchars($string, $with_charset = true, $hotmail_fix = false, $
   }
 
   // Convert all special characters to HTML entities...just for Hotmail :-\
-  if ($hotmail_fix && ($context['utf8'] || function_exists('iconv') || $context['character_set'] === 'ISO-8859-1'))
-  {
+  if ($hotmail_fix && ($context['utf8'] || function_exists('iconv') || $context['character_set'] === 'ISO-8859-1')) {
     if (!$context['utf8'] && function_exists('iconv'))
       $string = @iconv($context['character_set'], 'UTF-8', $string);
 
@@ -295,10 +329,7 @@ function mimespecialchars($string, $with_charset = true, $hotmail_fix = false, $
 
     // Convert all 'special' characters to HTML entities.
     return array($charset, preg_replace('~([\x80-' . ($context['server']['complex_preg_chars'] ? '\x{10FFFF}' : pack('C*', 0xF7, 0xBF, 0xBF, 0xBF)) . '])~eu', '$entityConvert(\'\1\')', $string), '7bit');
-  }
-
-  elseif (!$hotmail_fix && preg_match('~([^\x09\x0A\x0D\x20-\x7F])~', $string) === 1)
-  {
+  } elseif (!$hotmail_fix && preg_match('~([^\x09\x0A\x0D\x20-\x7F])~', $string) === 1) {
     // Base64 encode.
     $string = base64_encode($string);
 
@@ -309,18 +340,17 @@ function mimespecialchars($string, $with_charset = true, $hotmail_fix = false, $
 
     return array($charset, $string, 'base64');
   }
-
   else
     return array($charset, $string, '7bit');
 }
 
-function smtp_mail($mail_to_array, $subject, $message, $headers){}
-function server_parse($message, $socket, $response){}
-function calendarValidatePost(){}
-function theme_postbox($msg){}
-function SpellCheck(){}
-function sendNotifications($ID_TOPIC, $type){}
-function createPost(&$msgOptions, &$topicOptions, &$posterOptions){}
-function modifyPost(&$msgOptions, &$topicOptions, &$posterOptions){}
+function smtp_mail($mail_to_array, $subject, $message, $headers) {}
+function server_parse($message, $socket, $response) {}
+function calendarValidatePost() {}
+function theme_postbox($msg) {}
+function SpellCheck() {}
+function sendNotifications($ID_TOPIC, $type) {}
+function createPost(&$msgOptions, &$topicOptions, &$posterOptions) {}
+function modifyPost(&$msgOptions, &$topicOptions, &$posterOptions) {}
 
 ?>

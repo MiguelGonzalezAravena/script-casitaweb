@@ -51,7 +51,8 @@ while ($data = mysqli_fetch_assoc($datosmem)) {
     <div id="NOTup" onclick="location.href=\'' . $data['url'] . '\'">
       <div style="padding: 4px;' . $backCOLOR . ' border-bottom: 1px dotted #C8C8C8; margin-bottom: 2px;">
         <strong style="font-size: 14px; color: #444;">' . $realName . '</strong>
-        <span style="font-size: 10px; color: #444;">' . hace($data['fecha']) . '</span><br />
+        <span style="font-size: 10px; color: #444;">' . hace($data['fecha']) . '</span>
+        <br />
         <span style="color: #D35F2C;">' . notificacionQUE($data['que'], $data['url'], $data['extra'], 'no') . '</span>
       </div>
     </div>';

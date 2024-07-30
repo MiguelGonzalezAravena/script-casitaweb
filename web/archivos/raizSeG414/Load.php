@@ -1,11 +1,10 @@
 <?php
-// Pagina de Rodrigo Zaupa (rigo@casitaweb.net)
+// Página de Rodrigo Zaupa (rigo@casitaweb.net)
 if (!defined('CasitaWeb!-PorRigo')) {
   die(base64_decode('d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv'));
 }
 
-function reloadSettings()
-{
+function reloadSettings() {
   global $modSettings, $mysql_set_mode, $context, $db_prefix, $boarddir, $func, $txt, $db_character_set;
 
   if (isset($mysql_set_mode) && $mysql_set_mode === true) {
@@ -157,8 +156,7 @@ function reloadSettings()
   }
 }
 
-function loadUserSettings()
-{
+function loadUserSettings() {
   global $modSettings, $user_settings;
   global $ID_MEMBER, $db_prefix, $cookiename, $user_info, $language;
 
@@ -275,8 +273,7 @@ function loadUserSettings()
 
 function loadBoard() {}
 
-function loadPermissions()
-{
+function loadPermissions() {
   global $user_info, $db_prefix, $board, $board_info, $modSettings;
 
   $user_info['permissions'] = array();
@@ -816,8 +813,7 @@ function loadTheme($ID_THEME = 0, $initialize = true) {
   $context['id-post'] = isset($context['id-post']) ? $context['id-post'] : '';
 }
 
-function loadTemplate($template_name, $fatal = true)
-{
+function loadTemplate($template_name, $fatal = true) {
   global $context, $settings, $themedir, $scripturl, $boarddir, $db_show_debug;
 
   $settings['default_template'] = true;
@@ -829,8 +825,7 @@ function loadTemplate($template_name, $fatal = true)
   }
 }
 
-function loadSubTemplate($sub_template_name, $fatal = false)
-{
+function loadSubTemplate($sub_template_name, $fatal = false) {
   global $context, $settings, $options, $txt, $db_show_debug;
 
   if ($db_show_debug === true)
@@ -848,8 +843,7 @@ function loadSubTemplate($sub_template_name, $fatal = false)
   }
 }
 
-function loadLanguage($template_name, $lang = '', $fatal = true)
-{
+function loadLanguage($template_name, $lang = '', $fatal = true) {
   global $boarddir, $boardurl, $user_info, $language_dir, $language, $settings, $context, $txt, $db_show_debug;
   static $already_loaded = array();
 
@@ -890,8 +884,7 @@ function loadLanguage($template_name, $lang = '', $fatal = true)
 function getBoardParents($id_parent) {}
 
 // Replace all vulgar words with respective proper words. (substring or whole words..)
-function &censorText(&$text, $force = false)
-{
+function &censorText(&$text, $force = false) {
   global $modSettings, $options, $settings, $txt;
   static $censor_vulgar = null, $censor_proper = null;
 
@@ -923,8 +916,7 @@ function &censorText(&$text, $force = false)
 
 function loadJumpTo() {}
 
-function template_include($filename, $once = false)
-{
+function template_include($filename, $once = false) {
   global $context, $mtitle, $modSettings, $boardurl, $txt;
   static $templates = array();
 
@@ -958,8 +950,7 @@ function template_include($filename, $once = false)
   }
 }
 
-function loadSession()
-{
+function loadSession() {
   global $HTTP_SESSION_VARS, $modSettings, $boardurl, $sc;
 
   // Attempt to change a few PHP settings.
@@ -1023,18 +1014,15 @@ function loadSession()
   $sc = $_SESSION['rand_code'];
 }
 
-function sessionOpen($save_path, $session_name)
-{
+function sessionOpen($save_path, $session_name) {
   return true;
 }
 
-function sessionClose()
-{
+function sessionClose() {
   return true;
 }
 
-function sessionRead($session_id)
-{
+function sessionRead($session_id) {
   global $db_prefix;
 
   if (preg_match('~^[A-Za-z0-9]{16,32}$~', $session_id) == 0)
@@ -1052,8 +1040,7 @@ function sessionRead($session_id)
   return $sess_data;
 }
 
-function sessionWrite($session_id, $data)
-{
+function sessionWrite($session_id, $data) {
   global $db_prefix;
 
   if (preg_match('~^[A-Za-z0-9]{16,32}$~', $session_id) == 0)
@@ -1076,8 +1063,7 @@ function sessionWrite($session_id, $data)
   return $result;
 }
 
-function sessionDestroy($session_id)
-{
+function sessionDestroy($session_id) {
   global $db_prefix;
 
   if (preg_match('~^[A-Za-z0-9]{16,32}$~', $session_id) == 0)
@@ -1089,8 +1075,7 @@ function sessionDestroy($session_id)
     LIMIT 1", __FILE__, __LINE__);
 }
 
-function sessionGC($max_lifetime)
-{
+function sessionGC($max_lifetime) {
   global $db_prefix, $modSettings;
 
   if (!empty($modSettings['databaseSession_lifetime']) && ($max_lifetime <= 1440 || $modSettings['databaseSession_lifetime'] > $max_lifetime))
@@ -1101,8 +1086,7 @@ function sessionGC($max_lifetime)
     WHERE last_update < " . (time() - $max_lifetime), __FILE__, __LINE__);
 }
 
-function cache_put_data($key, $value, $ttl = 120)
-{
+function cache_put_data($key, $value, $ttl = 120) {
   global $boardurl, $sourcedir, $modSettings, $memcached;
   global $cache_hits, $cache_count, $db_show_debug;
 
@@ -1157,8 +1141,7 @@ function cache_put_data($key, $value, $ttl = 120)
     $cache_hits[$cache_count]['t'] = array_sum(explode(' ', microtime())) - array_sum(explode(' ', $st));
 }
 
-function cache_get_data($key, $ttl = 120)
-{
+function cache_get_data($key, $ttl = 120) {
   global $boardurl, $sourcedir, $modSettings, $memcached;
   global $cache_hits, $cache_count, $db_show_debug;
 
@@ -1225,8 +1208,7 @@ function cache_get_data($key, $ttl = 120)
     return @unserialize($value);
 }
 
-function get_memcached_server($level = 3)
-{
+function get_memcached_server($level = 3) {
   global $modSettings, $memcached, $db_persist;
 
   $servers = explode(',', $modSettings['cache_memcached']);

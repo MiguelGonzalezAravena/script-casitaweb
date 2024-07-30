@@ -118,7 +118,12 @@ function template_intro() {
     }
 
     if ($NroRegistros == 0) {
-      echo '<div class="noesta"><br /><br /><br /><br />No se han creado temas recientemente.<br /><br /><br /><br /><br /></div>';
+      echo '
+        <div class="noesta">
+          <br /><br /><br /><br />
+          No se han creado temas recientemente.
+          <br /><br /><br /><br /><br />
+        </div>';
     }
 
     echo '</div>';
@@ -1157,7 +1162,9 @@ function template_crearcomunidad() {
               <div class="desform">
                 URL de la comunidad:
                 <br />
-                <strong>' . $boardurl . '/comunidades/<span id="preview_shortname"></span></strong>
+                <strong>
+                  ' . $boardurl . '/comunidades/<span id="preview_shortname"></span>
+                </strong>
               </div>
               <span id="msg_crear_shortname"></span>
             </div>

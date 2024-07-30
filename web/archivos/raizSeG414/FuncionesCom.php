@@ -27,7 +27,10 @@ function reglas_com($das) {
 function arriba($da = '', $a1 = '', $a2 = '', $a3 = '', $a4 = '', $a5 = '', $a6 = '') {
   global $db_prefix, $boardurl;
 
-  $comunidades = '<li><a href="' . $boardurl . '/comunidades/" title="Comunidades">Comunidades</a></li>';
+  $comunidades = '
+    <li>
+      <a href="' . $boardurl . '/comunidades/" title="Comunidades">Comunidades</a>
+    </li>';
 
   $_GET['miembros'] = isset($_GET['miembros']) ? $_GET['miembros'] : '';
   $_GET['cat'] = isset($_GET['cat']) ? $_GET['cat'] : '';
@@ -37,27 +40,45 @@ function arriba($da = '', $a1 = '', $a2 = '', $a3 = '', $a4 = '', $a5 = '', $a6 
     $resultado = $comunidades;
   } else if ($da == 'tema') {
     $resultado = $comunidades . '
-      <li><a href="' . $a1 . '" title="' . $a2 . '">' . $a2 . '</a></li>
-      <li><a href="' . $a3 . '" title="' . $a4 . '">' . $a4 . '</a></li>
+      <li>
+        <a href="' . $a1 . '" title="' . $a2 . '">' . $a2 . '</a>
+      </li>
+      <li>
+        <a href="' . $a3 . '" title="' . $a4 . '">' . $a4 . '</a>
+      </li>
       <li id="activer">' . $a5 . '</li>';
   } else if ($da == 'CrearCom') {
     $resultado = $comunidades . '
       <li id="activer">Crear Comunidad</li>';
   } else if ($da == 'CrearTema') {
     $resultado = $comunidades . '
-      <li><a href="' . $a1 . '" title="' . $a2 . '">' . $a2 . '</a></li>
-      <li><a href="' . $a3 . '" title="' . $a4 . '">' . $a4 . '</a></li>
+      <li>
+        <a href="' . $a1 . '" title="' . $a2 . '">' . $a2 . '</a>
+      </li>
+      <li>
+        <a href="' . $a3 . '" title="' . $a4 . '">' . $a4 . '</a>
+      </li>
       <li id="activer">Crear Tema</li>';
   } else if ($da == 'EditarTema') {
     $resultado = $comunidades . '
-      <li><a href="' . $a1 . '" title="' . $a2 . '">' . $a2 . '</a></li>
-      <li><a href="' . $a3 . '" title="' . $a4 . '">' . $a4 . '</a></li>
-      <li><a href="' . $a5 . '" title="' . $a6 . '">' . $a6 . '</a></li>
+      <li>
+        <a href="' . $a1 . '" title="' . $a2 . '">' . $a2 . '</a>
+      </li>
+      <li>
+        <a href="' . $a3 . '" title="' . $a4 . '">' . $a4 . '</a>
+      </li>
+      <li>
+        <a href="' . $a5 . '" title="' . $a6 . '">' . $a6 . '</a>
+      </li>
       <li id="activer">Editar Tema</li>';
   } else if ($da == 'EditarCom') {
     $resultado = $comunidades . '
-      <li><a href="' . $a1 . '" title="' . $a2 . '">' . $a2 . '</a></li>
-      <li><a href="' . $a3 . '" title="' . $a4 . '">' . $a4 . '</a></li>
+      <li>
+        <a href="' . $a1 . '" title="' . $a2 . '">' . $a2 . '</a>
+      </li>
+      <li>
+        <a href="' . $a3 . '" title="' . $a4 . '">' . $a4 . '</a>
+      </li>
       <li id="activer">Editar Comunidad</li>';
   } else if ($da == 'buscar') {
     $resultado = $comunidades . '
@@ -85,7 +106,9 @@ function arriba($da = '', $a1 = '', $a2 = '', $a3 = '', $a4 = '', $a5 = '', $a6 
 
       if ($da == 'directorios') {
         $resultado = $comunidades . '
-          <li><a href="' . $boardurl . '/comunidades/dir/" title="Directorios">Directorios</a></li>
+          <li>
+            <a href="' . $boardurl . '/comunidades/dir/" title="Directorios">Directorios</a>
+          </li>
           <li id="activer">' . $categoria . '</li>';
       } else {
         $resultado = $comunidades . '
@@ -112,22 +135,36 @@ function arriba($da = '', $a1 = '', $a2 = '', $a3 = '', $a4 = '', $a5 = '', $a6 
 
       if (!$_GET['miembros']) {
         $resultado = $comunidades . '
-          <li><a href="' . $boardurl . '/comunidades/categoria/' . $row['url'] . '" title="' . $row['cnam'] . '">' . $row['cnam'] . '</a></li>
+          <li>
+            <a href="' . $boardurl . '/comunidades/categoria/' . $row['url'] . '" title="' . $row['cnam'] . '">' . $row['cnam'] . '</a>
+          </li>
           <li id="activer">' . $row['nombre'] . '</li>';
       } else if ($_GET['miembros'] == 3) {
         $resultado = $comunidades . '
-          <li><a href="' . $boardurl . '/comunidades/categoria/' . $row['url'] . '" title="' . $row['cnam'] . '">' . $row['cnam'] . '</a></li>
-          <li><a href="' . $boardurl . '/comunidades/' . $row['url2'] . '" title="' . $row['nombre'] . '">' . $row['nombre'] . '</a></li>
+          <li>
+            <a href="' . $boardurl . '/comunidades/categoria/' . $row['url'] . '" title="' . $row['cnam'] . '">' . $row['cnam'] . '</a>
+          </li>
+          <li>
+            <a href="' . $boardurl . '/comunidades/' . $row['url2'] . '" title="' . $row['nombre'] . '">' . $row['nombre'] . '</a>
+          </li>
           <li id="activer">Administrar comunidad</li>';
       } else if ($_GET['miembros'] == 8) {
         $resultado = $comunidades . '
-          <li><a href="' . $boardurl . '/comunidades/categoria/' . $row['url'] . '" title="' . $row['cnam'] . '">' . $row['cnam'] . '</a></li>
-          <li><a href="' . $boardurl . '/comunidades/' . $row['url2'] . '" title="' . $row['nombre'] . '">' . $row['nombre'] . '</a></li>
+          <li>
+            <a href="' . $boardurl . '/comunidades/categoria/' . $row['url'] . '" title="' . $row['cnam'] . '">' . $row['cnam'] . '</a>
+          </li>
+          <li>
+            <a href="' . $boardurl . '/comunidades/' . $row['url2'] . '" title="' . $row['nombre'] . '">' . $row['nombre'] . '</a>
+          </li>
           <li id="activer">Denunciar comunidad</li>';
       } else if ($_GET['miembros'] == 9) {
         $resultado = $comunidades . '
-          <li><a href="' . $boardurl . '/comunidades/categoria/' . $row['url'] . '" title="' . $row['cnam'] . '">' . $row['cnam'] . '</a></li>
-          <li><a href="' . $boardurl . '/comunidades/' . $row['url2'] . '" title="' . $row['nombre'] . '">' . $row['nombre'] . '</a></li>
+          <li>
+            <a href="' . $boardurl . '/comunidades/categoria/' . $row['url'] . '" title="' . $row['cnam'] . '">' . $row['cnam'] . '</a>
+          </li>
+          <li>
+            <a href="' . $boardurl . '/comunidades/' . $row['url2'] . '" title="' . $row['nombre'] . '">' . $row['nombre'] . '</a>
+          </li>
           <li id="activer">Publicitar</li>';
       }
     }
@@ -570,32 +607,34 @@ function sidebar($id) {
   // Temas
   echo '
     <div style="margin-bottom: 10px; width: 160px; margin-right: 8px; float: left;">
-      <div class="box_title" style="width: 160px;"><div class="box_txt box_perfil-36">Comunidad</div>
-      <div class="box_rss">
-        <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
+      <div class="box_title" style="width: 160px;">
+        <div class="box_txt box_perfil-36">Comunidad</div>
+        <div class="box_rss">
+          <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
+        </div>
       </div>
-    </div>
-    <div class="windowbg" style="width: 152px; padding: 4px;">
-      <center>
-        <a href="' . $boardurl . '/comunidades/' . $caturl . '/">
-          <img src="' . $img2 . '" width="120px" height="120px" alt="" class="avatar" title="Logo de la comunidad" onerror="error_avatar(this)" />
+      <div class="windowbg" style="width: 152px; padding: 4px;">
+        <center>
+          <a href="' . $boardurl . '/comunidades/' . $caturl . '/">
+            <img src="' . $img2 . '" width="120px" height="120px" alt="" class="avatar" title="Logo de la comunidad" onerror="error_avatar(this)" />
+          </a>
+        </center>
+        <br />
+        <a href="' . $boardurl . '/comunidades/' . $caturl . '/" title="' . $cat . '">
+          <b class="size15">' . $cat . '</b>
         </a>
-      </center>
-      <br />
-      <a href="' . $boardurl . '/comunidades/' . $caturl . '/" title="' . $cat . '">
-        <b class="size15">' . $cat . '</b>
-      </a>
-      <br /><br />
-      <div class="hrs"></div>
-      <a href="' . $boardurl . '/web/cw-TEMPcomMIEMBROS.php?c=' . $id_comunidad . '" class="boxy" title="Miembros">' . $miembrose . ' Miembros</a>
-      <br />
-      ' . $temas . ' Temas
-      <br />
-      ' . ($context['permisoCom'] == 1 && $paprobare ? '<span class="pointer" style="color: #267F00;" onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPcomMIEMBROSaDm.php?c=' . $id_comunidad . '\', { title:\'Miembros en lista de aprobaci&oacute;n\'})" title="Miembros en lista de aprobaci&oacute;n">' . $paprobare . ' Esperando aprobaci&oacute;n</span><br />' : '') . '
-      ' . ($context['allow_admin'] ? '<div class="hrs"></div><center><a href="' . $boardurl . '/comunidades/' . $caturl . '/administrar/" style="color: red;">Administrar Comunidad</a></center>' : '') . '
-      <div class="hrs"></div>
-      <br />
-      <center>';
+        <br />
+        <br />
+        <div class="hrs"></div>
+        <a href="' . $boardurl . '/web/cw-TEMPcomMIEMBROS.php?c=' . $id_comunidad . '" class="boxy" title="Miembros">' . $miembrose . ' Miembros</a>
+        <br />
+        ' . $temas . ' Temas
+        <br />
+        ' . ($context['permisoCom'] == 1 && $paprobare ? '<span class="pointer" style="color: #267F00;" onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPcomMIEMBROSaDm.php?c=' . $id_comunidad . '\', { title:\'Miembros en lista de aprobaci&oacute;n\'})" title="Miembros en lista de aprobaci&oacute;n">' . $paprobare . ' Esperando aprobaci&oacute;n</span><br />' : '') . '
+        ' . ($context['allow_admin'] ? '<div class="hrs"></div><center><a href="' . $boardurl . '/comunidades/' . $caturl . '/administrar/" style="color: red;">Administrar Comunidad</a></center>' : '') . '
+        <div class="hrs"></div>
+        <br />
+        <center>';
 
   if (!$context['miembro']) {
     if (!$context['user']['is_guest'] && !$context['permisoCom']) {
@@ -603,7 +642,10 @@ function sidebar($id) {
     }
 
     if (!eaprobacion($id_comunidad)) {
-      echo "<input onclick=\"if (!confirm('\\xbfEst&aacute;s seguro que deseas unirte a esta comunidad?')) return false; javascript:window.location.href='" . $boardurl . '/web/cw-comunidadesUnirCom.php?id=' . $caturl . '\'" alt="" class="unirCom" title="" value=" " align="top" type="submit" /><br /><br />';
+      echo "
+        <input onclick=\"if (!confirm('\\xbfEst&aacute;s seguro que deseas unirte a esta comunidad?')) return false; javascript:window.location.href='" . $boardurl . '/web/cw-comunidadesUnirCom.php?id=' . $caturl . '\'" alt="" class="unirCom" title="" value=" " align="top" type="submit" />
+        <br />
+        <br />';
     } else {
       echo '<div class="noesta-am">Esperando aprobaci&oacute;n de Administrador.</div>';
     }
@@ -611,16 +653,20 @@ function sidebar($id) {
     if ($context['permisoCom'] == 1) {
       echo '
         <input onclick="javascript:window.location.href=\'' . $boardurl . '/comunidades/' . $caturl . '/publicitar\'" alt="" class="PublCom" title="" value=" " align="top" type="submit" />
-        <br /><br />
+        <br />
+        <br />
         <input onclick="javascript:window.location.href=\'' . $boardurl . '/comunidades/' . $caturl . '/editar\'" alt="" class="EdiCom" title="" value=" " align="top" type="submit" />
-        <br /><br />
+        <br />
+        <br />
         <input onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas ELIMINAR esta comunidad?\')) return false; javascript:window.location.href=\'' . $boardurl . '/web/cw-comunidadesEliComu.php?id=' . $caturl . '\'" alt="" class="EliCom" title="" value=" " align="top" type="submit" />
-        <br /><br />';
+        <br />
+        <br />';
     }
 
     echo "
       <input onclick=\"if (!confirm('\\xbfEst&aacute;s seguro que deseas abandonar esta comunidad?')) return false; javascript:window.location.href='" . $boardurl . '/web/cw-comunidadesAbanCom.php?id=' . $caturl . '\'" alt="" class="AbandCom" title="" value=" " align="top" type="submit" />
-      <br /><br />
+      <br />
+      <br />
       <div class="hrs"></div>';
 
     $request = db_query("
@@ -823,9 +869,11 @@ function resultados($tipo) {
       } else {
         $orden = 'fecha';
       }
+
       if ($orden == 'fecha') {
         $dbor = 'c.id DESC';
       }
+
       if ($orden == 'puntos') {
         $dbor = 'c.articulos DESC';
       }
@@ -853,8 +901,10 @@ function resultados($tipo) {
       $PagSig = $PagAct + 1;
       $PagUlt = $NroRegistros / $RegistrosAMostrar;
       $Res = $NroRegistros % $RegistrosAMostrar;
-      if ($Res > 0)
+
+      if ($Res > 0) {
         $PagUlt = floor($PagUlt) + 1;
+      }
 
       $result = db_query("
         SELECT c.UserName, c.nombre, ca.nombre AS nombCat, c.categoria, c.fecha_inicio, c.id, c.url, c.articulos, c.acceso
@@ -876,12 +926,19 @@ function resultados($tipo) {
           $daasdasda4 = $daasdasda2;
         }
 
-        echo '<table class="linksList" style="width:922px;"><thead><tr>
-          <th>&nbsp;</th>
-          <th style="text-align: left;">Mostrando <strong>' . ($daasdasda) . ' de ' . ($daasdasda4) . '</strong> resultados de <strong>' . $NroRegistros . '</strong></th>
-          <th>Fecha</th>
-          <th>Temas</th>
-        </tr></thead><tbody>';
+        echo '
+          <table class="linksList" style="width: 922px;">
+            <thead>
+              <tr>
+                <th>&nbsp;</th>
+                <th style="text-align: left;">
+                  Mostrando <strong>' . ($daasdasda) . ' de ' . ($daasdasda4) . '</strong> resultados de <strong>' . $NroRegistros . '</strong>
+                </th>
+                <th>Fecha</th>
+                <th>Temas</th>
+              </tr>
+            </thead>
+            <tbody>';
 
         while ($row = mysqli_fetch_assoc($result)) {
           $nombCat = $row['nombCat'];
@@ -900,28 +957,45 @@ function resultados($tipo) {
           }
           $fecha_inicio = timeformat($row['fecha_inicio']);
 
-          echo '<tr id="div_' . $id . '"' . $back . '>
-<td title="' . $nombCat . '"><img title="' . $nombCat . '" src="' . $tranfer1 . '/comunidades/categorias/' . $categoria . '.png" alt="" /></td>
-          <td style="text-align: left;">';
+          echo '
+            <tr id="div_' . $id . '"' . $back . '>
+              <td title="' . $nombCat . '">
+                <img title="' . $nombCat . '" src="' . $tranfer1 . '/comunidades/categorias/' . $categoria . '.png" alt="" />
+              </td>
+              <td style="text-align: left;">';
 
           if ($hiddenOptios == '2' && $context['user']['is_guest']) {
             echo '<img alt="" src="' . $tranfer1 . '/comunidades/registrado.png" /> ';
           }
-          echo '<a title="' . nohtml(nohtml2($nombre)) . '" href="' . $boardurl . '/comunidades/' . $url . '" class="titlePost">' . nohtml(nohtml2($nombre)) . '</a></td>
-<td title="' . $fecha_inicio . '">' . $fecha_inicio . '</td>
-<td>' . $articulos . '</td>
-</tr>';
+
+          echo '
+                <a title="' . nohtml(nohtml2($nombre)) . '" href="' . $boardurl . '/comunidades/' . $url . '" class="titlePost">' . nohtml(nohtml2($nombre)) . '</a>
+              </td>
+              <td title="' . $fecha_inicio . '">' . $fecha_inicio . '</td>
+              <td>' . $articulos . '</td>
+            </tr>';
         }
-        echo '</tbody></table>';
+
+        echo '
+            </tbody>
+          </table>';
+
         if ($PagAct > $PagUlt) {
           echo '';
-        } elseif ($PagAct > 1 || $PagAct < $PagUlt) {
-          echo '<div class="windowbgpag" style="width:700px;">';
-          if ($PagAct > 1)
-            echo "<a href='/comunidades/buscar/&q=$enl&autor=$usuario&orden=$orden&buscador_tipo=c&categoria=$cat&pag=$PagAnt'>&#171; anterior</a>";
-          if ($PagAct < $PagUlt)
-            echo "<a href='/comunidades/buscar/&q=$enl&autor=$usuario&orden=$orden&buscador_tipo=c&categoria=$cat&pag=$PagSig'>siguiente &#187;</a>";
-          echo '<div class="clearBoth"></div></div>';
+        } else if ($PagAct > 1 || $PagAct < $PagUlt) {
+          echo '<div class="windowbgpag" style="width: 700px;">';
+
+          if ($PagAct > 1) {
+            echo '<a href="' . $boardurl . '/comunidades/buscar/&q=' . $enl . '&autor=' . $usuario . '&orden=' . $orden . '&buscador_tipo=c&categoria=' . $cat . '&pag=' . $PagAnt . '">&#171; anterior</a>';
+          }
+
+          if ($PagAct < $PagUlt) {
+            echo '<a href="' . $boardurl . '/comunidades/buscar/&q=' . $enl . '&autor=' . $usuario . '&orden=' . $orden . '&buscador_tipo=c&categoria=' . $cat . '&pag=' . $PagSig . '">siguiente &#187;</a>';
+          }
+
+          echo '
+              <div class="clearBoth"></div>
+            </div>';
         }
       }
     }
@@ -932,8 +1006,10 @@ function resultados($tipo) {
     hearBuscador('c', 't');
     $busqueda = trim(decodeurl($_GET['q']));
     $usuario = trim(decodeurl($_GET['autor']));
+
     if ($busqueda or $usuario) {
       $cat = $_GET['categoria'];
+
       if (!$busqueda) {
         $ssdeeesss2 = '';
         $score = "a.UserName LIKE '%$usuario%'";
@@ -943,27 +1019,34 @@ function resultados($tipo) {
       } else {
         $ssdeeesss2 = "MATCH (a.titulo, a.cuerpo) AGAINST ('$busqueda')";
         $score = "MATCH (a.titulo, a.cuerpo) AGAINST ('$busqueda')";
+
         if ($usuario) {
           $ssdeeesss = "AND a.UserName='$usuario'";
         }
       }
+
       if (!$cat) {
         $cats = '';
       } else {
         $cats = " AND a.categoria='$cat'";
       }
+
       $sort = trim($_GET['orden']);
+
       if ($sort == 'fecha' || $sort == 'relevancia' || $sort == 'puntos') {
         $orden = $sort;
       } else {
         $orden = 'fecha';
       }
+
       if ($orden == 'fecha') {
         $dbor = 'a.id DESC';
       }
+
       if ($orden == 'relevancia') {
         $dbor = 'Score DESC';
       }
+
       if ($orden == 'puntos') {
         $dbor = 'a.calificacion DESC';
       }
@@ -994,32 +1077,51 @@ function resultados($tipo) {
       $PagUlt = $NroRegistros / $RegistrosAMostrar;
       $Res = $NroRegistros % $RegistrosAMostrar;
 
-      if ($Res > 0)
+      if ($Res > 0) {
         $PagUlt = floor($PagUlt) + 1;
+      }
 
-      $result = db_query("SELECT $score AS Score, a.titulo,a.categoria, c.nombre,a.creado,a.calificacion,a.id,co.url
-FROM ({$db_prefix}comunidades_articulos AS a,{$db_prefix}comunidades_categorias AS c,{$db_prefix}comunidades AS co)
-WHERE $ssdeeesss2 $cats $ssdeeesss AND a.categoria=c.url AND a.id_com=co.id AND co.bloquear=0 AND a.eliminado=0
-ORDER BY $dbor
-LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
+      $result = db_query("
+        SELECT $score AS Score, a.titulo,a.categoria, c.nombre, a.creado, a.calificacion, a.id, co.url
+        FROM {$db_prefix}comunidades_articulos AS a, {$db_prefix}comunidades_categorias AS c, {$db_prefix}comunidades AS co
+        WHERE
+        $ssdeeesss2
+        $cats
+        $ssdeeesss
+        AND a.categoria = c.url
+        AND a.id_com = co.id
+        AND co.bloquear = 0
+        AND a.eliminado = 0
+        ORDER BY $dbor
+        LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
 
       if (!$NroRegistros) {
-        echo '<div class="noesta-am" style="width:922px;">No se encontraron resultados.</div>';
+        echo '<div class="noesta-am" style="width: 922px;">No se encontraron resultados.</div>';
       } else {
-        $daasdasda = $RegistrosAEmpezar ? ($RegistrosAEmpezar + 1) : '1';
-        $daasdasda2 = $RegistrosAEmpezar ? ($RegistrosAEmpezar + 50) : '50';
+        $daasdasda = $RegistrosAEmpezar ? ($RegistrosAEmpezar + 1) : 1;
+        $daasdasda2 = $RegistrosAEmpezar ? ($RegistrosAEmpezar + 50) : 50;
+
         if ($daasdasda2 > $NroRegistros) {
           $daasdasda4 = $NroRegistros;
         } else {
           $daasdasda4 = $daasdasda2;
         }
-        echo '<table class="linksList" style="width:922px;"><thead><tr>
-          <th>&nbsp;</th>
-          <th style="text-align: left;">Mostrando <strong>' . ($daasdasda) . ' de ' . ($daasdasda4) . '</strong> resultados de <strong>' . $NroRegistros . '</strong></th>
-          <th>Fecha</th>
-          <th>Calificaci&oacute;n</th>
-          <th>Relevancia</th>
-        </tr></thead><tbody>';
+
+        echo '
+          <table class="linksList" style="width: 922px;">
+            <thead>
+              <tr>
+                <th>&nbsp;</th>
+                <th style="text-align: left;">
+                  Mostrando <strong>' . ($daasdasda) . ' de ' . ($daasdasda4) . '</strong> resultados de <strong>' . $NroRegistros . '</strong>
+                </th>
+                <th>Fecha</th>
+                <th>Calificaci&oacute;n</th>
+                <th>Relevancia</th>
+              </tr>
+            </thead>
+            <tbody>';
+
         while ($row = mysqli_fetch_assoc($result)) {
           $nombCat = $row['nombre'];
           $categoria = $row['categoria'];
@@ -1030,28 +1132,44 @@ LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
           $articulos = $row['calificacion'];
           $fecha_inicio = timeformat($row['creado']);
 
-          echo '<tr id="div_' . $id . '"><td title="' . $nombCat . '"><img title="' . $nombCat . '" src="' . $tranfer1 . '/comunidades/categorias/' . $categoria . '.png" alt="" /></td><td style="text-align: left;">';
-
-          echo '<a title="' . nohtml(nohtml2($nombre)) . '" href="/comunidades/' . $url . '/' . $id . '/' . urls($nombre) . '.html" class="titlePost">' . nohtml(nohtml2($nombre)) . '</a></td>
-<td title="' . $fecha_inicio . '">' . $fecha_inicio . '</td>
-<td style="color:green;">' . $articulos . '</td>
-<td title="' . $relevancia . '%">' . relevancia($relevancia) . '</td></tr>';
+          echo '
+            <tr id="div_' . $id . '">
+              <td title="' . $nombCat . '">
+                <img title="' . $nombCat . '" src="' . $tranfer1 . '/comunidades/categorias/' . $categoria . '.png" alt="" />
+              </td>
+              <td style="text-align: left;">
+                <a title="' . nohtml(nohtml2($nombre)) . '" href="' . $boardurl . '/comunidades/' . $url . '/' . $id . '/' . urls($nombre) . '.html" class="titlePost">' . nohtml(nohtml2($nombre)) . '</a>
+              </td>
+              <td title="' . $fecha_inicio . '">' . $fecha_inicio . '</td>
+              <td style="color: green;">' . $articulos . '</td>
+              <td title="' . $relevancia . '%">' . relevancia($relevancia) . '</td>
+            </tr>';
         }
 
-        echo '</tbody></table>';
+        echo '
+            </tbody>
+          </table>';
 
         if ($PagAct > $PagUlt) {
           echo '';
-        } elseif ($PagAct > 1 || $PagAct < $PagUlt) {
-          echo '<div class="windowbgpag" style="width:700px;">';
-          if ($PagAct > 1)
-            echo "<a href='/comunidades/buscar/&q=$enl&autor=$usuario&orden=$orden&buscador_tipo=t&categoria=$cat&pag=$PagAnt'>&#171; anterior</a>";
-          if ($PagAct < $PagUlt)
-            echo "<a href='/comunidades/buscar/&q=$enl&autor=$usuario&orden=$orden&buscador_tipo=t&categoria=$cat&pag=$PagSig'>siguiente &#187;</a>";
-          echo '<div class="clearBoth"></div></div>';
+        } else if ($PagAct > 1 || $PagAct < $PagUlt) {
+          echo '<div class="windowbgpag" style="width: 700px;">';
+
+          if ($PagAct > 1) {
+            echo '<a href="' . $boardurl . '/comunidades/buscar/&q=' . $enl . '&autor=' . $usuario . '&orden=' . $orden . '&buscador_tipo=t&categoria=' . $cat . '&pag=' . $PagAnt . '">&#171; anterior</a>';
+          }
+
+          if ($PagAct < $PagUlt) {
+            echo '<a href="' . $boardurl . '/comunidades/buscar/&q=' . $enl . '&autor=' . $usuario . '&orden=' . $orden . '&buscador_tipo=t&categoria=' . $cat . '&pag=' . $PagSig . '">siguiente &#187;</a>';
+          }
+
+          echo '
+              <div class="clearBoth"></div>
+            </div>';
         }
       }
     }
   }
 }
+
 ?>

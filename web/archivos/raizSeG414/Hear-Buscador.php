@@ -46,11 +46,12 @@ function hearBuscador($mm, $dd) {
 
     $links1 = '
       <a ' . $hereg . ' id="selen_google" href="javascript:buscador.select(\'google\')">Google</a>
-        <span class="sep">|</span>
+      <span class="sep">|</span>
       <a ' . $herecw . ' id="selen_cw" href="javascript:buscador.select(\'cw\')">' . $mbname . '</a>
-        <span class="sep">|</span>
+      <span class="sep">|</span>
       <a ' . $heret . ' id="selen_tags" href="javascript:buscador.select(\'tags\')">Tags</a>';
 
+    // TO-DO: Agregar javascript dentro de un echo
 ?>
 <script type="text/javascript">
   function check() {

@@ -287,13 +287,15 @@ function template_tyc() {
               <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email4" size="28" maxlength="60" />
               <b class="size11">6 - </b>
               <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email5" size="28" maxlength="60" />
-              <br /><br />
+              <br />
+              <br />
               <font class="size11">
                 <b>Asunto:</b>
               </font>
               <br />
               <input size="40" name="titulo" value="Te recomiendo ' . $mbname . '" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
-              <br /><br />
+              <br />
+              <br />
               <font class="size11">
                 <b>Mensaje:</b>
               </font>
@@ -303,7 +305,8 @@ function template_tyc() {
 Saludos!
 
 ' . $context['user']['name'] . '</textarea>
-                <br /><br />
+                <br />
+                <br />
                 <font class="size11">
                   <strong>C&oacute;digo de la imagen:</strong>
                 </font>
@@ -493,13 +496,17 @@ function template_tyc2() {
       <div class="active" id="contennnt" style="width: 922px;">
         <font class="size12">
           <b>1.</b> No se permite el uso de Nicks que contengan t&eacute;rminos insultantes, sexuales, apolog&iacute;as a la violencia o alg&uacute;n pedido de car&aacute;cter sexual, compa&ntilde;&iacute;a, parejas y/o a fines.
-          <br /><br />
+          <br />
+          <br />
           <b>2.</b> Est&aacute; prohibido faltar el respeto, insultar, provocar, difamar, acosar, amenazar o hacer cualquier otra cosa no deseada, tanto directa como indirecta a otro usuario.
-          <br /><br />
+          <br />
+          <br />
           <b>3.</b> No est&aacute; permitido el SPAM, publicidad o propaganda de p&aacute;ginas personales, chats, foros, mensajes comerciales destinados a vender productos o servicios, etc.
-          <br /><br />
+          <br />
+          <br />
           <b>4.</b> No repetir o enviar varias l&iacute;neas de texto en un cierto tiempo, NO FLOOD.
-          <br /><br />
+          <br />
+          <br />
           <b>5.</b> Recomendamos no abusar de las MAY&Uacute;SCULAS, s&oacute;lo utilizarlas por reglas ortogr&aacute;ficas (Comienzos de oraci&oacute;n, nombres propios o siglas), ya que el uso de &eacute;sta significa GRITAR.
         </font>
         <br />
@@ -534,7 +541,8 @@ function template_tyc3() {
             <p>
               En forma previa a la utilizaci&oacute;n de cualquier servicio o contenido ofrecido en ' . $mbname . ', debe leerse completa y
               atentamente este documento.
-              <br /><br />
+              <br />
+              <br />
               Las presentes Condiciones Generales constituyen las normas y reglas dispuestas por ' . $mbname . ', relativas a todos los
               servicios existentes actualmente o que resulten incluidos en el futuro dentro del sitio ' . $shorturl . ' (el Sitio). Dichos
               servicios si bien pueden ser gratuitos, no son de libre utilizaci&oacute;n, sino que est&aacute;n sujetos a un conjunto de pautas
@@ -808,7 +816,9 @@ function template_tyc3() {
             </p>
             <p>
               <br />
-              <strong>7.2<em>. </em></strong>
+              <strong>
+                7.2<em>. </em>
+              </strong>
               <strong>Responsabilidades en relaci&oacute;n a los servicios prestados:</strong>
               <br />
               Cada usuario ser&aacute; exclusivo responsable por las manifestaciones que vierta o las acciones que lleve adelante dentro
@@ -832,7 +842,9 @@ function template_tyc3() {
               <br />
               <br />
 
-              <strong>7.2<em>. </em></strong>
+              <strong>
+                7.2<em>. </em>
+              </strong>
               <strong>Responsabilidades en relaci&oacute;n a los servicios prestados:</strong>
               <br />
               Cada usuario ser&aacute; exclusivo responsable por las manifestaciones que vierta o las acciones que lleve adelante dentro
@@ -898,7 +910,6 @@ function template_tyc3() {
             </ol>
             <p>
               <strong>8.2. Medidas de control</strong>
-              <strong></strong>
               <br />
               Sin perjuicio de las acciones legales nacidas en cabeza de ' . $mbname . ' o terceros, cuando el uso de los servicios,
               llevado adelante por parte de un usuario pueda ser reputado por ' . $mbname . ' como USO PROHIBIDO, ' . $mbname . ' tomar&aacute; las
@@ -1077,114 +1088,123 @@ function template_tyc5() {
           </div>
         </div>
 
-        <div class="codePro"><b>Protocolo:</b>
-        <div class="codePro1">
-          <span class="size12" align="left">
-            <p style="margin: 0px; padding: 0px; padding-left: 10px;">
-              <img src="' . $tranfer1 . '/icons/si.png" width="16px" height="16px" class="png" alt="" />
-              <b>Caracter&iacute;sticas para postear:</b>
-            </p>
-            <p style="margin: 0px; padding: 0px;">
-              <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
-              Asunto sin MAY&Uacute;SCULAS (ya que esto indica que se est&aacute; gritando).
-            </p>
-            <p style="margin: 0px; padding: 0px;">
-              <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
-              Ser lo m&aacute;s descriptivo o lo m&aacute;s claro posible.
-            </p>
-            <p style="margin: 0px; padding: 0px;">
-              <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
-              Postear temas en la categor&iacute;a correspondiente.
-            </p>
-            <p style="margin: 0px; padding: 0px;">
-              <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
-              Fijarse que los enlaces funcionen correctamente.
-            </p>
-            <p style="margin: 0px; padding: 0px;">
-              <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
-              No revelar informaci&oacute;n personal propia o de terceros tales como correo, MSN, nombres, apellidos, tel&eacute;fonos, etc. (' . $mbname . ' no se hace cargo de problemas al publicar tal contenido)
-            </p>
-            <br />
-            <p style="margin: 0px; padding: 0px;">
-              <i><b><u>Nota</u>:</b> Las caracter&iacute;sticas no representa que el post sea eliminado, o se bane&eacute; al usuario que lo cre&oacute;, lo que si representa es que a cualquier moderador le da el derecho de editar tal post.</i>
-            </p>
-            <br />
+        <div class="codePro">
+          <b>Protocolo:</b>
+          <div class="codePro1">
+            <span class="size12" align="left">
+              <p style="margin: 0px; padding: 0px; padding-left: 10px;">
+                <img src="' . $tranfer1 . '/icons/si.png" width="16px" height="16px" class="png" alt="" />
+                <b>Caracter&iacute;sticas para postear:</b>
+              </p>
+              <p style="margin: 0px; padding: 0px;">
+                <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
+                Asunto sin MAY&Uacute;SCULAS (ya que esto indica que se est&aacute; gritando).
+              </p>
+              <p style="margin: 0px; padding: 0px;">
+                <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
+                Ser lo m&aacute;s descriptivo o lo m&aacute;s claro posible.
+              </p>
+              <p style="margin: 0px; padding: 0px;">
+                <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
+                Postear temas en la categor&iacute;a correspondiente.
+              </p>
+              <p style="margin: 0px; padding: 0px;">
+                <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
+                Fijarse que los enlaces funcionen correctamente.
+              </p>
+              <p style="margin: 0px; padding: 0px;">
+                <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
+                No revelar informaci&oacute;n personal propia o de terceros tales como correo, MSN, nombres, apellidos, tel&eacute;fonos, etc. (' . $mbname . ' no se hace cargo de problemas al publicar tal contenido)
+              </p>
+              <br />
+              <p style="margin: 0px; padding: 0px;">
+                <i>
+                  <b>
+                    <u>Nota</u>:
+                  </b>
+                  Las caracter&iacute;sticas no representa que el post sea eliminado, o se bane&eacute; al usuario que lo cre&oacute;, lo que si representa es que a cualquier moderador le da el derecho de editar tal post.
+                </i>
+              </p>
+              <br />
 
-            <p style="margin: 0px; padding: 0px; padding-left: 10px;">
-              <img src="' . $tranfer1 . '/icons/si.png" width="16px" height="16px" class="png" alt="" />
-              <b> Se eliminan los post:</b>
-            </p>
-            <p style="margin: 0px; padding: 0px;">
-              <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
-              Que este considerado spam.
-            </p>
-            <p style="margin: 0px; padding: 0px;">
-              <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
-              Que sea repost.
-            </p>
-            <p style="margin: 0px; padding: 0px;">
-              <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
-              Que contenga un vocabulario vulgar.
-            </p>
-            <p style="margin: 0px; padding: 0px;">
-              <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
-              Que haga referencia a la violaci&oacute;n de los derechos humanos.
-            </p>
-            <p style="margin: 0px; padding: 0px;">
-              <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
-              Que tenga enlaces rotos.
-            </p>
-            <p style="margin: 0px; padding: 0px;">
-              <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
-              Que no contenga la fuente (s&oacute;lo para categor&iacute;a <i>Noticias</i>).
-            </p>
-            <p style="margin: 0px; padding: 0px;">
-              <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
-              Que contenga material pornogr&aacute;fico (im&aacute;genes, videos, enlaces, etc.).
-            </p>
-            <br />
+              <p style="margin: 0px; padding: 0px; padding-left: 10px;">
+                <img src="' . $tranfer1 . '/icons/si.png" width="16px" height="16px" class="png" alt="" />
+                <b> Se eliminan los post:</b>
+              </p>
+              <p style="margin: 0px; padding: 0px;">
+                <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
+                Que este considerado spam.
+              </p>
+              <p style="margin: 0px; padding: 0px;">
+                <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
+                Que sea repost.
+              </p>
+              <p style="margin: 0px; padding: 0px;">
+                <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
+                Que contenga un vocabulario vulgar.
+              </p>
+              <p style="margin: 0px; padding: 0px;">
+                <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
+                Que haga referencia a la violaci&oacute;n de los derechos humanos.
+              </p>
+              <p style="margin: 0px; padding: 0px;">
+                <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
+                Que tenga enlaces rotos.
+              </p>
+              <p style="margin: 0px; padding: 0px;">
+                <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
+                Que no contenga la fuente (s&oacute;lo para categor&iacute;a <i>Noticias</i>).
+              </p>
+              <p style="margin: 0px; padding: 0px;">
+                <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" />
+                Que contenga material pornogr&aacute;fico (im&aacute;genes, videos, enlaces, etc.).
+              </p>
+              <br />
 
-            <p style="margin: 0px; padding: 0px; padding-left: 10px;"><img src="' . $tranfer1 . '/icons/si.png" width="16px" height="16px" class="png" alt="" /><b> Se eliminan los comentarios:</b></p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que contenga tipograf&iacute;as muy grandes, abuso de may&uacute;sculas o con el claro efecto de llamar la atenci&oacute;n.</p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Genera discusiones (ForoBardo).</p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que contengan insultos, ofensas, etc. (hacia otro usuario o de forma general).</p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que sea un comentario racista.</p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que contenga SPAM.</p>
-            <br />
+              <p style="margin: 0px; padding: 0px; padding-left: 10px;">
+                <img src="' . $tranfer1 . '/icons/si.png" width="16px" height="16px" class="png" alt="" /><b> Se eliminan los comentarios:</b>
+              </p>
+              <p style="margin: 0px; padding: 0px;">
+                <img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que contenga tipograf&iacute;as muy grandes, abuso de may&uacute;sculas o con el claro efecto de llamar la atenci&oacute;n.</p>
+              <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Genera discusiones (ForoBardo).</p>
+              <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que contengan insultos, ofensas, etc. (hacia otro usuario o de forma general).</p>
+              <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que sea un comentario racista.</p>
+              <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que contenga SPAM.</p>
+              <br />
 
-            <p style="margin: 0px; padding: 0px; padding-left: 10px;"><img src="' . $tranfer1 . '/icons/si.png" width="16px" height="16px" class="png" alt="" /><b> Se banea al usuario:</b></p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que reiteradas veces hagan lo que no deben hacer.</p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que genera SPAM</p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que elimina sus comentarios o posts en totalidad (Para hacerlo <a href="/contactanos/" target="_blank" title="Contactar">contactar</a> y dar los motivos).</p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que postea material pornogr&aacute;fico o material con morboso</p>
-            <br />
+              <p style="margin: 0px; padding: 0px; padding-left: 10px;"><img src="' . $tranfer1 . '/icons/si.png" width="16px" height="16px" class="png" alt="" /><b> Se banea al usuario:</b></p>
+              <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que reiteradas veces hagan lo que no deben hacer.</p>
+              <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que genera SPAM</p>
+              <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que elimina sus comentarios o posts en totalidad (Para hacerlo <a href="/contactanos/" target="_blank" title="Contactar">contactar</a> y dar los motivos).</p>
+              <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que postea material pornogr&aacute;fico o material con morboso</p>
+              <br />
 
-            <p style="margin: 0px; padding: 0px; padding-left: 10px;"><img src="' . $tranfer1 . '/icons/si.png" width="16px" height="16px" class="png" alt="" /><b> Se eliminan o modifica las im&aacute;genes:</b></p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que contenga SPAM (Imagen con enlace de un sitio)</p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que contenga logos de Webs y tapas (Programas, CD de m&uacute;sica, etc.)</p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que contenga pornograf&iacute;a.</p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que sea morbosa.</p>
-            <br />
- 
-            <p style="margin: 0px; padding: 0px; padding-left: 10px;"><img src="' . $tranfer1 . '/icons/si.png" width="16px" height="16px" class="png" alt="" /><b> Caracter&iacute;sticas para Crear una Comunidad:</b></p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> No utilizar titulo entero en MAYUSCULAS (ya que &iacute;ndica que se est&aacute; gritando). </p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Ser lo m&aacute;s descriptivo o lo m&aacute;s claro posible.</p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> No revelar Informaci&oacute;n personal propia o de terceros tales como e-mail, MSN, nombres, apellidos, tel&eacute;fonos, etc.</p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Cada usuario tiene limitado las cantidades de comunidades que puede crear.</p>
-            <p style="margin: 0px; padding: 0px;"><i><b>Nota:</b> Las caracter&iacute;sticas no representa que la comunidad sea Eliminada, o suspenda al usuario que la creo, lo que representa es que a cualquier Moderador le da el derecho de editar tal comunidad.</i></p>
-            <br />
+              <p style="margin: 0px; padding: 0px; padding-left: 10px;"><img src="' . $tranfer1 . '/icons/si.png" width="16px" height="16px" class="png" alt="" /><b> Se eliminan o modifica las im&aacute;genes:</b></p>
+              <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que contenga SPAM (Imagen con enlace de un sitio)</p>
+              <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que contenga logos de Webs y tapas (Programas, CD de m&uacute;sica, etc.)</p>
+              <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que contenga pornograf&iacute;a.</p>
+              <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que sea morbosa.</p>
+              <br />
+  
+              <p style="margin: 0px; padding: 0px; padding-left: 10px;"><img src="' . $tranfer1 . '/icons/si.png" width="16px" height="16px" class="png" alt="" /><b> Caracter&iacute;sticas para Crear una Comunidad:</b></p>
+              <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> No utilizar titulo entero en MAYUSCULAS (ya que &iacute;ndica que se est&aacute; gritando). </p>
+              <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Ser lo m&aacute;s descriptivo o lo m&aacute;s claro posible.</p>
+              <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> No revelar Informaci&oacute;n personal propia o de terceros tales como e-mail, MSN, nombres, apellidos, tel&eacute;fonos, etc.</p>
+              <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Cada usuario tiene limitado las cantidades de comunidades que puede crear.</p>
+              <p style="margin: 0px; padding: 0px;"><i><b>Nota:</b> Las caracter&iacute;sticas no representa que la comunidad sea Eliminada, o suspenda al usuario que la creo, lo que representa es que a cualquier Moderador le da el derecho de editar tal comunidad.</i></p>
+              <br />
 
-            <p style="margin: 0px; padding: 0px; padding-left: 10px;"><img src="' . $tranfer1 . '/icons/si.png" width="16px" height="16px" class="png" alt="" /><b> Se eliminan las comunidades:</b></p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que haya sido creada con el &uacute;nico objetivo de hacer  SPAM y/o REFERER.</p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que contenga un vocabulario vulgar.</p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que haga referencia a la violaci&oacute;n de los derechos humanos.</p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que contenga material pornogr&aacute;fico (Im&aacute;genes, Videos, Enlaces, etc.) </p>
-            <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> De un mismo tema, creadas por el mismo usuario.</p>
-            <div style="clear: both;"></div>
-          </span>
+              <p style="margin: 0px; padding: 0px; padding-left: 10px;"><img src="' . $tranfer1 . '/icons/si.png" width="16px" height="16px" class="png" alt="" /><b> Se eliminan las comunidades:</b></p>
+              <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que haya sido creada con el &uacute;nico objetivo de hacer  SPAM y/o REFERER.</p>
+              <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que contenga un vocabulario vulgar.</p>
+              <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que haga referencia a la violaci&oacute;n de los derechos humanos.</p>
+              <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> Que contenga material pornogr&aacute;fico (Im&aacute;genes, Videos, Enlaces, etc.) </p>
+              <p style="margin: 0px; padding: 0px;"><img src="' . $tranfer1 . '/icons/no.png" width="16px" height="16px" class="png" alt="" /> De un mismo tema, creadas por el mismo usuario.</p>
+              <div style="clear: both;"></div>
+            </span>
+          </div>
         </div>
-      </div>
-    </div>';
+      </div>';
 }
 
 // Editar apariencia

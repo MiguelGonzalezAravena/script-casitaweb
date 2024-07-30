@@ -4,10 +4,13 @@ global $context, $user_info, $db_prefix, $modSettings, $boardurl;
 
 if ($user_info['is_guest']) {
   echo '
-    <div class="noesta-am">S&oacute;lo Usuarios REGISTRADOS pueden actualizar los comentarios.<br />
-    <a href="' . $boardurl . '/registrarse/">REG&Iacute;STRATE</a>
-    -
-    <a href="#" onclick="javascript: servicenavlogin();">CON&Eacute;CTATE</a></div>';
+    <div class="noesta-am">
+      S&oacute;lo Usuarios REGISTRADOS pueden actualizar los comentarios.
+      <br />
+      <a href="' . $boardurl . '/registrarse/">REG&Iacute;STRATE</a>
+      -
+      <a href="#" onclick="javascript: servicenavlogin();">CON&Eacute;CTATE</a>
+    </div>';
 } else {
   $shas = !$user_info['is_admin'] ? ' AND m.ID_BOARD <> 142' : '';
 

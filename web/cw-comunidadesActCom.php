@@ -3,7 +3,14 @@ require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
 global $db_prefix, $user_info, $boardurl;
 
 if ($user_info['is_guest']) {
-  echo '<div class="noesta-am">S&Oacute;lo Usuarios REGISTRADOS pueden actualizar los comentarios.<br /><a href="' . $boardurl . '/registrarse/">REGISTRATE</a> - <a href="' . $boardurl . '/ingresar/">CON&Eacute;CTATE</a></div>';
+  echo '
+    <div class="noesta-am">
+      S&oacute;lo Usuarios REGISTRADOS pueden actualizar los comentarios.
+      <br />
+      <a href="' . $boardurl . '/registrarse/">REG&Iacute;STRATE</a>
+      -
+      <a href="' . $boardurl . '/ingresar/">CON&Eacute;CTATE</a>
+    </div>';
 } else {
   $rs2 = db_query("
     SELECT m.realName, t.titulo, t.id, co.url
@@ -25,7 +32,15 @@ if ($user_info['is_guest']) {
     while ($row = mysqli_fetch_assoc($rs2)) {
       $ddddsxx = nohtml(nohtml2($row['titulo']));
       $ddaa = $row['titulo'];
-      echo '<font class="size11"><b><a href="' . $boardurl . '/perfil/'.$row['realName'].'" target="_self" title="'.$row['realName'].'">'.$row['realName'].'</a></b> - <a href="' . $boardurl . '/comunidades/'.$row['url'].'/'.$row['id'].'/'.urls($ddaa).'.html" target="_self" title="'.$ddddsxx.'">'.$ddddsxx.'</a></font><br style="margin: 0px; padding: 0px;">';
+      echo '
+        <font class="size11">
+          <b>
+            <a href="' . $boardurl . '/perfil/'.$row['realName'].'" target="_self" title="'.$row['realName'].'">'.$row['realName'].'</a>
+          </b>
+          -
+          <a href="' . $boardurl . '/comunidades/'.$row['url'].'/'.$row['id'].'/'.urls($ddaa).'.html" target="_self" title="'.$ddddsxx.'">'.$ddddsxx.'</a>
+        </font>
+        <br style="margin: 0px; padding: 0px;">';
     }
   }
 }

@@ -457,7 +457,11 @@ function template_tyc666() {
             </div>';
         }
 
-        echo '<a rel="dc:relation" target="_self" href="' . $boardurl . '/post/' . $tag['id'] . '/' . $tag['description'] . '/' . urls(censorText($tag['subject'])) . '.html" title="' . censorText($tag['subject']) . '" class="categoriaPost ' . $tag['description'] . '">' . censorText($tag['subject']) . '</a></td><td title="' . timeformat($tag['posterTime']) . '">' . timeformat($tag['posterTime']) . '</td><td title="' . $tag['puntos'] . ' Puntos" style="color:green;">' . $tag['puntos'] . '</td>';
+        echo '
+            <a rel="dc:relation" target="_self" href="' . $boardurl . '/post/' . $tag['id'] . '/' . $tag['description'] . '/' . urls(censorText($tag['subject'])) . '.html" title="' . censorText($tag['subject']) . '" class="categoriaPost ' . $tag['description'] . '">' . censorText($tag['subject']) . '</a>
+          </td>
+          <td title="' . timeformat($tag['posterTime']) . '">' . timeformat($tag['posterTime']) . '</td>
+          <td title="' . $tag['puntos'] . ' Puntos" style="color: green;">' . $tag['puntos'] . '</td>';
       }
 
       echo '
@@ -553,23 +557,27 @@ function template_tyc12() {
               <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email4" size="28" maxlength="60" />
               <b class="size11">6 - </b>
               <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="r_email5" size="28" maxlength="60" />
-              <br /><br />
+              <br />
+              <br />
               <font class="size11">
                 <b>Asunto:</b>
               </font>
               <br />
               <input size="40" name="titulo" value="' . $row['title'] . '" type="text" onfocus="foco(this);" onblur="no_foco(this);">
-              <br /><br />
+              <br />
+              <br />
               <font class="size11">
                 <b>Mensaje:</b>
-              </font><br />
+              </font>
+              <br />
               <textarea onfocus="foco(this);" onblur="no_foco(this);" cols="70" rows="8" wrap="hard" tabindex="6" name="comment">&iexcl;Hola! Te recomiendo que veas esta imagen.
 
 Saludos!
 
 ' . $context['user']['name'] . '</textarea>
-              <br /><br />
-              <b style="font-size: 11px;">C&oacute;digo de la imagen</b>
+              <br />
+              <br />
+              <b style="font-size: 11px;">C&oacute;digo de la imagen:</b>
               <br />';
 
   captcha(1);
@@ -773,53 +781,56 @@ function template_tyc3() {
             <center>Widget</center>
           </div>
           <div class="box_rss">
-            <img src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" alt="" border="0" /></div>
-          </div>
-          <div style="width: 911px; padding: 4px; margin-bottom: 8px;" class="windowbg">
-            Integra los &uacute;ltimos posts de ' . $mbname . ' en tu web y mantente siempre actualizado.
-            <br />
-            En segundos podr&aacute;s tener un listado que estar&aacute; siempre
-            actualizado con los &uacute;ltimos posts publicados en ' . $mbname . '.
-            <br />
-            Puedes personalizar el listado para que se adapte al estilo de tu sitio. Puedes cambiar su tama&ntilde;o, color, cantidad de posts a listar y hasta puedes filtrar por categor&iacute;as.
-            <br /><br />
-            <b>¿C&oacute;mo implementarlo?</b>
-            <br />
-            <b>1.</b> Personal&iacute;zalo a tu gusto. C&aacute;mbiale color, y elige el tama&ntilde;o.
-            <br />
-            <b>2.</b> Copia el c&oacute;digo generado y p&eacute;galo en tu p&aacute;gina.
-            <br />
-            <b>3.</b> &iexcl;Listo!. Ya puedes disfrutar de ' . $mbname . ' widget.
-            <br />
+            <img src="' . $tranfer1 . '/blank.gif" style="width: 14px; height: 12px;" alt="" border="0" />
           </div>
         </div>
-        <table style="width: 921px; margin: 0px;">
-          <tr style="padding: 0px; margin: 0px;">
-            <td style="20%; padding: 0px; margin: 0px;" height="25px" class="titlebg" align="center">
-              <b>
-                <font color="#EEE">Personalizaci&oacute;n</font>
-              </b>
-            </td>
-            <td style="30%; padding: 0px; margin: 0px;" height="25px" class="titlebg" align="center">
-              <b>
-                <font color="#EEE">C&oacute;digo</font>
-              </b>
-            </td>
-            <td style="50%; padding: 0px; margin: 0px;" height="25px" class="titlebg" align="center">
-              <b>
-                <font color="#EEE">Ejemplo</font>
-              </b>
-            </td>
-          </tr>
-          <tr style="padding: 0px; margin: 0px;">
-            <td align="center" style="padding: 0px; margin: 0px;" class="windowbg">
-              <b>Categor&iacute;a:</b>
-              <br />
-              <select id="cat" onchange="actualizar_preview();">
-                <option value="" selected="selected">Todas</option>';
+        <div style="width: 911px; padding: 4px; margin-bottom: 8px;" class="windowbg">
+          Integra los &uacute;ltimos posts de ' . $mbname . ' en tu web y mantente siempre actualizado.
+          <br />
+          En segundos podr&aacute;s tener un listado que estar&aacute; siempre
+          actualizado con los &uacute;ltimos posts publicados en ' . $mbname . '.
+          <br />
+          Puedes personalizar el listado para que se adapte al estilo de tu sitio. Puedes cambiar su tama&ntilde;o, color, cantidad de posts a listar y hasta puedes filtrar por categor&iacute;as.
+          <br />
+          <br />
+          <b>¿C&oacute;mo implementarlo?</b>
+          <br />
+          <b>1.</b> Personal&iacute;zalo a tu gusto. C&aacute;mbiale color, y elige el tama&ntilde;o.
+          <br />
+          <b>2.</b> Copia el c&oacute;digo generado y p&eacute;galo en tu p&aacute;gina.
+          <br />
+          <b>3.</b> &iexcl;Listo!. Ya puedes disfrutar de ' . $mbname . ' widget.
+          <br />
+        </div>
+      </div>
+      <table style="width: 921px; margin: 0px;">
+        <tr style="padding: 0px; margin: 0px;">
+          <td style="20%; padding: 0px; margin: 0px;" height="25px" class="titlebg" align="center">
+            <b>
+              <font color="#EEE">Personalizaci&oacute;n</font>
+            </b>
+          </td>
+          <td style="30%; padding: 0px; margin: 0px;" height="25px" class="titlebg" align="center">
+            <b>
+              <font color="#EEE">C&oacute;digo</font>
+            </b>
+          </td>
+          <td style="50%; padding: 0px; margin: 0px;" height="25px" class="titlebg" align="center">
+            <b>
+              <font color="#EEE">Ejemplo</font>
+            </b>
+          </td>
+        </tr>
+        <tr style="padding: 0px; margin: 0px;">
+          <td align="center" style="padding: 0px; margin: 0px;" class="windowbg">
+            <b>Categor&iacute;a:</b>
+            <br />
+            <select id="cat" onchange="actualizar_preview();">
+              <option value="" selected="selected">Todas</option>';
 
   while ($row = mysqli_fetch_assoc($request)) {
-    echo '<option value="' . $row['ID_BOARD'] . '">' . $row['name'] . '</option>';
+    echo '
+      <option value="' . $row['ID_BOARD'] . '">' . $row['name'] . '</option>';
   }
 
   mysqli_free_result($request);
@@ -929,11 +940,19 @@ function template_vr2965() {
           -
           <span class="size11">
             [
-              <b>
-                <a href="' . $boardurl . '/web/cw-ComunicacionAdm-EliPost.php?post=' . $row['id_contenido'] . '" onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas eliminar este post?\')) return false;">X</a></b>]</span>';
+            <b>
+              <a href="' . $boardurl . '/web/cw-ComunicacionAdm-EliPost.php?post=' . $row['id_contenido'] . '" onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas eliminar este post?\')) return false;">X</a>
+            </b>
+            ]
+          </span>';
       } else if ($context['user']['id'] == $id_user) {
-        echo ' - <span class="size11">[<b><a href="' . $boardurl . '/moderacion/comunicacion-mod/post/eliminar/' . $row['id_contenido'] . '" onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas eliminar este post?\')) return false;">X</a>
-              </b>
+        echo '
+          -
+          <span class="size11">
+            [
+            <b>
+              <a href="' . $boardurl . '/moderacion/comunicacion-mod/post/eliminar/' . $row['id_contenido'] . '" onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas eliminar este post?\')) return false;">X</a>
+            </b>
             ]
           </span>';
       }
@@ -1068,9 +1087,15 @@ function template_vr2965() {
     while ($row = mysqli_fetch_array($request)) {
       echo '
         <tr>
-          <td><img src="' . $tranfer1 . '/comunidades/respuesta.png" alt="" /></td>
-          <td><a href="' . $boardurl . '/moderacion/comunicacion-mod/post/' . $row['id_post'] . '">' . $row['titulo'] . '</a></td>
-          <td><a href="' . $boardurl . '/perfil/' . $row['realName'] . '" title="' . $row['realName'] . '">' . $row['realName'] . '</a></td>
+          <td>
+            <img src="' . $tranfer1 . '/comunidades/respuesta.png" alt="" />
+          </td>
+          <td>
+            <a href="' . $boardurl . '/moderacion/comunicacion-mod/post/' . $row['id_post'] . '">' . $row['titulo'] . '</a>
+          </td>
+          <td>
+            <a href="' . $boardurl . '/perfil/' . $row['realName'] . '" title="' . $row['realName'] . '">' . $row['realName'] . '</a>
+          </td>
         </tr>';
     }
 
@@ -1113,11 +1138,17 @@ function template_vr2965() {
                 </a>';
 
       if (!$cerrar) {
-        echo '<a onclick="citar_comment(' . $row['id'] . ')" href="javascript:void(0)" title="Citar Comentario"><img alt="" src="' . $tranfer1 . '/comunidades/respuesta.png" class="png" border="0" /></a>';
+        echo '
+          <a onclick="citar_comment(' . $row['id'] . ')" href="javascript:void(0)" title="Citar comentario">
+            <img alt="" src="' . $tranfer1 . '/comunidades/respuesta.png" class="png" border="0" />
+          </a>';
       }
 
       if ($id_user == $context['user']['id'] || $context['user']['is_admin']) {
-        echo '<a href="' . $boardurl . '/web/cw-ComunicacionAdm-EliCom.php?id=' . $row['id'] . '&post=' . $getid . '" title="Eliminar Comentario"><img alt="" src="' . $tranfer1 . '/comunidades/eliminar.png" class="png" border="0" /></a>';
+        echo '
+          <a href="' . $boardurl . '/web/cw-ComunicacionAdm-EliCom.php?id=' . $row['id'] . '&post=' . $getid . '" title="Eliminar comentario">
+            <img alt="" src="' . $tranfer1 . '/comunidades/eliminar.png" class="png" border="0" />
+          </a>';
       }
 
       echo '

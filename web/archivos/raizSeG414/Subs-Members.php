@@ -1,13 +1,19 @@
 <?php
-//Pagina de Rodrigo Zaupa (rigo@casitaweb.net)
-if (!defined('CasitaWeb!-PorRigo'))die(base64_decode("d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv"));
-function deleteMembers(){}
-function deleteMembergroups($groups){global $db_prefix;
+// Página de Rodrigo Zaupa (rigo@casitaweb.net)
+if (!defined('CasitaWeb!-PorRigo')) {
+	die(base64_decode('d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv'));
+}
+
+function deleteMembers() {}
+
+function deleteMembergroups($groups)
+{
+	global $db_prefix;
+
 	isAllowedTo('manage_membergroups');
 	if (!is_array($groups))
 		$groups = array((int) $groups);
-	else
-	{
+	else {
 		$groups = array_unique($groups);
 
 		// Make sure all groups are integer.
@@ -23,8 +29,8 @@ function deleteMembergroups($groups){global $db_prefix;
 	// Remove the membergroups themselves.
 	db_query("
 		DELETE FROM {$db_prefix}membergroups
-		WHERE ID_GROUP IN (" . implode(', ', $groups) . ")
-		LIMIT " . count($groups), __FILE__, __LINE__);
+		WHERE ID_GROUP IN (" . implode(', ', $groups) . ')
+		LIMIT ' . count($groups), __FILE__, __LINE__);
 
 	// Remove the permissions of the membergroups.
 	db_query("
@@ -40,7 +46,6 @@ function deleteMembergroups($groups){global $db_prefix;
 		SET ID_GROUP = 0
 		WHERE ID_GROUP IN (" . implode(', ', $groups) . ')', __FILE__, __LINE__);
 
-
 	// No boards can provide access to these membergroups anymore.
 	$request = db_query("
 		SELECT ID_BOARD, memberGroups
@@ -55,8 +60,8 @@ function deleteMembergroups($groups){global $db_prefix;
 		db_query("
 			UPDATE {$db_prefix}boards
 			SET memberGroups = '" . implode(',', array_diff(explode(',', $memberGroups), $groups)) . "'
-			WHERE ID_BOARD IN (" . implode(', ', $boardArray) . ")
-			LIMIT 1", __FILE__, __LINE__);
+			WHERE ID_BOARD IN (" . implode(', ', $boardArray) . ')
+			LIMIT 1', __FILE__, __LINE__);
 
 	// Recalculate the post groups, as they likely changed.
 	updateStats('postgroups');
@@ -75,8 +80,7 @@ function removeMembersFromGroups($members, $groups = null)
 	// Cleaning the input.
 	if (!is_array($members))
 		$members = array((int) $members);
-	else
-	{
+	else {
 		$members = array_unique($members);
 
 		// Cast the members to integer.
@@ -112,12 +116,13 @@ function removeMembersFromGroups($members, $groups = null)
 	db_query("
 		UPDATE {$db_prefix}members
 		SET ID_GROUP = 0
-		WHERE ID_GROUP IN (" . implode(', ', $groups) . ")
-			AND ID_MEMBER IN (" . implode(', ', $members) . ")
-		LIMIT " . count($members), __FILE__, __LINE__);
+		WHERE ID_GROUP IN (" . implode(', ', $groups) . ')
+			AND ID_MEMBER IN (' . implode(', ', $members) . ')
+		LIMIT ' . count($members), __FILE__, __LINE__);
 
 	return true;
 }
+
 function addMembersToGroup($members, $group, $type = 'auto')
 {
 	global $db_prefix;
@@ -127,8 +132,7 @@ function addMembersToGroup($members, $group, $type = 'auto')
 
 	if (!is_array($members))
 		$members = array((int) $members);
-	else
-	{
+	else {
 		$members = array_unique($members);
 
 		// Make sure all members are integer.
@@ -155,26 +159,25 @@ function addMembersToGroup($members, $group, $type = 'auto')
 	if ($group == 1 && !allowedTo('admin_forum'))
 		return false;
 
-if ($type == 'only_primary' || $type == 'force_primary')
+	if ($type == 'only_primary' || $type == 'force_primary')
 		db_query("
 			UPDATE {$db_prefix}members
 			SET ID_GROUP = $group
-			WHERE ID_MEMBER IN (" . implode(', ', $members) . ")" . ($type == 'force_primary' ? '' : "
+			WHERE ID_MEMBER IN (" . implode(', ', $members) . ')' . ($type == 'force_primary' ? '' : "
 				AND ID_GROUP = 0
-				AND NOT FIND_IN_SET($group, additionalGroups)") . "
-			LIMIT " . count($members), __FILE__, __LINE__);
-	elseif ($type == 'auto')
-	{}
+				AND NOT FIND_IN_SET($group, additionalGroups)") . '
+			LIMIT ' . count($members), __FILE__, __LINE__);
+	elseif ($type == 'auto') {
+	}
 	// Ack!!?  What happened?
 	else
-		trigger_error('addMembersToGroup(): Unknown type \'' . $type . '\'', E_USER_WARNING);
+		trigger_error("addMembersToGroup(): Unknown type '" . $type . "'", E_USER_WARNING);
 
 	// Update their postgroup statistics.
 	updateStats('postgroups', 'ID_MEMBER IN (' . implode(', ', $members) . ')');
 
 	return true;
 }
-
 
 function groupsAllowedTo($permission, $board_id = null)
 {
@@ -187,8 +190,7 @@ function groupsAllowedTo($permission, $board_id = null)
 	);
 
 	// Assume we're dealing with regular permissions (like profile_view_own).
-	if ($board_id === null)
-	{
+	if ($board_id === null) {
 		$request = db_query("
 			SELECT ID_GROUP, addDeny
 			FROM {$db_prefix}permissions
@@ -196,14 +198,10 @@ function groupsAllowedTo($permission, $board_id = null)
 		while ($row = mysqli_fetch_assoc($request))
 			$membergroups[$row['addDeny'] === '1' ? 'allowed' : 'denied'][] = $row['ID_GROUP'];
 		mysqli_free_result($request);
-	}
-
-	else
-	{
+	} else {
 		if (isset($board_info['id']) && $board_info['id'] == $board_id)
 			$permission_mode = $board_info['permission_mode'] == 'no_polls' ? 2 : ($board_info['permission_mode'] == 'reply_only' ? 3 : ($board_info['permission_mode'] == 'read_only' ? 4 : 0));
-		elseif ($board_id !== 0)
-		{
+		elseif ($board_id !== 0) {
 			$request = db_query("
 				SELECT permission_mode
 				FROM {$db_prefix}boards
@@ -216,8 +214,7 @@ function groupsAllowedTo($permission, $board_id = null)
 		}
 
 		$moderator_only = false;
-		if ($board_id !== 0 && empty($modSettings['permission_enable_by_board']) && in_array($permission, array('post_reply_own', 'post_reply_any', 'post_new', 'poll_post')))
-		{
+		if ($board_id !== 0 && empty($modSettings['permission_enable_by_board']) && in_array($permission, array('post_reply_own', 'post_reply_any', 'post_new', 'poll_post'))) {
 			$max_allowable_mode = 3;
 			if ($permission == 'post_new')
 				$max_allowable_mode = 2;
@@ -235,8 +232,8 @@ function groupsAllowedTo($permission, $board_id = null)
 				AND modperm.ID_GROUP = bp.ID_GROUP 
 				AND modperm.ID_BOARD = 0 
 				AND modperm.permission = 'moderate_board' 
-				AND modperm.addDeny = 1" : '') . "
-				AND bp.ID_BOARD " . (empty($modSettings['permission_enable_by_board']) || empty($permission_mode) || $board_id === 0 ? '= 0' : 'IN (0, ' . $board_id . ')'), __FILE__, __LINE__);
+				AND modperm.addDeny = 1" : '') . '
+				AND bp.ID_BOARD ' . (empty($modSettings['permission_enable_by_board']) || empty($permission_mode) || $board_id === 0 ? '= 0' : 'IN (0, ' . $board_id . ')'), __FILE__, __LINE__);
 		while ($row = mysqli_fetch_assoc($request))
 			$membergroups[$row['addDeny'] === '1' ? 'allowed' : 'denied'][] = $row['ID_GROUP'];
 		mysqli_free_result($request);
@@ -246,6 +243,7 @@ function groupsAllowedTo($permission, $board_id = null)
 
 	return $membergroups;
 }
+
 function membersAllowedTo($permission, $board_id = null)
 {
 	global $db_prefix;
@@ -261,9 +259,9 @@ function membersAllowedTo($permission, $board_id = null)
 	$request = db_query("
 		SELECT mem.ID_MEMBER
 		FROM {$db_prefix}members AS mem" . ($include_moderators || $exclude_moderators ? "
-			LEFT JOIN {$db_prefix}moderators AS mods ON (mods.ID_MEMBER = mem.ID_MEMBER AND ID_BOARD = $board_id)" : '') . "
-		WHERE (" . ($include_moderators ? "mods.ID_MEMBER IS NOT NULL OR " : '') . 'ID_GROUP IN (' . implode(', ', $membergroups['allowed']) . ") " . (empty($membergroups['denied']) ? '' : "
-			AND NOT (" . ($exclude_moderators ? "mods.ID_MEMBER IS NOT NULL OR " : '') . 'ID_GROUP IN (' . implode(', ', $membergroups['denied']) . ")"), __FILE__, __LINE__);
+			LEFT JOIN {$db_prefix}moderators AS mods ON (mods.ID_MEMBER = mem.ID_MEMBER AND ID_BOARD = $board_id)" : '') . '
+		WHERE (' . ($include_moderators ? 'mods.ID_MEMBER IS NOT NULL OR ' : '') . 'ID_GROUP IN (' . implode(', ', $membergroups['allowed']) . ') ' . (empty($membergroups['denied']) ? '' : '
+			AND NOT (' . ($exclude_moderators ? 'mods.ID_MEMBER IS NOT NULL OR ' : '') . 'ID_GROUP IN (' . implode(', ', $membergroups['denied']) . ')'), __FILE__, __LINE__);
 	$members = array();
 	while ($row = mysqli_fetch_assoc($request))
 		$members[] = $row['ID_MEMBER'];
@@ -275,19 +273,18 @@ function membersAllowedTo($permission, $board_id = null)
 function reattributePosts($memID, $email = false, $post_count = false)
 {
 	global $db_prefix;
-	if ($email === false)
-	{
+
+	if ($email === false) {
 		$request = db_query("
 			SELECT emailAddress
 			FROM {$db_prefix}members
 			WHERE ID_MEMBER = $memID
 			LIMIT 1", __FILE__, __LINE__);
-		list ($email) = mysqli_fetch_row($request);
+		list($email) = mysqli_fetch_row($request);
 		mysqli_free_result($request);
 	}
 
-	if ($post_count)
-	{
+	if ($post_count) {
 		$request = db_query("
 			SELECT COUNT(*)
 			FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b)
@@ -296,7 +293,7 @@ function reattributePosts($memID, $email = false, $post_count = false)
 				AND m.icon != 'recycled'
 				AND b.ID_BOARD = m.ID_BOARD
 				AND b.countPosts = 1", __FILE__, __LINE__);
-		list ($messageCount) = mysqli_fetch_row($request);
+		list($messageCount) = mysqli_fetch_row($request);
 		mysqli_free_result($request);
 
 		updateMemberData($memID, array('posts' => 'posts + ' . $messageCount));
@@ -308,6 +305,7 @@ function reattributePosts($memID, $email = false, $post_count = false)
 		WHERE posterEmail = '$email'", __FILE__, __LINE__);
 	return db_affected_rows();
 }
-function BuddyListToggle(){}
+
+function BuddyListToggle() {}
 
 ?>

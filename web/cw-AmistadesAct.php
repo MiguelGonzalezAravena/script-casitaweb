@@ -18,12 +18,14 @@ if ($user_info['is_guest']) {
   if ($rows > 0) {
     echo '
       <div id="amistadesACT" style="width: 163px; margin-bottom: 8px;">
-        <div style="background: #DADADA; color: #666666; font-size: 14px; padding: 4px; width: 155px;"><b>Quiere ser tu amigo:</b></div>
-          <div style="background: #EEEEEE; padding: 2px; width: 159px;">
-            <center>
-              <img src="' . $tranfer1 . '/icons/cargando.gif" style="margin-top: 4px; display: none;" id="cargandoAmistad width="16px" height="16px" alt="" />
-            </center>
-            <div style="display: none;" class="noesta" id="errorAmistad"></div>';
+        <div style="background: #DADADA; color: #666666; font-size: 14px; padding: 4px; width: 155px;">
+          <b>Quiere ser tu amigo:</b>
+        </div>
+        <div style="background: #EEEEEE; padding: 2px; width: 159px;">
+          <center>
+            <img src="' . $tranfer1 . '/icons/cargando.gif" style="margin-top: 4px; display: none;" id="cargandoAmistad width="16px" height="16px" alt="" />
+          </center>
+          <div style="display: none;" class="noesta" id="errorAmistad"></div>';
 
     $request = db_query("
       SELECT user, id
@@ -56,7 +58,9 @@ if ($user_info['is_guest']) {
                   </a>
                 </td>
                 <td valign="top">
-                  <a title="' . $username . '" href="' . $url_profile . '" style="color: #D35F2C;"><b>' . $username . '</b></a>
+                  <a title="' . $username . '" href="' . $url_profile . '" style="color: #D35F2C;">
+                    <b>' . $username . '</b>
+                  </a>
                   <div class="clearfix" style="margin-top: 4px; margin-bottom: 4px;">
                     <div style="margin-bottom: 6px;">
                       <a href="#" onclick="accionAmistad(\'' . $id . '\', \'1\'); return false;" class="botN1" style="color: #fff; text-shadow: #005400 0px 1px 0px;">Aceptar</a>

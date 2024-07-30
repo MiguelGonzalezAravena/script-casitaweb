@@ -1880,7 +1880,7 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
        * 	'tag' => 'flash',
        * 	'type' => 'unparsed_commas_content',
        * 	'test' => '\d+,\d+\]',
-       * 	'content' => ($context['browser']['is_ie'] && !$context['browser']['is_mac_ie'] ? '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="$2" height="$3"><param name="movie" value="$1" /><param name="play" value="true" /><param name="loop" value="true" /><param name="quality" value="high" /><param name="AllowScriptAccess" value="never" /><embed src="$1" width="$2" height="$3" play="true" loop="true" quality="high" AllowScriptAccess="never" /><noembed><a href="$1" target="_blank" rel="noopener noreferrer" class="bbc_link bbc_flash_disabled new_win">$1</a></noembed></object>' : '<embed type="application/x-shockwave-flash" src="$1" width="$2" height="$3" play="true" loop="true" quality="high" AllowScriptAccess="never" /><noembed><a href="$1" target="_blank" rel="noopener noreferrer" class="bbc_link bbc_flash_disabled new_win">$1</a></noembed>'),
+       * 	'content' => ($context['browser']['is_ie'] && !$context['browser']['is_mac_ie'] ? '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="$2" height="$3"><param name="movie" value="$1" /><param name="play" value="true" /><param name="loop" value="true" /><param name="quality" value="high" /><param name="AllowScriptAccess" value="never" /><embed src="$1" width="$2" height="$3" play="true" loop="true" quality="high" AllowScriptAccess="never" /><noembed><a href="$1" target="_blank" rel="noopener noreferrer" class="bbc_link bbc_flash_disabled new_win">$1</a></noembed></object>' : '<embed type="application/x-shockwave-flash" src="$1" width="$2" height="$3" play="true" loop="true" quality="high" AllowScriptAccess="never" /noembed><a href="$1" target="_blank" rel="noopener noreferrer" class="bbc_link bbc_flash_disabled new_win">$1</a></noembed>'),
        * 	'validate' => function(&$tag, &$data, $disabled)
        * 	{
        * 		if (isset($disabled['url']))
@@ -3606,8 +3606,9 @@ function theme_copyright($get_it = false) {}
 function template_footer() {
   global $context;
 
-  foreach (array_reverse($context['template_layers']) as $layer)
+  foreach (array_reverse($context['template_layers']) as $layer) {
     loadSubTemplate($layer . '_below', true);
+  }
 }
 
 function db_debug_junk() {}

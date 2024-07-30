@@ -18,7 +18,8 @@ echo '
         <input onfocus="foco(this);" onblur="no_foco(this);" tabindex="1" size="60" maxlength="54" type="text" name="title" id="title" value="" />
         <br />
         <br />
-        <b class="size11">URL de la imagen:</b><br />
+        <b class="size11">URL de la imagen:</b>
+        <br />
         <input onfocus="foco(this);" onblur="no_foco(this);" type="text" tabindex="2" size="60" name="url" id="url" value="" />
         <div class="hrs"></div>
         <div class="noesta">* Si la imagen contiene pornograf&iacute;a o es morboso, se borrar&aacute;.</div>

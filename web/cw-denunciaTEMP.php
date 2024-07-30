@@ -45,11 +45,13 @@ if (empty($_GET['t'])) {
             <option value="No cumple con el protocolo">No cumple con el protocolo</option>
             <option value="Otra razon (especificar)">Otra raz&oacute;n (especificar)</option>
           </select>
-          <br /><br />
+          <br />
+          <br />
           <strong>Aclaraci&oacute;n y comentarios:</strong>
           <br />
           <textarea name="comentario" id="cDen" onfocus="foco(this);" onblur="no_foco(this);" style="width: 380px;"  wrap="hard" tabindex="2"></textarea>
-          <br /><br />
+          <br />
+          <br />
           <input class="login" onclick="enviarDen(\'user\', \'' . $_GET['d'] . '\');" type="button" value="Denunciar" />
         </p>
       </div>
@@ -96,11 +98,13 @@ if (empty($_GET['t'])) {
               <option value="No cumple con el protocolo">No cumple con el protocolo</option>
               <option value="Otra razon (especificar)">Otra raz&oacute;n (especificar)</option>
             </select>
-            <br /><br />
+            <br />
+            <br />
             <strong>Aclaraci&oacute;n y comentarios:</strong>
             <br />
             <textarea name="comentario" id="cDen" onfocus="foco(this);" onblur="no_foco(this);" style="width: 380px;"  wrap="hard" tabindex="2"></textarea>
-            <br /><br />
+            <br />
+            <br />
             <input class="login" onclick="enviarDen(\'post\', \'' . $_GET['d'] . '\');" type="button" value="Denunciar" />
           </p>
         </div>
@@ -140,11 +144,13 @@ if (empty($_GET['t'])) {
             <option value="No cumple con el protocolo">No cumple con el protocolo</option>
             <option value="Otra razon (especificar)">Otra raz&oacute;n (especificar)</option>
           </select>
-          <br /><br />
+          <br />
+          <br />
           <strong>Aclaraci&oacute;n y comentarios:</strong>
           <br />
           <textarea name="comentario" id="cDen" onfocus="foco(this);" onblur="no_foco(this);" style="width: 380px;"  wrap="hard" tabindex="2"></textarea>
-          <br /><br />
+          <br />
+          <br />
           <input class="login" onclick="enviarDen(\'imagen\', \'' . $_GET['d'] . '\');" type="button" value="Denunciar" />
         </p>
       </div>

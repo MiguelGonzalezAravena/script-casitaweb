@@ -213,7 +213,8 @@ function template_admin() {
         <center>
           <b class="size16">NOSOTROS DAMOS EL EJEMPLO, QUE SEA EL MEJOR.</b>
         </center>
-        <br /><br />
+        <br />
+        <br />
         <center>
           <b class="size9">Los que hacemos esta hermosa web:</b>
           <br />

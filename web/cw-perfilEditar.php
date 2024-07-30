@@ -232,10 +232,11 @@ if ($_GET['sa'] !== 'activar') {
 if ($newpassemail) {
   require_once($sourcedir . '/Subs-Post.php');
 
+  // TO-DO: Verificar correo que llega
   sendmail(
     $_POST['emailAddress'],
     'Confirmar e-mail',
-    "Para volver a ingresar con tu cuenta en $boardurl, la debes activar.<br/>Para eso debes ir al siguiente enlace, una vez que ingreses, tu cuenta estar&aacute; activa:<br/><br/><a href=\"$boardurl/activar-{$memID}codigo-{$validationCode}\">$boardurl/activar-{$memID}codigo-{$validationCode}</a><br/><br/>Si tienes problemas con el enlace, no dudes en contactar con $mbname (<a href=\"$boardurl/contactanos/\">$boardurl/contactanos/</a>) siempre recordando tu c&oacute;digo de activacion: {$validationCode}");
+    "Para volver a ingresar con tu cuenta en $boardurl, la debes activar.<br/>Para eso debes ir al siguiente enlace, una vez que ingreses, tu cuenta estar&aacute; activa:<br/ ><br /><a href=\"$boardurl/activar-{$memID}codigo-{$validationCode}\">$boardurl/activar-{$memID}codigo-{$validationCode}</a><br /><br />Si tienes problemas con el enlace, no dudes en contactar con $mbname (<a href=\"$boardurl/contactanos/\">$boardurl/contactanos/</a>) siempre recordando tu c&oacute;digo de activacion: {$validationCode}");
 
   db_query("
     DELETE FROM {$db_prefix}log_online

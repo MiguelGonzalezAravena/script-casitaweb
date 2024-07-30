@@ -1,6 +1,9 @@
 <?php
-//Pagina de Rodrigo Zaupa (rigo@casitaweb.net)
-if (!defined('CasitaWeb!-PorRigo'))die(base64_decode("d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv"));
+// Página de Rodrigo Zaupa (rigo@casitaweb.net)
+if (!defined('CasitaWeb!-PorRigo')) {
+  die(base64_decode('d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv'));
+}
+
 function ModifyMembergroups() {
   global $context, $txt, $scripturl, $urlSep;
 
@@ -57,8 +60,9 @@ function ModifyMembergroups() {
   $subActions[$_REQUEST['sa']][0]();
 }
 
-function MembergroupIndex() {
-  global $tranfer1,$db_prefix, $txt, $scripturl, $context, $settings, $urlSep;
+function MembergroupIndex()
+{
+  global $tranfer1, $db_prefix, $txt, $scripturl, $context, $settings, $urlSep;
 
   $context['page_title'] = $txt['membergroups_title'];
 
@@ -84,31 +88,29 @@ function MembergroupIndex() {
       'is_post_group' => $row['minPosts'] != -1,
       'min_posts' => $row['minPosts'] == -1 ? '-' : $row['minPosts'],
       'color' => empty($row['onlineColor']) ? '' : $row['onlineColor'],
-      'stars' => !empty($row['stars'][0]) && !empty($row['stars'][1]) ? str_repeat('<img src="'.$tranfer1.'/' . $row['stars'][1] . '" alt="'.$row['groupName'].'" border="0" />', $row['stars'][0]) : '',
+      'stars' => !empty($row['stars'][0]) && !empty($row['stars'][1]) ? str_repeat('<img src="' . $tranfer1 . '/' . $row['stars'][1] . '" alt="' . $row['groupName'] . '" border="0" />', $row['stars'][0]) : '',
     );
   }
 
   mysqli_free_result($query);
 
-  if (!empty($context['groups']['post']))
-  {
+  if (!empty($context['groups']['post'])) {
     $query = db_query("
       SELECT ID_POST_GROUP AS ID_GROUP, COUNT(*) AS num_members
       FROM {$db_prefix}members
-      WHERE ID_POST_GROUP IN (" . implode(', ', array_keys($context['groups']['post'])) . ")
-      GROUP BY ID_POST_GROUP", __FILE__, __LINE__);
+      WHERE ID_POST_GROUP IN (" . implode(', ', array_keys($context['groups']['post'])) . ')
+      GROUP BY ID_POST_GROUP', __FILE__, __LINE__);
     while ($row = mysqli_fetch_assoc($query))
       $context['groups']['post'][$row['ID_GROUP']]['num_members'] += $row['num_members'];
     mysqli_free_result($query);
   }
 
-  if (!empty($context['groups']['regular']))
-  {
+  if (!empty($context['groups']['regular'])) {
     $query = db_query("
       SELECT ID_GROUP, COUNT(*) AS num_members
       FROM {$db_prefix}members
-      WHERE ID_GROUP IN (" . implode(', ', array_keys($context['groups']['regular'])) . ")
-      GROUP BY ID_GROUP", __FILE__, __LINE__);
+      WHERE ID_GROUP IN (" . implode(', ', array_keys($context['groups']['regular'])) . ')
+      GROUP BY ID_GROUP', __FILE__, __LINE__);
     while ($row = mysqli_fetch_assoc($query))
       $context['groups']['regular'][$row['ID_GROUP']]['num_members'] += $row['num_members'];
     mysqli_free_result($query);
@@ -127,8 +129,7 @@ function MembergroupIndex() {
   }
 
   foreach ($context['groups'] as $temp => $dummy)
-    foreach ($dummy as $id => $data)
-    {
+    foreach ($dummy as $id => $data) {
       if ($data['href'] != '')
         $context['groups'][$temp][$id]['link'] = '<a href="' . $data['href'] . '">' . $data['name'] . '</a>';
       else
@@ -137,12 +138,12 @@ function MembergroupIndex() {
 }
 
 // Add a membergroup.
-function AddMembergroup() {
+function AddMembergroup()
+{
   global $db_prefix, $context, $txt, $sourcedir, $modSettings, $urlSep, $boardurl;
 
   // A form was submitted, we can start adding.
-  if (!empty($_POST['group_name']))
-  {
+  if (!empty($_POST['group_name'])) {
     checkSession();
 
     $postCountBasedGroup = isset($_POST['min_posts']) && (!isset($_POST['postgroup_based']) || !empty($_POST['postgroup_based']));
@@ -152,7 +153,7 @@ function AddMembergroup() {
     $request = db_query("
       SELECT MAX(ID_GROUP)
       FROM {$db_prefix}membergroups", __FILE__, __LINE__);
-    list ($ID_GROUP) = mysqli_fetch_row($request);
+    list($ID_GROUP) = mysqli_fetch_row($request);
     mysqli_free_result($request);
     $ID_GROUP++;
 
@@ -169,19 +170,17 @@ function AddMembergroup() {
     if ($postCountBasedGroup && empty($modSettings['permission_enable_postgroups']))
       $_POST['perm_type'] = '';
 
-    if ($_POST['perm_type'] == 'predefined')
-    {
+    if ($_POST['perm_type'] == 'predefined') {
       // Set default permission level.
-      require($sourcedir . '/ManagePermissions.php');
+      require ($sourcedir . '/ManagePermissions.php');
       setPermissionLevel($_POST['level'], $ID_GROUP, 'null');
     }
     // Copy the permissions!
-    elseif ($_POST['perm_type'] == 'copy')
-    {
+    elseif ($_POST['perm_type'] == 'copy') {
       $_POST['copyperm'] = (int) $_POST['copyperm'];
 
       // Don't allow copying of a real priviledged person!
-      require($sourcedir . '/ManagePermissions.php');
+      require ($sourcedir . '/ManagePermissions.php');
       loadIllegalPermissions();
 
       $request = db_query("
@@ -189,8 +188,7 @@ function AddMembergroup() {
         FROM {$db_prefix}permissions
         WHERE ID_GROUP = $_POST[copyperm]", __FILE__, __LINE__);
       $setString = '';
-      while ($row = mysqli_fetch_assoc($request))
-      {
+      while ($row = mysqli_fetch_assoc($request)) {
         if (empty($context['illegal_permissions']) || !in_array($row['permission'], $context['illegal_permissions']))
           $setString .= "
             ($ID_GROUP, '$row[permission]', $row[addDeny]),";
@@ -206,8 +204,8 @@ function AddMembergroup() {
       $request = db_query("
         SELECT ID_BOARD, permission, addDeny
         FROM {$db_prefix}board_permissions
-        WHERE ID_GROUP = $_POST[copyperm]" . (empty($modSettings['permission_enable_by_board']) ? "
-          AND ID_BOARD = 0" : ''), __FILE__, __LINE__);
+        WHERE ID_GROUP = $_POST[copyperm]" . (empty($modSettings['permission_enable_by_board']) ? '
+          AND ID_BOARD = 0' : ''), __FILE__, __LINE__);
       $setString = '';
       while ($row = mysqli_fetch_assoc($request))
         $setString .= "
@@ -221,8 +219,7 @@ function AddMembergroup() {
           VALUES" . substr($setString, 0, -1), __FILE__, __LINE__);
 
       // Also get some membergroup information if we're not copying from guests...
-      if ($_POST['copyperm'] > 0)
-      {
+      if ($_POST['copyperm'] > 0) {
         $request = db_query("
           SELECT onlineColor, maxMessages, stars
           FROM {$db_prefix}membergroups
@@ -253,10 +250,12 @@ function AddMembergroup() {
       db_query("
         UPDATE {$db_prefix}boards
         SET memberGroups = IF(memberGroups = '', '$ID_GROUP', CONCAT(memberGroups, ',$ID_GROUP'))
-        WHERE ID_BOARD IN (" . implode(', ', $_POST['boardaccess']) . ")
-        LIMIT " . count($_POST['boardaccess']), __FILE__, __LINE__);
+        WHERE ID_BOARD IN (" . implode(', ', $_POST['boardaccess']) . ')
+        LIMIT ' . count($_POST['boardaccess']), __FILE__, __LINE__);
 
-    header("Location: $boardurl/index.php?' . $urlSep . '=membergroups;sa=edit;group={$ID_GROUP}");exit();die();
+    header("Location: $boardurl/index.php?' . $urlSep . '=membergroups;sa=edit;group={$ID_GROUP}");
+    exit();
+    die();
   }
 
   // Just show the 'add membergroup' screen.
@@ -268,9 +267,9 @@ function AddMembergroup() {
   $result = db_query("
     SELECT ID_GROUP, groupName
     FROM {$db_prefix}membergroups
-    WHERE (ID_GROUP > 3 OR ID_GROUP = 2)" . (empty($modSettings['permission_enable_postgroups']) ? "
-      AND minPosts = -1" : '') . "
-    ORDER BY minPosts, ID_GROUP != 2, groupName", __FILE__, __LINE__);
+    WHERE (ID_GROUP > 3 OR ID_GROUP = 2)" . (empty($modSettings['permission_enable_postgroups']) ? '
+      AND minPosts = -1' : '') . '
+    ORDER BY minPosts, ID_GROUP != 2, groupName', __FILE__, __LINE__);
   $context['groups'] = array();
   while ($row = mysqli_fetch_assoc($result))
     $context['groups'][] = array(
@@ -293,16 +292,18 @@ function AddMembergroup() {
   mysqli_free_result($result);
 }
 
-function DeleteMembergroup() {
+function DeleteMembergroup()
+{
   global $sourcedir, $boardurl, $urlSep;
 
   checkSession('get');
-  require($sourcedir . '/Subs-Members.php');
+  require ($sourcedir . '/Subs-Members.php');
   deleteMembergroups((int) $_REQUEST['group']);
   header("Location: $boardurl/index.php?' . $urlSep . '=membergroups");
 }
 
-function EditMembergroup() {
+function EditMembergroup()
+{
   global $db_prefix, $context, $txt, $sourcedir, $boardurl, $urlSep;
 
   if (empty($_REQUEST['group']) || (int) $_REQUEST['group'] < 1) {
@@ -314,27 +315,25 @@ function EditMembergroup() {
   if (isset($_POST['delete'])) {
     checkSession();
 
-    require($sourcedir . '/Subs-Members.php');
+    require ($sourcedir . '/Subs-Members.php');
     deleteMembergroups($_REQUEST['group']);
 
     header("Location: $boardurl/index.php?' . $urlSep . '=membergroups");
   }
   // A form was submitted with the new membergroup settings.
-  elseif (isset($_POST['submit']))
-  {
+  elseif (isset($_POST['submit'])) {
     checkSession();
     $_POST['max_messages'] = isset($_POST['max_messages']) ? (int) $_POST['max_messages'] : 0;
     $_POST['min_posts'] = isset($_POST['min_posts']) && $_POST['post_group'] == '1' && $_REQUEST['group'] > 3 ? abs($_POST['min_posts']) : ($_REQUEST['group'] == 4 ? 0 : -1);
-    $_POST['stars']= '1#' . $_POST['star_image'];
+    $_POST['stars'] = '1#' . $_POST['star_image'];
     db_query("
       UPDATE {$db_prefix}membergroups
       SET groupName = '$_POST[group_name]', onlineColor = '$_POST[online_color]',
         maxMessages = $_POST[max_messages], minPosts = $_POST[min_posts], stars = '$_POST[stars]'
-      WHERE ID_GROUP = " . (int) $_REQUEST['group'] . "
-      LIMIT 1", __FILE__, __LINE__);
+      WHERE ID_GROUP = " . (int) $_REQUEST['group'] . '
+      LIMIT 1', __FILE__, __LINE__);
 
-    if ($_REQUEST['group'] == 2 || $_REQUEST['group'] > 3)
-    {
+    if ($_REQUEST['group'] == 2 || $_REQUEST['group'] > 3) {
       $_POST['boardaccess'] = empty($_POST['boardaccess']) || !is_array($_POST['boardaccess']) ? array() : $_POST['boardaccess'];
       foreach ($_POST['boardaccess'] as $key => $value)
         $_POST['boardaccess'][$key] = (int) $value;
@@ -342,8 +341,8 @@ function EditMembergroup() {
       $request = db_query("
         SELECT ID_BOARD, memberGroups
         FROM {$db_prefix}boards
-        WHERE FIND_IN_SET(" . (int) $_REQUEST['group'] . ", memberGroups)" . (empty($_POST['boardaccess']) ? '' : "
-          AND ID_BOARD NOT IN (" . implode(', ', $_POST['boardaccess']) . ')'), __FILE__, __LINE__);
+        WHERE FIND_IN_SET(" . (int) $_REQUEST['group'] . ', memberGroups)' . (empty($_POST['boardaccess']) ? '' : '
+          AND ID_BOARD NOT IN (' . implode(', ', $_POST['boardaccess']) . ')'), __FILE__, __LINE__);
       while ($row = mysqli_fetch_assoc($request))
         db_query("
           UPDATE {$db_prefix}boards
@@ -357,12 +356,11 @@ function EditMembergroup() {
         db_query("
           UPDATE {$db_prefix}boards
           SET memberGroups = IF(memberGroups = '', '" . (int) $_REQUEST['group'] . "', CONCAT(memberGroups, '," . (int) $_REQUEST['group'] . "'))
-          WHERE ID_BOARD IN (" . implode(', ', $_POST['boardaccess']) . ")
-            AND NOT FIND_IN_SET(" . (int) $_REQUEST['group'] . ", memberGroups)", __FILE__, __LINE__);
+          WHERE ID_BOARD IN (" . implode(', ', $_POST['boardaccess']) . ')
+            AND NOT FIND_IN_SET(' . (int) $_REQUEST['group'] . ', memberGroups)', __FILE__, __LINE__);
     }
 
-    if ($_POST['min_posts'] != -1)
-    {
+    if ($_POST['min_posts'] != -1) {
       db_query("
         UPDATE {$db_prefix}members
         SET ID_GROUP = 0
@@ -371,14 +369,14 @@ function EditMembergroup() {
       $request = db_query("
         SELECT ID_MEMBER, additionalGroups
         FROM {$db_prefix}members
-        WHERE FIND_IN_SET(" . (int) $_REQUEST['group'] . ", additionalGroups)", __FILE__, __LINE__);
+        WHERE FIND_IN_SET(" . (int) $_REQUEST['group'] . ', additionalGroups)', __FILE__, __LINE__);
       $updates = array();
       while ($row = mysqli_fetch_assoc($request))
         $updates[$row['additionalGroups']][] = $row['ID_MEMBER'];
       mysqli_free_result($request);
 
       foreach ($updates as $additionalGroups => $memberArray)
-        updateMemberData($memberArray, array('additionalGroups' => '\'' . implode(',', array_diff(explode(',', $additionalGroups), array((int) $_REQUEST['group']))) . '\''));
+        updateMemberData($memberArray, array('additionalGroups' => "'" . implode(',', array_diff(explode(',', $additionalGroups), array((int) $_REQUEST['group']))) . "'"));
     }
 
     updateStats('postgroups');
@@ -388,8 +386,8 @@ function EditMembergroup() {
   $request = db_query("
     SELECT groupName, minPosts, onlineColor, maxMessages, stars
     FROM {$db_prefix}membergroups
-    WHERE ID_GROUP = " . (int) $_REQUEST['group'] . "
-    LIMIT 1", __FILE__, __LINE__);
+    WHERE ID_GROUP = " . (int) $_REQUEST['group'] . '
+    LIMIT 1', __FILE__, __LINE__);
   if (mysqli_num_rows($request) == 0)
     fatal_lang_error('membergroup_does_not_exist', false);
   $row = mysqli_fetch_assoc($request);
@@ -413,10 +411,9 @@ function EditMembergroup() {
 
   // Get a list of boards this membergroup is allowed to see.
   $context['boards'] = array();
-  if ($_REQUEST['group'] == 2 || $_REQUEST['group'] > 3)
-  {
-    $result = db_query("
-      SELECT ID_BOARD, name, childLevel, FIND_IN_SET(" . (int) $_REQUEST['group'] . ", memberGroups) AS can_access
+  if ($_REQUEST['group'] == 2 || $_REQUEST['group'] > 3) {
+    $result = db_query('
+      SELECT ID_BOARD, name, childLevel, FIND_IN_SET(' . (int) $_REQUEST['group'] . ", memberGroups) AS can_access
       FROM {$db_prefix}boards", __FILE__, __LINE__);
     while ($row = mysqli_fetch_assoc($result))
       $context['boards'][] = array(
@@ -432,7 +429,8 @@ function EditMembergroup() {
 }
 
 // Display members of a group, and allow adding of members to a group. Silly function name though ;)
-function MembergroupMembers() {
+function MembergroupMembers()
+{
   global $txt, $scripturl, $db_prefix, $context, $modSettings, $sourcedir, $func, $urlSep;
 
   $_REQUEST['group'] = (int) $_REQUEST['group'];
@@ -445,8 +443,8 @@ function MembergroupMembers() {
   $request = db_query("
     SELECT ID_GROUP AS id, groupName AS name, minPosts = -1 AS assignable, minPosts != -1 AS is_post_group
     FROM {$db_prefix}membergroups
-    WHERE ID_GROUP = " . (int) $_REQUEST['group'] . "
-    LIMIT 1", __FILE__, __LINE__);
+    WHERE ID_GROUP = " . (int) $_REQUEST['group'] . '
+    LIMIT 1', __FILE__, __LINE__);
   // Not really possible...
   if (mysqli_num_rows($request) == 0)
     fatal_lang_error('membergroup_does_not_exist', false);
@@ -458,16 +456,14 @@ function MembergroupMembers() {
     $context['group']['assignable'] = 0;
 
   // Removing member from group?
-  if (isset($_POST['remove']) && !empty($_REQUEST['rem']) && is_array($_REQUEST['rem']) && $context['group']['assignable'])
-  {
+  if (isset($_POST['remove']) && !empty($_REQUEST['rem']) && is_array($_REQUEST['rem']) && $context['group']['assignable']) {
     checkSession();
 
-    require($sourcedir . '/Subs-Members.php');
+    require ($sourcedir . '/Subs-Members.php');
     removeMembersFromGroups($_REQUEST['rem'], $_REQUEST['group']);
   }
   // Must be adding new members to the group...
-  elseif (isset($_REQUEST['add']) && !empty($_REQUEST['toAdd']) && $context['group']['assignable'])
-  {
+  elseif (isset($_REQUEST['add']) && !empty($_REQUEST['toAdd']) && $context['group']['assignable']) {
     checkSession();
 
     // Get all the members to be added... taking into account names can be quoted ;)
@@ -475,8 +471,7 @@ function MembergroupMembers() {
     preg_match_all('~"([^"]+)"~', $_REQUEST['toAdd'], $matches);
     $memberNames = array_unique(array_merge($matches[1], explode(',', preg_replace('~"([^"]+)"~', '', $_REQUEST['toAdd']))));
 
-    foreach ($memberNames as $index => $memberName)
-    {
+    foreach ($memberNames as $index => $memberName) {
       $memberNames[$index] = trim($func['strtolower']($memberNames[$index]));
 
       if (strlen($memberNames[$index]) == 0)
@@ -496,7 +491,7 @@ function MembergroupMembers() {
     // !!! Add $_POST['additional'] to templates!
 
     // Do the updates...
-    require($sourcedir . '/Subs-Members.php');
+    require ($sourcedir . '/Subs-Members.php');
     addMembersToGroup($members, $_REQUEST['group'], isset($_POST['additional']) ? 'only_additional' : 'auto');
   }
 
@@ -510,14 +505,12 @@ function MembergroupMembers() {
   );
 
   // They didn't pick one, default to by name..
-  if (!isset($_REQUEST['sort']) || !isset($sort_methods[$_REQUEST['sort']]))
-  {
+  if (!isset($_REQUEST['sort']) || !isset($sort_methods[$_REQUEST['sort']])) {
     $context['sort_by'] = 'name';
     $querySort = 'realName';
   }
   // Otherwise default to ascending.
-  else
-  {
+  else {
     $context['sort_by'] = $_REQUEST['sort'];
     $querySort = $sort_methods[$_REQUEST['sort']];
   }
@@ -528,8 +521,8 @@ function MembergroupMembers() {
   $request = db_query("
     SELECT COUNT(*)
     FROM {$db_prefix}members
-    WHERE " . (empty($context['group']['is_post_group']) ? "ID_GROUP = " . (int) $_REQUEST['group'] . " OR FIND_IN_SET(" . (int) $_REQUEST['group'] . ", additionalGroups)" : "ID_POST_GROUP = " . (int) $_REQUEST['group']), __FILE__, __LINE__);
-  list ($context['total_members']) = mysqli_fetch_row($request);
+    WHERE " . (empty($context['group']['is_post_group']) ? 'ID_GROUP = ' . (int) $_REQUEST['group'] . ' OR FIND_IN_SET(' . (int) $_REQUEST['group'] . ', additionalGroups)' : 'ID_POST_GROUP = ' . (int) $_REQUEST['group']), __FILE__, __LINE__);
+  list($context['total_members']) = mysqli_fetch_row($request);
   mysqli_free_result($request);
 
   // Create the page index.
@@ -540,12 +533,11 @@ function MembergroupMembers() {
   $request = db_query("
     SELECT ID_MEMBER, memberName, realName, emailAddress, memberIP, dateRegistered, lastLogin, posts, is_activated
     FROM {$db_prefix}members
-    WHERE " . (empty($context['group']['is_post_group']) ? "ID_GROUP = " . (int) $_REQUEST['group'] . " OR FIND_IN_SET(" . (int) $_REQUEST['group'] . ", additionalGroups)" : "ID_POST_GROUP = " . (int) $_REQUEST['group']) . "
+    WHERE " . (empty($context['group']['is_post_group']) ? 'ID_GROUP = ' . (int) $_REQUEST['group'] . ' OR FIND_IN_SET(' . (int) $_REQUEST['group'] . ', additionalGroups)' : 'ID_POST_GROUP = ' . (int) $_REQUEST['group']) . "
     ORDER BY $querySort " . ($context['sort_direction'] == 'down' ? 'DESC' : 'ASC') . "
     LIMIT $context[start], $modSettings[defaultMaxMembers]", __FILE__, __LINE__);
   $context['members'] = array();
-  while ($row = mysqli_fetch_assoc($request))
-  {
+  while ($row = mysqli_fetch_assoc($request)) {
     $last_online = empty($row['lastLogin']) ? $txt['never'] : timeformat($row['lastLogin']);
 
     // Italicize the online note if they aren't activated.
@@ -554,8 +546,8 @@ function MembergroupMembers() {
 
     $context['members'][] = array(
       'id' => $row['ID_MEMBER'],
-      'name' => '<a href="/perfil/'.$row['realName'].'">'.$row['realName'].'</a>',
-      'email' => '<a href="mailto:'.$row['emailAddress'].'">'.$row['emailAddress'].'</a>',
+      'name' => '<a href="/perfil/' . $row['realName'] . '">' . $row['realName'] . '</a>',
+      'email' => '<a href="mailto:' . $row['emailAddress'] . '">' . $row['emailAddress'] . '</a>',
       'ip' => '<a href="http://lacnic.net/cgi-bin/lacnic/whois?query=' . $row['memberIP'] . '">' . $row['memberIP'] . '</a>',
       'registered' => timeformat($row['dateRegistered']),
       'last_online' => $last_online,
@@ -576,10 +568,9 @@ function ModifyMembergroupSettings()
   $context['page_title'] = $txt['membergroups_settings'];
 
   // Needed for the inline permission functions.
-  require($sourcedir . '/ManagePermissions.php');
+  require ($sourcedir . '/ManagePermissions.php');
 
-  if (!empty($_POST['save_settings']))
-  {
+  if (!empty($_POST['save_settings'])) {
     checkSession();
 
     // Save the permissions.

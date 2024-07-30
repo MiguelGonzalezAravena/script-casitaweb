@@ -130,7 +130,7 @@ while ($row = mysqli_fetch_assoc($request)) {
   $rehabilitacion = $row['expire_time'] === null ? 'Indefinido' : ($row['expire_time'] < time() ? '' : '' . (int) ceil(($row['expire_time'] - time()) / (60 * 60 * 24)) . '&nbsp;d&iacute;a(s)');
 
   if(!empty($rehabilitacion)) {
-    die('2: <div class="noesta" style="font-size:11px;"><b class="error">Cuenta suspendida!!!</b><br/><b>Causa:</b> ' . $rason . '<br />' . $ban_time . '<br /><b>Su expiraci&oacute;n:</b> ' . $rehabilitacion . '</div>');
+    die('2: <div class="noesta" style="font-size: 11px;"><b class="error">Cuenta suspendida!!!</b><br/><b>Causa:</b> ' . $rason . '<br />' . $ban_time . '<br /><b>Su expiraci&oacute;n:</b> ' . $rehabilitacion . '</div>');
   }
 }
 

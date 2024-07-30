@@ -54,7 +54,7 @@ if (($user_info['is_admin'] || $user_info['is_mods']) || $ID_MEMBER == $memID) {
   }
 
   if (strlen($filename) > 110) {
-    fatal_error('El enlace no puede ser mayor de <b>110 letras</b><br/>Subi la imagen a <a href="' . $modSettings['host_imagen'] . '">' . $modSettings['host_imagen'] . '</a> que los enlaces son cortos.-');
+    fatal_error('El enlace no puede ser mayor de <b>110 letras</b><br/>Sube la imagen a <a href="' . $modSettings['host_imagen'] . '">' . $modSettings['host_imagen'] . '</a> que los enlaces son cortos.');
   }
 
   if (empty($filename)) {
