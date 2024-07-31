@@ -26,21 +26,23 @@ function db($query, $file, $line) {
 }
 
 function falta($texto) {
+	global $helpurl;
+
 	echo '
 		<div align="center">
 			<div class="box_errors">
 				<div class="box_title" style="width: 390px">
 					<div class="box_txt box_error" align="left">&iexcl;Atenci&oacute;n!</div>
 					<div class="box_rss">
-						<img alt="" src="/imagenes/espacio.gif" style="width: 14px; height: 12px;" border="0" />
+						<img alt="" src="' . $helpurl . '/imagenes/espacio.gif" style="width: 14px; height: 12px;" border="0" />
 					</div>
 				</div>
-				<div class="windowbg" style="width: 380px; padding: 4px;">
+				<div class="windowbg" style="width: 382px; padding: 4px;">
 					<br />
 					' . $texto . '
 					<br />
 					<br />
-					<input class="login" style="font-size: 11px;" title="Ir a la P&aacute;gina principal" value="Ir a la P&aacute;gina principal" onclick="location.href=\'/\'" type="submit" />
+					<input class="login" style="font-size: 11px;" title="Ir a la P&aacute;gina principal" value="Ir a la P&aacute;gina principal" onclick="location.href=\'' . $helpurl . '/\'" type="submit" />
 					<br />
 					<br />
 				</div>
@@ -56,8 +58,9 @@ function falta($texto) {
 			</div>
 		</div>';
 
-	include(dirname(__FILE__) . '/footer-seg-145747dd.php');
-	die();exit();
+	require_once(dirname(__FILE__) . '/footer-seg-145747dd.php');
+	die();
+	exit();
 }
 
 /*

@@ -1,6 +1,5 @@
 <?php
 require_once(dirname(__FILE__) . '/header-seg-1as4d4a777.php');
-
 global $context, $settings, $options, $txt, $con, $scripturl;
 global $tranfer1, $user_settings, $ID_MEMBER;
 global $prefijo, $user_info, $modSettings;
@@ -96,4 +95,5 @@ if ($user_info['is_admin'] || $user_info['is_mods']) {
 }
 
 require_once(dirname(__FILE__) . '/footer-seg-145747dd.php');
+
 ?>
