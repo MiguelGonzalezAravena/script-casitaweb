@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-global $sourcedir, $user_settings, $mbname;
+global $sourcedir, $user_settings, $mbname, $webmaster_email;
 
 $_POST['nombre'] = trim($_POST['nombre']);
 $_POST['email'] = trim($_POST['email']);
@@ -37,7 +37,7 @@ if (empty($_SERVER['REMOTE_ADDR'])) {
 require_once($sourcedir . '/Subs-Post.php');
 
 sendmail(
-  'soporte@casitaweb.net',
+  $webmaster_email,
   un_htmlspecialchars($_POST['nombre']) . ' te contact&oacute;',
   sprintf('Nombre: ' . un_htmlspecialchars($_POST['nombre']) . '') . "\n" .
   sprintf('Correo: ' . $_POST['email'] . '') . "\n" .

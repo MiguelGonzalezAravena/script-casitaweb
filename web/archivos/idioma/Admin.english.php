@@ -1,5 +1,5 @@
 <?php
-//Pagina echa por rigo (Rodrigo). CasitaWeb! - www.casitaweb.net.
+// Página echa por rigo (Rodrigo). CasitaWeb! - www.casitaweb.net.
 global $scripturl;
 
 $txt[4] = 'Categor&iacute;as';

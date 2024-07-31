@@ -281,7 +281,7 @@ function template_view_picture() {
   if ($context['user']['is_guest']) {
     echo '
       <div align="center" style="-moz-border-radius: 5px; -webkit-border-radius: 5px; display: block; margin-bottom: 10px; margin-top: 25px; padding: 2px; border: solid 1px #D5CCC3; background: #FFF;">
-        <a href="http://casitaweb.net/registrarse/" style="font-size: 12px; color: #FFB600; margin-bottom: 3px;">
+        <a href="' . $boardurl . '/registrarse/" style="font-size: 12px; color: #FFB600; margin-bottom: 3px;">
           <b>REG&Iacute;STRATE GRATIS Y ELIMINA ESTA PUBLICIDAD, ADEM&Aacute;S TENDR&Aacute;S ACCESO A TODOS LOS POSTS Y FUNCIONES</b>
         </a>
         <br />';
@@ -492,7 +492,7 @@ function template_view_picture() {
               <b>Embed:</b>
             </td>
             <td width="290px">
-              <input readonly="readonly" id="embed" name="embed" type="text" onfocus="foco(this);" onblur="no_foco(this);" value="&lt;a title=&quot;' . $context['gallery_pic']['title'] . ' - casitaweb.net&quot; href=&quot;http://casitaweb.net/imagenes/ver/' . $context['gallery_pic']['ID_PICTURE'] . '&quot; target=&quot;_blank&quot;&gt;' . $context['gallery_pic']['title'] . ' - casitaweb.net&lt;/a&gt;" onclick="selectycopy(getElementById(\'embed\')); " style="width: 290px;" />
+              <input readonly="readonly" id="embed" name="embed" type="text" onfocus="foco(this);" onblur="no_foco(this);" value="&lt;a title=&quot;' . $context['gallery_pic']['title'] . ' - casitaweb.net&quot; href=&quot;' . $boardurl . '/imagenes/ver/' . $context['gallery_pic']['ID_PICTURE'] . '&quot; target=&quot;_blank&quot;&gt;' . $context['gallery_pic']['title'] . ' - casitaweb.net&lt;/a&gt;" onclick="selectycopy(getElementById(\'embed\')); " style="width: 290px;" />
             </td>
           </tr>
           <tr>

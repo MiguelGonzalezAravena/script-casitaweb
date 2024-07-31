@@ -50,7 +50,7 @@ a img{border: 0px none;}
 .box_txt.alert {width:387px!important;}
 .box_txt.alert1 {width:458px!important;}
 .box_txt.ed-ag-posts {width:652px!important;}
-/*tamaños*/
+/*tamaï¿½os*/
 .box_235 {height: 100%; width:233px!important; float:left; margin-right:8px;}
 .box_780 {height: 100%; width:778px!important;}
 .box_460 {height: 100%; width:458px!important;}
@@ -122,7 +122,7 @@ a img{border: 0px none;}
 
 #header {position:relative; z-index:10000; margin-bottom:10px;}
 #header .fixed {width:100%; height:30px; position:inherit; top:0; left:0; z-index:64000;}
-#header .fixedblock {background:url(service-nav.gif) repeat-x top; margin:0; padding:0 20px; height:30px;}
+#header .fixedblock {background:url('./service-nav.gif') repeat-x top; margin:0; padding:0 20px; height:30px;}
 #header .fixedcenter {position:relative;width:974px;text-align:left;}
 #header .fixed .language { width:180px; position:absolute; z-index:100; display:block; top:0; left:0px; padding:3px 10px 3px 2px; overflow:hidden; background:#798D9D url(lang-arrow.gif) no-repeat right 10px; border-right:1px solid #455868; border-left:1px solid #455868; cursor:pointer;}
 
@@ -132,7 +132,7 @@ a img{border: 0px none;}
 #header .fixed .language a:hover {color:#CBE0EF;}
 #header .fixed .language li.otherlang {display:none;}
 
-#header .fixed .servicenav {position:absolute; top:0px; right:5px;height:26px;background:url(service-nav.gif) repeat-x top;}
+#header .fixed .servicenav {position:absolute; top:0px; right:5px;height:26px;background:url('./service-nav.gif') repeat-x top;}
 #header .fixed .servicenav li {height:26px;float:left; display:block;  border-left:1px solid #455868;}
 #header .fixed .servicenav li a {height:16px;padding:5px 10px 5px;}
 
@@ -194,13 +194,13 @@ hr, .divider {
 .fondoplano{background-color: #CABFB4;}
 .smalltext{font-size: x-small;font-family: 'Lucida Grande',Arial,Verdana,Tahoma,FreeSans;}
 #topbar {position:absolute;width: 435px;visibility: hidden;z-index: 400;}
-.rtop,.rbott{width:974px;display:block;margin:0 auto;background: url('/imagenes/rtopbg.gif') no-repeat left top;height: 13px;}
+.rtop,.rbott{width:974px;display:block;margin:0 auto;background: url('./rtopbg.gif') no-repeat left top;height: 13px;}
 .rtop_content{padding:0px 5px;background:#0a67e6;}
 .rbott{background-position: bottom left!important;}
 .rbott *, .rbott * {display:block;height:1px;overflow:hidden;background:#B3A496;display:none;}
 .rbott_content{padding:0px 5px;background:#B3A496;}
-#maincontainer{background: url('/imagenes/maincontainerbg.gif') repeat-x #95A5B2;width:950px;height:auto;padding: 0 12px;margin:0 auto;position:relative;}
-#head{height:114px;width:100%;background: url('/imagenes/maincontainerbg.gif') repeat-x #95A5B2;}
+#maincontainer{background: url('./maincontainerbg.gif') repeat-x #95A5B2;width:950px;height:auto;padding: 0 12px;margin:0 auto;position:relative;}
+#head{height:114px;width:100%;background: url('./maincontainerbg.gif') repeat-x #95A5B2;}
 #bodyarea{padding: 2ex 8px 2ex 12px;}
 a:link{color: #424242;text-decoration: none;}
 a:visited{color: #424242;text-decoration: none;}
@@ -208,7 +208,7 @@ a:hover{text-decoration: underline;}
 *:focus{outline:0px;}
 table{empty-cells: show;}
 
-.box-back, .cita {background:#dbdbda repeat-x url('cita-title.gif');padding:0px;height:25px;}
+.box-back, .cita {background:#dbdbda repeat-x url('./cita-title.gif');padding:0px;height:25px;}
 
 .cita{padding: 5px!important;font-weight:bold;height:auto!important;}
 .bg-blanco{border-top:2px solid #F0F0F0;border:1px solid #CCC;background: #FFF;padding: 8px;}
@@ -246,11 +246,11 @@ table{empty-cells: show;}
 	white-space:nowrap;}
 
 #logo{width: 420px;height: 113px;float:left;}
-#logoi{width: 420px;height: 113px;background: url('/imagenes/logo.gif');background-repeat:no-repeat;float:left;}
+#logoi{width: 420px;height: 113px;background: url('./logo.gif');background-repeat:no-repeat;float:left;}
 #logo img{display: none;}
 
 input.login, .button{
-	background:#677989 url('fd_bt.gif') repeat-x top left;
+	background:#677989 url('./fd_bt.gif') repeat-x top left;
 	color:#FFF;
 	cursor:pointer;
 	border-top:1px solid #2E4251;
@@ -293,11 +293,11 @@ textarea, input{border:solid 1px #E8EDE7;padding:4px 2px;color:#333;font-size:12
 .markItUpEditor{font:12px 'Lucida Grande',Arial,Verdana,Tahoma,FreeSans;padding:5px 5px 5px 0px;width:640px;height:320px;clear:both; display:block;line-height:18px;overflow:auto;}
 .markItUpHeader ul li{list-style:none;float:left;position:relative;}
 .markItUpHeader ul li:hover > ul{display:block;}
-.markItUpHeader ul .markItUpDropMenu{background:transparent url(http://casitaweb.net/images/icons/editor-flecha.gif)no-repeat 115% 50%;margin-right:5px;z-index:1;}
+.markItUpHeader ul .markItUpDropMenu{background:transparent url('http://casitaweb.net/images/icons/editor-flecha.gif')no-repeat 115% 50%;margin-right:5px;z-index:1;}
 .markItUpHeader ul .markItUpDropMenu li{margin-right:0px;}
 .markItUpHeader ul ul{display:none;position:absolute;top:16px; left:0px;background:#FFF;border:1px solid #000;}
 .markItUpHeader ul ul li{float:none;border-bottom:1px solid #000;}
-.markItUpHeader ul ul .markItUpDropMenu{background: #FFF url(http://casitaweb.net/images/icons/editor-flecha-sub.gif)no-repeat 100% 50%;}
+.markItUpHeader ul ul .markItUpDropMenu{background: #FFF url('http://casitaweb.net/images/icons/editor-flecha-sub.gif')no-repeat 100% 50%;}
 .markItUpHeader ul .markItUpSeparator{margin:0 10px;width:1px;height:16px;overflow:hidden;background-color:#CCC;}
 .markItUpHeader ul ul .markItUpSeparator{width:auto; height:1px;margin:0px;}
 .markItUpHeader ul ul ul{position:absolute;top:-1px; left:150px;}
@@ -305,7 +305,7 @@ textarea, input{border:solid 1px #E8EDE7;padding:4px 2px;color:#333;font-size:12
 .markItUpHeader ul a{display:block;width:16px;text-indent:-10000px;background-repeat:no-repeat;padding:3px;margin:0px;}
 .markItUpHeader ul ul a{display:block;padding-left:0px;text-indent:0;width:120px;padding:5px 5px 5px 25px;background-position:2px 50%;}
 .markItUpHeader ul ul a:hover{color:#FFF;background-color:#000;}
-.markItUpResizeHandle{overflow:hidden;width:22px;height:5px;margin-left:auto;margin-right:auto;background-image:url(http://casitaweb.net/images/icons/editor-tamano.gif);cursor:n-resize;}
+.markItUpResizeHandle{overflow:hidden;width:22px;height:5px;margin-left:auto;margin-right:auto;background-image:url('http://casitaweb.net/images/icons/editor-tamano.gif');cursor:n-resize;}
 .markItUp .markItUpButton1 a{background:transparent url('http://casitaweb.net/images/icons/bbcode.gif') no-repeat scroll left top;background-position:left -48px;height:10px;}
 .markItUp .markItUpButton2 a{background:transparent url('http://casitaweb.net/images/icons/bbcode.gif') no-repeat scroll left top;background-position:left -64px;height:10px;}
 .markItUp .markItUpButton3 a{background:transparent url('http://casitaweb.net/images/icons/bbcode.gif') no-repeat scroll left top;background-position:left -194px;height:10px;}

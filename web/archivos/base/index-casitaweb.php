@@ -12,7 +12,7 @@ function template_init() {
 }
 
 function template_main_above() {
-  global $context, $boardurl, $txt, $modSettings, $user_info, $db_prefix, $tranfer1, $user_settings, $ie, $urlSep, $internetNO, $mbname, $ID_MEMBER;
+  global $context, $boardurl, $txt, $modSettings, $user_info, $db_prefix, $tranfer1, $user_settings, $ie, $urlSep, $internetNO, $mbname, $ID_MEMBER, $helpurl;
 
   echo '
     <link rel="stylesheet" type="text/css" href="' . $tranfer1 . '/estilo.php" />
@@ -161,7 +161,7 @@ function template_main_above() {
       <a href="' . $boardurl . '/chat/">Chat</a>
     </li>
     <li class="sn">
-      <a href="http://ayuda.casitaweb.net/" title="">Ayuda</a>
+      <a href="' . $helpurl . '/" title="">Ayuda</a>
     </li>
     <li class="sn">
       <a href="' . $boardurl . '/buscador/" title="">Buscar</a>

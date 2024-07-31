@@ -1,5 +1,5 @@
 <?php
-//Pagina echa por rigo (Rodrigo). CasitaWeb! - www.casitaweb.net.
+// PÃ¡gina echa por rigo (Rodrigo). CasitaWeb! - www.casitaweb.net.
 
 $txt[143] = 'Mensajes privados';
 $txt[148] = 'Enviar mensaje';
@@ -51,7 +51,7 @@ $txt['pm_labels_delete'] = '\xbfEst&aacute;s seguro que deseas borrar las carpet
 $txt['pm_labels_desc'] = 'Aqu&iacute; puedes agregar, editar y borrar carpetas utilizadas en el centro de mensajes privados.';
 $txt['pm_label_add_new'] = 'Agregar nueva carpeta';
 $txt['pm_label_name'] = 'Nombre de la carpeta';
-$txt['pm_labels_no_exist'] = '¡No tienes ninguna carpeta dada de alta!';
+$txt['pm_labels_no_exist'] = 'ï¿½No tienes ninguna carpeta dada de alta!';
 $txt['pm_current_label'] = 'Carpeta';
 $txt['pm_msg_label_title'] = 'Etiquetar Mensaje';
 $txt['pm_msg_label_apply'] = 'Agregar carpeta';

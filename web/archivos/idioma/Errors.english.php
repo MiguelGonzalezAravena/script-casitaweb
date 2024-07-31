@@ -1,5 +1,5 @@
 <?php
-//Pagina echa por rigo (rodrigo). CasitaWeb! www.casitaweb.net.
+// Página echa por rigo (rodrigo). CasitaWeb! www.casitaweb.net.
 
 $txt[1] = 'No est&aacute;s autorizado para entrar a esta secci&oacute;n.';
 $txt[73] = 'S&oacute;lo Moderadores pueden usar la funci&oacute;n de eliminado directo, por favor elimina este mensaje a trav&eacute;s de la funci&oacute;n editar.';
@@ -275,4 +275,5 @@ $txt['cannot_thank_you_post_delete_mem_any'] = "No tienes permiso para utilizar 
 $txt['cannot_thank_you_post_lock_all_own'] = "No tienes permiso para utilizar las opciones de Gracias!";
 $txt['cannot_thank_you_post_lock_all_any'] = "No tienes permiso para utilizar las opciones de Gracias!";
 $txt['cannot_thank_you_post_unlock_all'] = "No tienes permiso para utilizar las opciones de Gracias!";
+
 ?>

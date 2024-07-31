@@ -1,5 +1,5 @@
 <?php
-//Pagina echa por rigo (Rodrigo). CasitaWeb! - www.casitaweb.net.
+// Página echa por rigo (Rodrigo). CasitaWeb! - www.casitaweb.net.
 
 $txt[80] = 'No est&aacute;s autorizado para cambiar este perfil.';
 $txt[84] = 'Sitio Web / Blog';
@@ -280,8 +280,8 @@ $txt['buddy_remove'] = 'Eliminar de lista de amigos';
 $txt['buddy_add_button'] = 'A&ntilde;adir';
 $txt['no_buddies'] = 'Tu lista de amigos actualmente est&aacute; vac&iacute;a';
 
-
 $txt['thankyoutitle'] = 'Gracias';
 $txt['thankyoupostmade'] = 'Dadas';
 $txt['thankyoupostbecame'] = 'Recibidas';
+
 ?>

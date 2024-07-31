@@ -1,5 +1,6 @@
 RewriteEngine on
-RewriteBase /
+# TO-DO: Modificar ruta según corresponda
+RewriteBase /casitaweb/sub-147s/ayuda/
 
 Rewriterule ^categoria/(.*)$ categoria-seg-271.php?cat=$1 [PT,L]
 Rewriterule ^articulo/(.*)$ art-seg-234.php?art=$1 [PT,L]

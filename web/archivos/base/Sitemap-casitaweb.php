@@ -2,7 +2,7 @@
 function template_Begin() {}
 
 function template_Boards() {
-  global $context, $db_prefix, $scripturl, $txt, $modSettings, $settings, $tranfer1, $boardurl;
+  global $context, $db_prefix, $scripturl, $txt, $modSettings, $settings, $tranfer1, $boardurl, $helpurl;
 
   $request = db_query("
     SELECT ID_BOARD, description, name, childLevel
@@ -31,7 +31,7 @@ function template_Boards() {
       </div>
       <div class="windowbg" style="padding: 4px; width: 292px;">
         <span class="size11">
-          <a href="http://ayuda.casitaweb.net/" title="Ayuda">Ayuda</a>
+          <a href="' . $helpurl . '/" title="Ayuda">Ayuda</a>
           <br />
           <a href="' . $boardurl . '/buscador/" title="Buscador">Buscador</a>
           <br />

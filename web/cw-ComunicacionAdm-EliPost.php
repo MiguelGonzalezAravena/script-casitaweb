@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-global $context, $func, $db_prefix, $user_settings, $user_info, $boardurl, $ID_MEMBER;
+global $context, $func, $db_prefix, $user_settings, $user_info, $boardurl, $ID_MEMBER, $webmaster_email;
 
 $posts = isset($_GET['post']) ? (int) $_GET['post'] : 0;
 
@@ -34,9 +34,9 @@ if ($user_info['is_admin'] || $user_info['is_mods']) {
       WHERE id_post = $id", __FILE__, __LINE__);
   }
 
-  header(`Location: $boardurl/moderacion/comunicacion-mod/`);
+  header('Location: ' . $boardurl . '/moderacion/comunicacion-mod/');
 } else {
-  fatal_error('Debes estar conectado y ser de la moderaci&oacute;n. Si lo est&aacute;s, contactar con administrador (soporte@casitaweb.net).');
+  fatal_error('Debes estar conectado y ser de la moderaci&oacute;n. Si lo est&aacute;s, contactar con administrador (' . $webmaster_email . ').');
 }
 
 ?>

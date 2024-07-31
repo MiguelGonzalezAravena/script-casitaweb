@@ -1,1 +1,4 @@
-<?php Header("Location: http://casitaweb.net/"); echo'www.casitaweb.net - rigo';?>
+<?php
+header("Location: http://casitaweb.net/");
+echo 'www.casitaweb.net - rigo';
+?>

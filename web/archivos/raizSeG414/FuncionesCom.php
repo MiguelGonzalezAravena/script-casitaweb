@@ -7,20 +7,20 @@ if (!defined('CasitaWeb!-PorRigo')) {
 $context['cc'] = 10;
 
 function reglas_com($das) {
-  global $db_prefix, $boardurl;
+  global $db_prefix, $boardurl, $helpurl;
 
   if ($das == 'crearc') {
     echo '
       Antes de crear una comunidad es importante que leas el <a href="' . $boardurl . '/protocolo/">protocolo</a>.<br /><br />
       Al crear la comunidad vas a ser due&ntilde;o/Administrador de tal por lo tanto tendr&aacute;s todos los permisos de un Administrador.<br /><br />
       Puedes crear tu propio protocolo para tu comunidad, pero siempre respetando el protocolo general.<br /><br />
-      Si tienes dudas sobre las comunidades visita <a href="http://ayuda.casitaweb.net/categoria/comunidades/">este enlace</a>.';
+      Si tienes dudas sobre las comunidades visita <a href="' . $helpurl . '/categoria/comunidades/">este enlace</a>.';
   } else if ($das == 'creart') {
     echo '
       Antes de crear un nuevo tema es importante que leas el <a href="' . $boardurl . '/protocolo/">protocolo</a>.<br /><br />
       Al ser el creador del tema, tenes el permiso de editarlo, eliminarlo, eliminar comentarios, bloquear comentarios.<br /><br />
       Si desea que su tema este fijado en la comunidad debe comunicarse con lo(s) Administrador(es) o Moderador(es) de la comunidad ya que ellos son los &uacute;nicos capaces de fijarlo.<br /><br />
-      Si tienes dudas sobre las comunidades visita <a href="http://ayuda.casitaweb.net/categoria/comunidades/">este enlace</a>.';
+      Si tienes dudas sobre las comunidades visita <a href="' . $helpurl . '/categoria/comunidades/">este enlace</a>.';
   }
 }
 

@@ -25,12 +25,12 @@ function RemindMe() {
 
 function RemindMail() {
   global $db_prefix, $context, $txt, $scripturl, $sourcedir, $user_info, $webmaster_email;
-  global $context, $mbname, $webmaster_email, $txt, $sourcedir, $modSettings, $scripturl;
+  global $mbname, $modSettings, $boardurl;
 
-  $userlimpio = seguridad($_POST['user']);
+  $userlimpio = isset($_POST['user']) ? seguridad($_POST['user']) : '';
 
   if (!isset($userlimpio) || empty($userlimpio)) {
-    fatal_error('Error con el Nick');
+    fatal_error('Error con el nick.');
   }
 
   $request = db_query("
@@ -44,6 +44,7 @@ function RemindMail() {
   }
 
   $row = mysqli_fetch_assoc($request);
+
   mysqli_free_result($request);
 
   captcha(2);
@@ -56,17 +57,28 @@ function RemindMail() {
 
   $password = substr(preg_replace('/\W/', '', md5(md5(md5(md5(rand()))))), 0, 10);
 
-  updateMemberData($row['ID_MEMBER'], array('validation_code' => "'" . substr(md5(md5(md5(md5($password)))), 0, 10) . "'"));
+  updateMemberData(
+    $row['ID_MEMBER'],
+    array(
+      'validation_code' => "'" . substr(md5(md5(md5(md5($password)))), 0, 10) . "'"
+    )
+  );
 
   require_once ($sourcedir . '/Subs-Post.php');
 
   // TO-DO: Probar funcionalidad sendmail
-  sendmail($row['emailAddress'], 'Recuperar mi contrase&ntilde;a',
+  $enlace = $boardurl . '/recuperar-pass/user-' . $row['ID_MEMBER'] . '/id-' . $password;
+
+  sendmail(
+    $row['emailAddress'],
+    'Recuperar mi contrase&ntilde;a',
     sprintf(
-      "Se ha enviado este mensaje porque se ha aplicado la funci&oacute;n \"Recuperar mi contrase&ntilde;a\" en tu cuenta. Para establecer una nueva contrase&ntilde;a haz clic en el siguiente enlace:\n"
+      'Se ha enviado este mensaje porque se ha aplicado la funci&oacute;n "Recuperar mi contrase&ntilde;a" en tu cuenta.' .
+      'Para establecer una nueva contrase&ntilde;a, haz clic en el siguiente enlace:' .
+      "\n"
     ) .
-    sprintf(
-      "<a href='http://casitaweb.net/recuperar-pass/user-$row[ID_MEMBER]/id-$password'>http://casitaweb.net/recuperar-pass/user-$row[ID_MEMBER]/id-$password</a>"));
+    sprintf('<a href="' . $enlace . '">' . $enlace . '</a>')
+  );
 
   $context += array(
     'page_title' => &$txt[194],
