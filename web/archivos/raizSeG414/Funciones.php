@@ -993,7 +993,7 @@ function achicar($tipo) {
 }
 
 function achicar400($tipo) {
-  censorText($tipo);
+  // censorText($tipo);
 
   return strlen($tipo) > 400 ? substr($tipo, 0, 397) . '...' : $tipo;
 }

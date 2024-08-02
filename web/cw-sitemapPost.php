@@ -27,11 +27,13 @@ $myurl = $boardurl . '/';
 echo '<?xml version="1.0" encoding="UTF-8" ?>
 <urlset xmlns="http://www.google.com/schemas/sitemap/0.84" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.google.com/schemas/sitemap/0.84 http://www.google.com/schemas/sitemap/0.84/sitemap.xsd">';
 
-echo '<url>
-<loc>' . $myurl . '</loc>
-<lastmod>' . $context['sitemap']['main']['time'] . '</lastmod>
-<changefreq>always</changefreq>
-<priority>1.0</priority></url>';
+echo '
+  <url>
+    <loc>' . $myurl . '</loc>
+    <lastmod>' . $context['sitemap']['main']['time'] . '</lastmod>
+    <changefreq>always</changefreq>
+    <priority>1.0</priority>
+  </url>';
 
 // TO-DO: ¿Agregar require_once aquí?
 
@@ -46,7 +48,7 @@ while ($row = mysqli_fetch_assoc($request)) {
   $context['sitemap']['topic'][] = array(
     'id' => $row['ID_TOPIC'],
     'description' => $row['description'],
-    'subject' => $row['subject'],
+    'subject' => html_entity_decode($row['subject']),
     'time' => date_iso8601($row['posterTime']),
   );
 }
@@ -54,13 +56,16 @@ while ($row = mysqli_fetch_assoc($request)) {
 mysqli_free_result($request);
 
 foreach ($context['sitemap']['topic'] as $topic) {
-  echo '<url>
-<loc>' . text($myurl . 'post/' . $topic['id'] . '/' . $topic['description'] . '/' . urls($topic['subject'])) . '.html</loc>
-<lastmod>' . $topic['time'] . '</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.80</priority></url>';
+  echo '
+  <url>
+    <loc>' . text($myurl . 'post/' . $topic['id'] . '/' . $topic['description'] . '/' . urls($topic['subject'])) . '.html</loc>
+    <lastmod>' . $topic['time'] . '</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.80</priority>
+  </url>';
 }
 
-echo '</urlset>';
+echo '
+</urlset>';
 
 ?>

@@ -20,8 +20,10 @@
 #php_flag file_uploads OFF
 #php_flag log_errors OFF
 RewriteEngine On
+# TO-DO: Modificar ruta según corresponda
 RewriteBase /casitaweb/
-Rewriterule ^sitemap.xml /web/cw-sitemapPost.php [PT,L]
+# TO-DO: Modificar ruta según corresponda
+Rewriterule ^sitemap.xml /casitaweb/web/cw-sitemapPost.php [PT,L]
 Rewriterule ^crear-comunidad(.*)$ index.php?accioncw241=com;m=crearcomunidad [PT,L]
 Rewriterule ^comunidades/dir/(.+)/pag-(.+)$ index.php?accioncw241=com;m=dir;cat=$1;paeg=$2 [PT,L]
 Rewriterule ^comunidades/dir/(.*)$ index.php?accioncw241=com;m=dir;cat=$1 [PT,L]
@@ -56,8 +58,10 @@ Rewriterule ^tops(.*)$ index.php?accioncw241=TOPs [PT,L]
 Rewriterule ^editar-apariencia/paso(.*)/$ index.php?accioncw241=rz-seg55555658971;m=tyc23;paso=$1 [PT,L]
 Rewriterule ^editar-apariencia/paso(.*)$ index.php?accioncw241=rz-seg55555658971;m=tyc23;paso=$1 [PT,L]
 Rewriterule ^editar-apariencia(.*)$ index.php?accioncw241=rz-seg55555658971;m=tyc23 [PT,L]
+# TO-DO: Modificar ruta según corresponda
 Rewriterule ^accion-apariencia/paso(.*)/$ /casitaweb/web/cw-info-edit-seg-1344.php?paso=$1 [PT,L]
-Rewriterule ^accion-apariencia/paso(.*)$ /web/cw-info-edit-seg-1344.php?paso=$1 [PT,L]
+# TO-DO: Modificar ruta según corresponda
+Rewriterule ^accion-apariencia/paso(.*)$ /casitaweb/web/cw-info-edit-seg-1344.php?paso=$1 [PT,L]
 Rewriterule ^editar-perfil/avatar(.*)$ index.php?accioncw241=profile;sa=cuenta [PT,L]
 Rewriterule ^editar-perfil/firma(.*)$ index.php?accioncw241=rz-seg011;m=tyc3 [PT,L]
 Rewriterule ^contactanos(.*)$ index.php?accioncw241=rz;m=tyc6 [PT,L]
@@ -79,22 +83,28 @@ Rewriterule ^tags/buscar/(.+)$ index.php?accioncw241=rz;m=tyc666$1 [PT,L]
 Rewriterule ^tags/(.+)/pag-(.+)$ index.php?accioncw241=rz;m=tyc999;palabra=$1;nn=t;pag=$2 [PT,L]
 Rewriterule ^tags/(.*)$ index.php?accioncw241=rz;m=tyc999;nn=t;palabra=$1 [PT,L]
 Rewriterule ^tags(.*)$ index.php?accioncw241=rz;m=tyc14 [PT,L]
-Rewriterule ^web/enlazanos/(.*)$ http://casitaweb.net/images/enlazanos/$1 [R,NC]
-Rewriterule ^avatar.gif http://casitaweb.net/images/avatar.gif  [R,NC]
+# TO-DO: Modificar ruta según corresponda
+Rewriterule ^web/enlazanos/(.*)$ /casitaweb/images/enlazanos/$1 [R,NC]
+# TO-DO: Modificar ruta según corresponda
+Rewriterule ^avatar.gif /casitaweb/images/avatar.gif  [R,NC]
 Rewriterule ^widget(.*)$ index.php?accioncw241=rz;m=tyc3 [PT,L]
 Rewriterule ^chat(.*)$ index.php?accioncw241=rz-seg55555658971;m=tyc2 [PT,L]
 Rewriterule ^favoritos/post/pag-(.*)$ index.php?accioncw241=favoritos;tipo=posts;pag=$1 [PT,L]
 Rewriterule ^favoritos/imagen/pag-(.*)$ index.php?accioncw241=favoritos;tipo=imagen;pag=$1 [PT,L]
 Rewriterule ^favoritos/(.*)$ index.php?accioncw241=favoritos;m=$1 [PT,L]
 Rewriterule ^noestilo/post/(.*)$ index.php?accioncw241=printpage;post=$1 [PT,L]
-Rewriterule ^imprimir/imagen/(.*)$ /web/imprimir-img-seg-1754.php?id487315=$1 [PT,L]
+# TO-DO: Modificar ruta según corresponda
+Rewriterule ^imprimir/imagen/(.*)$ /casitaweb/web/imprimir-img-seg-1754.php?id487315=$1 [PT,L]
 Rewriterule ^enviar-a-amigo/imagen-(.+)$ index.php?accioncw241=rz;m=tyc12;id=$1 [PT,L]
 Rewriterule ^imagenes/ver/(.+) index.php?accioncw241=imagenes;sa=ver;id=$1 [PT,L]
 Rewriterule ^imagenes/(.+)/pag-(.+)$ index.php?accioncw241=imagenes;usuario=$1;pag-seg-154s87135=$2 [PT,L]
 Rewriterule ^imagenes/(.*)$ index.php?accioncw241=imagenes;usuario=$1 [PT,L]
-Rewriterule ^rss/(.+)/(.+)$ /web/rss/rss-$1.php?id=$2 [PT,L]
-Rewriterule ^rss/(.*)/ /web/rss/rss-$1.php [PT,L]
-Rewriterule ^rss/(.*)$ /web/rss/rss-$1.php [PT,L]
+# TO-DO: Modificar ruta según corresponda
+Rewriterule ^rss/(.+)/(.+)$ /casitaweb/web/rss/rss-$1.php?id=$2 [PT,L]
+# TO-DO: Modificar ruta según corresponda
+Rewriterule ^rss/(.*)/ /casitaweb/web/rss/rss-$1.php [PT,L]
+# TO-DO: Modificar ruta según corresponda
+Rewriterule ^rss/(.*)$ /casitaweb/web/rss/rss-$1.php [PT,L]
 Rewriterule ^registrarse(.*)$ index.php?accioncw241=registrarse [PT,L]
 Rewriterule ^moderacion/comunidades/temas/pag-(.*)$ index.php?accioncw241=comA;tema=1;pag=$1 [PT,L]
 Rewriterule ^moderacion/comunidades/temas(.*)$ index.php?accioncw241=comA;tema=1 [PT,L]
