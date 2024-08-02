@@ -37,7 +37,7 @@ if ($admin && ($user_info['is_admin'] || $user_info['is_mods'])) {
     WHERE ID_MEMBER = $id_user
     LIMIT 1", __FILE__, __LINE__);
 
-  header(`Location: $boardurl/moderacion/edit-user/firma/$id_user`);
+  header('Location: ' . $boardurl . '/moderacion/edit-user/firma/' . $id_user);
 } else if (!$admin) {
   db_query("
     UPDATE {$db_prefix}members
@@ -45,7 +45,7 @@ if ($admin && ($user_info['is_admin'] || $user_info['is_mods'])) {
     WHERE ID_MEMBER = $ID_MEMBER
     LIMIT 1", __FILE__, __LINE__);
 
-  header(`Location: $boardurl/editar-perfil/firma/`);
+  header('Location: ' . $boardurl . '/editar-perfil/firma/');
 }
 
 ?>

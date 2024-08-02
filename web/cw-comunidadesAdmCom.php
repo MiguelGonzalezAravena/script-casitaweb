@@ -32,7 +32,10 @@ if ($user_info['is_admin'] || $user_info['is_mods']) {
   if ($banccc && $desbanear) {
     db_query("
       UPDATE {$db_prefix}comunidades
-      SET bloquear = 0, bloquear_razon = '', bloquear_por = ''
+      SET
+        bloquear = 0,
+        bloquear_razon = '',
+        bloquear_por = ''
       WHERE id = $cdavvbv
       LIMIT 1", __FILE__, __LINE__);
   } else if ($banear && !$banccc) {
@@ -46,12 +49,15 @@ if ($user_info['is_admin'] || $user_info['is_mods']) {
 
     db_query("
       UPDATE {$db_prefix}comunidades
-      SET bloquear = 1, bloquear_razon = '$razon', bloquear_por = '{$user_settings['realName']}'
+      SET
+        bloquear = 1,
+        bloquear_razon = '$razon',
+        bloquear_por = '{$user_settings['realName']}'
       WHERE id = $cdavvbv
       LIMIT 1", __FILE__, __LINE__);
   }
 
-  header(`Location: $boardurl/comunidades/$url/`);
+  header('Location: ' . $boardurl . '/comunidades/' . $url . '/');
 } else {
   fatal_error('No tienes permisos para estar ac&aacute;.');
 }

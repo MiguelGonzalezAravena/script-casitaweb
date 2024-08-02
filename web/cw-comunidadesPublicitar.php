@@ -59,6 +59,6 @@ if ($context['permisoCom'] == 1) {
   fatal_error('No tenes permisos para publicitar esta comunidad.');
 }
 
-header(`Location: $boardurl/comunidades/$url/`);
+header('Location: ' . $boardurl . '/comunidades/' . $url . '/');
 
 ?>

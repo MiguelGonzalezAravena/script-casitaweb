@@ -49,8 +49,8 @@ if ($context['permisoCom'] == 1 || $context['permisoCom'] == 3 || $context['perm
     WHERE id = $dasdasd
     LIMIT 1", __FILE__, __LINE__);
 
-  header(`Location: $boardurl/comunidades/$url/$dasdasd/$titulo.html`);
+  header('Location: ' . $boardurl . '/comunidades/' . $url . '/' . $dasdasd . '/' . $titulo . '.html');
 } else {
-  header(`Location: $boardurl/comunidades/`);
+  header('Location: ' . $boardurl . '/comunidades/');
 }
 ?>

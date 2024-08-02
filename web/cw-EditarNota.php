@@ -42,6 +42,6 @@ db_query("
     AND id_user = $ID_MEMBER
     LIMIT 1", __FILE__, __LINE__);
 
-header(`Location: $boardurl/mis-notas/`);
+header('Location: ' . $boardurl . '/mis-notas/');
 
 ?>

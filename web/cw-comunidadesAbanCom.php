@@ -62,6 +62,6 @@ db_query("
   WHERE id = $dasdasd
   LIMIT 1", __FILE__, __LINE__);
 
-header(`Location: $boardurl/comunidades/$id/`);
+header('Location: ' . $boardurl . '/comunidades/' . $id . '/');
 
 ?>

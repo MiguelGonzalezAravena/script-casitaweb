@@ -11,12 +11,12 @@ if ($ID_MEMBER == 1) {
     WHERE id IN (" . implode(',', $aLista) . ')', __FILE__, __LINE__);
 
   if ($pag) {
-    header(`Location: $boardurl/moderacion/pms/pag-$pag`);
+    header('Location: ' . $boardurl . '/moderacion/pms/pag-' . $pag);
   } else {
-    header(`Location: $boardurl/moderacion/pms/`);
+    header('Location: ' . $boardurl . '/moderacion/pms/');
   }
 } else {
-  header(`Location: $boardurl/`);
+  header('Location: ' . $boardurl . '/');
 }
 
 ?>

@@ -110,9 +110,9 @@ if ($user_info['is_admin'] || $user_info['is_mods']) {
   logAction('remove', array('pack' => $lelo, 'member' => $ser, 'causa' => $causa));
   updateStats('topic');
   updateStats('message');
-  header(`Location: $boardurl/user-post/$ser`);
+  header('Location: ' . $boardurl . '/user-post/' . $ser);
 } else {
-  header(`Location: $boardurl/`);
+  header('Location: ' . $boardurl . '/');
 }
 
 ?>

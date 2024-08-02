@@ -262,17 +262,17 @@ if ($newpassemail) {
     'description' => &$txt['activate_changed_email']
   );
 
-  header(`Location: $boardurl/`);
+  header('Location: ' . $boardurl . '/');
 }
 
 $sffffe = !empty($_POST['passwrd1']) ? 1 : 0;
 
 if ($_POST['llegaravatar']) {
-  header(`Location: $boardurl/moderacion/edit-user/perfil/{$_POST['llegaravatar']}`);
+  header('Location: ' . $boardurl . '/moderacion/edit-user/perfil/' . $_POST['llegaravatar']);
 } elseif ($sffffe == 1) {
-  header(`Location: $boardurl/`);
+  header('Location: ' . $boardurl . '/');
 } else {
-  header(`Location: $boardurl/editar-perfil/`);
+  header('Location: ' . $boardurl . '/editar-perfil/');
 }
 
 ?>

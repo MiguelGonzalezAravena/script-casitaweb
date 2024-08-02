@@ -7,6 +7,6 @@ $t = str_replace(' ', '+', $q);
 $sort = $_GET['orden'];
 $cat = $_GET['categoria'];
 
-header(`Location: $boardurl/tags/buscar/&q=$t&orden=$sort&categoria=$cat&nn=t`);
+header('Location: ' . $boardurl . '/tags/buscar/&q=' . $t . '&orden=' . $sort . '&categoria=' . $cat . '&nn=t');
 
 ?>

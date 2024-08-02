@@ -96,6 +96,6 @@ if ($context['permisoCom'] == 1) {
     LIMIT 1", __FILE__, __LINE__);
 }
 
-header(`Location: $boardurl/comunidades/$url/`);
+header('Location: ' . $boardurl . '/comunidades/' . $url . '/');
 
 ?>

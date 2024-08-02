@@ -93,6 +93,6 @@ Para acceder al protocolo, presiona [asd1256as4867cxc8c7a8xc7asd16a8e7a56s4da65s
   }
 }
 
-header(`Location: $boardurl/imagenes/$ser`);
+header('Location: ' . $boardurl . '/imagenes/' . $ser);
 
 ?>

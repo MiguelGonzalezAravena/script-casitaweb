@@ -41,7 +41,7 @@ if ($context['permisoCom'] == 1) {
     WHERE id = $dddd
     LIMIT 1", __FILE__, __LINE__);
 
-  header(`Location: $boardurl/comunidades/$url/`);
+  header('Location: ' . $boardurl . '/comunidades/' . $url . '/');
 } else {
   die('No tienes permisos para realizar esta acci&oacute;n.');
 }

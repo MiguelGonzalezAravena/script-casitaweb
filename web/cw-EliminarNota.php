@@ -29,7 +29,7 @@ if (empty($contador)) {
     WHERE id = $id
     AND id_user = $myuser", __FILE__, __LINE__);
 
-  header(`Location: $boardurl/mis-notas/`);
+  header('Location: ' . $boardurl . '/mis-notas/');
 }
 
 ?>

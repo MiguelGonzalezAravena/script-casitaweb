@@ -70,7 +70,7 @@ if (($user_info['is_admin'] || $user_info['is_mods']) || $ID_MEMBER == $memID) {
     WHERE ID_PICTURE = $id
     LIMIT 1", __FILE__, __LINE__);
 
-  header(`Location: $boardurl/imagenes/$realName`);
+  header('Location: ' . $boardurl . '/imagenes/' . $realName);
 } else {
   fatal_error('No tienes los permisos necesarios para editar esta imagen.', false, '', 4);
 }

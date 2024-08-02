@@ -92,7 +92,7 @@ if ($context['permisoCom'] == 1 || $context['permisoCom'] == 2 || $context['perm
 
     mysqli_free_result($request);
 
-    header(`Location: $boardurl/comunidades/$url/`);
+    header('Location: ' . $boardurl . '/comunidades/' . $url . '/');
   } else {
     fatal_error('No tienes los permisos para realizar esta acci&oacute;n.');
   }

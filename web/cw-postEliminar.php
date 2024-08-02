@@ -135,6 +135,6 @@ Muchas gracias por entender!';
   pts_sumar_grup($starter);
 }
 
-header(`Location: $boardurl/`);
+header('Location: ' . $boardurl . '/');
 
 ?>

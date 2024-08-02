@@ -46,7 +46,7 @@ if ($user_info['is_admin'] || $user_info['is_mods']) {
       WHERE id = $id", __FILE__, __LINE__);
   }
 
-  header(`Location: $boardurl/moderacion/comunicacion-mod/post/$post`);
+  header('Location: ' . $boardurl . '/moderacion/comunicacion-mod/post/' . $post);
 } else {
   fatal_error('Este comentario no se puede eliminar.');
 }

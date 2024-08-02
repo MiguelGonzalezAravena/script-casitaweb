@@ -90,7 +90,7 @@ if ($context['permisoCom'] == 1 || $context['permisoCom'] == 3) {
       LIMIT 1", __FILE__, __LINE__);
   }
 
-  header(`Location: $boardurl/comunidades/$url/`);
+  header('Location: ' . $boardurl . '/comunidades/' . $url . '/');
 } else {
   fatal_error('No tienes permisos para estar ac&aacute;.');
 }

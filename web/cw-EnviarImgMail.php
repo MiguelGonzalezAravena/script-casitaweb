@@ -82,6 +82,6 @@ sendmail(
   sprintf('Enlace: <a href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '">' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '</a>')
 );
 
-header(`Location: $boardurl/imagenes/ver/{$row['ID_PICTURE']}`);
+header('Location: ' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE']);
 
 ?>

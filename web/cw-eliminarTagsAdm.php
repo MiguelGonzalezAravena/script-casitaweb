@@ -11,9 +11,9 @@ if ($user_settings['realName'] == 'rigo') {
       WHERE palabra = '$palabra'", __FILE__, __LINE__);
   }
 
-  header(`Location: $boardurl/admin/tags/`);
+  header('Location: ' . $boardurl . '/admin/tags/');
 } else {
-  header(`Location: $boardurl/`);
+  header('Location: ' . $boardurl . '/');
 }
 
 ?>
