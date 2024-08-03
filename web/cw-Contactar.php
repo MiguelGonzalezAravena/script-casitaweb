@@ -49,7 +49,8 @@ sendmail(
   sprintf('Comentario:') . "\n" .
   sprintf(nohtml($_POST['comentario'])) . "\n\n" .
   sprintf('----------') . "\n" .
-  sprintf('Logueado como: ' . $user_settings['realName']));
+  sprintf('Inici&oacute; sesi&oacute;n como: ' . $user_settings['realName'])
+);
 
 fatal_error('Mensaje enviado correctamente', false, 'OK');
 

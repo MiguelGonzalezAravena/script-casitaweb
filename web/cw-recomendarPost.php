@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-global $tranfer1, $func, $ID_MEMBER, $context, $db_prefix;
+global $db_prefix, $boardurl;
 
 $posts = isset($_POST['post']) ? (int) $_POST['post'] : 0;
 $titulo = isset($_POST['titulo']) ? seguridad($_POST['titulo']) : '';
@@ -95,8 +95,8 @@ sendmail(
   $emailse,
   $titulo,
   sprintf('Este mensaje ha sido enviado desde ' . $boardurl . ':') . "\n\n" .
-  sprintf($comentario) . "\n\n" . 
-  'Enlace: <a href="' . $boardurl . '/post/' . $posts . '/' . $row['description'] . '/' . censorText(urls($row['subject'])) . '.html">' . $boardurl . '/post/' . $posts . '/' . $row['description'] . '/' . censorText(urls($row['subject'])) . '.html</a>'
+  sprintf($comentario) . "\n\n" .
+  'Enlace: <a href="' . $boardurl . '/post/' . $posts . '/' . $row['description'] . '/' . urls($row['subject']) . '.html">' . $boardurl . '/post/' . $posts . '/' . $row['description'] . '/' . urls($row['subject']) . '.html</a>'
 );
 
 die('1: &iexcl;Post recomendado exitosamente!');

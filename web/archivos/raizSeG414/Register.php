@@ -12,7 +12,7 @@ function Register() {
   }
 
   if (empty($user_info['is_guest'])) {
-    fatal_error('Ya est&aacute;s logueado.');
+    fatal_error('Ya iniciaste sesi&oacute;n.');
   }
 
   loadLanguage('Login');
@@ -23,7 +23,7 @@ function Register() {
 }
 
 function Activate() {
-  global $db_prefix, $context, $txt, $modSettings, $sourcedir;
+  global $db_prefix, $context, $txt, $modSettings, $sourcedir, $mbname, $boardurl;
 
   if (empty($_REQUEST['u']) && empty($_POST['user'])) {
     if (empty($modSettings['registration_method']) || $modSettings['registration_method'] == 3) {
@@ -42,7 +42,7 @@ function Activate() {
   $request = db_query("
     SELECT ID_MEMBER, validation_code, memberName, realName, emailAddress, is_activated, passwd
     FROM {$db_prefix}members" . (empty($_REQUEST['u']) ? "
-    WHERE memberName = '$_POST[user]' OR emailAddress = '$_POST[user]'" : '
+    WHERE memberName = '{$_POST['user']}' OR emailAddress = '{$_POST['user']}'" : '
     WHERE ID_MEMBER = ' . (int) $_REQUEST['u']) . '
     LIMIT 1', __FILE__, __LINE__);
 
@@ -70,7 +70,7 @@ function Activate() {
     !$request = db_query("
       SELECT ID_MEMBER
       FROM {$db_prefix}members
-      WHERE emailAddress = '$_POST[new_email]'
+      WHERE emailAddress = '{$_POST['new_email']}'
       LIMIT 1", __FILE__, __LINE__);
 
     if (mysqli_num_rows($request) != 0) {
@@ -79,22 +79,25 @@ function Activate() {
 
     mysqli_free_result($request);
 
-    updateMemberData($row['ID_MEMBER'], array('emailAddress' => "'$_POST[new_email]'"));
+    updateMemberData($row['ID_MEMBER'], array('emailAddress' => "'{$_POST['new_email']}'"));
 
     $row['emailAddress'] = stripslashes($_POST['new_email']);
     $email_change = true;
   } else if (!empty($_REQUEST['sa']) && $_REQUEST['sa'] == 'resend' && ($row['is_activated'] == 0 || $row['is_activated'] == 2) && (!isset($_REQUEST['code']) || $_REQUEST['code'] == '')) {
+    $enlace = $boardurl . '/activar-' . $row['ID_MEMBER'] . 'codigo-' . $row['validation_code'];
+    
     require($sourcedir . '/Subs-Post.php');
-    sendmail($row['emailAddress'], 'Confirmar e-mail',
-      'Para volver a ingresar con su cuenta en casitaweb.net, la debe activar.
-Para eso debe ir al siguiente enlace, una vez dentro de el su cuenta estara activa:
 
-'
-        . "<a href='http://casitaweb.net/activar-{$row['ID_MEMBER']}codigo-{$row['validation_code']}'>http://casitaweb.net/activar-{$row['ID_MEMBER']}codigo-{$row['validation_code']}</a> \n\n"
-        . "Si tiene problemas con el enlace, no dude en contactar con CasitaWeb! (<a href='http://casitaweb.net/contactanos/'>http://casitaweb.net/contactanos/</a>) siempre recordando su codigo de activacion: {$row['validation_code']}");
+    sendmail(
+      $row['emailAddress'],
+      'Confirmar correo',
+      'Para volver a ingresar con tu cuenta en ' . $mbname . ', debes activarla. Para eso debes ir al siguiente enlace:' .
+      '<a href="' . $enlace . '">' . $enlace . '</a>' . "\n\n" .
+      'Si tiene problemas con el enlace anterior, no dudes en contactarte con ' . $mbname . ' (<a href="' . $boardurl . '/contactanos/">' . $boardurl . '/contactanos/</a>) siempre recordando tu c&oacute;digo de activaci&oacute;n: ' . $row['validation_code']
+    );
 
     $context['page_title'] = $txt['invalid_activation_resend'];
-    fatal_error(!empty($email_change) ? '1' : 'Se envio nuevamente el e-mail de confirmaci&oacute;n', false);
+    fatal_error(!empty($email_change) ? '1' : 'Se envi&oacute; nuevamente el correo de confirmaci&oacute;n', false);
   }
 
   if (empty($_REQUEST['code']) || $row['validation_code'] != $_REQUEST['code']) {
@@ -102,7 +105,7 @@ Para eso debe ir al siguiente enlace, una vez dentro de el su cuenta estara acti
       fatal_lang_error('already_activated', false);
     } else if ($row['validation_code'] == '') {
       loadLanguage('Profile');
-      fatal_error($txt['registration_not_approved'] . ' <a href="/recuperar-pass/activar-' . $row['memberName'] . '">' . $txt[662] . '</a>.', false);
+      fatal_error($txt['registration_not_approved'] . ' <a href="' . $boardurl . '/recuperar-pass/activar-' . $row['memberName'] . '">' . $txt[662] . '</a>.', false);
     }
 
     $context['member_id'] = $row['ID_MEMBER'];
@@ -119,10 +122,14 @@ Para eso debe ir al siguiente enlace, una vez dentro de el su cuenta estara acti
   updateMemberData($row['ID_MEMBER'], array('is_activated' => 1, 'validation_code' => "''"));
   updateStats('member', false);
 
-  sendmail($row['emailAddress'], 'Cuenta re-activada',
-    "Le contamos que su cuenta en casitaweb.net fue reactivada.\n\n"
-      . "Nick: {$row['emailAddress']} \n Password: ****** <span style='fontsize:8px;color:grey;'>(Oculta por seguridad)</span>\n\n"
-      . "Si tiene problemas con su cuenta no dude en contactarnos: <a href='http://casitaweb.net/contactanos/'>http://casitaweb.net/contactanos/</a>");
+  sendmail(
+    $row['emailAddress'],
+    'Cuenta reactivada',
+    'Te contamos que tu cuenta en ' . $mbname . ' fue reactivada.' . "\n\n" .
+    'Nick: ' . $row['emailAddress'] . "\n" . ' Password: ****** <span style="font-size: 8px; color: grey;">(Oculta por seguridad)</span>' . "\n\n" .
+    'Si tienes problemas con tu cuenta, no dudes en contactarnos: <a href="' . $boardurl . '/contactanos/">' . $boardurl . '/contactanos/</a>'
+  );
+
   fatal_error('Cuenta reactivada correctamente.');
 }
 

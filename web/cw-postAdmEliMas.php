@@ -31,7 +31,7 @@ if ($user_info['is_admin'] || $user_info['is_mods']) {
     LIMIT 1", __FILE__, __LINE__);
 
   $data37 = mysqli_fetch_assoc($datosmem27);
-  $id_mem = $data37['ID_MEMBER'];
+  $id_mem = isset($data37['ID_MEMBER']) ? $data37['ID_MEMBER'] : '';
 
   if (empty($_POST['campos'])) {
     fatal_error('No seleccionaste los posts para eliminar.');

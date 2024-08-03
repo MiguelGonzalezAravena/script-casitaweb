@@ -17,17 +17,19 @@ if ($user_info['is_admin']) {
     }
 
     $row = mysqli_fetch_assoc($request);
-    $email = $row['emailAddress'];
+    $email = isset($row['emailAddress']) ? $row['emailAddress'] : '';
 
     mysqli_free_result($request);
-
     updateMemberData($_GET['u'], array('is_activated' => 1, 'validation_code' => "''"));
+
     require_once($sourcedir . '/Subs-Post.php');
+
     sendmail(
-      $email, 'Cuenta re-activada',
-      "Su cuenta en ' . $boardurl . ' fue reactivada.\n\n" . 
-      "Nombre de usuario: $email\nContrase&ntilde;a: ****** <span style=\"font-size: 8px; color: grey;\">(Oculta por seguridad)</span>\n\n" . 
-      "Si tiene problemas con su cuenta, no dude en contactarnos: <a href=\"$boardurl/contactanos/\">$boardurl/contactanos/</a>"
+      $email, 'Cuenta reactivada',
+      'Tu cuenta en ' . $boardurl . ' fue reactivada.' . "\n\n" .
+      'Nombre de usuario: ' . $email . "\n" . 'Contrase&ntilde;a: ****** <span style="font-size: 8px; color: grey;">(Oculta por seguridad)</span>' .
+      "\n\n" .
+      'Si tienes problemas con tu cuenta, no dudes en contactarnos: <a href="' . $boardurl . '/contactanos/\">' . $boardurl . '/contactanos/</a>'
     );
   }
 }

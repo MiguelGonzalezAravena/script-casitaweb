@@ -15,11 +15,7 @@ function RecentPosts() {
   $RegistrosAMostrar = 50;
   $NroRegistros = 2500;
   $pags33 = isset($_GET['pag']) ? (int) $_GET['pag'] : '';
-  if ($pags33 < 1) {
-    $per='1';
-  } else {
-    $per = $pags33;
-  }
+  $per = $pags33 < 1 ? 1 : $pags33;
 
   if (isset($per)) {
     $RegistrosAEmpezar = ($per - 1) * $RegistrosAMostrar;
@@ -31,7 +27,7 @@ function RecentPosts() {
 
   $context['PagAnt'] = $context['PagAct']-1;
   $context['PagSig'] = $context['PagAct']+1;
-  $context['PagUlt'] = $NroRegistros/$RegistrosAMostrar;
+  $context['PagUlt'] = $NroRegistros / $RegistrosAMostrar;
   $Res = $NroRegistros % $RegistrosAMostrar;
 
   if ($Res > 0) {
@@ -66,14 +62,14 @@ function RecentPosts() {
 
   // Stickys
   $rsdd = db_query("
-  SELECT p.ID_TOPIC, p.subject, b.ID_BOARD, p.hiddenOption, p.color, b.name, b.description
-  FROM {$db_prefix}messages AS p
-  INNER JOIN {$db_prefix}boards AS b ON b.ID_BOARD = p.ID_BOARD
-  AND p.eliminado = 0
-  AND p.sticky = 1
-  " . (empty($context['catccdd']) ? '' : " AND b.description = '{$context['catccdd']}'") . "
-  ORDER BY p.ID_TOPIC DESC 
-  LIMIT 7",__FILE__, __LINE__);
+    SELECT p.ID_TOPIC, p.subject, b.ID_BOARD, p.hiddenOption, p.color, b.name, b.description
+    FROM {$db_prefix}messages AS p
+    INNER JOIN {$db_prefix}boards AS b ON b.ID_BOARD = p.ID_BOARD
+    AND p.eliminado = 0
+    AND p.sticky = 1
+    " . (empty($context['catccdd']) ? '' : " AND b.description = '{$context['catccdd']}'") . "
+    ORDER BY p.ID_TOPIC DESC 
+    LIMIT 7",__FILE__, __LINE__);
 
   $context['sticky'] = array();
 
@@ -113,9 +109,9 @@ function RecentPosts() {
   $starttime = mktime(0, 0, 0, date("n"), date("j"), date("Y")) - (date("N") * 3600 * 24);
   $starttime = forum_time(false, $starttime);
   $request = db_query("
-    SELECT me.ID_MEMBER, me.memberName, me.realName, COUNT(*) as count_posts
+    SELECT me.ID_MEMBER, me.memberName, me.realName, COUNT(*) AS count_posts
     FROM {$db_prefix}messages AS m
-    LEFT JOIN {$db_prefix}members AS me ON (me.ID_MEMBER = m.ID_MEMBER)
+    LEFT JOIN {$db_prefix}members AS me ON me.ID_MEMBER = m.ID_MEMBER
     WHERE m.posterTime > " . $starttime . "
     AND m.ID_MEMBER != 0
     AND m.eliminado = 0

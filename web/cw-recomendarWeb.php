@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-global $tranfer1, $func, $ID_MEMBER, $context, $db_prefix;
+global $boardurl, $mbname;
 
 $titulo = seguridad($_POST['titulo']);
 $emailse = array($_POST['r_email'], $_POST['r_email1'], $_POST['r_email2'], $_POST['r_email3'], $_POST['r_email4'], $_POST['r_email5']);

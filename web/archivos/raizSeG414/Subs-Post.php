@@ -7,8 +7,7 @@ if (!defined('CasitaWeb!-PorRigo')) {
 function preparsecode(&$message, $previewing = false) {}
 function un_preparsecode($message) {}
 
-function fixTags(&$message)
-{
+function fixTags(&$message) {
   global $modSettings;
 
   $fixArray = array(
@@ -61,86 +60,98 @@ function fixTags(&$message)
     ),
   );
 
-  foreach ($fixArray as $param)
+  foreach ($fixArray as $param) {
     fixTag($message, $param['tag'], $param['protocols'], $param['embeddedUrl'], $param['hasEqualSign'], !empty($param['hasExtra']));
+  }
 
   $message = preg_replace('~(\[img.*?\])(.+?)\[/img\]~eis', "'\$1' . preg_replace('~action(=|%3d)(?!dlattach)~i', 'action-', '\$2') . '[/img]'", $message);
 
-  if (!empty($modSettings['max_image_width']) || !empty($modSettings['max_image_height'])) {
+  if (!empty($modSettings['max_image_width']) || !empty($modSettings['max_image_height'])) { {
     preg_match_all('~\[img(\s+width=\d+)?(\s+height=\d+)?(\s+width=\d+)?\](.+?)\[/img\]~is', $message, $matches, PREG_PATTERN_ORDER);
+  }
 
     $replaces = array();
 
-    if (!empty($replaces))
+    if (!empty($replaces)) {
       $message = strtr($message, $replaces);
+    }
   }
 }
 
-function fixTag(&$message, $myTag, $protocols, $embeddedUrl = false, $hasEqualSign = false, $hasExtra = false)
-{
+function fixTag(&$message, $myTag, $protocols, $embeddedUrl = false, $hasEqualSign = false, $hasExtra = false) {
   global $boardurl, $scripturl;
 
-  if (preg_match('~^([^:]+://[^/]+)~', $boardurl, $match) != 0)
+  if (preg_match('~^([^:]+://[^/]+)~', $boardurl, $match) != 0) {
     $domain_url = $match[1];
-  else
+  } else {
     $domain_url = $boardurl . '/';
+  }
 
   $replaces = array();
 
-  if ($hasEqualSign)
+  if ($hasEqualSign) {
     preg_match_all('~\[(' . $myTag . ')=([^\]]*?)\](.+?)\[/(' . $myTag . ')\]~is', $message, $matches);
-  else
+  } else {
     preg_match_all('~\[(' . $myTag . ($hasExtra ? '(?:[^\]]*?)' : '') . ')\](.+?)\[/(' . $myTag . ')\]~is', $message, $matches);
+  }
 
   foreach ($matches[0] as $k => $dummy) {
     // Remove all leading and trailing whitespace.
     $replace = trim($matches[2][$k]);
     $this_tag = $matches[1][$k];
-    if (!$hasEqualSign)
+
+    if (!$hasEqualSign) {
       $this_close = $matches[3][$k];
-    else
+    } else {
       $this_close = $matches[4][$k];
+    }
 
     $found = false;
+
     foreach ($protocols as $protocol) {
       $found = strncasecmp($replace, $protocol . '://', strlen($protocol) + 3) === 0;
-      if ($found)
+
+      if ($found) {
         break;
+      }
     }
 
     if (!$found && $protocols[0] == 'http') {
-      if (substr($replace, 0, 1) == '/')
+      if (substr($replace, 0, 1) == '/') {
         $replace = $domain_url . $replace;
-      elseif (substr($replace, 0, 1) == '?')
+      } else if (substr($replace, 0, 1) == '?') {
         $replace = $scripturl . $replace;
-      elseif (substr($replace, 0, 1) == '#' && $embeddedUrl) {
+      } else if (substr($replace, 0, 1) == '#' && $embeddedUrl) {
         $replace = '#' . preg_replace('~[^A-Za-z0-9_\-#]~', '', substr($replace, 1));
         $this_tag = 'iurl';
         $this_close = 'iurl';
-      }
-      else
+      } else {
         $replace = $protocols[0] . '://' . $replace;
-    }
-    elseif (!$found)
+      }
+    } else if (!$found) {
       $replace = $protocols[0] . '://' . $replace;
+    }
 
-    if ($hasEqualSign && $embeddedUrl)
+    if ($hasEqualSign && $embeddedUrl) {
       $replaces['[' . $matches[1][$k] . '=' . $matches[2][$k] . ']' . $matches[3][$k] . '[/' . $matches[4][$k] . ']'] = '[' . $this_tag . '=' . $replace . ']' . $matches[3][$k] . '[/' . $this_close . ']';
-    elseif ($hasEqualSign)
+    } else if ($hasEqualSign) {
       $replaces['[' . $matches[1][$k] . '=' . $matches[2][$k] . ']'] = '[' . $this_tag . '=' . $replace . ']';
-    elseif ($embeddedUrl)
+    } else if ($embeddedUrl) {
       $replaces['[' . $matches[1][$k] . ']' . $matches[2][$k] . '[/' . $matches[3][$k] . ']'] = '[' . $this_tag . '=' . $replace . ']' . $matches[2][$k] . '[/' . $this_close . ']';
-    else
+    } else {
       $replaces['[' . $matches[1][$k] . ']' . $matches[2][$k] . '[/' . $matches[3][$k] . ']'] = '[' . $this_tag . ']' . $replace . '[/' . $this_close . ']';
+    }
   }
 
   foreach ($replaces as $k => $v) {
-    if ($k == $v)
+    if ($k == $v) {
       unset($replaces[$k]);
+    }
   }
 
-  if (!empty($replaces))
+  if (!empty($replaces)) {
     $message = strtr($message, $replaces);
+  }
 }
 
 function sendmail($to, $subject, $message) {
@@ -155,16 +166,20 @@ function sendmail($to, $subject, $message) {
   $headers .= 'Return-Path: ' . (empty($modSettings['mail_from']) ? $webmaster_email : $modSettings['mail_from']) . $line_break;
   $headers .= 'Date: ' . gmdate('D, d M Y H:i:s') . ' -0000' . $line_break;
 
-  if (empty($modSettings['mail_no_message_id']))
+  if (empty($modSettings['mail_no_message_id'])) {
     $headers .= 'Message-ID: <' . md5($scripturl . microtime()) . '-' . strstr(empty($modSettings['mail_from']) ? $webmaster_email : $modSettings['mail_from'], '@') . '>' . $line_break;
-  $headers .= 'X-Mailer: CasitaWeb!' . $line_break;
+  }
+
+  $headers .= 'X-Mailer: ' . $mbname . $line_break;
   $headers .= 'Mime-Version: 1.0' . $line_break;
   $headers .= 'Content-Type: text/html; charset=iso-8859-1' . $line_break;
 
   $message = str_replace("\n", '<br />', trim($message));
+
   if (!$message) {
     fatal_error('Falta el mensaje.');
   }
+
   if (strlen($message) >= 700) {
     fatal_error('El comentario no puede tener 700 o m&aacute; letras.');
   }

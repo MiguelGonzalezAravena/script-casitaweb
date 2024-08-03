@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-global $context, $txt, $modSettings;
+global $context, $txt, $modSettings, $mbname;
 global $sourcedir, $scripturl, $boardurl, $db_prefix;
 global $ID_MEMBER, $user_info, $user_settings, $user_profile;
 global $cookiename, $newpassemail, $validationCode;
@@ -233,10 +233,14 @@ if ($newpassemail) {
   require_once($sourcedir . '/Subs-Post.php');
 
   // TO-DO: Verificar correo que llega
+  $enlace = $boardurl . '/activar-' . $memID . 'codigo-' . $validationCode;
   sendmail(
     $_POST['emailAddress'],
-    'Confirmar e-mail',
-    "Para volver a ingresar con tu cuenta en $boardurl, la debes activar.<br/>Para eso debes ir al siguiente enlace, una vez que ingreses, tu cuenta estar&aacute; activa:<br/ ><br /><a href=\"$boardurl/activar-{$memID}codigo-{$validationCode}\">$boardurl/activar-{$memID}codigo-{$validationCode}</a><br /><br />Si tienes problemas con el enlace, no dudes en contactar con $mbname (<a href=\"$boardurl/contactanos/\">$boardurl/contactanos/</a>) siempre recordando tu c&oacute;digo de activacion: {$validationCode}");
+    'Confirmar correo',
+    'Para volver a ingresar con tu cuenta en ' . $boardurl . ', la debes activar.<br />' .
+    'Para eso debes ir al siguiente enlace:<br / ><br />' . 
+    '<a href="' . $enlace . '">' . $enlace . '</a><br /><br />' .
+    'Si tienes problemas con el enlace, no dudes en contactar con ' . $mbname . ' (<a href="' . $boardurl . '/contactanos/">' . $boardurl . '/contactanos/</a>) siempre recordando tu c&oacute;digo de activaci&oacute;n: ' . $validationCode);
 
   db_query("
     DELETE FROM {$db_prefix}log_online
