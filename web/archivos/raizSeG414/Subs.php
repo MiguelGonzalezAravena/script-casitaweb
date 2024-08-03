@@ -520,14 +520,13 @@ function un_htmlspecialchars($string) {
 
 // Shorten a subject + internationalization concerns.
 function shorten_subject($subject, $len) {
-  global $func;
-
   // It was already short enough!
-  if ($func['strlen']($subject) <= $len)
+  if (strlen($subject) <= $len) {
     return $subject;
+  }
 
   // Shorten it by the length it was too long, and strip off junk from the end.
-  return $func['substr']($subject, 0, $len) . '...';
+  return substr($subject, 0, $len) . '...';
 }
 
 // The current time with offset.
@@ -700,7 +699,7 @@ function doUBBC($message, $enableSmileys = true) {
  *         'tag' => 'swf',
  *         'type' => 'unparsed_content',
  *         'content' => '<embed src="$1" quality="high" type="application/x-shockwave-flash" allownetworking="internal" allowscriptaccess="never" wmode="transparent" width="425" height="350" /><br/><a id="alive_link" href="$1" target="_blank" rel="nofollow">[enlace]</a>',
- *         'validate' => create_function('&$tag, &$data, $disabled', '$data = strtr($data, array(\'<br />\' => \'\'));'),),
+ *         'validate' => create_function('&$tag, &$data, $disabled', '$data = strtr($data, array(\'<br />\' => \'\'));'),q),
  *
  *       array(
  *         'tag' => 'hr',
@@ -3532,22 +3531,26 @@ function template_header() {
 }
 
 function text2words($text, $max_chars = 20, $encrypt = false) {
-  global $func, $context;
+  global $context;
 
   $words = preg_replace('~([\x0B\0' . ($context['utf8'] ? ($context['server']['complex_preg_chars'] ? '\x{A0}' : pack('C*', 0xC2, 0xA0)) : '\xA0') . '\t\r\s\n(){}\[\]<>!@$%^*.,:+=`\~\?/\\\\]|&(amp|lt|gt|quot);)+~' . ($context['utf8'] ? 'u' : ''), ' ', strtr($text, array('<br />' => ' ')));
-  $words = un_htmlspecialchars($func['strtolower']($words));
+  $words = un_htmlspecialchars(strtolower($words));
 
   $words = explode(' ', $words);
 
   if ($encrypt) {
     $possible_chars = array_flip(array_merge(range(46, 57), range(65, 90), range(97, 122)));
     $returned_ints = array();
+
     foreach ($words as $word) {
       if (($word = trim($word, "-_'")) !== '') {
         $encrypted = substr(crypt($word, 'uk'), 2, $max_chars);
         $total = 0;
-        for ($i = 0; $i < $max_chars; $i++)
+
+        for ($i = 0; $i < $max_chars; $i++) {
           $total += $possible_chars[ord($encrypted[$i])] * pow(63, $i);
+        }
+
         $returned_ints[] = $max_chars == 4 ? min($total, 16777215) : $total;
       }
     }
@@ -3555,9 +3558,12 @@ function text2words($text, $max_chars = 20, $encrypt = false) {
   } else {
     // Trim characters before and after and add slashes for database insertion.
     $returned_words = array();
-    foreach ($words as $word)
-      if (($word = trim($word, "-_'")) !== '')
+
+    foreach ($words as $word) {
+      if (($word = trim($word, "-_'")) !== '') {
         $returned_words[] = addslashes($max_chars === null ? $word : substr($word, 0, $max_chars));
+      }
+    }
 
     // Filter out all words that occur more than once.
     return array_unique($returned_words);
@@ -3567,18 +3573,21 @@ function text2words($text, $max_chars = 20, $encrypt = false) {
 function logAction($action, $extra = array()) {
   global $db_prefix, $ID_MEMBER, $modSettings, $user_info;
 
-  if (!is_array($extra))
+  if (!is_array($extra)) {
     trigger_error("logAction(): data is not an array with action '" . $action . "'", E_USER_NOTICE);
+  }
 
-  if (isset($extra['topic']) && !is_numeric($extra['topic']))
+  if (isset($extra['topic']) && !is_numeric($extra['topic'])) {
     trigger_error("logAction(): data's topic is not an number", E_USER_NOTICE);
-  if (isset($extra['member']) && !is_numeric($extra['member']))
+  }
+
+  if (isset($extra['member']) && !is_numeric($extra['member'])) {
     trigger_error("logAction(): data's member is not an number", E_USER_NOTICE);
+  }
 
   if (!empty($modSettings['modlog_enabled'])) {
     db_query("
-      INSERT INTO {$db_prefix}log_actions
-        (logTime, ID_MEMBER, ip, action, extra)
+      INSERT INTO {$db_prefix}log_actions (logTime, ID_MEMBER, ip, action, extra)
       VALUES (" . time() . ", $ID_MEMBER, SUBSTRING('$user_info[ip]', 1, 16), SUBSTRING('$action', 1, 30),
         SUBSTRING('" . addslashes(serialize($extra)) . "', 1, 65534))", __FILE__, __LINE__);
 

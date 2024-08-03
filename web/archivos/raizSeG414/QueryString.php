@@ -230,17 +230,16 @@ function stripslashes__recursive($var, $level = 0)
 }
 
 // Trim a string including the HTML space, character 160.
-function htmltrim__recursive($var, $level = 0)
-{
-  global $func;
-
+function htmltrim__recursive($var, $level = 0) {
   // Remove spaces (32), tabs (9), returns (13, 10, and 11), nulls (0), and hard spaces. (160)
-  if (!is_array($var))
-    return isset($func) ? $func['htmltrim']($var) : trim($var, " \t\n\r\x0B\0\xA0");
+  if (!is_array($var)) {
+    return trim($var, " \t\n\r\x0B\0\xA0");
+  }
 
   // Go through all the elements and remove the whitespace.
-  foreach ($var as $k => $v)
+  foreach ($var as $k => $v) {
     $new_var[$k] = $level > 25 ? null : htmltrim__recursive($v, $level + 1);
+  }
 
   return $new_var;
 }

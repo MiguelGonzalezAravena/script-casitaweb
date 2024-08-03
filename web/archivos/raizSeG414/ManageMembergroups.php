@@ -467,12 +467,12 @@ function MembergroupMembers()
     checkSession();
 
     // Get all the members to be added... taking into account names can be quoted ;)
-    $_REQUEST['toAdd'] = strtr(addslashes($func['htmlspecialchars'](stripslashes($_REQUEST['toAdd']), ENT_QUOTES)), array('&quot;' => '"'));
+    $_REQUEST['toAdd'] = strtr(addslashes(htmlspecialchars(stripslashes($_REQUEST['toAdd']), ENT_QUOTES)), array('&quot;' => '"'));
     preg_match_all('~"([^"]+)"~', $_REQUEST['toAdd'], $matches);
     $memberNames = array_unique(array_merge($matches[1], explode(',', preg_replace('~"([^"]+)"~', '', $_REQUEST['toAdd']))));
 
     foreach ($memberNames as $index => $memberName) {
-      $memberNames[$index] = trim($func['strtolower']($memberNames[$index]));
+      $memberNames[$index] = trim(strtolower($memberNames[$index]));
 
       if (strlen($memberNames[$index]) == 0)
         unset($memberNames[$index]);

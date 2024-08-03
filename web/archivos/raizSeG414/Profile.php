@@ -237,10 +237,11 @@ function saveProfileChanges(&$profile_vars, &$post_errors, $memID) {
 
       if (trim($_POST['realName']) == '') {
         $post_errors[] = 'no_name';
-      } else if ($func['strlen']($_POST['realName']) > 60) {
+      } else if (strlen($_POST['realName']) > 60) {
         $post_errors[] = 'name_too_long';
       } else {
         require_once($sourcedir . '/Subs-Members.php');
+
         if (isReservedName($_POST['realName'], $memID)) {
           $post_errors[] = 'name_taken';
         }

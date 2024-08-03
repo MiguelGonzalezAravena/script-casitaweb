@@ -163,7 +163,7 @@ function MLAll() {
   }
 
   if (!is_numeric($_REQUEST['start'])) {
-    if (preg_match("~^[^'\\\\/]~" . ($context['utf8'] ? 'u' : ''), $func['strtolower']($_REQUEST['start']), $match) === 0) {
+    if (preg_match("~^[^'\\\\/]~" . ($context['utf8'] ? 'u' : ''), strtolower($_REQUEST['start']), $match) === 0) {
       fatal_error('Hacker?', false);
     }
 
@@ -306,8 +306,9 @@ function MLAll() {
   // Add anchors at the start of each letter.
   if ($_REQUEST['sort'] == 'realName') {
     $last_letter = '';
+
     foreach ($context['members'] as $i => $dummy) {
-      $this_letter = $func['strtolower']($func['substr']($context['members'][$i]['name'], 0, 1));
+      $this_letter = strtolower(substr($context['members'][$i]['name'], 0, 1));
 
       if ($this_letter != $last_letter && preg_match('~[a-z]~', $this_letter) === 1) {
         $context['members'][$i]['sort_letter'] = htmlspecialchars($this_letter);

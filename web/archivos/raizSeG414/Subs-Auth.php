@@ -113,24 +113,26 @@ function adminLogin() {}
 function adminLogin_outputPostVars($k, $v) {}
 function show_db_error($loadavg = false) {}
 
-function findMembers($names, $use_wildcards = false, $buddies_only = false, $max = null)
-{
-  global $db_prefix, $scripturl, $user_info, $modSettings, $func;
+function findMembers($names, $use_wildcards = false, $buddies_only = false, $max = null) {
+  global $db_prefix, $scripturl, $user_info, $modSettings, $boardurl;
 
-  if (!is_array($names))
+  if (!is_array($names)) {
     $names = explode(',', $names);
+  }
 
   $maybe_email = false;
+
   foreach ($names as $i => $name) {
-    $names[$i] = addslashes(trim($func['strtolower']($name)));
+    $names[$i] = addslashes(trim(strtolower($name)));
 
     $maybe_email |= strpos($name, '@') !== false;
 
     // Make it so standard wildcards will work. (* and ?)
-    if ($use_wildcards)
+    if ($use_wildcards) {
       $names[$i] = strtr($names[$i], array('%' => '\%', '_' => '\_', '*' => '%', '?' => '_', "\'" => '&#039;'));
-    else
+    } else {
       $names[$i] = strtr($names[$i], array("\'" => '&#039;'));
+    }
   }
 
   // What are we using to compare?
@@ -142,11 +144,12 @@ function findMembers($names, $use_wildcards = false, $buddies_only = false, $max
   // This ensures you can't search someones email address if you can't see it.
   $email_condition = $user_info['is_admin'] || empty($modSettings['allow_hideEmail']) ? '' : 'hideEmail = 0 AND ';
 
-  if ($use_wildcards || $maybe_email)
+  if ($use_wildcards || $maybe_email) {
     $email_condition = '
       OR (' . $email_condition . "emailAddress $comparison '" . implode("') OR ($email_condition emailAddress $comparison '", $names) . "')";
-  else
+  } else {
     $email_condition = '';
+  }
 
   $request = db_query("
     SELECT ID_MEMBER, memberName, realName, emailAddress, hideEmail
@@ -156,16 +159,18 @@ function findMembers($names, $use_wildcards = false, $buddies_only = false, $max
       " . ($buddies_only ? 'AND ID_MEMBER IN (' . implode(', ', $user_info['buddies']) . ')' : '') . '
       AND is_activated IN (1, 11)' . ($max == null ? '' : '
     LIMIT ' . (int) $max), __FILE__, __LINE__);
+
   while ($row = mysqli_fetch_assoc($request)) {
     $results[$row['ID_MEMBER']] = array(
       'id' => $row['ID_MEMBER'],
       'name' => $row['realName'],
       'username' => $row['memberName'],
       'email' => empty($row['hideEmail']) || empty($modSettings['allow_hideEmail']) || $user_info['is_admin'] ? $row['emailAddress'] : '',
-      'href' => '/perfil/' . $row['realName'],
-      'link' => '<a href="/perfil/' . $row['realName'] . '">' . $row['realName'] . '</a>'
+      'href' => $boardurl . '/perfil/' . $row['realName'],
+      'link' => '<a href="' . $boardurl . '/perfil/' . $row['realName'] . '">' . $row['realName'] . '</a>'
     );
   }
+
   mysqli_free_result($request);
 
   // Return all the results.
