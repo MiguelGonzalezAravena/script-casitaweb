@@ -336,7 +336,7 @@ function PermissionByBoard()
       'membergroups' => $row['memberGroups'],
       'use_local_permissions' => !empty($modSettings['permission_enable_by_board']) && $row['permission_mode'] == 1,
       'permission_mode' => empty($modSettings['permission_enable_by_board']) ? (empty($row['permission_mode']) ? 'normal' : ($row['permission_mode'] == 2 ? 'no_polls' : ($row['permission_mode'] == 3 ? 'reply_only' : 'read_only'))) : 'normal',
-      //			'groups' => $board_groups
+      // 'groups' => $board_groups
     );
   }
   mysqli_free_result($request);

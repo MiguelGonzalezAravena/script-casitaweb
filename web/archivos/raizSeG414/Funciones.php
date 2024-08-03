@@ -379,7 +379,7 @@ function pts_sumar_grup($valor) {
   mysqli_free_result($request);
 }
 
-function pais($valor) {				
+function pais($valor) {
   $valor = str_replace('ar', 'Argentina', $valor);
   $valor = str_replace('bo', 'Bolivia', $valor);
   $valor = str_replace('br', 'Brasil', $valor);
@@ -437,14 +437,16 @@ function menuser($user) {
   $context['postuser'] = mysqli_num_rows($request);
 
   $userse = db_query("
-    SELECT mem.ID_MEMBER,mem.memberName,mem.avatar,mem.personalText,mem.ID_POST_GROUP,mem.ID_GROUP,mem.realName,mem.usertitle,mem.gender,mem.topics,mem.signature,mem.posts,mem.memberIP
-    FROM ({$db_prefix}members as mem)
-    WHERE mem.ID_MEMBER='{$user}'", __FILE__, __LINE__);
+    SELECT 
+      ID_MEMBER, memberName, avatar, personalText, ID_POST_GROUP, ID_GROUP,
+      realName, usertitle, gender, topics, signature, posts, memberIP
+    FROM {$db_prefix}members
+    WHERE ID_MEMBER = $user", __FILE__, __LINE__);
 
   while ($row = mysqli_fetch_assoc($userse)) {
     $context['memberName'] = $row['memberName'];
     $context['avatar'] = $row['avatar'];
-    $context['personalText'] = $row['personalText'];	
+    $context['personalText'] = $row['personalText'];
     $context['ID_POST_GROUP'] = $row['ID_POST_GROUP'];
     $context['ID_GROUP'] = $row['ID_GROUP'];
     $context['realName'] = $row['realName'];
@@ -461,17 +463,18 @@ function menuser($user) {
 
   echo '
     <div class="box_140" style="float: left; margin-right: 8px; width: 140px;">
-      <div class="box_title" style="width: 138px;"><div class="box_txt box_140-34">Publicado por:</div>
-      <div class="box_rss">
-        <a href="' . $boardurl . '/rss/post-user/' . $context['realName'] . '">
-          <div style="height: 16px; width: 16px; cursor: pointer;" class="feed png">
-            <img alt="" src="'.$tranfer1.'/espacio.gif" class="png" height="16px" width="16px" />
-          </div>
-        </a>
+      <div class="box_title" style="width: 138px;">
+        <div class="box_txt box_140-34">Publicado por:</div>
+        <div class="box_rss">
+          <a href="' . $boardurl . '/rss/post-user/' . $context['realName'] . '">
+            <div style="height: 16px; width: 16px; cursor: pointer;" class="feed png">
+              <img alt="" src="'.$tranfer1.'/espacio.gif" class="png" height="16px" width="16px" />
+            </div>
+          </a>
+        </div>
       </div>
-    </div>
-    <div class="windowbg" style="width: 130px; padding: 4px;overflow: hidden;">
-      <center>';
+      <div class="windowbg" style="width: 130px; padding: 4px;overflow: hidden;">
+        <center>';
 
   $idgrup = $context['ID_POST_GROUP'];
   $idgrup2 = $context['ID_GROUP'];
@@ -499,9 +502,9 @@ function menuser($user) {
   mysqli_free_result($userse3);
 
   $medallavr = db_query("
-  SELECT ID_GROUP, stars
-  FROM {$db_prefix}membergroups
-  WHERE ID_GROUP = " . (!empty($idgrup2) ? $idgrup2 : $idgrup), __FILE__, __LINE__);
+    SELECT ID_GROUP, stars
+    FROM {$db_prefix}membergroups
+    WHERE ID_GROUP = " . (!empty($idgrup2) ? $idgrup2 : $idgrup), __FILE__, __LINE__);
 
   while ($row7 = mysqli_fetch_assoc($medallavr)) {
     $medalla = $row7['stars'];
@@ -731,18 +734,38 @@ function ditaruser() {
 
   if ($getid) {
     echo '
-      <div><a href="' . $boardurl . '/moderacion/edit-user/perfil/'.$getid.'">Editar el perfil</a></div>
-      <div><a href="' . $boardurl . '/moderacion/edit-user/avatar/'.$getid.'">Editar el avatar</a></div>
-      <div><a href="' . $boardurl . '/moderacion/edit-user/firma/'.$getid.'">Editar la firmar</a></div>
-      <div><a href="' . $boardurl . '/imagenes/'.$context['membernames'].'"> Ver im&aacute;genes</a></div>';
+      <div>
+        <a href="' . $boardurl . '/moderacion/edit-user/perfil/'.$getid.'">Editar el perfil</a>
+      </div>
+      <div>
+        <a href="' . $boardurl . '/moderacion/edit-user/avatar/'.$getid.'">Editar el avatar</a>
+      </div>
+      <div>
+        <a href="' . $boardurl . '/moderacion/edit-user/firma/'.$getid.'">Editar la firma</a>
+      </div>
+      <div>
+        <a href="' . $boardurl . '/imagenes/'.$context['membernames'].'">Ver im&aacute;genes</a>
+      </div>';
   } else {
     echo '
-      <div><a href="' . $boardurl . '/editar-perfil/">Editar mi perfil</a></div>
-      <div><a href="' . $boardurl . '/editar-apariencia/">Editar mi apariencia</a></div>
-      <div><a href="' . $boardurl . '/editar-perfil/avatar/">Editar mi avatar</a></div>
-      <div><a href="' . $boardurl . '/editar-perfil/firma/">Editar mi firma</a></div>
-      <div><a href="' . $boardurl . '/web/cw-TEMPAgregarIMG.php" class="boxy" title="Agregar imagen">Agregar imagen</a></div>
-      <div><a href="' . $boardurl . '/mis-notas/">Mis notas</a></div>';
+      <div>
+        <a href="' . $boardurl . '/editar-perfil/">Editar mi perfil</a>
+      </div>
+      <div>
+        <a href="' . $boardurl . '/editar-apariencia/">Editar mi apariencia</a>
+      </div>
+      <div>
+        <a href="' . $boardurl . '/editar-perfil/avatar/">Editar mi avatar</a>
+      </div>
+      <div>
+        <a href="' . $boardurl . '/editar-perfil/firma/">Editar mi firma</a>
+      </div>
+      <div>
+        <a href="' . $boardurl . '/web/cw-TEMPAgregarIMG.php" class="boxy" title="Agregar imagen">Agregar imagen</a>
+      </div>
+      <div>
+        <a href="' . $boardurl . '/mis-notas/">Mis notas</a>
+      </div>';
   }
 
 

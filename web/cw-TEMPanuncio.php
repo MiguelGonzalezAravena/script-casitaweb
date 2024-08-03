@@ -25,8 +25,8 @@ if (($user_info['is_admin'] || $user_info['is_mods'])) {
         $('#contentv').remove();
         $('#resultado').removeClass('noesta');
         $('#resultado').addClass('noesta-ve');
-        $('#resultado').html(h.substring(3)).fadeIn('fast');	
-        $('#mensaje-top').html('Cambios guardados...');		
+        $('#resultado').html(h.substring(3)).fadeIn('fast');
+        $('#mensaje-top').html('Cambios guardados...');
       },
       error: function() {
         Boxy.alert("Error, volver a intentar...", null, { title: 'Alerta' });

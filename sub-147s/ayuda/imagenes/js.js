@@ -1,211 +1,250 @@
-function foco(elemento){elemento.style.border="1px solid #668299";}
-function no_foco(elemento){elemento.style.border="1px solid #E8EDE7";}
-function buscar(){
-    if( $("#hdLoglink").hasClass("opened")){
-		$("#hdLoglink").removeClass("opened");
-		$("#hd_loginbox").css({'display' : 'none'});
-	} else {
-		$("#hdLoglink").addClass("opened");
-		$("#hd_loginbox").css({'display' : 'block'});
-	}
+function foco(elemento) {
+  elemento.style.border = '1px solid #668299';
 }
-function AbrirCats(){
- 		if( $(".language").hasClass("opened")){
-			$(".language").removeClass("opened");
-			$(".otherlang").css({'display' : 'none'});
-		} else {
-			$(".language").addClass("opened");
-			$(".otherlang").css({'display' : 'block'});
-		}}
+
+function no_foco(elemento) {
+  elemento.style.border = '1px solid #E8EDE7';
+}
+
+function buscar() {
+  if ($('#hdLoglink').hasClass('opened')) {
+    $('#hdLoglink').removeClass('opened');
+    $('#hd_loginbox').css({'display': 'none'});
+  } else {
+    $('#hdLoglink').addClass('opened');
+    $('#hd_loginbox').css({'display': 'block'});
+  }
+}
+
+function AbrirCats() {
+  if ($('.language').hasClass('opened')) {
+    $('.language').removeClass('opened');
+    $('.otherlang').css({'display': 'none'});
+  } else {
+    $('.language').addClass('opened');
+    $('.otherlang').css({'display': 'block'});
+  }
+}
+
 /* Editor */
 mySettings = {
-	markupSet: [
-		{name:'Negrita', key:'B', openWith:'[b]', closeWith:'[/b]'},
-		{name:'Cursiva', key:'I', openWith:'[i]', closeWith:'[/i]'},
-		{name:'Subrayado', key:'U', openWith:'[u]', closeWith:'[/u]'},
-		{separator:'-' },
-		{name:'Alinear a la izquierda', key:'', openWith:'[left]', closeWith:'[left]'},
-		{name:'Centrar', key:'', openWith:'[center]', closeWith:'[/center]'},
-		{name:'Alinear a la derecha', key:'', openWith:'[right]', closeWith:'[/right]'},
-    	{separator:'-' },
-		{name:'Color', dropMenu: [
-			{name:'Rojo oscuro', openWith:'[color=darkred]', closeWith:'[/color]' },
-			{name:'Rojo', openWith:'[color=red]', closeWith:'[/color]' },
-			{name:'Naranja', openWith:'[color=orange]', closeWith:'[/color]' },
-			{name:'Marr&oacute;n', openWith:'[color=brown]', closeWith:'[/color]' },
-			{name:'Amarillo', openWith:'[color=yellow]', closeWith:'[/color]' },
-			{name:'Verde', openWith:'[color=green]', closeWith:'[/color]' },
-			{name:'Oliva', openWith:'[color=olive]', closeWith:'[/color]' },
-			{name:'Cyan', openWith:'[color=cyan]', closeWith:'[/color]' },
-			{name:'Azul', openWith:'[color=blue]', closeWith:'[/color]' },
-			{name:'Azul oscuro', openWith:'[color=darkblue]', closeWith:'[/color]' },
-			{name:'Indigo', openWith:'[color=indigo]', closeWith:'[/color]' },
-			{name:'Violeta', openWith:'[color=violet]', closeWith:'[/color]' },
-			{name:'Gris', openWith:'[color=lightgrey]', closeWith:'[/color]' },
-			{name:'Verde Amarillento', openWith:'[color=yellowgreen]', closeWith:'[/color]' },
-			{name:'Negro', openWith:'[color=black]', closeWith:'[/color]' }
-			
-		]},
-		{name:'Tama&ntilde;o', dropMenu :[
-	    	{name:'Mi&ntilde;atura', openWith:'[size=9px]', closeWith:'[/size]' },
-			{name:'Peque&ntilde;a', openWith:'[size=11px]', closeWith:'[/size]' },
-			{name:'Normal', openWith:'[size=12px]', closeWith:'[/size]' },
-			{name:'Grande', openWith:'[size=18px]', closeWith:'[/size]' },
-			{name:'Enorme', openWith:'[size=24px]', closeWith:'[/size]' }
-		]},
-		{name:'Fuente', dropMenu :[
-			{name:'Arial', openWith:'[font=Arial]', closeWith:'[/font]' },
-			{name:'Courier New', openWith:'[font=Courier New]', closeWith:'[/font]' },
-			{name:'Georgia', openWith:'[font=Georgia]', closeWith:'[/font]' },
-			{name:'Times New Roman', openWith:'[font=Times New Roman]', closeWith:'[/font]' },
-			{name:'Verdana', openWith:'[font=Verdana]', closeWith:'[/font]' },
-			{name:'Trebuchet MS', openWith:'[font=Trebuchet MS]', closeWith:'[/font]' },
-			{name:'Lucida Sans', openWith:'[font=Lucida Sans]', closeWith:'[/font]' },
-			{name:'Comic Sans', openWith:'[font=Comic Sans]', closeWith:'[/font]' }
-		]},
-		{separator:'-' },
-		{name:'Insertar video de YouTube', beforeInsert:function(h){ markit_yt(h); }},
-		{name:'Insertar video de Google Video', beforeInsert:function(h){ markit_gv(h); }},
-		{name:'Insertar archivo SWF', beforeInsert:function(h){ markit_swf(h); }},
-		{name:'Insertar Imagen', beforeInsert:function(h){ markit_img(h); }},
-		{name:'Insertar Link', beforeInsert:function(h){ markit_url(h); }},
-		{separator:'-' },
-		{name:'Citar', key:'', openWith:'[quote]', closeWith:'[/quote]'},
-		{name:'Code', key:'', openWith:'[code]', closeWith:'[/code]'},
-	]
+  markupSet: [
+    { name: 'Negrita', key: 'B', openWith: '[b]', closeWith: '[/b]' },
+    { name: 'Cursiva', key: 'I', openWith: '[i]', closeWith: '[/i]' },
+    { name:'Subrayado', key: 'U', openWith: '[u]', closeWith: '[/u]' },
+    { separator: '-' },
+    { name: 'Alinear a la izquierda', key: '', openWith: '[left]', closeWith: '[left]' },
+    { name: 'Centrar', key: '', openWith: '[center]', closeWith: '[/center]' },
+    { name: 'Alinear a la derecha', key: '', openWith: '[right]', closeWith:'[/right]' },
+    { separator: '-' },
+    {
+      name: 'Color',
+      dropMenu: [
+        { name: 'Rojo oscuro', openWith: '[color=darkred]', closeWith: '[/color]' },
+        { name: 'Rojo', openWith: '[color=red]', closeWith: '[/color]' },
+        { name: 'Naranja', openWith: '[color=orange]', closeWith: '[/color]' },
+        { name: 'Marr&oacute;n', openWith: '[color=brown]', closeWith: '[/color]' },
+        { name: 'Amarillo', openWith: '[color=yellow]', closeWith: '[/color]' },
+        { name: 'Verde', openWith: '[color=green]', closeWith: '[/color]' },
+        { name: 'Oliva', openWith: '[color=olive]', closeWith: '[/color]' },
+        { name: 'Cyan', openWith: '[color=cyan]', closeWith: '[/color]' },
+        { name: 'Azul', openWith: '[color=blue]', closeWith: '[/color]' },
+        { name: 'Azul oscuro', openWith: '[color=darkblue]', closeWith: '[/color]' },
+        { name: 'Indigo', openWith: '[color=indigo]', closeWith: '[/color]' },
+        { name: 'Violeta', openWith: '[color=violet]', closeWith: '[/color]' },
+        { name: 'Gris', openWith: '[color=lightgrey]', closeWith: '[/color]' },
+        { name: 'Verde Amarillento', openWith: '[color=yellowgreen]', closeWith: '[/color]' },
+        { name: 'Negro', openWith: '[color=black]', closeWith: '[/color]' }
+      ]
+    },
+    {
+      name: 'Tama&ntilde;o',
+      dropMenu: [
+        { name: 'Mi&ntilde;atura', openWith: '[size=9px]', closeWith: '[/size]' },
+        { name: 'Peque&ntilde;a', openWith: '[size=11px]', closeWith: '[/size]' },
+        { name: 'Normal', openWith: '[size=12px]', closeWith: '[/size]' },
+        { name: 'Grande', openWith: '[size=18px]', closeWith: '[/size]' },
+        { name: 'Enorme', openWith: '[size=24px]', closeWith: '[/size]' }
+      ]
+    },
+    {
+      name:'Fuente',
+      dropMenu: [
+        { name: 'Arial', openWith: '[font=Arial]', closeWith: '[/font]' },
+        { name: 'Courier New', openWith: '[font=Courier New]', closeWith: '[/font]' },
+        { name: 'Georgia', openWith: '[font=Georgia]', closeWith: '[/font]' },
+        { name: 'Times New Roman', openWith: '[font=Times New Roman]', closeWith: '[/font]' },
+        { name: 'Verdana', openWith: '[font=Verdana]', closeWith: '[/font]' },
+        { name: 'Trebuchet MS', openWith: '[font=Trebuchet MS]', closeWith: '[/font]' },
+        { name: 'Lucida Sans', openWith: '[font=Lucida Sans]', closeWith: '[/font]' },
+        { name: 'Comic Sans', openWith: '[font=Comic Sans]', closeWith: '[/font]' }
+      ]
+    },
+    { separator: '-' },
+    { name: 'Insertar video de YouTube', beforeInsert: function(h) { markit_yt(h); } },
+    { name: 'Insertar video de Google Video', beforeInsert: function(h) { markit_gv(h); } },
+    { name: 'Insertar archivo SWF', beforeInsert: function(h) { markit_swf(h); } },
+    { name: 'Insertar imagen', beforeInsert: function(h) { markit_img(h); } },
+    { name: 'Insertar enlace', beforeInsert: function(h) { markit_url(h); } },
+    { separator: '-' },
+    { name: 'Citar', key: '', openWith: '[quote]', closeWith: '[/quote]' },
+    { name: 'Code', key: '', openWith: '[code]', closeWith: '[/code]' },
+  ]
 };
+
 function moticonup() {
-	var winpops = window.open(boardUrl + '/emoticones/', '', 'width=255px,height=500px,scrollbars');
+  var winpops = window.open(boardUrl + '/emoticones/', '', 'width=255px,height=500px,scrollbars');
 }
 
-//Botones comentarios
+// Botones comentarios
 mySettings_cmt = {
-	nameSpace: "markitcomment",
-	markupSet: [
-		{name:'Negrita', key:'B', openWith:'[b]', closeWith:'[/b]'},
-		{name:'Cursiva', key:'I', openWith:'[i]', closeWith:'[/i]'},
-		{name:'Subrayado', key:'U', openWith:'[u]', closeWith:'[/u]'},
-		{separator:'-' },
-		{name:'Insertar video de YouTube', beforeInsert:function(h){ markit_yt(h); }},
-		{name:'Insertar video de Google Video', beforeInsert:function(h){ markit_gv(h); }},
-		{name:'Insertar archivo SWF', beforeInsert:function(h){ markit_swf(h); }},
-		{name:'Insertar Imagen', beforeInsert:function(h){ markit_img(h); }},
-		{name:'Insertar Link', beforeInsert:function(h){ markit_url(h); }},
-		{name:'Citar', key:'C', openWith:'[quote]', closeWith:'[/quote]'}
-	]
+  nameSpace: 'markitcomment',
+  markupSet: [
+    { name: 'Negrita', key: 'B', openWith: '[b]', closeWith: '[/b]' },
+    { name: 'Cursiva', key: 'I', openWith: '[i]', closeWith: '[/i]' },
+    { name: 'Subrayado', key: 'U', openWith: '[u]', closeWith: '[/u]' },
+    { separator: '-' },
+    { name: 'Insertar video de YouTube', beforeInsert: function(h) { markit_yt(h); } },
+    { name: 'Insertar video de Google Video', beforeInsert: function(h) { markit_gv(h); } },
+    { name: 'Insertar archivo SWF', beforeInsert: function(h) { markit_swf(h); } },
+    { name: 'Insertar imagen', beforeInsert: function(h) { markit_img(h); } },
+    { name: 'Insertar enlace', beforeInsert: function(h) { markit_url(h); } },
+    { name: 'Citar', key: 'C', openWith: '[quote]', closeWith: '[/quote] '}
+  ]
 };
 
-//Funciones botones especiales
-function markit_yt(h){
-	if(is_ie)
-		var msg = prompt('', '');
-	else
-		var msg = prompt('Ingrese la URL del video de YouTube.com:\n', '');
-	if(msg != null){
-		h.replaceWith = '[youtube]' + msg + '[/youtube]\n';
-		h.openWith = '';
-		h.closeWith = '';
-	}else{
-		h.replaceWith = '';
-		h.openWith = '';
-		h.closeWith = '';
-	}
-}
-function markit_gv(h){
-	if(is_ie)
-		var msg = prompt('Ingrese el ID del video de Google:\n', '');
-	else
-		var msg = prompt('Ingrese el ID del video de Google:', '');
-	if(msg != null){
-		h.replaceWith = '[gvideo]' + msg + '[/gvideo]\n';
-		h.openWith = '';
-		h.closeWith = '';
-	}else{
-		h.replaceWith = '';
-		h.openWith = '';
-		h.closeWith = '';
-	}
-}
-function markit_swf(h){
-	if(h.selection!='' && h.selection.substring(0,7)=='http://'){
-		h.replaceWith = '[swf]' + h.selection + '[/swf]\n';
-		h.openWith = '';
-		h.closeWith = '';
-	}else{
-		var msg = prompt('Ingrese la URL del archivo swf', 'http://');
-		if(msg != null){
-			h.replaceWith = '[swf]' + msg + '[/swf]\n';
-			h.openWith = '';
-			h.closeWith = '';
-		}else{
-			h.replaceWith = '';
-			h.openWith = '';
-			h.closeWith = '';
-		}}}
-function markit_img(h){
-	if(h.selection!='' && h.selection.substring(0,7)=='http://'){
-		h.replaceWith = '[img]' + h.selection + '[/img]\n';
-		h.openWith = '';
-		h.closeWith = '';
-	}else{
-		var msg = prompt('Ingrese la URL de la imagen', 'http://');
-		if(msg != null){
-			h.replaceWith = '[img]' + msg + '[/img]\n';
-			h.openWith = '';
-			h.closeWith = '';
-		}else{
-			h.replaceWith = '';
-			h.openWith = '';
-			h.closeWith = '';
-		}}}
-function markit_url(h){
-	if(h.selection==''){
-		var msg = prompt('Ingrese la URL que desea postear', 'http://');
-		if(msg != null){
-			h.replaceWith = '[url]' + msg + '[/url]';
-			h.openWith = '';
-			h.closeWith = '';
-		}else{
-			h.replaceWith = '';
-			h.openWith = '';
-			h.closeWith = '';
-		}
-	}else if(h.selection.substring(0,7)=='http://' || h.selection.substring(0,8)=='https://' || h.selection.substring(0,6)=='ftp://'){
-		h.replaceWith = '';
-		h.openWith='[url]';
-		h.closeWith='[/url]';
-	}else{
-		var msg = prompt('Ingrese la URL que desea postear', 'http://');
-		if(msg != null){
-			h.replaceWith = '';
-			h.openWith='[url=' + msg + ']';
-			h.closeWith='[/url]';
-		}else{
-			h.replaceWith = '';
-			h.openWith = '';
-			h.closeWith = '';
-		}
-	}
+// Funciones botones especiales
+function markit_yt(h) {
+  if (is_ie) {
+    var msg = prompt('', '');
+  } else {
+    var msg = prompt('Ingresa la URL del video de YouTube.com:\n', '');
+  }
+
+  if (msg != null) {
+    h.replaceWith = '[youtube]' + msg + '[/youtube]\n';
+    h.openWith = '';
+    h.closeWith = '';
+  } else {
+    h.replaceWith = '';
+    h.openWith = '';
+    h.closeWith = '';
+  }
 }
 
-function print_editor(){
-	if($('#markItUp') && !$('#markItUpMarkItUp').length){
-		$('#markItUp').markItUp(mySettings);
-		$('#emoticons a').click(function(){
-			emoticon = ' ' + $(this).attr("smile") + ' ';
-			$.markItUp({ replaceWith:emoticon });
-			return false;
-		});
-	}
-	//Editor de comentarios
-	if($('#cuerpo_comment') && !$('#markItUpCuerpo_comment').length){
-		$('#cuerpo_comment').markItUp(mySettings_cmt);
-		$('#MapSmiles area').click(function(){
-			emoticon = ' ' + $(this).attr("smile") + ' ';
-			$.markItUp({ replaceWith:emoticon });
-			return false;
-		});
-	}
+function markit_gv(h) {
+  if (is_ie) {
+    var msg = prompt('Ingresa el ID del video de Google:\n', '');
+  } else {
+    var msg = prompt('Ingresa el ID del video de Google:', '');
+  }
+
+  if (msg != null) {
+    h.replaceWith = '[gvideo]' + msg + '[/gvideo]\n';
+    h.openWith = '';
+    h.closeWith = '';
+  } else {
+    h.replaceWith = '';
+    h.openWith = '';
+    h.closeWith = '';
+  }
+}
+
+function markit_swf(h) {
+  if (h.selection != '' && h.selection.substring(0, 7) == 'http://') {
+    h.replaceWith = '[swf]' + h.selection + '[/swf]\n';
+    h.openWith = '';
+    h.closeWith = '';
+  } else {
+    var msg = prompt('Ingresa la URL del archivo SWF', 'http://');
+
+    if (msg != null) {
+      h.replaceWith = '[swf]' + msg + '[/swf]\n';
+      h.openWith = '';
+      h.closeWith = '';
+    } else {
+      h.replaceWith = '';
+      h.openWith = '';
+      h.closeWith = '';
+    }
+  }
+}
+
+function markit_img(h) {
+  if (h.selection != '' && h.selection.substring(0, 7) == 'http://') {
+    h.replaceWith = '[img]' + h.selection + '[/img]\n';
+    h.openWith = '';
+    h.closeWith = '';
+  } else {
+    var msg = prompt('Ingresa la URL de la imagen', 'http://');
+
+    if (msg != null) {
+      h.replaceWith = '[img]' + msg + '[/img]\n';
+      h.openWith = '';
+      h.closeWith = '';
+    } else {
+      h.replaceWith = '';
+      h.openWith = '';
+      h.closeWith = '';
+    }
+  }
+}
+
+function markit_url(h) {
+  if (h.selection == '') {
+    var msg = prompt('Ingresa la URL que deseas postear', 'http://');
+
+    if (msg != null) {
+      h.replaceWith = '[url]' + msg + '[/url]';
+      h.openWith = '';
+      h.closeWith = '';
+    } else {
+      h.replaceWith = '';
+      h.openWith = '';
+      h.closeWith = '';
+    }
+  } else if (h.selection.substring(0, 7) == 'http://' || h.selection.substring(0, 8) == 'https://' || h.selection.substring(0, 6) == 'ftp://') {
+    h.replaceWith = '';
+    h.openWith = '[url]';
+    h.closeWith = '[/url]';
+  } else {
+    var msg = prompt('Ingresa la URL que deseas postear', 'http://');
+
+    if (msg != null) {
+      h.replaceWith = '';
+      h.openWith = '[url=' + msg + ']';
+      h.closeWith = '[/url]';
+    } else {
+      h.replaceWith = '';
+      h.openWith = '';
+      h.closeWith = '';
+    }
+  }
+}
+
+function print_editor() {
+  if ($('#markItUp') && !$('#markItUpMarkItUp').length) {
+    $('#markItUp').markItUp(mySettings);
+    $('#emoticons a').click(function() {
+      emoticon = ' ' + $(this).attr('smile') + ' ';
+
+      $.markItUp({ replaceWith: emoticon });
+
+      return false;
+    });
+  }
+
+  // Editor de comentarios
+  if ($('#cuerpo_comment') && !$('#markItUpCuerpo_comment').length) {
+    $('#cuerpo_comment').markItUp(mySettings_cmt);
+    $('#MapSmiles area').click(function() {
+      emoticon = ' ' + $(this).attr('smile') + ' ';
+
+      $.markItUp({ replaceWith: emoticon });
+
+      return false;
+    });
+  }
 }
 /* FIN - Editor */
 

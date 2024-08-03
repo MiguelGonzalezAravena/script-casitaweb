@@ -57,7 +57,7 @@ function template_main() {
       echo traduccion($entry['que']) . $entry['extra'][$entry['que']] . '<br />' . (isset($iser) ? 'Por: <a href="' . $boardurl . '/perfil/' . $iser . '">' . $iser . '</a>' : '');
       echo '</td>';
       echo '<td>' . $entry['action'] . '</td>
-        <td>' . $entry['moderator']['link'] . '</td>';	
+        <td>' . $entry['moderator']['link'] . '</td>';
       echo '<td>';
       echo isset($entry['extra']['causa']) ? $entry['extra']['causa'] : ' - ';
       echo '</td>';

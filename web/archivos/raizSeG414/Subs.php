@@ -462,7 +462,7 @@ function timeformat($logTime, $show_today = true) {
   if ($time < 0) {
     $time = 0;
   }
-  
+
   // Today and Yesterday?
   if ($modSettings['todayMod'] >= 1 && $show_today === true) {
     // Get the current time.
@@ -478,7 +478,7 @@ function timeformat($logTime, $show_today = true) {
     } else {
       $today_fmt = '%H:%M' . $s;
     }
-    
+
     if ($then->format('z') == $now->format('z') && $then->format('Y') == $now->format('Y')) {
       return $txt['smf10'] . timeformat($logTime, $today_fmt);
     }
@@ -700,7 +700,7 @@ function doUBBC($message, $enableSmileys = true) {
  *         'tag' => 'swf',
  *         'type' => 'unparsed_content',
  *         'content' => '<embed src="$1" quality="high" type="application/x-shockwave-flash" allownetworking="internal" allowscriptaccess="never" wmode="transparent" width="425" height="350" /><br/><a id="alive_link" href="$1" target="_blank" rel="nofollow">[enlace]</a>',
- *         'validate' => create_function('&$tag, &$data, $disabled', '$data = strtr($data, array(\'<br />\' => \'\'));'),		),
+ *         'validate' => create_function('&$tag, &$data, $disabled', '$data = strtr($data, array(\'<br />\' => \'\'));'),),
  *
  *       array(
  *         'tag' => 'hr',

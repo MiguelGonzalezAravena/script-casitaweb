@@ -22,7 +22,7 @@ $txt['country_flag_profile'] = 'Perfil';
 $txt['country_flag_registration'] = 'Registrados';
 $txt['country_flag_both'] = 'Ambos';
 $txt['country_flag_required'] = 'Exijir a un Miembro elejir el Pa&iacute;s';
-$txt['country_flag_show'] = '	
+$txt['country_flag_show'] = '
 Mostrar banderas de la p&aacute;gina de visualizaci&oacute;n (En caso de que los puestos se muestran).';
 $txt['country_flag'] = 'Pa&iacute;s';
 

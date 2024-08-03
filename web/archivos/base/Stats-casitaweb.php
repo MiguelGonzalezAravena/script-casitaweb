@@ -1,19 +1,20 @@
 <?php
 function template_main() {
-	global $context, $settings, $options, $txt, $db_prefix, $scripturl, $modSettings, $tranfer1, $boardurl;
+  global $context, $settings, $options, $txt, $db_prefix, $scripturl, $modSettings, $tranfer1, $boardurl;
 
-	$contar = 1;
-	$saksdmpas2 = 1;
-	$contar2 = 1;
-	$contar3 = 1;
-	$contar4 = 1;
-	$contar5 = 1;
-	$contar22 = 1;
-	$contar6 = 1;
-	$contar7 = 1;
-	$contar25 = 1;
-	$contar9 = 1;
-	$contar8 = 1;
+  $contar = 1;
+  $saksdmpas2 = 1;
+  $contar2 = 1;
+  $contar3 = 1;
+  $contar4 = 1;
+  $contar5 = 1;
+  $contar22 = 1;
+  $contar6 = 1;
+  $contar7 = 1;
+  $contar25 = 1;
+  $contar9 = 1;
+  $contar8 = 1;
+  // TO-DO: Colocar HTML dentro de echo
 ?>
 
 <div>
@@ -71,20 +72,20 @@ function template_main() {
 <div class="box_title" style="width: 300px;"><div class="box_txt box_300-34">10 Usuarios que m&aacute;s comentan</div>
 <div class="box_rss"><div class="icon_img"><img alt="" src="<?php echo $tranfer1; ?>/blank.gif" style="width: 16px; height: 16px;" border="0" /></div></div></div><div class="windowbg" style="width: 292px; padding: 4px;">
 <?php $order = array();
-	$r = db_query("SELECT count(id_user) as Rows, id_user FROM {$db_prefix}comentarios GROUP BY id_user ORDER BY Rows DESC LIMIT 30", __FILE__, __LINE__);
-	while ($row = mysqli_fetch_assoc($r)) {
-		$r2 = db_query("SELECT count(ID_MEMBER) as Rowsd, ID_MEMBER FROM {$db_prefix}gallery_comment WHERE ID_MEMBER={$row['id_user']} 
+  $r = db_query("SELECT count(id_user) as Rows, id_user FROM {$db_prefix}comentarios GROUP BY id_user ORDER BY Rows DESC LIMIT 30", __FILE__, __LINE__);
+  while ($row = mysqli_fetch_assoc($r)) {
+    $r2 = db_query("SELECT count(ID_MEMBER) as Rowsd, ID_MEMBER FROM {$db_prefix}gallery_comment WHERE ID_MEMBER={$row['id_user']}
 GROUP BY ID_MEMBER ORDER BY Rowsd DESC LIMIT 10", __FILE__, __LINE__);
-		while ($row2 = mysqli_fetch_assoc($r2)) {
-			$sers = db_query("SELECT ID_MEMBER,realName FROM {$db_prefix}members WHERE ID_MEMBER='{$row2['ID_MEMBER']}' LIMIT 10", __FILE__, __LINE__);
-			while ($grup = mysqli_fetch_assoc($sers)) {
-				$order[$grup['realName']] = ($row2['Rowsd'] + $row['Rows']);
-			}
-		}
-	}
-	arsort($order);
-	$e = 1;
-	while ((list($i, $Valor) = each($order)) && $e <= 10) { ?>
+    while ($row2 = mysqli_fetch_assoc($r2)) {
+      $sers = db_query("SELECT ID_MEMBER,realName FROM {$db_prefix}members WHERE ID_MEMBER='{$row2['ID_MEMBER']}' LIMIT 10", __FILE__, __LINE__);
+      while ($grup = mysqli_fetch_assoc($sers)) {
+        $order[$grup['realName']] = ($row2['Rowsd'] + $row['Rows']);
+      }
+    }
+  }
+  arsort($order);
+  $e = 1;
+  while ((list($i, $Valor) = each($order)) && $e <= 10) { ?>
 
 <span class="size11"><b><?php echo $e++; ?></b> - <a href="<?php echo $boardurl; ?>/perfil/<?php echo $i; ?>" title="<?php echo $i; ?>"><?php echo $i; ?></a> (<?php echo $Valor; ?> com)</span><br/>
 
@@ -169,11 +170,11 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 <div class="box_rss"><img alt="" src="<?php echo $tranfer1; ?>/blank.gif" style="width: 14px; height: 12px;" border="0" /></div></div>
 <div style="width: 920px;" class="windowbg">
 <table border="0" width="100%" cellspacing="1" cellpadding="4" style="margin-bottom: 1ex;" id="stats">
-						<tr class="titlebg" valign="middle">
-							<td width="25%">Mes</td>
-							<td width="15%">Posts Nuevos</td>
-							<td width="15%">Usuarios Nuevos</td>
-							
+            <tr class="titlebg" valign="middle">
+              <td width="25%">Mes</td>
+              <td width="15%">Posts Nuevos</td>
+              <td width="15%">Usuarios Nuevos</td>
+
 <?php if (!empty($modSettings['hitStats'])) ?>
 
 <td>P&aacute;gina vistas</td>
@@ -182,15 +183,15 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 <tr class="windowbg2" valign="middle" id="tr_<?php echo $month['id']; ?>">
 <th align="left" width="25%">
 <a name="<?php echo $month['id']; ?>" id="link_<?php echo $month['id']; ?>" href="<?php echo $month['href']; ?>" onclick="return doingExpandCollapse || expand_collapse('<?php echo $month['id']; ?>', <?php echo $month['num_days']; ?>);"> <?php echo $month['month']; ?> <?php echo $month['year']; ?></a>
-							</th>
-							<th width="15%"><?php echo $month['new_topics']; ?></th>
-							<th width="15%"><?php echo $month['new_members']; ?></th>
+              </th>
+              <th width="15%"><?php echo $month['new_topics']; ?></th>
+              <th width="15%"><?php echo $month['new_members']; ?></th>
 <?php if (!empty($modSettings['hitStats'])) ?>
 
 <th><?php echo $month['hits']; ?></th></tr>
 
 <?php if ($month['expanded']) {
-				foreach ($month['days'] as $day) { ?>
+        foreach ($month['days'] as $day) { ?>
 
 <tr class="windowbg2" valign="middle" align="left">
 <td align="left" style="padding-left: 3ex;"><?php echo $day['year']; ?>-<?php echo $day['month']; ?>-<?php echo $day['day']; ?></td>
@@ -201,8 +202,8 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 <td><?php echo $day['hits']; ?></td></tr>
 
 <?php }
-			}
-		} ?>
+      }
+    } ?>
 
 </table></div></div>
 </div>
