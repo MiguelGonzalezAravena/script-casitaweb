@@ -27,7 +27,7 @@ $request = db_query("
 
 $rows = mysqli_num_rows($request);
 
-if($rows == 0) {
+if ($rows == 0) {
   die('<div class="noesta" style="width: 552px;">El mensaje que seleccionaste no existe.</div>');
 }
 

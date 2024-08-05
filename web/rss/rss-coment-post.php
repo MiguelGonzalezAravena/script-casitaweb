@@ -84,7 +84,7 @@ foreach ($context['rssuser'] as $rssuser) {
   // Usar $user_info['is_guest']
   if ($user_info['is_guest'] && $rssuser['postprivado'] == 1) {
     echo '<center><i>Este es un post privado, para verlo debes iniciar sesión - ' . $shorturl . '</i></center><br />';
-  } else if(!$user_info['is_guest'] && $rssuser['postprivado'] == 1 || $rssuser['postprivado'] == 0) {
+  } else if (!$user_info['is_guest'] && $rssuser['postprivado'] == 1 || $rssuser['postprivado'] == 0) {
     echo achicar400($rssuser['body']);
   }
 

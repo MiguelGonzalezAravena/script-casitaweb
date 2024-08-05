@@ -1,7 +1,7 @@
 jQuery.fn.boxy = function(options) { options = options || {};
 return this.each(function() {
 var node = this.nodeName.toLowerCase(), self = this;
-if(node == 'a'){
+if (node == 'a'){
 jQuery(this).click(function(){
     href = this.getAttribute('href'),
     localOptions = jQuery.extend({actuator: this, title: this.title}, options);

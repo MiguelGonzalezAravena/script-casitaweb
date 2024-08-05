@@ -99,7 +99,7 @@ function Memberlist() {
 // List all members, page by page.
 function MLAll() {
   global $txt, $scripturl, $db_prefix, $user_info;
-  global $modSettings, $context, $func;
+  global $modSettings, $context;
 
   // The chunk size for the cached index.
   $cache_step_size = 500;

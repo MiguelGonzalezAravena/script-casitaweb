@@ -8,48 +8,45 @@ if (empty($context['ajax'])) {
 }
 
 if (($user_info['is_admin'] || $user_info['is_mods'])) {
-  // TO-DO: Colocar javascript en un echo
-?>
-<script type="text/javascript">
-  // Recargar puntos
-  function recargarPTS() {
-    if ($('#user').val() == '') {
-      $('#user').focus();
-      return false;
-    }
+  echo '
+    <script type="text/javascript">
+      // Recargar puntos
+      function recargarPTS() {
+        if ($(\'#user\').val() == \'\') {
+          $(\'#user\').focus();
+          return false;
+        }
 
-    $('#cargandoBoxyc').css('display','none');
-    $('#cargandoBoxy').css('display','block');
+        $(\'#cargandoBoxyc\').css(\'display\', \'none\');
+        $(\'#cargandoBoxy\').css(\'display\', \'block\');
 
-    $.ajax({
-      type: 'POST',
-      url: '<?php echo $boardurl; ?>/web/cw-recargarPts.php',
-      cache: false,
-      data: 'user=' +  encodeURIComponent($('#user').val()),
-      success: function(h) {
-        $('#cargandoBoxy').css('display', 'none');
-        $('#cargandoBoxyc').css('display', 'block');
-        $('#contenidoRE').remove();
+        $.ajax({
+          type: \'POST\',
+          url: \'' . $boardurl . '/web/cw-recargarPts.php\',
+          cache: false,
+          data: \'user=\' +  encodeURIComponent($(\'#user\').val()),
+          success: function(h) {
+            $(\'#cargandoBoxy\').css(\'display\', \'none\');
+            $(\'#cargandoBoxyc\').css(\'display\', \'block\');
+            $(\'#contenidoRE\').remove();
 
-          if (h.charAt(0) == 0 ){
-            // Datos incorrectos
-            $('#resultadoRE').addClass('noesta');
-            $('#resultadoRE').html(h.substring(3)).fadeIn('fast');
-          } else if(h.charAt(0) == 1) {
-            // OK
-            $('#resultadoRE').removeClass('noesta');
-            $('#resultadoRE').addClass('noesta-ve');
-            $('#resultadoRE').html(h.substring(3)).fadeIn('fast');
+              if (h.charAt(0) == 0) {
+                // Datos incorrectos
+                $(\'#resultadoRE\').addClass(\'noesta\');
+                $(\'#resultadoRE\').html(h.substring(3)).fadeIn(\'fast\');
+              } else if (h.charAt(0) == 1) {
+                // OK
+                $(\'#resultadoRE\').removeClass(\'noesta\');
+                $(\'#resultadoRE\').addClass(\'noesta-ve\');
+                $(\'#resultadoRE\').html(h.substring(3)).fadeIn(\'fast\');
+              }
+          },
+          error: function() {
+            Boxy.alert(\'Error, volver a intentar...\', null, { title: \'Alerta\' });
           }
-      },
-      error: function() {
-        Boxy.alert('Error, volver a intentar...', null, { title: 'Alerta' });
+        });
       }
-    });
-  }
-</script>
-
-<?php
+    </script>';
 
   if (empty($user_settings['dar_dia'])) {
     $ss = '<span style="color: red;">A las <span style="font-size:9px;" title="Horario Chileno">(' . $modSettings['horap'] . ')</span> se recargar&aacute;n los puntos.</span>';

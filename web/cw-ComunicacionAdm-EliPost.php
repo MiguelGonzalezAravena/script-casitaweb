@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-global $context, $func, $db_prefix, $user_settings, $user_info, $boardurl, $ID_MEMBER, $webmaster_email;
+global $context, $db_prefix, $user_settings, $user_info, $boardurl, $ID_MEMBER, $webmaster_email;
 
 $posts = isset($_GET['post']) ? (int) $_GET['post'] : 0;
 

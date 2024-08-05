@@ -7,11 +7,11 @@ $denunciante = isset($_GET['den']) ? (int) $_GET['den'] : 0;
 $idden = isset($_GET['ident']) ? (int) $_GET['ident'] : 0;
 
 if ($user_info['is_admin'] || $user_info['is_mods']) {
-  if(empty($post)) {
+  if (empty($post)) {
     die('0: Debes especificar el post.');
   }
 
-  if(empty($denunciante)) {
+  if (empty($denunciante)) {
     die('0: Debes especificar el usuario denunciante.');
   }
 

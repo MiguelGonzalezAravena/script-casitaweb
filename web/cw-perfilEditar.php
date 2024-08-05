@@ -175,26 +175,31 @@ if ($_GET['sa'] !== 'activar') {
 
     $agrearorefrescar = mysqli_num_rows(db_query("SELECT id_user FROM ({$db_prefix}infop) WHERE id_user='$memID'", __FILE__, __LINE__));
 
-    if ($agrearorefrescar == '1') {
-      db_query("UPDATE {$db_prefix}infop SET a_quien='$quienver' WHERE id_user='$memID'", __FILE__, __LINE__);
-    } elseif (empty($agrearorefrescar)) {
-      db_query("INSERT INTO {$db_prefix}infop (id_user,a_quien) VALUES ('$memID','$quienver')", __FILE__, __LINE__);
+    if ($agrearorefrescar == 1) {
+      db_query("}
+        UPDATE {$db_prefix}infop
+        SET a_quien = $quienver
+        WHERE id_user = $memID", __FILE__, __LINE__);
+    } else if (empty($agrearorefrescar)) {
+      db_query("
+        INSERT INTO {$db_prefix}infop (id_user, a_quien)
+        VALUES ($memID, $quienver)", __FILE__, __LINE__);
     }
   }
 
   if (!empty($realname) && $user_settings['ID_MEMBER'] == 1) {
     db_query("
       UPDATE {$db_prefix}members
-      SET realName='$realname'
-      WHERE ID_MEMBER='$memID'
+      SET realName = '$realname'
+      WHERE ID_MEMBER = $memID
       LIMIT 1", __FILE__, __LINE__);
   }
 
   if (!empty($eskiji) && $user_settings['ID_MEMBER'] == 1) {
     db_query("
       UPDATE {$db_prefix}members
-      SET posts='$eskiji'
-      WHERE ID_MEMBER='$memID'
+      SET posts = $eskiji
+      WHERE ID_MEMBER = $memID
       LIMIT 1", __FILE__, __LINE__);
   }
 
@@ -273,7 +278,7 @@ $sffffe = !empty($_POST['passwrd1']) ? 1 : 0;
 
 if ($_POST['llegaravatar']) {
   header('Location: ' . $boardurl . '/moderacion/edit-user/perfil/' . $_POST['llegaravatar']);
-} elseif ($sffffe == 1) {
+} else if ($sffffe == 1) {
   header('Location: ' . $boardurl . '/');
 } else {
   header('Location: ' . $boardurl . '/editar-perfil/');

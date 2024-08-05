@@ -10,7 +10,7 @@ function RecentPosts() {
   loadTemplate('Recent');
   $context['page_title'] = $txt[214];
 
-  //if($context['user']['id']=='1'){PostAccionado();}
+  // if ($context['user']['id']=='1'){PostAccionado();}
   $context['catccdd'] = isset($_GET['catID']) ? seguridad(str_replace('/', '', $_GET['catID'])) : NULL;
   $RegistrosAMostrar = 50;
   $NroRegistros = 2500;
@@ -40,7 +40,7 @@ function RecentPosts() {
     FROM {$db_prefix}messages AS m
     INNER JOIN {$db_prefix}boards as b ON m.ID_BOARD = b.ID_BOARD
     AND m.eliminado = 0
-    " . (empty($context['catccdd']) ? '' : " AND b.description='{$context['catccdd']}'") . "
+    " . (empty($context['catccdd']) ? '' : " AND b.description = '{$context['catccdd']}'") . "
     ORDER BY m.ID_TOPIC DESC
     LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
 

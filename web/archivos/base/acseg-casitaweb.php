@@ -6,7 +6,7 @@ function template_intro() {
 
 // Mis notas
 function template_tyc17() {
-  global $tranfer1, $func, $ID_MEMBER, $modSettings, $context, $db_prefix, $boardurl;
+  global $tranfer1, $ID_MEMBER, $modSettings, $context, $db_prefix, $boardurl;
 
   ditaruser();
 

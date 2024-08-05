@@ -15,7 +15,7 @@ if ($user_info['is_guest']) {
     LIMIT 1", __FILE__, __LINE__);
 
   while ($row = mysqli_fetch_array($leer)) {
-    if(empty($row['leido'])) {
+    if (empty($row['leido'])) {
       db_query("
         UPDATE {$db_prefix}mensaje_personal
         SET leido = 1

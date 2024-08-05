@@ -11,48 +11,54 @@ function CollapseCategory() {}
 function QuickModeration() {}
 function QuickModeration2() {}
 
-function modifyBoard($board_id, &$boardOptions)
-{
+function modifyBoard($board_id, &$boardOptions) {
   global $sourcedir, $cat_tree, $boards, $boardList, $modSettings, $db_prefix;
-  global $func;
 
   getBoardTree();
 
-  if (!isset($boards[$board_id]) || (isset($boardOptions['target_board']) && !isset($boards[$boardOptions['target_board']])) || (isset($boardOptions['target_category']) && !isset($cat_tree[$boardOptions['target_category']])))
+  if (!isset($boards[$board_id]) || (isset($boardOptions['target_board']) && !isset($boards[$boardOptions['target_board']])) || (isset($boardOptions['target_category']) && !isset($cat_tree[$boardOptions['target_category']]))) {
     fatal_lang_error('smf232');
+  }
+
   $boardUpdates = array();
+
   if (isset($boardOptions['move_to'])) {
     if ($boardOptions['move_to'] == 'top') {
       $ID_CAT = 1;
       $childLevel = 0;
       $ID_PARENT = 0;
       $after = $cat_tree[$ID_CAT]['last_board_order'];
-    } elseif ($boardOptions['move_to'] == 'bottom') {
+    } else if ($boardOptions['move_to'] == 'bottom') {
       $ID_CAT = 1;
       $childLevel = 0;
       $ID_PARENT = 0;
       $after = 0;
-      foreach ($cat_tree[$ID_CAT]['children'] as $id_board => $dummy)
+
+      foreach ($cat_tree[$ID_CAT]['children'] as $id_board => $dummy) {
         $after = max($after, $boards[$id_board]['order']);
-    } elseif ($boardOptions['move_to'] == 'child') {
+      }
+    } else if ($boardOptions['move_to'] == 'child') {
       $ID_CAT = 1;
       $childLevel = $boards[$boardOptions['target_board']]['level'] + 1;
       $ID_PARENT = $boardOptions['target_board'];
 
       // !!! Change error message.
-      if (isChildOf($ID_PARENT, $board_id))
+      if (isChildOf($ID_PARENT, $board_id)) {
         fatal_error('Unable to make a parent its own child');
+      }
 
       $after = $boards[$boardOptions['target_board']]['order'];
 
       // Check if there are already children and (if so) get the max board order.
-      if (!empty($boards[$ID_PARENT]['tree']['children']) && empty($boardOptions['move_first_child']))
-        foreach ($boards[$ID_PARENT]['tree']['children'] as $childBoard_id => $dummy)
+      if (!empty($boards[$ID_PARENT]['tree']['children']) && empty($boardOptions['move_first_child'])) {
+        foreach ($boards[$ID_PARENT]['tree']['children'] as $childBoard_id => $dummy) {
           $after = max($after, $boards[$childBoard_id]['order']);
+        }
+      }
     }
 
     // Place a board before or after another board, on the same child level.
-    elseif (in_array($boardOptions['move_to'], array('before', 'after'))) {
+    else if (in_array($boardOptions['move_to'], array('before', 'after'))) {
       $ID_CAT = 1;
       $childLevel = $boards[$boardOptions['target_board']]['level'];
       $ID_PARENT = $boards[$boardOptions['target_board']]['parent'];
@@ -60,8 +66,9 @@ function modifyBoard($board_id, &$boardOptions)
     }
 
     // Oops...?
-    else
+    else {
       trigger_error("modifyBoard(): The move_to value '" . $boardOptions['move_to'] . "' is incorrect", E_USER_ERROR);
+    }
 
     // Get a list of children of this board.
     $childList = array();
@@ -70,16 +77,19 @@ function modifyBoard($board_id, &$boardOptions)
     // See if there are changes that affect children.
     $childUpdates = array();
     $levelDiff = $childLevel - $boards[$board_id]['level'];
-    if ($levelDiff != 0)
+
+    if ($levelDiff != 0) {
       $childUpdates[] = 'childLevel = childLevel ' . ($levelDiff > 0 ? '+ ' : '') . $levelDiff;
+    }
 
     // Fix the children of this board.
-    if (!empty($childList) && !empty($childUpdates))
+    if (!empty($childList) && !empty($childUpdates)) {
       db_query("
         UPDATE {$db_prefix}boards
         SET " . implode(',
           ', $childUpdates) . '
         WHERE ID_BOARD IN (' . implode(', ', $childList) . ')', __FILE__, __LINE__);
+    }
 
     // Make some room for this spot.
     db_query("
@@ -92,23 +102,40 @@ function modifyBoard($board_id, &$boardOptions)
     $boardUpdates[] = 'childLevel = ' . $childLevel;
     $boardUpdates[] = 'boardOrder = ' . ($after + 1);
   }
-  if (isset($boardOptions['posts_count']))
+
+  if (isset($boardOptions['posts_count'])) {
     $boardUpdates[] = 'countPosts = ' . ($boardOptions['posts_count'] ? '0' : '1');
-  if (isset($boardOptions['board_theme']))
+  }
+
+  if (isset($boardOptions['board_theme'])) {
     $boardUpdates[] = 'ID_THEME = ' . (int) $boardOptions['board_theme'];
-  if (isset($boardOptions['override_theme']))
+  }
+
+  if (isset($boardOptions['override_theme'])) {
     $boardUpdates[] = 'override_theme = ' . ($boardOptions['override_theme'] ? '1' : '0');
-  if (isset($boardOptions['countMoney']))
+  }
+
+  if (isset($boardOptions['countMoney'])) {
     $boardUpdates[] = 'countMoney = ' . ($boardOptions['countMoney'] ? '1' : '0');
-  if (isset($boardOptions['access_groups']))
+  }
+
+  if (isset($boardOptions['access_groups'])) {
     $boardUpdates[] = "memberGroups = '" . implode(',', $boardOptions['access_groups']) . "'";
-  if (isset($boardOptions['board_name']))
+  }
+
+  if (isset($boardOptions['board_name'])) {
     $boardUpdates[] = "name = '" . $boardOptions['board_name'] . "'";
-  if (isset($boardOptions['board_description']))
+  }
+
+  if (isset($boardOptions['board_description'])) {
     $boardUpdates[] = "description = '" . $boardOptions['board_description'] . "'";
-  if (isset($boardOptions['permission_mode']) && empty($modSettings['permission_enable_by_board']))
+  }
+
+  if (isset($boardOptions['permission_mode']) && empty($modSettings['permission_enable_by_board'])) {
     $boardUpdates[] = 'permission_mode = ' . $boardOptions['permission_mode'];
-  if (!empty($boardUpdates))
+  }
+
+  if (!empty($boardUpdates)) {
     $request = db_query("
       UPDATE {$db_prefix}boards
       SET
@@ -116,8 +143,11 @@ function modifyBoard($board_id, &$boardOptions)
         ', $boardUpdates) . "
       WHERE ID_BOARD = $board_id
       LIMIT 1", __FILE__, __LINE__);
-  if (isset($boardOptions['move_to']))
+  }
+
+  if (isset($boardOptions['move_to'])) {
     reorderBoards();
+  }
 }
 
 // Create a new board and set it's properties and position.
@@ -151,8 +181,9 @@ function createBoard($boardOptions)
     VALUES ( SUBSTRING('$boardOptions[board_name]', 1, 255), '', 0, '-1,0')", __FILE__, __LINE__);
   $board_id = db_insert_id();
 
-  if (empty($board_id))
+  if (empty($board_id)) {
     return 0;
+  }
 
   // Change the board according to the given specifications.
   modifyBoard($board_id, $boardOptions);
@@ -174,15 +205,19 @@ function createBoard($boardOptions)
         UPDATE {$db_prefix}boards
         SET permission_mode = $boardOptions[permission_mode]
         WHERE ID_BOARD = $board_id", __FILE__, __LINE__);
-    } elseif (!empty($modSettings['permission_enable_by_board']) && !empty($boards[$board_id]['parent']) && !empty($boards[$boards[$board_id]['parent']]['use_local_permissions'])) {
+    } else if (!empty($modSettings['permission_enable_by_board']) && !empty($boards[$board_id]['parent']) && !empty($boards[$boards[$board_id]['parent']]['use_local_permissions'])) {
       // Select all the parents permissions.
       $request = db_query("
         SELECT ID_GROUP, permission, addDeny
         FROM {$db_prefix}board_permissions
         WHERE ID_BOARD = " . (int) $boards[$board_id]['parent'], __FILE__, __LINE__);
+
       $boardPerms = array();
-      while ($row = mysqli_fetch_assoc($request))
+
+      while ($row = mysqli_fetch_assoc($request)) {
         $boardPerms[] = "$board_id, $row[ID_GROUP], '$row[permission]', $row[addDeny]";
+      }
+
       mysqli_free_result($request);
 
       // Do the insert!

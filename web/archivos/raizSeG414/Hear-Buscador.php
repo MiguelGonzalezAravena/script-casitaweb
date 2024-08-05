@@ -51,77 +51,75 @@ function hearBuscador($mm, $dd) {
       <span class="sep">|</span>
       <a ' . $heret . ' id="selen_tags" href="javascript:buscador.select(\'tags\')">Tags</a>';
 
-    // TO-DO: Agregar javascript dentro de un echo
-?>
-<script type="text/javascript">
-  function check() {
-    if ($('#sdq').val() == '') {
-      $('#sdq').focus();
-      return false;
-    }
-  }
+    echo '
+      <script type="text/javascript">
+        function check() {
+          if ($(\'#sdq\').val() == \'\') {
+            $(\'#sdq\').focus();
+            return false;
+          }
+        }
 
-  var buscador = {
-    tipo: '<?php echo $quee; ?>',
-    buscadorLite: true,
-    select: function(tipo) {
-      if (this.tipo == tipo) {
-        return;
-      }
+        var buscador = {
+          tipo: \'' . $quee . '\',
+          buscadorLite: true,
+          select: function(tipo) {
+            if (this.tipo == tipo) {
+              return;
+            }
 
-      // Cambio de action form
-      if (tipo == 'cw') {
-        var enlace = '';
-      } else {
-        var enlace = tipo;
-      } 
-              
-      $('form[name="buscador"]').attr('action', '<?php echo $boardurl; ?>/buscar' + enlace + '.php');
+            // Cambio de action form
+            if (tipo == \'cw\') {
+              var enlace = \'\';
+            } else {
+              var enlace = tipo;
+            } 
+                    
+            $(\'form[name="buscador"]\').attr(\'action\', \'' . $boardurl . '/buscar\' + enlace + \'.php\');
 
-      // Sólo hago los cambios visuales si no envia consulta
-      // Cambio here en <a />
-      $('#selen_' + this.tipo).removeClass('here');
-      $('#selen_' + tipo).addClass('here');
+            // Sólo hago los cambios visuales si no envia consulta
+            // Cambio here en <a />
+            $(\'#selen_\' + this.tipo).removeClass(\'here\');
+            $(\'#selen_\' + tipo).addClass(\'here\');
 
-      // Mostrar / ocultar el input autor
-      if (tipo == 'cw') {
-        $('span#filtro_autor').show();
-        $('#relevancia').show();
-      } else {
-        $('span#filtro_autor').hide();
-        $('#relevancia').hide();
-      }
+            // Mostrar / ocultar el input autor
+            if (tipo == \'cw\') {
+              $(\'span#filtro_autor\').show();
+              $(\'#relevancia\').show();
+            } else {
+              $(\'span#filtro_autor\').hide();
+              $(\'#relevancia\').hide();
+            }
 
-      // Mostrar / ocultar los input google
-      if (tipo == 'google') {
-        $('#filtercat').hide();
-        $('#filterorder').hide();
-        $('input[name="buscador_tipo"]').val('g');
-        $('#agregarG').append('<input name="cof" value="FORID:10" type="hidden" /><input name="cx" value="015978274333592990658:r0qy7erzrbw" type="hidden" /><input name="ie" value="UTF-8" type="hidden" /><input name="sa" value="Buscar" type="hidden" />');
-      } else if (this.tipo == 'google') {
-        // El anterior fue Google
-        $('input[name="cx"]').remove();
-        $('input[name="cof"]').remove();
-        $('input[name="sa"]').remove();
-        $('input[name="nn"]').remove();
-        $('input[name="buscador_tipo"]').val('cw');
-        $('#filtercat').show();
-        $('#filterorder').show();
-        $('input[name="ie"]').remove();
-      }
+            // Mostrar / ocultar los input google
+            if (tipo == \'google\') {
+              $(\'#filtercat\').hide();
+              $(\'#filterorder\').hide();
+              $(\'input[name="buscador_tipo"]\').val(\'g\');
+              $(\'#agregarG\').append(\'<input name="cof" value="FORID:10" type="hidden" /><input name="cx" value="015978274333592990658:r0qy7erzrbw" type="hidden" /><input name="ie" value="UTF-8" type="hidden" /><input name="sa" value="Buscar" type="hidden" />\');
+            } else if (this.tipo == \'google\') {
+              // El anterior fue Google
+              $(\'input[name="cx"]\').remove();
+              $(\'input[name="cof"]\').remove();
+              $(\'input[name="sa"]\').remove();
+              $(\'input[name="nn"]\').remove();
+              $(\'input[name="buscador_tipo"]\').val(\'cw\');
+              $(\'#filtercat\').show();
+              $(\'#filterorder\').show();
+              $(\'input[name="ie"]\').remove();
+            }
 
-      this.tipo = tipo;
+            this.tipo = tipo;
 
-      // En buscador lite, enviar consulta
-      if ($('input[name="q"]').val() != '') {
-        $('form[name="buscador"]').submit();
-      } else {
-        $('input[name="q"]').focus();
-      }
-    }
-  }
-</script>
-<?php
+            // En buscador lite, enviar consulta
+            if ($(\'input[name="q"]\').val() != \'\') {
+              $(\'form[name="buscador"]\').submit();
+            } else {
+              $(\'input[name="q"]\').focus();
+            }
+          }
+        }
+      </script>';
   } else if ($mm) {
     if ($dd == 't') {
       $accion = $boardurl . '/buscar-com.php';

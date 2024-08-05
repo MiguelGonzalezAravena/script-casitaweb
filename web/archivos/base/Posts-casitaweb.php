@@ -43,23 +43,23 @@ function template_main() {
 
   if ($context['user']['is_guest']) {
     echo '
-      <div align="center" style="-moz-border-radius: 5px; -webkit-border-radius: 5px; display: block; margin-bottom: 25px; margin-top: 10px; padding: 2px; border: solid 1px #D5CCC3; background: #FFF;">
-        ' . anuncio_728x90() . '
+      <div align="center" style="-moz-border-radius: 5px; -webkit-border-radius: 5px; display: block; margin-bottom: 25px; margin-top: 10px; padding: 2px; border: solid 1px #D5CCC3; background: #FFF;">';
+
+    anuncio_728x90();
+
+    echo '
         <br />
-        <a href="' . $boardurl . '/registrarse/" style="font-size: 12px; color: #FFB600; margin-bottom: 3px;">
-          <b>REG&Iacute;STRATE GRATIS Y ELIMINA ESTA PUBLICIDAD, ADEM&Aacute;S TENDR&Aacute;S ACCESO A TODOS LOS POSTS Y FUNCIONES</b>
-        </a>
+        <a href="' . $boardurl . '/registrarse/" style="font-size: 12px; color: #FFB600; margin-bottom: 3px;"><b>REG&Iacute;STRATE GRATIS Y ELIMINA ESTA PUBLICIDAD, ADEM&Aacute;S TENDR&Aacute;S ACCESO A TODOS LOS POSTS Y FUNCIONES</b></a>
       </div>';
   }
 
   echo parse_bbc(censorText($message['body']));
 
   if ($context['user']['is_guest']) {
-    echo '<div align="center" style="-moz-border-radius: 5px; -webkit-border-radius: 5px; display: block; margin-bottom: 10px; margin-top: 25px; padding: 2px; border: solid 1px #D5CCC3; background: #FFF;">
-      <a href="' . $boardurl . '/registrarse/" style="font-size: 12px; color: #FFB600; margin-bottom: 3px;">
-        <b>REG&Iacute;STRATE GRATIS Y ELIMINA ESTA PUBLICIDAD, ADEM&Aacute;S TENDR&Aacute;S ACCESO A TODOS LOS POSTS Y FUNCIONES</b>
-      </a>
-      <br />';
+    echo '
+      <div align="center" style="-moz-border-radius: 5px; -webkit-border-radius: 5px; display: block; margin-bottom: 10px; margin-top: 25px; padding: 2px; border: solid 1px #D5CCC3; background: #FFF;">
+        <a href="' . $boardurl . '/registrarse/" style="font-size: 12px; color: #FFB600; margin-bottom: 3px;"><b>REG&Iacute;STRATE GRATIS Y ELIMINA ESTA PUBLICIDAD, ADEM&Aacute;S TENDR&Aacute;S ACCESO A TODOS LOS POSTS Y FUNCIONES</b></a>
+        <br />';
 
     anuncio_728x90();
 
@@ -280,9 +280,9 @@ function template_main() {
       while ($row = mysqli_fetch_assoc($request)) {
         if ($row['cantidad'] <= 0) {
           $asndbrbjweb = '';
-        } elseif ($row['cantidad'] == 1) {
+        } else if ($row['cantidad'] == 1) {
           $asndbrbjweb = ' 1&nbsp;punto';
-        } elseif ($row['cantidad'] >= 2) {
+        } else if ($row['cantidad'] >= 2) {
           $asndbrbjweb = '' . $row['cantidad'] . '&nbsp;puntos';
         }
 
@@ -317,21 +317,28 @@ function template_main() {
       WHERE id_post = $post
       ORDER BY palabra ASC", __FILE__, __LINE__);
 
-    echo '<b>Tags:</b>';
-    while ($row = mysqli_fetch_assoc($dasdasd)) {
-      if (trim($row['palabra']) != '') {
-        $context['palabra'] = $row['palabra'];
-        $palabra[] = '
-          <a href="' . $boardurl . '/tags/' . $context['palabra'] . '" title="' . $context['palabra'] . '">' . $context['palabra'] . '</a>';
+    $rows = mysqli_num_rows($dasdasd);
+
+    echo '<b>Tags:</b>&nbsp;';
+
+    if ($rows == 0) {
+      echo 'Este post no cuenta con tags.';
+    } else {
+      while ($row = mysqli_fetch_assoc($dasdasd)) {
+        if (trim($row['palabra']) != '') {
+          $context['palabra'] = $row['palabra'];
+          $palabra[] = '
+            <a href="' . $boardurl . '/tags/' . $context['palabra'] . '" title="' . $context['palabra'] . '">' . $context['palabra'] . '</a>';
+        }
       }
-    }
 
-    mysqli_free_result($dasdasd);
+      mysqli_free_result($dasdasd);
 
-    $palabra = isset($palabra) ? $palabra : '';
+      $palabra = isset($palabra) ? $palabra : '';
 
-    if ($palabra != '') {
-      echo join(' - ', $palabra);
+      if ($palabra != '') {
+        echo join(' - ', $palabra);
+      }
     }
 
     if ($context['user']['is_admin']) {

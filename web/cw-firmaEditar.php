@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-global $db_prefix, $context, $user_info, $func, $user_settings;
+global $db_prefix, $context, $user_info, $user_settings;
 
 $admin = isset($_POST['admin']) ? (int) $_POST['admin'] : 0;
 $id_user = isset($_POST['id_user']) ? (int) $_POST['id_user'] : 0;

@@ -101,6 +101,7 @@ if ($pais == -1) {
   fatal_error('Debes seleccionar el pa&iacute;s donde vives.');
 } else if ($pais == 'ar' || $pais == 'bo' || $pais == 'br' || $pais == 'cl' || $pais == 'co' || $pais == 'cr' || $pais == 'cu' || $pais == 'ec' || $pais == 'es' || $pais == 'gt' || $pais == 'it' || $pais == 'mx' || $pais == 'py' || $pais == 'pe' || $pais == 'pt' || $pais == 'pr' || $pais == 'uy' || $pais == 've' || $pais == 'ot') {
   // TO-DO: ¿Qué se hace en este caso?
+  // TO-DO:  Validar que país exista
 } else {
   fatal_error('El pa&iacute;s seleccinado no est&aacute; en la lista.');
 }
@@ -111,7 +112,7 @@ if ($gh != 1 &&  $gh != 2) {
 
 if (isset($_POST['birthdate']) && !empty($_POST['birthdate'])) {
   $_POST['birthdate'] = strftime('%Y-%m-%d', strtotime($_POST['birthdate']));
-} elseif (!empty($_POST['bday1']) && !empty($_POST['bday2'])) {
+} else if (!empty($_POST['bday1']) && !empty($_POST['bday2'])) {
   $_POST['birthdate'] = sprintf('%04d-%02d-%02d', empty($_POST['bday3']) ? 0 : (int) $_POST['bday3'], (int) $_POST['bday1'], (int) $_POST['bday2']);
 }
 

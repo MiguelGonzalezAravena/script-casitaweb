@@ -1,4 +1,5 @@
 <?php
+
 function template_main() {
   global $context, $user_settings, $txt, $db_prefix, $modSettings, $tranfer1, $boardurl;
 
@@ -16,138 +17,188 @@ function template_main() {
       </style>';
   }
 
-  echo "<script type=\"text/javascript\">
-var confirm = true;
-window.onbeforeunload = confirmleave;
-function confirmleave() {
-    if (confirm && (\$('input[name=titulo]').val() || \$('textarea[name=contenido]').val())) return \"Este post no fue publicado y se perdera lo que hecho.\";}
-
-function scrollUp(){ var cs = (document.documentElement && document.documentElement.scrollTop)? document.documentElement : document.body; var step = Math.ceil(cs.scrollTop / 10); scrollBy(0, (step-(step*2)));
-if(cs.scrollTop>0) setTimeout('scrollUp()', 40);}
-
-function cerrar_vprevia(){\$('#preview').fadeOut(\"slow\");}
-function vprevia(titulo,contenido,tags,f) {
-if(titulo == ''){ \$('#MostrarError2').show();  return false;} else \$('#MostrarError2').hide();
-
-if(contenido == ''){ \$('#MostrarError3').show();  return false;} else \$('#MostrarError3').hide();
-
-if(contenido.length>63206){ \$('#MostrarError3').show();  return false;} else \$('#MostrarError3').hide();
-
-if(tags == ''){ \$('#MostrarError6').show();  return false;} else \$('#MostrarError6').hide();
-
-var separar_tags = tags.split(\",\");
-
-if(separar_tags.length < 4){ \$('#MostrarError8').show();  return false;} else \$('#MostrarError8').hide();
-
-if(f.categorias.options.selectedIndex==-1 || f.categorias.options[f.categorias.options.selectedIndex].value==-1){ \$('#MostrarError7').show();  return false;} else \$('#MostrarError7').hide();
-
-var params = 'subject=' + encodeURIComponent(titulo) + '&message=' + encodeURIComponent(contenido) + '&accion=' + encodeURIComponent(1);
-
-\$.ajax({
-            type: \"POST\",
-            url: '$boardurl/web/cw-vistaPrev.php',
-\t\t\tdata: params,
-          success: function(h){scrollUp();
-          \$('#preview').html(h);
-          \$('#preview').css('display','inline');}});}
-
-
-        function _capsprot(s) {
-            var len = s.length, strip = s.replace(/([A-Z])+/g, '').length, strip2 = s.replace(/([a-zA-Z])+/g, '').length,
-            percent = (len  - strip) / (len - strip2) * 100;
-            return percent;
-        }
-        \$(document).ready(function(){
-            \$('input[name=titulo]').keyup(function(){
-                if (\$(this).val().length >= 5 && _capsprot(\$(this).val()) > 90) \$('#MostrarError1').show();
-                else \$('#MostrarError1').hide();
-            });
-        });
-</script>";
-
-  echo '<form action="' . $boardurl . '/web/cw-PostAgregar.php" method="post" accept-charset="' . $context['character_set'] . '" name="nuevoPost" id="nuevoPost" enctype="multipart/form-data">';
-  // previsualizaci�n:
-  echo '<div id="preview" style="display: none; width: 922px;"></div>';
-  // fin previsualizaci�n
-
   echo '
-    <div style="margin-bottom: 8px; margin-right: 8px; float: left; width: 235px;">
-      <div class="box_235">
-        <div class="box_title" style="width: 233px;">
-          <div class="box_txt box_235-34">
-            <center>&#161;Aclaraci&oacute;n!</center>
+    <script type="text/javascript">
+      var confirm = true;
+      window.onbeforeunload = confirmleave;
+
+      function confirmleave() {
+          if (confirm && ($(\'input[name=titulo]\').val() || $(\'textarea[name=contenido]\').val())) {
+            return \'Este post no fue publicado y se perder&aacute; lo que hecho.\';
+          }
+      }
+
+      function scrollUp() {
+        var cs = (document.documentElement && document.documentElement.scrollTop) ? document.documentElement : document.body;
+        var step = Math.ceil(cs.scrollTop / 10);
+        scrollBy(0, (step - (step * 2)));
+
+        if (cs.scrollTop > 0) {
+          setTimeout(\'scrollUp()\', 40);
+        }
+      }
+
+      function cerrar_vprevia() {
+        $(\'#preview\').fadeOut(\'slow\');
+      }
+
+      function vprevia(titulo, contenido, tags, f) {
+        if (titulo == \'\') {
+          $(\'#MostrarError2\').show();
+          return false;
+        } else {
+          $(\'#MostrarError2\').hide();
+        }
+
+        if (contenido == \'\') {
+          $(\'#MostrarError3\').show();
+          return false;
+        } else {
+          $(\'#MostrarError3\').hide();
+        }
+
+        if (contenido.length > 63206) {
+          $(\'#MostrarError3\').show();
+          return false;
+        } else {
+          $(\'#MostrarError3\').hide();
+        }
+
+        if (tags == \'\') {
+          $(\'#MostrarError6\').show();
+          return false;
+        } else {
+          $(\'#MostrarError6\').hide();
+        }
+
+        var separar_tags = tags.split(\',\');
+
+        if (separar_tags.length < 4) {
+          $(\'#MostrarError8\').show();
+          return false;
+        } else {
+          $(\'#MostrarError8\').hide();
+        }
+
+        if (f.categorias.options.selectedIndex == -1 || f.categorias.options[ f.categorias.options.selectedIndex ].value == -1) {
+          $(\'#MostrarError7\').show();
+          return false;
+        } else {
+          $(\'#MostrarError7\').hide();
+        }
+
+        var params = \'subject=\' + encodeURIComponent(titulo) + \'&message=\' + encodeURIComponent(contenido) + \'&accion=\' + encodeURIComponent(1);
+
+        $.ajax({
+          type: \'POST\',
+          url: \'' . $boardurl . '/web/cw-vistaPrev.php\',
+          data: params,
+          success: function(h) {
+            scrollUp();
+            $(\'#preview\').html(h);
+            $(\'#preview\').css(\'display\', \'inline\');
+          }
+        });
+      }
+
+      function _capsprot(s) {
+          var len = s.length,
+            strip = s.replace(/([A-Z])+/g, \'\').length,
+            strip2 = s.replace(/([a-zA-Z])+/g, \'\').length,
+            percent = (len  - strip) / (len - strip2) * 100;
+
+          return percent;
+      }
+
+      $(document).ready(function() {
+        $(\'input[name=titulo]\').keyup(function() {
+          if ($(this).val().length >= 5 && _capsprot($(this).val()) > 90) {
+            $(\'#MostrarError1\').show();
+          } else {
+            $(\'#MostrarError1\').hide();
+          }
+        });
+      });
+    </script>
+    <form action="' . $boardurl . '/web/cw-PostAgregar.php" method="post" accept-charset="' . $context['character_set'] . '" name="nuevoPost" id="nuevoPost" enctype="multipart/form-data">
+      <div id="preview" style="display: none; width: 922px;"></div>
+      <div style="margin-bottom: 8px; margin-right: 8px; float: left; width: 235px;">
+        <div class="box_235">
+          <div class="box_title" style="width: 233px;">
+            <div class="box_txt box_235-34">
+              <center>&#161;Aclaraci&oacute;n!</center>
+            </div>
+            <div class="box_rss">
+              <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
+            </div>
           </div>
-          <div class="box_rss">
-            <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
+          <div class="windowbg" border="0" style="width: 225px; padding: 4px; font-family: arial;">
+            <center class="size12">
+              En esta secci&oacute;n puedes agregar una publicaci&oacute;n para compartirla con nuestra comunidad.
+              <div class="hrs"></div>
+              Para que esta publicaci&oacute;n no sea borrada por el staff de la web, debe estar de acuerdo con <a href="' . $boardurl . '/protocolo/" target="_blank" title="Protocolo"><b>las normas</b></a> establecidas en la web.
+              <div class="hrs"></div>
+              Tambi&eacute;n debe tener en cuenta los siguientes puntos:
+            </center>
+            <br />
+            <img src="' . $tranfer1 . '/icons/si.png" class="png" alt="" width="16px" height="16px" />
+            Contenido descriptivo.
+            <br />
+            <img src="' . $tranfer1 . '/icons/si.png" class="png" alt="" width="16px" height="16px" />
+            T&iacute;tulo descriptivo.
+            <br />
+            <img src="' . $tranfer1 . '/icons/si.png" class="png" alt="" width="16px" height="16px" />
+            Agregar im&aacute;genes sobre el post.
+            <br />
+            <img src="' . $tranfer1 . '/icons/si.png" class="png" alt="" width="16px" height="16px" />
+            Noticias con fuente.
+            <br />
+            <img src="' . $tranfer1 . '/icons/si.png" class="png" alt="" width="16px" height="16px" />
+            No excederse en may&uacute;sculas.
+            <br />
+            <img src="' . $tranfer1 . '/icons/si.png" class="png" alt="" width="16px" height="16px" />
+            No t&iacute;tulo llamativo.
+            <br />
+            <img src="' . $tranfer1 . '/icons/si.png" class="png" alt="" width="16px" height="16px" />
+            No spam.
+            <br />
+            <img src="' . $tranfer1 . '/icons/si.png" class="png" alt="" width="16px" height="16px" />
+            No gore o asquerosos.
+            <br />
+            <img src="' . $tranfer1 . '/icons/si.png" class="png" alt="" width="16px" height="16px" />
+            No insultos o malos tratos.
+            <br />
+            <img src="' . $tranfer1 . '/icons/si.png" class="png" alt="" width="16px" height="16px" />
+            No pornograf&iacute;a.
+            <br />
+            <br />
+            <center style="font-size: 11px;">
+              <img src="' . $tranfer1 . '/icons/no.png" class="png" alt="" width="16px" height="16px" />
+              Cumpliendo estos puntos m&aacute;s teniendo en cuenta el <a href="' . $boardurl . '/protocolo/" target="_blank" title="Protocolo">protocolo</a>, es probable que tu post no sea eliminado ni editado.
+            </center>
+            <p align="right" style="margin: 0px; padding: 0px; font-size: 11px;">Muchas gracias.</p>
           </div>
         </div>
-        <div class="windowbg" border="0" style="width: 225px; padding: 4px; font-family: arial;">
-          <center class="size12">
-            En esta secci&oacute;n puedes agregar una publicaci&oacute;n para compartirla con nuestra comunidad.
-            <div class="hrs"></div>
-            Para que esta publicaci&oacute;n no sea borrada por el staff de la web, debe estar de acuerdo con <a href="' . $boardurl . '/protocolo/" target="_blank" title="Protocolo"><b>las normas</b></a> establecidas en la web.
-            <div class="hrs"></div>
-            Tambi&eacute;n debe tener en cuenta los siguientes puntos:
-          </center>
-          <br />
-          <img src="' . $tranfer1 . '/icons/si.png" class="png" alt="" width="16px" height="16px" />
-          Contenido descriptivo.
-          <br />
-          <img src="' . $tranfer1 . '/icons/si.png" class="png" alt="" width="16px" height="16px" />
-          T&iacute;tulo descriptivo.
-          <br />
-          <img src="' . $tranfer1 . '/icons/si.png" class="png" alt="" width="16px" height="16px" />
-          Agregar im&aacute;genes sobre el post.
-          <br />
-          <img src="' . $tranfer1 . '/icons/si.png" class="png" alt="" width="16px" height="16px" />
-          Noticias con fuente.
-          <br />
-          <img src="' . $tranfer1 . '/icons/si.png" class="png" alt="" width="16px" height="16px" />
-          No excederse en may&uacute;sculas.
-          <br />
-          <img src="' . $tranfer1 . '/icons/si.png" class="png" alt="" width="16px" height="16px" />
-          No t&iacute;tulo llamativo.
-          <br />
-          <img src="' . $tranfer1 . '/icons/si.png" class="png" alt="" width="16px" height="16px" />
-          No spam.
-          <br />
-          <img src="' . $tranfer1 . '/icons/si.png" class="png" alt="" width="16px" height="16px" />
-          No gore o asquerosos.
-          <br />
-          <img src="' . $tranfer1 . '/icons/si.png" class="png" alt="" width="16px" height="16px" />
-          No insultos o malos tratos.
-          <br />
-          <img src="' . $tranfer1 . '/icons/si.png" class="png" alt="" width="16px" height="16px" />
-          No pornograf&iacute;a.
-          <br />
-          <br />
-          <center style="font-size: 11px;">
-            <img src="' . $tranfer1 . '/icons/no.png" class="png" alt="" width="16px" height="16px" />
-            Cumpliendo estos puntos m&aacute;s teniendo en cuenta el <a href="' . $boardurl . '/protocolo/" target="_blank" title="Protocolo">protocolo</a>, es probable que tu post no sea eliminado ni editado.
-          </center>
-          <p align="right" style="margin: 0px; padding: 0px; font-size: 11px;">Muchas gracias.</p>
+      </div>
+      <div class="ed-ag-post" style="float: left; margin-bottom: 8px; width: 679px;">
+      <div class="box_title" style="width: 677px;">
+        <div class="box_txt ed-ag-posts">
+          <center>Agregar nuevo post</center>
+        </div>
+        <div class="box_rss">
+          <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
         </div>
       </div>
-    </div>
-    <div class="ed-ag-post" style="float: left; margin-bottom: 8px; width: 679px;">
-    <div class="box_title" style="width: 677px;">
-      <div class="box_txt ed-ag-posts">
-        <center>Agregar nuevo post</center>
-      </div>
-      <div class="box_rss">
-        <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
-      </div>
-    </div>
-    <div class="windowbg" border="0" style="width: 669px; padding: 4px;">
-      <b class="size11">', $txt[70], ':</b>
-      <br />
-      <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="titulo" value="" tabindex="1" style="width: 415px;" maxlength="60" />
-      <div id="MostrarError1" class="capsprotBAJO" style="margin-bottom:3px;">El t&iacute;tulo no debe estar en may&uacute;sculas</div>
-      <div id="MostrarError2" class="capsprotBAJO">Falta el t&iacute;tulo del post.</div>
-      <br />
-      <b class="size11">Mensaje del post:</b>
-      <br />
-      <textarea style="height: 300px; width: 663px;" id="editorCW" name="contenido" tabindex="3"></textarea>';
+      <div class="windowbg" border="0" style="width: 669px; padding: 4px;">
+        <b class="size11">', $txt[70], ':</b>
+        <br />
+        <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="titulo" value="" tabindex="1" style="width: 415px;" maxlength="60" />
+        <div id="MostrarError1" class="capsprotBAJO" style="margin-bottom:3px;">El t&iacute;tulo no debe estar en may&uacute;sculas</div>
+        <div id="MostrarError2" class="capsprotBAJO">Falta el t&iacute;tulo del post.</div>
+        <br />
+        <b class="size11">Mensaje del post:</b>
+        <br />
+        <textarea style="height: 300px; width: 663px;" id="editorCW" name="contenido" tabindex="3"></textarea>';
 
   if ($modSettings['smiley_enable']) {
     $existe = db_query("

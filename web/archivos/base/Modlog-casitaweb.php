@@ -41,7 +41,7 @@ function template_main() {
       // var_dump($entry);
       echo '<tr>';
 
-      if(isset($entry['extra']['member'])) {
+      if (isset($entry['extra']['member'])) {
         $request = db_query("
           SELECT realName
           FROM {$db_prefix}members

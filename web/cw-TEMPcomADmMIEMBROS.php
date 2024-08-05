@@ -39,7 +39,7 @@ if ($context['permisoCom'] == 1 || $context['permisoCom'] == 3) {
     
   if ($context['permisoCom'] == 3 && $crngo == 1) {
     echo '<div class="noesta" style="width: 541px; margin-bottom: 8px; float: left;">No puedes modificar a los administradores.</div>';
-  } else if(!$cdavvbv) {
+  } else if (!$cdavvbv) {
     echo '<div class="noesta" style="width: 541px; margin-bottom: 8px; float: left;">Este miembro no est&aacute; en esta comunidad.</div>';
   } else if ($cID_MEMdBER == $ID_MEMBER) {
     echo '<div class="noesta" style="width: 541px; margin-bottom: 8px; float: left;">No puedes administrarte a ti mismo.</div>';

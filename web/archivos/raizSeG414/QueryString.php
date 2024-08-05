@@ -28,7 +28,7 @@ function cleanRequest() {
 
     parse_str(preg_replace('/&(\w+)(?=&|$)/', '&$1=', strtr($_SERVER['QUERY_STRING'], array(';?' => '&', ';' => '&'))), $_GET);
   }
-  elseif (strpos(@ini_get('arg_separator.input'), ';') !== false)
+  else if (strpos(@ini_get('arg_separator.input'), ';') !== false)
   {
     $_GET = urldecode__recursive($_GET);
 
@@ -123,7 +123,7 @@ function cleanRequest() {
     else
       $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CLIENT_IP'];
   }
-  elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+  else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
   {
     if (strpos($_SERVER['HTTP_X_FORWARDED_FOR'], ',') !== false)
     {
@@ -142,10 +142,10 @@ function cleanRequest() {
       }
     }
     // Otherwise just use the only one.
-    elseif (preg_match('~^((0|10|172\.16|192\.168|255|127\.0)\.|unknown)~', $_SERVER['HTTP_X_FORWARDED_FOR']) == 0 || preg_match('~^((0|10|172\.16|192\.168|255|127\.0)\.|unknown)~', $_SERVER['REMOTE_ADDR']) != 0)
+    else if (preg_match('~^((0|10|172\.16|192\.168|255|127\.0)\.|unknown)~', $_SERVER['HTTP_X_FORWARDED_FOR']) == 0 || preg_match('~^((0|10|172\.16|192\.168|255|127\.0)\.|unknown)~', $_SERVER['REMOTE_ADDR']) != 0)
       $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
   }
-  elseif (!isset($_SERVER['REMOTE_ADDR']))
+  else if (!isset($_SERVER['REMOTE_ADDR']))
   {
     $_SERVER['REMOTE_ADDR'] = '';
     // A new magic variable to indicate we think this is command line.
@@ -155,7 +155,7 @@ function cleanRequest() {
   // Make sure we know the URL of the current request.
   if (empty($_SERVER['REQUEST_URI']))
     $_SERVER['REQUEST_URL'] = $scripturl . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
-  elseif (preg_match('~^([^/]+//[^/]+)~', $scripturl, $match) == 1)
+  else if (preg_match('~^([^/]+//[^/]+)~', $scripturl, $match) == 1)
     $_SERVER['REQUEST_URL'] = $match[1] . $_SERVER['REQUEST_URI'];
   else
     $_SERVER['REQUEST_URL'] = $_SERVER['REQUEST_URI'];
@@ -265,36 +265,41 @@ function validate_unicode__recursive($var)
 
     if ($c < 192)
       continue;
-    elseif ($c < 224)
+    else if ($c < 224)
       $i++;
-    elseif ($c < 240)
+    else if ($c < 240)
       $i += 2;
-    elseif ($c < 248)
+    else if ($c < 248)
       $i += 3;
-    elseif ($c < 252)
+    else if ($c < 252)
       $i += 4;
-    elseif ($c < 254)
+    else if ($c < 254)
       $i += 5;
   }
 
   return $var;
 }
-function ob_sessrewrite($buffer)
-{
+function ob_sessrewrite($buffer) {
   global $scripturl, $modSettings, $user_info, $context;
-  if ($scripturl == '' || !defined('SID'))
+
+  if ($scripturl == '' || !defined('SID')) {
     return $buffer;
-  if (empty($_COOKIE) && SID != '' && empty($context['browser']['possibly_robot']) && @version_compare(PHP_VERSION, '4.3.0') != -1)
-    $buffer = preg_replace('/"' . preg_quote($scripturl, '/') . '(?!\?' . preg_quote(SID, '/') . ')(\?)?/', '"' . $scripturl . '?' . SID . '&amp;', $buffer);
-  elseif (isset($_GET['debug']))
-    $buffer = preg_replace('/"' . preg_quote($scripturl, '/') . '(\?)?/', '"' . $scripturl . '?debug;', $buffer);
-  if (!empty($modSettings['queryless_urls']) && (!$context['server']['is_cgi'] || @ini_get('cgi.fix_pathinfo') == 1) && $context['server']['is_apache'])
-  {
-    if (defined('SID') && SID != '')
-      $buffer = preg_replace('/"' . preg_quote($scripturl, '/') . '\?(?:' . SID . ';)((?:board|topic)=[^#"]+?)(#[^"]*?)?"/e', "'\"' . \$scripturl . '/' . strtr('\$1', '&;=', '//,') . '.html?' . SID . '\$2\"'", $buffer);
-    else
-    $buffer = preg_replace('/"' . preg_quote($scripturl, '/') . '\?((?:board|topic)=[^#"]+?)(#[^"]*?)?"/e', "'\"' . \$scripturl . '/' . strtr('\$1', '&;=', '//,') . '.html\$2\"'", $buffer);
   }
+
+  if (empty($_COOKIE) && SID != '' && empty($context['browser']['possibly_robot']) && @version_compare(PHP_VERSION, '4.3.0') != -1) {
+    $buffer = preg_replace('/"' . preg_quote($scripturl, '/') . '(?!\?' . preg_quote(SID, '/') . ')(\?)?/', '"' . $scripturl . '?' . SID . '&amp;', $buffer);
+  } else if (isset($_GET['debug'])) {
+    $buffer = preg_replace('/"' . preg_quote($scripturl, '/') . '(\?)?/', '"' . $scripturl . '?debug;', $buffer);
+  }
+
+  if (!empty($modSettings['queryless_urls']) && (!$context['server']['is_cgi'] || @ini_get('cgi.fix_pathinfo') == 1) && $context['server']['is_apache'])  {
+    if (defined('SID') && SID != '') {
+      $buffer = preg_replace('/"' . preg_quote($scripturl, '/') . '\?(?:' . SID . ';)((?:board|topic)=[^#"]+?)(#[^"]*?)?"/e', "'\"' . \$scripturl . '/' . strtr('\$1', '&;=', '//,') . '.html?' . SID . '\$2\"'", $buffer);
+    } else {
+      $buffer = preg_replace('/"' . preg_quote($scripturl, '/') . '\?((?:board|topic)=[^#"]+?)(#[^"]*?)?"/e', "'\"' . \$scripturl . '/' . strtr('\$1', '&;=', '//,') . '.html\$2\"'", $buffer);
+    }
+  }
+
   return $buffer;
 }
 

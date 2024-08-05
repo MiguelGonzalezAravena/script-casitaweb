@@ -78,26 +78,29 @@ if (!function_exists('session_regenerate_id')) {
 }
 
 // Get the domain and path for the cookie...
-function url_parts($local, $global)
-{
+function url_parts($local, $global) {
   global $boardurl;
 
   // Parse the URL with PHP to make life easier.
   $parsed_url = parse_url($boardurl);
 
   // Is local cookies off?
-  if (empty($parsed_url['path']) || !$local)
+  if (empty($parsed_url['path']) || !$local) {
     $parsed_url['path'] = '';
+  }
 
   // Globalize cookies across domains (filter out IP-addresses)?
-  if ($global && preg_match('~^\d{1,3}(\.\d{1,3}){3}$~', $parsed_url['host']) == 0 && preg_match('~(?:[^\.]+\.)?([^\.]{2,}\..+)\z~i', $parsed_url['host'], $parts) == 1)
+  if ($global && preg_match('~^\d{1,3}(\.\d{1,3}){3}$~', $parsed_url['host']) == 0 && preg_match('~(?:[^\.]+\.)?([^\.]{2,}\..+)\z~i', $parsed_url['host'], $parts) == 1) {
     $parsed_url['host'] = '.' . $parts[1];
+  }
   // We shouldn't use a host at all if both options are off.
-  elseif (!$local && !$global)
+  else if (!$local && !$global) {
     $parsed_url['host'] = '';
+  }
   // The host also shouldn't be set if there aren't any dots in it.
-  elseif (!isset($parsed_url['host']) || strpos($parsed_url['host'], '.') === false)
+  else if (!isset($parsed_url['host']) || strpos($parsed_url['host'], '.') === false) {
     $parsed_url['host'] = '';
+  }
 
   return array($parsed_url['host'], $parsed_url['path'] . '/');
 }

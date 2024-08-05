@@ -26,7 +26,7 @@ if ($user_info['is_guest']) {
 
   $rows = mysqli_num_rows($rs2);
 
-  if($rows == 0) {
+  if ($rows == 0) {
     echo '<div class="noesta-am">No existen comentarios.</div>';
   } else {
     while ($row = mysqli_fetch_assoc($rs2)) {

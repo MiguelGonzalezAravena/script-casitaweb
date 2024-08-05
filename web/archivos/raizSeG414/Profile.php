@@ -147,7 +147,6 @@ function ModifyProfile2() {}
 function saveProfileChanges(&$profile_vars, &$post_errors, $memID) {
   global $db_prefix, $user_info, $txt, $modSettings, $user_profile;
   global $newpassemail, $validationCode, $context, $settings, $sourcedir;
-  global $func;
 
   $old_profile = &$user_profile[$memID];
 
@@ -164,15 +163,18 @@ function saveProfileChanges(&$profile_vars, &$post_errors, $memID) {
     'notifyOnce',
     'notifySendBody',
   );
+
   $profile_ints = array(
     'pm_email_notify',
     'notifyTypes',
     'ICQ',
     'gender',
   );
+
   $profile_floats = array(
     'timeOffset',
   );
+
   $profile_strings = array(
     'websiteUrl',
     'websiteTitle',

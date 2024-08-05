@@ -152,14 +152,13 @@ function fatal_error($error, $log = false, $title = null, $botn = null) {
     loadTheme(0);
   }
 
-  // TO-DO: Solucionar error en enlaces /noestilo/post/8158
   require_once($themedir . '/index-casitaweb.php');
   echo template_main_above();
   
   if (empty($botn) || $botn == '1') {
     $context['boton'] = '<input class="login" style="font-size: 11px;" type="submit" title="Ir a la P&aacute;gina principal" value="Ir a la P&aacute;gina principal" onclick="location.href=\'' . $boardurl . '/\'" />';
   } else {
-    if($botn == '909') {
+    if ($botn == '909') {
       $context['boton'] = '';
     }
 

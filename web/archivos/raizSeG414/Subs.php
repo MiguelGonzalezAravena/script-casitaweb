@@ -129,12 +129,12 @@ function updateStats($type, $parameter1 = null, $parameter2 = null) {
         WHERE is_activated IN (3, 4)", __FILE__, __LINE__);
         list($changes['unapprovedMembers']) = mysqli_fetch_row($result);
         mysqli_free_result($result);
-      } elseif ($parameter1 !== null && $parameter1 !== false) {
+      } else if ($parameter1 !== null && $parameter1 !== false) {
         $changes['latestMember'] = $parameter1;
         $changes['latestRealName'] = $parameter2;
 
         updateSettings(array('totalMembers' => true), true);
-      } elseif ($parameter1 !== false) {
+      } else if ($parameter1 !== false) {
         $result = db_query("
         SELECT COUNT(*), MAX(ID_MEMBER)
         FROM {$db_prefix}members", __FILE__, __LINE__);
@@ -154,14 +154,15 @@ function updateStats($type, $parameter1 = null, $parameter2 = null) {
       break;
 
     case 'message':
-      if ($parameter1 === true && $parameter2 !== null)
+      if ($parameter1 === true && $parameter2 !== null) {
         updateSettings(array('totalMessages' => true, 'maxMsgID' => $parameter2), true);
-      else {
+      } else {
         // SUM and MAX on a smaller table is better for InnoDB tables.
         $result = db_query("
         SELECT SUM(numPosts) AS totalMessages, MAX(ID_LAST_MSG) AS maxMsgID
         FROM {$db_prefix}boards", __FILE__, __LINE__);
         $row = mysqli_fetch_assoc($result);
+
         mysqli_free_result($result);
 
         updateSettings(array(
@@ -169,44 +170,53 @@ function updateStats($type, $parameter1 = null, $parameter2 = null) {
           'maxMsgID' => $row['maxMsgID'] === null ? 0 : $row['maxMsgID']
         ));
       }
+
       break;
 
     case 'subject':
     case 'topic':
-      if ($parameter1 === true)
+      if ($parameter1 === true) {
         updateSettings(array('totalTopics' => true), true);
-      else {
+      } else {
         $result = db_query("
-        SELECT SUM(numTopics) AS totalTopics
-        FROM {$db_prefix}boards" . (!empty($modSettings['recycle_enable']) && $modSettings['recycle_board'] > 0 ? "
-        WHERE ID_BOARD != $modSettings[recycle_board]" : ''), __FILE__, __LINE__);
-        $row = mysqli_fetch_assoc($result);
-        mysqli_free_result($result);
+          SELECT SUM(numTopics) AS totalTopics
+          FROM {$db_prefix}boards" . (!empty($modSettings['recycle_enable']) && $modSettings['recycle_board'] > 0 ? "
+          WHERE ID_BOARD != $modSettings[recycle_board]" : ''), __FILE__, __LINE__);
 
+        $row = mysqli_fetch_assoc($result);
+
+        mysqli_free_result($result);
         updateSettings(array('totalTopics' => $row['totalTopics']));
       }
       break;
 
     case 'postgroups':
-      if ($parameter2 !== null && !in_array('posts', $parameter2))
+      if ($parameter2 !== null && !in_array('posts', $parameter2)) {
         return;
+      }
 
       if (($postgroups = cache_get_data('updateStats:postgroups', 360)) == null) {
         $request = db_query("
-        SELECT ID_GROUP, minPosts
-        FROM {$db_prefix}membergroups
-        WHERE minPosts != -1", __FILE__, __LINE__);
+          SELECT ID_GROUP, minPosts
+          FROM {$db_prefix}membergroups
+          WHERE minPosts != -1", __FILE__, __LINE__);
+
         $postgroups = array();
-        while ($row = mysqli_fetch_assoc($request))
+
+        while ($row = mysqli_fetch_assoc($request)) {
           $postgroups[$row['ID_GROUP']] = $row['minPosts'];
+        }
+
         mysqli_free_result($request);
+
         arsort($postgroups);
 
         cache_put_data('updateStats:postgroups', $postgroups, 360);
       }
 
-      if (empty($postgroups))
+      if (empty($postgroups)) {
         return;
+      }
 
       $conditions = '';
       foreach ($postgroups as $id => $minPosts) {
@@ -233,14 +243,15 @@ function updateStats($type, $parameter1 = null, $parameter2 = null) {
 function updateMemberData($members, $data) {
   global $db_prefix, $modSettings, $ID_MEMBER, $user_info;
 
-  if (is_array($members))
+  if (is_array($members)) {
     $condition = 'ID_MEMBER IN (' . implode(', ', $members) . ')
     LIMIT ' . count($members);
-  elseif ($members === null)
+  } else if ($members === null) {
     $condition = '1';
-  else
+  } else {
     $condition = 'ID_MEMBER = ' . $members . '
     LIMIT 1';
+  }
 
   if (isset($modSettings['integrate_change_member_data']) && function_exists($modSettings['integrate_change_member_data'])) {
     $integration_vars = array(
@@ -258,18 +269,23 @@ function updateMemberData($members, $data) {
       'timeOffset',
       'avatar',
     );
+
     $vars_to_integrate = array_intersect($integration_vars, array_keys($data));
+
     if (count($vars_to_integrate) != 0) {
-      if ((!is_array($members) && $members === $ID_MEMBER) || (is_array($members) && count($members) == 1 && in_array($ID_MEMBER, $members)))
+      if ((!is_array($members) && $members === $ID_MEMBER) || (is_array($members) && count($members) == 1 && in_array($ID_MEMBER, $members))) {
         $memberNames = array($user_info['username']);
-      else {
+      } else {
         $memberNames = array();
         $request = db_query("
           SELECT memberName
           FROM {$db_prefix}members
           WHERE $condition", __FILE__, __LINE__);
-        while ($row = mysqli_fetch_assoc($request))
+
+        while ($row = mysqli_fetch_assoc($request)) {
           $memberNames[] = $row['memberName'];
+        }
+
         mysqli_free_result($request);
       }
 
@@ -280,13 +296,15 @@ function updateMemberData($members, $data) {
   }
 
   foreach ($data as $var => $val) {
-    if ($val === '+')
+    if ($val === '+') {
       $data[$var] = $var . ' + 1';
-    elseif ($val === '-')
+    } else if ($val === '-') {
       $data[$var] = $var . ' - 1';
+    }
   }
 
   $setString = '';
+
   foreach ($data as $var => $val) {
     $setString .= "
       $var = $val,";
@@ -336,21 +354,22 @@ function updateSettings($changeArray, $update = false) {
 
   $replaceArray = array();
   foreach ($changeArray as $variable => $value) {
-    if (isset($modSettings[$variable]) && $modSettings[$variable] == stripslashes($value))
+    if (isset($modSettings[$variable]) && $modSettings[$variable] == stripslashes($value)) {
       continue;
-    elseif (!isset($modSettings[$variable]) && empty($value))
+    } else if (!isset($modSettings[$variable]) && empty($value)) {
       continue;
+    }
 
     $replaceArray[] = "(SUBSTRING('$variable', 1, 255), SUBSTRING('$value', 1, 65534))";
     $modSettings[$variable] = stripslashes($value);
   }
 
-  if (empty($replaceArray))
+  if (empty($replaceArray)) {
     return;
+  }
 
   db_query("
-    REPLACE INTO {$db_prefix}settings
-      (variable, value)
+    REPLACE INTO {$db_prefix}settings (variable, value)
     VALUES " . implode(',
       ', $replaceArray), __FILE__, __LINE__);
 
@@ -533,10 +552,12 @@ function shorten_subject($subject, $len) {
 function forum_time($use_user_offset = true, $timestamp = null) {
   global $user_info, $modSettings;
 
-  if ($timestamp === null)
+  if ($timestamp === null) {
     $timestamp = time();
-  elseif ($timestamp == 0)
+  } else if ($timestamp == 0) {
     return 0;
+  }
+
   return $timestamp + ($modSettings['time_offset'] + ($use_user_offset ? $user_info['time_offset'] : 0)) * 3600;
 }
 
@@ -576,7 +597,7 @@ function doUBBC($message, $enableSmileys = true) {
  *     $message = str_replace('[size=7px]', '[size=9px]', $message);
  *
  *   if (WIRELESS)$smileys = false;
- *   elseif ($smileys !== null && ($smileys == '1' || $smileys == '0'))
+ *    ($smileys !== null && ($smileys == '1' || $smileys == '0'))
  *     $smileys = (bool) $smileys;
  *
  *
@@ -1599,18 +1620,21 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
   static $disabled;
 
   // Don't waste cycles
-  if ($message === '')
+  if ($message === '') {
     return '';
+  }
 
   // Never show smileys for wireless clients.  More bytes, can't see it anyway :P.
-  if (WIRELESS)
+  if (WIRELESS) {
     $smileys = false;
-  elseif ($smileys !== null && ($smileys == '1' || $smileys == '0'))
+  } else if ($smileys !== null && ($smileys == '1' || $smileys == '0')) {
     $smileys = (bool) $smileys;
+  }
 
   if (empty($modSettings['enableBBC']) && $message !== false) {
-    if ($smileys === true)
+    if ($smileys === true) {
       parsesmileys($message);
+    }
 
     return $message;
   }
@@ -1999,10 +2023,11 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
         'before' => '<a href="$1" class="bbc_link">',
         'after' => '</a>',
         'validate' => function (&$tag, &$data, $disabled) {
-          if (substr($data, 0, 1) == '#')
+          if (substr($data, 0, 1) == '#') {
             $data = '#post_' . substr($data, 1);
-          elseif (strpos($data, 'http://') !== 0 && strpos($data, 'https://') !== 0)
+          } else if (strpos($data, 'http://') !== 0 && strpos($data, 'https://') !== 0) {
             $data = 'http://' . $data;
+          }
         },
         'disallow_children' => array('email', 'ftp', 'url', 'iurl'),
         'disabled_after' => ' ($1)',
@@ -2385,14 +2410,17 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 
   // This saves time by doing our break long words checks here.
   if (!empty($modSettings['fixLongWords']) && $modSettings['fixLongWords'] > 5) {
-    if ($context['browser']['is_gecko'] || $context['browser']['is_konqueror'])
+    if ($context['browser']['is_gecko'] || $context['browser']['is_konqueror']) {
       $breaker = '<span style="margin: 0 -0.5ex 0 0;"> </span>';
+    }
     // Opera...
-    elseif ($context['browser']['is_opera'])
+    else if ($context['browser']['is_opera']) {
       $breaker = '<span style="margin: 0 -0.65ex 0 -1px;"> </span>';
+    }
     // Internet Explorer...
-    else
+    else {
       $breaker = '<span style="width: 0; margin: 0 -0.6ex 0 -1px;"> </span>';
+    }
 
     // PCRE will not be happy if we don't give it a short.
     $modSettings['fixLongWords'] = (int) min(65535, $modSettings['fixLongWords']);
@@ -2592,13 +2620,14 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
       if ((empty($open_tags) && (empty($tag) || $tag['tag'] != $look_for))) {
         $open_tags = $to_close;
         continue;
-      } elseif (!empty($to_close) && $tag['tag'] != $look_for) {
+      } else if (!empty($to_close) && $tag['tag'] != $look_for) {
         if ($block_level === null && isset($look_for[0], $bbc_codes[$look_for[0]])) {
-          foreach ($bbc_codes[$look_for[0]] as $temp)
+          foreach ($bbc_codes[$look_for[0]] as $temp) {
             if ($temp['tag'] == $look_for) {
               $block_level = !empty($temp['block_level']);
               break;
             }
+          }
         }
 
         // We're not looking for a block level tag (or maybe even a tag that exists...)
@@ -2643,35 +2672,43 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
       $next_c = substr($message, $pos + 1 + strlen($possible['tag']), 1);
 
       // A test validation?
-      if (isset($possible['test']) && preg_match('~^' . $possible['test'] . '~', substr($message, $pos + 1 + strlen($possible['tag']) + 1)) == 0)
+      if (isset($possible['test']) && preg_match('~^' . $possible['test'] . '~', substr($message, $pos + 1 + strlen($possible['tag']) + 1)) == 0) {
         continue;
+      }
       // Do we want parameters?
-      elseif (!empty($possible['parameters'])) {
-        if ($next_c != ' ')
+      else if (!empty($possible['parameters'])) {
+        if ($next_c != ' ') {
           continue;
-      } elseif (isset($possible['type'])) {
+        }
+      } else if (isset($possible['type'])) {
         // Do we need an equal sign?
-        if (in_array($possible['type'], array('unparsed_equals', 'unparsed_commas', 'unparsed_commas_content', 'unparsed_equals_content', 'parsed_equals')) && $next_c != '=')
+        if (in_array($possible['type'], array('unparsed_equals', 'unparsed_commas', 'unparsed_commas_content', 'unparsed_equals_content', 'parsed_equals')) && $next_c != '=') {
           continue;
+        }
         // Maybe we just want a /...
-        if ($possible['type'] == 'closed' && $next_c != ']' && substr($message, $pos + 1 + strlen($possible['tag']), 2) != '/]' && substr($message, $pos + 1 + strlen($possible['tag']), 3) != ' /]')
+        if ($possible['type'] == 'closed' && $next_c != ']' && substr($message, $pos + 1 + strlen($possible['tag']), 2) != '/]' && substr($message, $pos + 1 + strlen($possible['tag']), 3) != ' /]') {
           continue;
+        }
         // An immediate ]?
-        if ($possible['type'] == 'unparsed_content' && $next_c != ']')
+        if ($possible['type'] == 'unparsed_content' && $next_c != ']') {
           continue;
+        }
       }
       // No type means 'parsed_content', which demands an immediate ] without parameters!
-      elseif ($next_c != ']')
+      else if ($next_c != ']') {
         continue;
+      }
 
       // Check allowed tree?
-      if (isset($possible['require_parents']) && ($inside === null || !in_array($inside['tag'], $possible['require_parents'])))
+      if (isset($possible['require_parents']) && ($inside === null || !in_array($inside['tag'], $possible['require_parents']))) {
         continue;
-      elseif (isset($inside['require_children']) && !in_array($possible['tag'], $inside['require_children']))
+      } else if (isset($inside['require_children']) && !in_array($possible['tag'], $inside['require_children'])) {
         continue;
+      }
       // If this is in the list of disallowed child tags, don't parse it.
-      elseif (isset($inside['disallow_children']) && in_array($possible['tag'], $inside['disallow_children']))
+      else if (isset($inside['disallow_children']) && in_array($possible['tag'], $inside['disallow_children'])) {
         continue;
+      }
 
       $pos1 = $pos + 1 + strlen($possible['tag']) + 1;
 
@@ -2679,10 +2716,12 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
       if ($possible['tag'] == 'quote') {
         // Start with standard
         $quote_alt = false;
+
         foreach ($open_tags as $open_quote) {
           // Every parent quote this quote has flips the styling
-          if ($open_quote['tag'] == 'quote')
+          if ($open_quote['tag'] == 'quote') {
             $quote_alt = !$quote_alt;
+          }
         }
         // Add a class to the quote to style alternating blockquotes
         $possible['before'] = strtr($possible['before'], array('<blockquote>' => '<blockquote class="bbc_' . ($quote_alt ? 'alternate' : 'standard') . '_quote">'));
@@ -2710,20 +2749,22 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
         $params = array();
         for ($i = 1, $n = count($matches); $i < $n; $i += 2) {
           $key = strtok(ltrim($matches[$i]), '=');
-          if (isset($possible['parameters'][$key]['value']))
+          if (isset($possible['parameters'][$key]['value'])) {
             $params['{' . $key . '}'] = strtr($possible['parameters'][$key]['value'], array('$1' => $matches[$i + 1]));
-          elseif (isset($possible['parameters'][$key]['validate']))
+          } else if (isset($possible['parameters'][$key]['validate'])) {
             $params['{' . $key . '}'] = $possible['parameters'][$key]['validate']($matches[$i + 1]);
-          else
+          } else {
             $params['{' . $key . '}'] = $matches[$i + 1];
+          }
 
           // Just to make sure: replace any $ or { so they can't interpolate wrongly.
           $params['{' . $key . '}'] = strtr($params['{' . $key . '}'], array('$' => '&#036;', '{' => '&#123;'));
         }
 
         foreach ($possible['parameters'] as $p => $info) {
-          if (!isset($params['{' . $p . '}']))
+          if (!isset($params['{' . $p . '}'])) {
             $params['{' . $p . '}'] = '';
+          }
         }
 
         $tag = $possible;
@@ -2761,12 +2802,12 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
         $code = '<ul class="bbc_list">';
       }
       // We're in a list item already: another itemcode?  Close it first.
-      elseif ($inside['tag'] == 'li') {
+      else if ($inside['tag'] == 'li') {
         array_pop($open_tags);
         $code = '</li>';
-      }
-      else
+      } else {
         $code = '';
+      }
 
       // Now we open a new tag.
       $open_tags[] = array(
@@ -2823,12 +2864,12 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
         $tag['before'] = !empty($tag['block_level']) ? '<div>' : '';
         $tag['after'] = !empty($tag['block_level']) ? '</div>' : '';
         $tag['content'] = isset($tag['type']) && $tag['type'] == 'closed' ? '' : (!empty($tag['block_level']) ? '<div>$1</div>' : '$1');
-      } elseif (isset($tag['disabled_before']) || isset($tag['disabled_after'])) {
+      } else if (isset($tag['disabled_before']) || isset($tag['disabled_after'])) {
         $tag['before'] = isset($tag['disabled_before']) ? $tag['disabled_before'] : (!empty($tag['block_level']) ? '<div>' : '');
         $tag['after'] = isset($tag['disabled_after']) ? $tag['disabled_after'] : (!empty($tag['block_level']) ? '</div>' : '');
-      }
-      else
+      } else {
         $tag['content'] = $tag['disabled_content'];
+      }
     }
 
     // The only special case is 'html', which doesn't need to close things.
@@ -2861,15 +2902,18 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
       $pos += strlen($tag['before']) - 1 + 2;
     }
     // Don't parse the content, just skip it.
-    elseif ($tag['type'] == 'unparsed_content') {
+    else if ($tag['type'] == 'unparsed_content') {
       $pos2 = stripos($message, '[/' . substr($message, $pos + 1, strlen($tag['tag'])) . ']', $pos1);
-      if ($pos2 === false)
+
+      if ($pos2 === false) {
         continue;
+      }
 
       $data = substr($message, $pos1, $pos2 - $pos1);
 
-      if (!empty($tag['block_level']) && substr($data, 0, 6) == '<br />')
+      if (!empty($tag['block_level']) && substr($data, 0, 6) == '<br />') {
         $data = substr($data, 6);
+      }
 
       if (isset($tag['validate']))
         $tag['validate']($tag, $data, $disabled);
@@ -2881,7 +2925,7 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
       $last_pos = $pos + 1;
     }
     // Don't parse the content, just skip it.
-    elseif ($tag['type'] == 'unparsed_equals_content') {
+    else if ($tag['type'] == 'unparsed_equals_content') {
       // The value may be quoted for some tags - check.
       if (isset($tag['quoted'])) {
         $quoted = substr($message, $pos1, 6) == '&quot;';
@@ -2918,13 +2962,13 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
       $pos += strlen($code) - 1 + 2;
     }
     // A closed tag, with no content or value.
-    elseif ($tag['type'] == 'closed') {
+    else if ($tag['type'] == 'closed') {
       $pos2 = strpos($message, ']', $pos);
       $message = substr($message, 0, $pos) . "\n" . $tag['content'] . "\n" . substr($message, $pos2 + 1);
       $pos += strlen($tag['content']) - 1 + 2;
     }
     // This one is sorta ugly... :/.  Unfortunately, it's needed for flash.
-    elseif ($tag['type'] == 'unparsed_commas_content') {
+    else if ($tag['type'] == 'unparsed_commas_content') {
       $pos2 = strpos($message, ']', $pos1);
       if ($pos2 === false)
         continue;
@@ -2946,7 +2990,7 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
       $pos += strlen($code) - 1 + 2;
     }
     // This has parsed content, and a csv value which is unparsed.
-    elseif ($tag['type'] == 'unparsed_commas') {
+    else if ($tag['type'] == 'unparsed_commas') {
       $pos2 = strpos($message, ']', $pos1);
       if ($pos2 === false)
         continue;
@@ -2970,7 +3014,7 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
       $pos += strlen($code) - 1 + 2;
     }
     // A tag set to a value, parsed or not.
-    elseif ($tag['type'] == 'unparsed_equals' || $tag['type'] == 'parsed_equals') {
+    else if ($tag['type'] == 'unparsed_equals' || $tag['type'] == 'parsed_equals') {
       // The value may be quoted for some tags - check.
       if (isset($tag['quoted'])) {
         $quoted = substr($message, $pos1, 6) == '&quot;';
@@ -3060,8 +3104,10 @@ function call_integration_hook($hook, $parameters = array()) {
   global $modSettings;
 
   $results = array();
-  if (empty($modSettings[$hook]))
+
+  if (empty($modSettings[$hook])) {
     return $results;
+  }
 
   $functions = explode(',', $modSettings[$hook]);
 
@@ -3071,8 +3117,9 @@ function call_integration_hook($hook, $parameters = array()) {
     $call = strpos($function, '::') !== false ? explode('::', $function) : $function;
 
     // Is it valid?
-    if (is_callable($call))
+    if (is_callable($call)) {
       $results[$function] = call_user_func_array($call, $parameters);
+    }
   }
 
   return $results;
@@ -3265,14 +3312,14 @@ function redirectexit($setLocation = '', $refresh = false) {
     else
       $setLocation .= $char . WIRELESS_PROTOCOL;
   }
-  elseif ($add)
+  else if ($add)
     $setLocation = $scripturl . ($setLocation != '' ? '?' . $setLocation : '');
 
   // Put the session ID in.
   if (defined('SID') && SID != '')
     $setLocation = preg_replace('/^' . preg_quote($scripturl, '/') . '(?!\?' . preg_quote(SID, '/') . ')(\?)?/', $scripturl . '?' . SID . ';', $setLocation);
   // Keep that debug in their for template debugging!
-  elseif (isset($_GET['debug']))
+  else if (isset($_GET['debug']))
     $setLocation = preg_replace('/^' . preg_quote($scripturl, '/') . '(\?)?/', $scripturl . '?debug;', $setLocation);
 
   if (!empty($modSettings['queryless_urls']) && (empty($context['server']['is_cgi']) || @ini_get('cgi.fix_pathinfo') == 1) && !empty($context['server']['is_apache'])) {
@@ -3313,7 +3360,7 @@ function obExit($header = null, $do_footer = null, $from_index = false) {
 
     if (!empty($settings['output_buffers']) && is_string($settings['output_buffers']))
       $buffers = explode(',', $settings['output_buffers']);
-    elseif (!empty($settings['output_buffers']))
+    else if (!empty($settings['output_buffers']))
       $buffers = $settings['output_buffers'];
     else
       $buffers = array();
@@ -3420,7 +3467,7 @@ function trackStats($stats = array()) {
     return false;
   if (!empty($stats))
     return $cache_stats = array_merge($cache_stats, $stats);
-  elseif (empty($cache_stats))
+  else if (empty($cache_stats))
     return false;
 
   $setStringUpdate = '';
@@ -3474,28 +3521,28 @@ function estadisticastopic($d = '') {
   if (!empty($topicsss)) {
     if (!$d) {
       db_query("
-    UPDATE {$db_prefix}log_activity
-    SET topics=topics+1 , posts=posts+1
-    WHERE date = '$date'
-    LIMIT 1", __FILE__, __LINE__);
+        UPDATE {$db_prefix}log_activity
+        SET 
+          topics = topics + 1,
+          posts = posts + 1
+        WHERE date = '$date'
+        LIMIT 1", __FILE__, __LINE__);
     } else {
       db_query("
-    UPDATE {$db_prefix}log_activity
-    SET registers=registers+1
-    WHERE date = '$date'
-    LIMIT 1", __FILE__, __LINE__);
+        UPDATE {$db_prefix}log_activity
+        SET registers = registers + 1
+        WHERE date = '$date'
+        LIMIT 1", __FILE__, __LINE__);
     }
-  } elseif (empty($topicsss)) {
+  } else if (empty($topicsss)) {
     if (!$d) {
       db_query("
-      INSERT IGNORE INTO {$db_prefix}log_activity
-      (date,hits, topics, posts,registers,mostOn)
-      VALUES ('$date', 0,1,1,0,0)", __FILE__, __LINE__);
+        INSERT IGNORE INTO {$db_prefix}log_activity (date, hits, topics, posts, registers, mostOn)
+        VALUES ('$date', 0, 1, 1, 0, 0)", __FILE__, __LINE__);
     } else {
       db_query("
-      INSERT IGNORE INTO {$db_prefix}log_activity
-      (date,hits, topics, posts,registers,mostOn)
-      VALUES ('$date', 0,0,0,1,0)", __FILE__, __LINE__);
+        INSERT IGNORE INTO {$db_prefix}log_activity (date, hits, topics, posts, registers, mostOn)
+        VALUES ('$date', 0, 0, 0, 1, 0)", __FILE__, __LINE__);
     }
   }
 

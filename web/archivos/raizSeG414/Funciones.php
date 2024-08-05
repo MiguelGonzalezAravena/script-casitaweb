@@ -1292,7 +1292,7 @@ function textarea2($ivvd, $dd = 0) {
     $resultado = '
       <div align="center" ' . $stylec . 'id="b-' . $ivvd . '">
         <div class="muroCcs" id="comentarCC_' . $ivvd . '">
-          <textarea title="Escribe un comentario..." onfocus="if(this.value == \'Escribe un comentario...\') this.value = \'\'; foco(this); this.style.height = \'50px\'; $(\'#ocultar_input_' . $ivvd . '\').css(\'display\', \'block\');" onblur="if(this.value == \'\') { this.style.height = \'15px\'; $(\'#ocultar_input_' . $ivvd . '\').css(\'display\', \'none\'); this.value = \'Escribe un comentario...\'; } no_foco(this); " style="overflow: auto; height: 15px; width: 400px; font-size: 11px; font-family: Arial, FreeSans;" id="textareaCC_' . $ivvd . '">Escribe un comentario...</textarea>
+          <textarea title="Escribe un comentario..." onfocus="if (this.value == \'Escribe un comentario...\') this.value = \'\'; foco(this); this.style.height = \'50px\'; $(\'#ocultar_input_' . $ivvd . '\').css(\'display\', \'block\');" onblur="if (this.value == \'\') { this.style.height = \'15px\'; $(\'#ocultar_input_' . $ivvd . '\').css(\'display\', \'none\'); this.value = \'Escribe un comentario...\'; } no_foco(this); " style="overflow: auto; height: 15px; width: 400px; font-size: 11px; font-family: Arial, FreeSans;" id="textareaCC_' . $ivvd . '">Escribe un comentario...</textarea>
           <p align="right" id="ocultar_input_' . $ivvd . '" style="display: none; padding: 0px; margin: 0px;">
             <label>
               <input class="login" value="Comentar" onclick="comentarCcmuro(\'' . $ivvd . '\'); return false;" type="button" />

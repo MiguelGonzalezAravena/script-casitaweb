@@ -20,7 +20,7 @@ if ($user_info['is_guest']) {
   die('0: Funcionalidad exclusiva de usuarios registrados.');
 }
 
-if($topic != 'topic') {
+if ($topic != 'topic') {
   // Eliminar favorito
   $id = isset($_GET['eliminar']) ? (int) $_GET['eliminar'] : 0;
 

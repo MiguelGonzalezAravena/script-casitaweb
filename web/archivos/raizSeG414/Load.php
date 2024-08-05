@@ -5,7 +5,7 @@ if (!defined('CasitaWeb!-PorRigo')) {
 }
 
 function reloadSettings() {
-  global $modSettings, $mysql_set_mode, $context, $db_prefix, $boarddir, $func, $txt, $db_character_set;
+  global $modSettings, $mysql_set_mode, $context, $db_prefix, $boarddir, $txt, $db_character_set;
 
   if (isset($mysql_set_mode) && $mysql_set_mode === true) {
     db_query("SET sql_mode='', AUTOCOMMIT=1", false, false);
@@ -55,83 +55,12 @@ function reloadSettings() {
 
   $space_chars = $utf8 ? (@version_compare(PHP_VERSION, '4.3.3') != -1 ? '\x{A0}\x{2000}-\x{200F}\x{201F}\x{202F}\x{3000}\x{FEFF}' : pack('C*', 0xC2, 0xA0, 0xE2, 0x80, 0x80) . '-' . pack('C*', 0xE2, 0x80, 0x8F, 0xE2, 0x80, 0x9F, 0xE2, 0x80, 0xAF, 0xE2, 0x80, 0x9F, 0xE3, 0x80, 0x80, 0xEF, 0xBB, 0xBF)) : '\xA0';
 
-  /*
-   * $func = array(
-   *   'entity_fix' => create_function('$string', '
-   *     $num = substr($string, 0, 1) === \'x\' ? hexdec(substr($string, 1)) : (int) $string;
-   *     return $num < 0x20 || $num > 0x10FFFF || ($num >= 0xD800 && $num <= 0xDFFF) ? \'\' : \'&#\' . $num . \';\';'),
-   *   'substr' => create_function('$string, $start, $length = null', '
-   *     global $func;
-   *     $ent_arr = preg_split(\'~(&#' . (empty($modSettings['disableEntityCheck']) ? '\d{1,7}' : '021') . ';|&quot;|&amp;|&lt;|&gt;|&nbsp;|.)~' . ($utf8 ? 'u' : '') . '\', ' . implode('$string', $ent_check) . ', -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-   *     return $length === null ? implode(\'\', array_slice($ent_arr, $start)) : implode(\'\', array_slice($ent_arr, $start, $length));'),
-   *   'strlen' => create_function('$string', '
-   *     global $func;
-   *     return strlen(preg_replace(\'~' . $ent_list . ($utf8 ? '|.~u' : '~') . '\', \'_\', ' . implode('$string', $ent_check) . '));'),
-   *   'strpos' => create_function('$haystack, $needle, $offset = 0', '
-   *     global $func;
-   *     $haystack_arr = preg_split(\'~(&#' . (empty($modSettings['disableEntityCheck']) ? '\d{1,7}' : '021') . ';|&quot;|&amp;|&lt;|&gt;|&nbsp;|.)~' . ($utf8 ? 'u' : '') . '\', ' . implode('$haystack', $ent_check) . ', -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-   *     $haystack_size = count($haystack_arr);
-   *     if (strlen($needle) === 1)
-   *     {
-   *       $result = array_search($needle, array_slice($haystack_arr, $offset));
-   *       return is_int($result) ? $result + $offset : false;
-   *     }
-   *     else
-   *     {
-   *       $needle_arr = preg_split(\'~(&#' . (empty($modSettings['disableEntityCheck']) ? '\d{1,7}' : '021') . ';|&quot;|&amp;|&lt;|&gt;|&nbsp;|.)~' . ($utf8 ? 'u' : '') . '\',  ' . implode('$needle', $ent_check) . ', -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-   *       $needle_size = count($needle_arr);
-   *
-   *       $result = array_search($needle_arr[0], array_slice($haystack_arr, $offset));
-   *       while (is_int($result))
-   *       {
-   *         $offset += $result;
-   *         if (array_slice($haystack_arr, $offset, $needle_size) === $needle_arr)
-   *           return $offset;
-   *         $result = array_search($needle_arr[0], array_slice($haystack_arr, ++$offset));
-   *       }
-   *       return false;
-   *     }'),
-   *   'htmlspecialchars' => create_function('$string, $quote_style = ENT_COMPAT, $charset = \'ISO-8859-1\'', '
-   *     global $func;
-   *     return ' . strtr($ent_check[0], array('&' => '&amp;'))  . 'htmlspecialchars($string, $quote_style, ' . ($utf8 ? '\'UTF-8\'' : '$charset') . ')' . $ent_check[1] . ';'),
-   *   'htmltrim' => create_function('$string', '
-   *     global $func;
-   *     return preg_replace(\'~^([ \t\n\r\x0B\x00' . $space_chars . ']|&nbsp;)+|([ \t\n\r\x0B\x00' . $space_chars . ']|&nbsp;)+$~' . ($utf8 ? 'u' : '') . '\', \'\', ' . implode('$string', $ent_check) . ');'),
-   *   'truncate' => create_function('$string, $length', (empty($modSettings['disableEntityCheck']) ? '
-   *     global $func;
-   *     $string = ' . implode('$string', $ent_check) . ';' : '') . '
-   *     preg_match(\'~^(' . $ent_list . '|.){\' . $func[\'strlen\'](substr($string, 0, $length)) . \'}~'.  ($utf8 ? 'u' : '') . '\', $string, $matches);
-   *     $string = $matches[0];
-   *     while (strlen($string) > $length)
-   *       $string = preg_replace(\'~(' . $ent_list . '|.)$~'.  ($utf8 ? 'u' : '') . '\', \'\', $string);
-   *     return $string;'),
-   *   'strtolower' => $utf8 ? (function_exists('mb_strtolower') ? create_function('$string', '
-   *     return mb_strtolower($string, \'UTF-8\');') : create_function('$string', '
-   *     global $sourcedir;
-   *     require_once($sourcedir . \'/Subs-Charset.php\');
-   *     return utf8_strtolower($string);')) : 'strtolower',
-   *   'strtoupper' => $utf8 ? (function_exists('mb_strtoupper') ? create_function('$string', '
-   *     return mb_strtoupper($string, \'UTF-8\');') : create_function('$string', '
-   *     global $sourcedir;
-   *     require_once($sourcedir . \'/Subs-Charset.php\');
-   *     return utf8_strtoupper($string);')) : 'strtoupper',
-   *   'ucfirst' => $utf8 ? create_function('$string', '
-   *     global $func;
-   *     return $func[\'strtoupper\']($func[\'substr\']($string, 0, 1)) . $func[\'substr\']($string, 1);') : 'ucfirst',
-   *   'ucwords' => $utf8 ? (function_exists('mb_convert_case') ? create_function('$string', '
-   *     return mb_convert_case($string, MB_CASE_TITLE, \'UTF-8\');') : create_function('$string', '
-   *     global $func;
-   *     $words = preg_split(\'~([\s\r\n\t]+)~\', $string, -1, PREG_SPLIT_DELIM_CAPTURE);
-   *     for ($i = 0, $n = count($words); $i < $n; $i += 2)
-   *       $words[$i] = $func[\'ucfirst\']($words[$i]);
-   *     return implode(\'\', $words);')) : 'ucwords',
-   * );
-   */
   $func = [];
 
   // Setting the timezone is a requirement for some functions in PHP >= 5.1.
-  if (isset($modSettings['default_timezone']) && function_exists('date_default_timezone_set'))
+  if (isset($modSettings['default_timezone']) && function_exists('date_default_timezone_set')) {
     date_default_timezone_set($modSettings['default_timezone']);
+  }
 
   // Check the load averages?
   if (!empty($modSettings['loadavg_enable'])) {
@@ -163,22 +92,24 @@ function loadUserSettings() {
   if (isset($modSettings['integrate_verify_user']) && function_exists($modSettings['integrate_verify_user'])) {
     $ID_MEMBER = (int) call_user_func($modSettings['integrate_verify_user']);
     $already_verified = $ID_MEMBER > 0;
-  }
-  else
+  } else {
     $ID_MEMBER = 0;
+  }
 
   if (empty($ID_MEMBER) && isset($_COOKIE[$cookiename])) {
     $_COOKIE[$cookiename] = stripslashes($_COOKIE[$cookiename]);
+
     if (preg_match('~^a:[34]:\{i:0;(i:\d{1,6}|s:[1-8]:"\d{1,8}");i:1;s:(0|40):"([a-fA-F0-9]{40})?";i:2;[id]:\d{1,14};(i:3;i:\d;)?\}$~', $_COOKIE[$cookiename]) == 1) {
       list($ID_MEMBER, $password) = @unserialize($_COOKIE[$cookiename]);
       $ID_MEMBER = !empty($ID_MEMBER) && strlen($password) > 0 ? (int) $ID_MEMBER : 0;
-    }
-    else
+    } else {
       $ID_MEMBER = 0;
-  } elseif (empty($ID_MEMBER) && isset($_SESSION['login_' . $cookiename]) && ($_SESSION['USER_AGENT'] == $_SERVER['HTTP_USER_AGENT'] || !empty($modSettings['disableCheckUA']))) {
+    }
+  } else if (empty($ID_MEMBER) && isset($_SESSION['login_' . $cookiename]) && ($_SESSION['USER_AGENT'] == $_SERVER['HTTP_USER_AGENT'] || !empty($modSettings['disableCheckUA']))) {
     list($ID_MEMBER, $password, $login_span) = @unserialize(stripslashes($_SESSION['login_' . $cookiename]));
     $ID_MEMBER = !empty($ID_MEMBER) && strlen($password) == 40 && $login_span > time() ? (int) $ID_MEMBER : 0;
   }
+
   if ($ID_MEMBER != 0) {
     if (empty($modSettings['cache_enable']) || $modSettings['cache_enable'] < 2 || ($user_settings = cache_get_data('user_settings-' . $ID_MEMBER, 60)) == null) {
       if (!empty($_GET['accioncw241'])) {
@@ -186,8 +117,12 @@ function loadUserSettings() {
       } else {
         $cw2 = 'vacio';
       }
+
       if ($cw2 == 'monitorUser') {
-        db_query("UPDATE {$db_prefix}members SET notificacionMonitor=0 WHERE ID_MEMBER='{$ID_MEMBER}'", __FILE__, __LINE__);
+        db_query("
+          UPDATE {$db_prefix}members
+          SET notificacionMonitor = 0
+          WHERE ID_MEMBER = $ID_MEMBER", __FILE__, __LINE__);
       }
 
       $request = db_query("
@@ -196,39 +131,52 @@ function loadUserSettings() {
         WHERE mem.ID_MEMBER = $ID_MEMBER
         LIMIT 1", __FILE__, __LINE__);
       $user_settings = mysqli_fetch_assoc($request);
+
       mysqli_free_result($request);
 
-      if (!empty($modSettings['cache_enable']) && $modSettings['cache_enable'] >= 2)
+      if (!empty($modSettings['cache_enable']) && $modSettings['cache_enable'] >= 2) {
         cache_put_data('user_settings-' . $ID_MEMBER, $user_settings, 60);
+      }
     }
+
     if (!empty($user_settings)) {
-      if (!empty($already_verified) && $already_verified === true)
+      if (!empty($already_verified) && $already_verified === true) {
         $check = true;
-      elseif (strlen($password) == 40)
+      } else if (strlen($password) == 40) {
         $check = sha1($user_settings['passwd'] . $user_settings['passwordSalt']) == $password;
-      else
+      } else {
         $check = false;
+      }
+
       $ID_MEMBER = $check && ($user_settings['is_activated'] == 1 || $user_settings['is_activated'] == 11) ? $user_settings['ID_MEMBER'] : 0;
-    }
-    else
+    } else {
       $ID_MEMBER = 0;
+    }
   }
+
   if ($ID_MEMBER != 0) {
-    if (empty($_SESSION['ID_MSG_LAST_VISIT']))
+    if (empty($_SESSION['ID_MSG_LAST_VISIT'])) {
       $_SESSION['ID_MSG_LAST_VISIT'] = $user_settings['ID_MSG_LAST_VISIT'];
+    }
+
     $username = $user_settings['memberName'];
-    if (empty($user_settings['additionalGroups']))
+
+    if (empty($user_settings['additionalGroups'])) {
       $user_info = array('groups' => array($user_settings['ID_GROUP'], $user_settings['ID_POST_GROUP']));
-    else
+    } else {
       $user_info = array('groups' => array_merge(array($user_settings['ID_GROUP'], $user_settings['ID_POST_GROUP']),
         explode(',', $user_settings['additionalGroups'])));
+    }
   } else {
     $username = '';
     $user_info = array('groups' => array(-1));
     $user_settings = array();
-    if (isset($_COOKIE[$cookiename]))
+
+    if (isset($_COOKIE[$cookiename])) {
       $_COOKIE[$cookiename] = '';
+    }
   }
+
   $user_info += array(
     'username' => $username,
     'name' => isset($user_settings['realName']) ? $user_settings['realName'] : '',
@@ -255,20 +203,23 @@ function loadUserSettings() {
     'money' => isset($user_settings['posts']) ? $user_settings['posts'] : '',
     'permissions' => array()
   );
+
   $user_info['groups'] = array_unique($user_info['groups']);
 
   if (!empty($modSettings['userLanguage']) && !empty($_REQUEST['language'])) {
     $user_info['language'] = strtr($_REQUEST['language'], './\:', '____');
     $_SESSION['language'] = $user_info['language'];
-  }
-  elseif (!empty($modSettings['userLanguage']) && !empty($_SESSION['language']))
+  } else if (!empty($modSettings['userLanguage']) && !empty($_SESSION['language'])) {
     $user_info['language'] = strtr($_SESSION['language'], './\:', '____');
-  if ($user_info['is_guest'])
+  }
+
+  if ($user_info['is_guest']) {
     $user_info['query_see_board'] = 'FIND_IN_SET(-1, b.memberGroups)';
-  elseif ($user_info['is_admin'])
+  } else if ($user_info['is_admin']) {
     $user_info['query_see_board'] = '1';
-  else
+  } else {
     $user_info['query_see_board'] = '(FIND_IN_SET(' . implode(', b.memberGroups) OR FIND_IN_SET(', $user_info['groups']) . ', b.memberGroups))';
+  }
 }
 
 function loadBoard() {}
@@ -278,12 +229,15 @@ function loadPermissions() {
 
   $user_info['permissions'] = array();
 
-  if ($user_info['is_admin'])
+  if ($user_info['is_admin']) {
     return;
+  }
 
   if (!empty($modSettings['cache_enable'])) {
     $cache_groups = $user_info['groups'];
+
     asort($cache_groups);
+
     $cache_groups = implode(',', $cache_groups);
 
     if ($modSettings['cache_enable'] >= 2 && !empty($board) && ($temp = cache_get_data('permissions:' . $cache_groups . ':' . $board, 240)) != null) {
@@ -291,9 +245,9 @@ function loadPermissions() {
       banPermissions();
 
       return;
-    }
-    elseif (($temp = cache_get_data('permissions:' . $cache_groups, 240)) != null)
+    } else if (($temp = cache_get_data('permissions:' . $cache_groups, 240)) != null) {
       list($user_info['permissions'], $removals) = $temp;
+    }
   }
 
   if (empty($user_info['permissions'])) {
@@ -302,42 +256,52 @@ function loadPermissions() {
       SELECT permission, addDeny
       FROM {$db_prefix}permissions
       WHERE ID_GROUP IN (" . implode(', ', $user_info['groups']) . ')', __FILE__, __LINE__);
+
     $removals = array();
+
     while ($row = mysqli_fetch_assoc($request)) {
-      if (empty($row['addDeny']))
+      if (empty($row['addDeny'])) {
         $removals[] = $row['permission'];
-      else
+      } else {
         $user_info['permissions'][] = $row['permission'];
+      }
     }
+
     mysqli_free_result($request);
 
-    if (isset($cache_groups))
+    if (isset($cache_groups)) {
       cache_put_data('permissions:' . $cache_groups, array($user_info['permissions'], $removals), 240);
+    }
   }
 
   // Get the board permissions.
   if (!empty($board)) {
     // Make sure the board (if any) has been loaded by loadBoard().
-    if (!isset($board_info['use_local_permissions']))
+    if (!isset($board_info['use_local_permissions'])) {
       fatal_lang_error('smf232');
+    }
 
     $request = db_query("
       SELECT permission, addDeny
       FROM {$db_prefix}board_permissions
       WHERE ID_GROUP IN (" . implode(', ', $user_info['groups']) . ')
         AND ID_BOARD = ' . ($board_info['use_local_permissions'] ? $board : '0'), __FILE__, __LINE__);
+
     while ($row = mysqli_fetch_assoc($request)) {
-      if (empty($row['addDeny']))
+      if (empty($row['addDeny'])) {
         $removals[] = $row['permission'];
-      else
+      } else {
         $user_info['permissions'][] = $row['permission'];
+      }
     }
+
     mysqli_free_result($request);
   }
 
   // Remove all the permissions they shouldn't have ;).
-  if (!empty($modSettings['permission_enable_deny']))
+  if (!empty($modSettings['permission_enable_deny'])) {
     $user_info['permissions'] = array_diff($user_info['permissions'], $removals);
+  }
 
   // Remove some board permissions if the board is read-only or reply-only.
   if (empty($modSettings['permission_enable_by_board']) && !empty($board) && $board_info['permission_mode'] != 'normal' && !allowedTo('moderate_board')) {
@@ -349,24 +313,26 @@ function loadPermissions() {
         'post_reply_any',
       ),
     );
+
     $user_info['permissions'] = array_diff($user_info['permissions'], $permission_mode[$board_info['permission_mode']]);
   }
 
-  if (isset($cache_groups) && !empty($board) && $modSettings['cache_enable'] >= 2)
+  if (isset($cache_groups) && !empty($board) && $modSettings['cache_enable'] >= 2) {
     cache_put_data('permissions:' . $cache_groups . ':' . $board, array($user_info['permissions'], null), 240);
+  }
 
   // Banned?  Watch, don't touch..
   banPermissions();
 }
 
 // Loads an array of users' data by ID or memberName.
-function loadMemberData($users, $is_name = false, $set = 'normal')
-{
+function loadMemberData($users, $is_name = false, $set = 'normal') {
   global $user_profile, $db_prefix, $modSettings, $board_info;
 
   // Can't just look for no users :P.
-  if (empty($users))
+  if (empty($users)) {
     return false;
+  }
 
   // Make sure it's an array.
   $users = !is_array($users) ? array($users) : array_unique($users);
@@ -374,13 +340,17 @@ function loadMemberData($users, $is_name = false, $set = 'normal')
 
   if (!$is_name && !empty($modSettings['cache_enable']) && $modSettings['cache_enable'] == 3) {
     $users = array_values($users);
+
     for ($i = 0, $n = count($users); $i < $n; $i++) {
       $data = cache_get_data('member_data-' . $set . '-' . $users[$i], 240);
-      if ($data == null)
+
+      if ($data == null) {
         continue;
+      }
 
       $loaded_ids[] = $data['ID_MEMBER'];
       $user_profile[$data['ID_MEMBER']] = $data;
+
       unset($users[$i]);
     }
   }
@@ -400,7 +370,7 @@ function loadMemberData($users, $is_name = false, $set = 'normal')
       LEFT JOIN {$db_prefix}log_online AS lo ON (lo.ID_MEMBER = mem.ID_MEMBER)
       LEFT JOIN {$db_prefix}membergroups AS pg ON (pg.ID_GROUP = mem.ID_POST_GROUP)
       LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = mem.ID_GROUP)";
-  } elseif ($set == 'profile') {
+  } else if ($set == 'profile') {
     $select_columns = '
       IFNULL(lo.logTime, 0) AS isOnline,
       mem.signature, mem.personalText, mem.location, mem.gender, mem.avatar, mem.ID_MEMBER, mem.memberName,
@@ -415,14 +385,14 @@ function loadMemberData($users, $is_name = false, $set = 'normal')
       LEFT JOIN {$db_prefix}log_online AS lo ON (lo.ID_MEMBER = mem.ID_MEMBER)
       LEFT JOIN {$db_prefix}membergroups AS pg ON (pg.ID_GROUP = mem.ID_POST_GROUP)
       LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = mem.ID_GROUP)";
-  } elseif ($set == 'minimal') {
+  } else if ($set == 'minimal') {
     $select_columns = '
       mem.ID_MEMBER, mem.memberName, mem.realName, mem.emailAddress, mem.dateRegistered,
       mem.topics, mem.lastLogin, mem.memberIP, mem.memberIP2, mem.ID_GROUP';
     $select_tables = '';
-  }
-  else
+  } else {
     trigger_error("loadMemberData(): Invalid member data set '" . $set . "'", E_USER_WARNING);
+  }
 
   if (!empty($users)) {
     // Load the member's data.
@@ -430,13 +400,16 @@ function loadMemberData($users, $is_name = false, $set = 'normal')
       SELECT$select_columns
       FROM {$db_prefix}members AS mem$select_tables
       WHERE mem." . ($is_name ? 'memberName' : 'ID_MEMBER') . (count($users) == 1 ? " = '" . current($users) . "'" : " IN ('" . implode("', '", $users) . "')"), __FILE__, __LINE__);
+
     $new_loaded_ids = array();
+
     while ($row = mysqli_fetch_assoc($request)) {
       $new_loaded_ids[] = $row['ID_MEMBER'];
       $loaded_ids[] = $row['ID_MEMBER'];
       $row['options'] = array();
       $user_profile[$row['ID_MEMBER']] = $row;
     }
+
     mysqli_free_result($request);
   }
 
@@ -488,13 +461,17 @@ function loadMemberData($users, $is_name = false, $set = 'normal')
 function loadMemberContext($user) {
   global $memberContext, $user_profile, $txt, $scripturl, $user_info;
   global $context, $modSettings, $tranfer1, $ID_MEMBER, $board_info, $settings;
-  global $db_prefix, $func, $boardurl;
+  global $db_prefix, $boardurl;
   static $dataLoaded = array();
 
-  if (isset($dataLoaded[$user]))
+  if (isset($dataLoaded[$user])) {
     return true;
-  if ($user == 0)
+  }
+
+  if ($user == 0) {
     return false;
+  }
+
   if (!isset($user_profile[$user])) {
     trigger_error('' . $user . '', E_USER_WARNING);
     return false;
@@ -534,7 +511,7 @@ function loadMemberContext($user) {
     'is_guest' => $profile['ID_MEMBER'] == 0,
     'title' => !empty($modSettings['titlesEnable']) ? $profile['usertitle'] : '',
     'href' => $boardurl . '/perfi/' . $profile['realName'],
-    'link' => '<a href="/perfi/' . $profile['realName'] . '" title="' . $txt[92] . ' ' . $profile['realName'] . '">' . $profile['realName'] . '</a>',
+    'link' => '<a href="' . $boardurl . '/perfi/' . $profile['realName'] . '" title="' . $txt[92] . ' ' . $profile['realName'] . '">' . $profile['realName'] . '</a>',
     'email' => &$profile['emailAddress'],
     'hide_email' => $profile['emailAddress'] == '' || (!empty($modSettings['guest_hideContacts']) && $user_info['is_guest']) || (!empty($profile['hideEmail']) && !empty($modSettings['allow_hideEmail']) && !allowedTo('moderate_forum') && $ID_MEMBER != $profile['ID_MEMBER']),
     'email_public' => (empty($profile['hideEmail']) || empty($modSettings['allow_hideEmail'])) && (empty($modSettings['guest_hideContacts']) || !$user_info['is_guest']),
@@ -570,8 +547,8 @@ function loadMemberContext($user) {
     'online' => array(
       'is_online' => $profile['is_online'],
       'text' => &$txt[$profile['is_online'] ? 'online2' : 'online3'],
-      'href' => '/mensajes/a/' . $profile['realName'],
-      'link' => '<a href="/mensajes/a/' . $profile['realName'] . '">' . $txt[$profile['is_online'] ? 'online2' : 'online3'] . '</a>',
+      'href' => $boardurl . '/mensajes/a/' . $profile['realName'],
+      'link' => '<a href="' . $boardurl . '/mensajes/a/' . $profile['realName'] . '">' . $txt[$profile['is_online'] ? 'online2' : 'online3'] . '</a>',
     ),
     'is_activated' => isset($profile['is_activated']) ? $profile['is_activated'] : 1,
     'is_banned' => isset($profile['is_activated']) ? $profile['is_activated'] >= 10 : 0,
@@ -697,19 +674,21 @@ function loadTheme($ID_THEME = 0, $initialize = true) {
     loadTemplate('Wireless');
     loadLanguage('Wireless');
     loadLanguage('index');
-  } elseif (!empty($_GET['accioncw241']) && in_array($_GET['accioncw241'], $simpleActions)) {
+  } else if (!empty($_GET['accioncw241']) && in_array($_GET['accioncw241'], $simpleActions)) {
     loadLanguage('index');
     $context['template_layers'] = array();
   } else {
-    if (isset($settings['theme_templates']))
+    if (isset($settings['theme_templates'])) {
       $templates = explode(',', $settings['theme_templates']);
-    else
+    } else {
       $templates = array('index');
+    }
 
-    if (isset($settings['theme_layers']))
+    if (isset($settings['theme_layers'])) {
       $context['template_layers'] = explode(',', $settings['theme_layers']);
-    else
+    } else {
       $context['template_layers'] = array('main');
+    }
 
     foreach ($templates as $template) {
       loadTemplate($template);
@@ -828,16 +807,19 @@ function loadTemplate($template_name, $fatal = true) {
 function loadSubTemplate($sub_template_name, $fatal = false) {
   global $context, $settings, $options, $txt, $db_show_debug;
 
-  if ($db_show_debug === true)
+  if ($db_show_debug === true) {
     $context['debug']['sub_templates'][] = $sub_template_name;
+  }
+
   $theme_function = 'template_' . $sub_template_name;
 
-  if (function_exists($theme_function))
+  if (function_exists($theme_function)) {
     $theme_function();
-  elseif ($fatal === false)
+  } else if ($fatal === false) {
     die();
-  elseif ($fatal !== 'ignore')
+  } else if ($fatal !== 'ignore') {
     die();
+  }
 
   if (allowedTo('admin_forum') && isset($_REQUEST['debug']) && !in_array($sub_template_name, array('init', 'main_below')) && ob_get_length() > 0 && !isset($_REQUEST['xml'])) {
   }
@@ -972,8 +954,9 @@ function loadSession() {
   // If it's already been started... probably best to skip this.
   if ((@ini_get('session.auto_start') == 1 && !empty($modSettings['databaseSession_enable'])) || session_id() == '') {
     // Attempt to end the already-started session.
-    if (@ini_get('session.auto_start') == 1)
+    if (@ini_get('session.auto_start') == 1) {
       @session_write_close();
+    }
 
     // This is here to stop people from using bad junky PHPSESSIDs.
     if (isset($_REQUEST[session_name()]) && preg_match('~^[A-Za-z0-9]{16,32}$~', $_REQUEST[session_name()]) == 0 && !isset($_COOKIE[session_name()])) {
@@ -983,17 +966,19 @@ function loadSession() {
     }
 
     // Use database sessions? (they don't work in 4.1.x!)
-    if (!empty($modSettings['databaseSession_enable']) && @version_compare(PHP_VERSION, '4.2.0') != -1)
+    if (!empty($modSettings['databaseSession_enable']) && @version_compare(PHP_VERSION, '4.2.0') != -1) {
       session_set_save_handler('sessionOpen', 'sessionClose', 'sessionRead', 'sessionWrite', 'sessionDestroy', 'sessionGC');
-    elseif (@ini_get('session.gc_maxlifetime') <= 1440 && !empty($modSettings['databaseSession_lifetime']))
+    } else if (@ini_get('session.gc_maxlifetime') <= 1440 && !empty($modSettings['databaseSession_lifetime'])) {
       @ini_set('session.gc_maxlifetime', max($modSettings['databaseSession_lifetime'], 60));
+    }
 
     // Use cache setting sessions?
     if (empty($modSettings['databaseSession_enable']) && !empty($modSettings['cache_enable']) && php_sapi_name() != 'cli') {
-      if (function_exists('mmcache_set_session_handlers'))
+      if (function_exists('mmcache_set_session_handlers')) {
         mmcache_set_session_handlers();
-      elseif (function_exists('eaccelerator_set_session_handlers'))
+      } else if (function_exists('eaccelerator_set_session_handlers')) {
         eaccelerator_set_session_handlers();
+      }
     }
 
     // TO-DO: ¿Cuándo volver a activar?
@@ -1111,44 +1096,53 @@ function cache_put_data($key, $value, $ttl = 120) {
     }
 
     fread($memcached, 128);
-  } elseif (function_exists('eaccelerator_put')) {
-    if (rand(0, 10) == 1)
+  } else if (function_exists('eaccelerator_put')) {
+    if (rand(0, 10) == 1) {
       eaccelerator_gc();
+    }
 
-    if ($value === null)
+    if ($value === null) {
       @eaccelerator_rm($key);
-    else
+    } else {
       eaccelerator_put($key, $value, $ttl);
+    }
   }
   // Turck MMCache?
-  elseif (function_exists('mmcache_put')) {
-    if (rand(0, 10) == 1)
+  else if (function_exists('mmcache_put')) {
+    if (rand(0, 10) == 1) {
       mmcache_gc();
+    }
 
-    if ($value === null)
+    if ($value === null) {
       @mmcache_rm($key);
-    else
+    } else {
       mmcache_put($key, $value, $ttl);
-  } elseif (function_exists('apc_store')) {
-    if ($value === null)
+    }
+  } else if (function_exists('apc_store')) {
+    if ($value === null) {
       apc_delete($key . 'smf');
-    else
+    } else {
       apc_store($key . 'smf', $value, $ttl);
-  }
-  elseif (function_exists('output_cache_put'))
+    }
+  } else if (function_exists('output_cache_put')) {
     output_cache_put($key, $value);
-  if (isset($db_show_debug) && $db_show_debug === true)
+  }
+
+  if (isset($db_show_debug) && $db_show_debug === true) {
     $cache_hits[$cache_count]['t'] = array_sum(explode(' ', microtime())) - array_sum(explode(' ', $st));
+  }
 }
 
 function cache_get_data($key, $ttl = 120) {
   global $boardurl, $sourcedir, $modSettings, $memcached;
   global $cache_hits, $cache_count, $db_show_debug;
 
-  if (empty($modSettings['cache_enable']) && !empty($modSettings))
+  if (empty($modSettings['cache_enable']) && !empty($modSettings)) {
     return;
+  }
 
   $cache_count = isset($cache_count) ? $cache_count + 1 : 1;
+
   if (isset($db_show_debug) && $db_show_debug === true) {
     $cache_hits[$cache_count] = array('k' => $key, 'd' => 'get');
     $st = microtime();
@@ -1184,28 +1178,30 @@ function cache_get_data($key, $ttl = 120) {
     fread($memcached, 5);
   }
   // Again, eAccelerator.
-  elseif (function_exists('eaccelerator_get'))
+  else if (function_exists('eaccelerator_get')) {
     $value = eaccelerator_get($key);
   // The older, but ever-stable, Turck MMCache...
-  elseif (function_exists('mmcache_get'))
+  } else if (function_exists('mmcache_get')) {
     $value = mmcache_get($key);
   // This is the free APC from PECL.
-  elseif (function_exists('apc_fetch'))
+  } else if (function_exists('apc_fetch')) {
     $value = apc_fetch($key . 'smf');
   // Zend's pricey stuff.
-  elseif (function_exists('output_cache_get'))
+  } else if (function_exists('output_cache_get')) {
     $value = output_cache_get($key, $ttl);
+  }
 
   if (isset($db_show_debug) && $db_show_debug === true) {
     $cache_hits[$cache_count]['t'] = array_sum(explode(' ', microtime())) - array_sum(explode(' ', $st));
     $cache_hits[$cache_count]['s'] = isset($value) ? strlen($value) : 0;
   }
 
-  if (empty($value))
+  if (empty($value)) {
     return null;
   // If it's broke, it's broke... so give up on it.
-  else
+  } else {
     return @unserialize($value);
+  }
 }
 
 function get_memcached_server($level = 3) {
@@ -1214,13 +1210,16 @@ function get_memcached_server($level = 3) {
   $servers = explode(',', $modSettings['cache_memcached']);
   $server = explode(':', trim($servers[array_rand($servers)]));
   $level = min(count($servers), $level);
-  if (empty($db_persist))
+
+  if (empty($db_persist)) {
     $memcached = @fsockopen($server[0], empty($server[1]) ? 11211 : $server[1], $err, $err, 0.15);
-  else
+  } else {
     $memcached = @pfsockopen($server[0], empty($server[1]) ? 11211 : $server[1], $err, $err, 0.15);
-  if (!$memcached && $level > 0)
+  }
+
+  if (!$memcached && $level > 0) {
     get_memcached_server($level - 1);
-  elseif ($memcached) {
+  } else if ($memcached) {
     @socket_set_timeout($memcached, 1);
     @set_file_buffer($memcached, 0);
   }

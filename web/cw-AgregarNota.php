@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-global $context, $func, $modSettings, $db_prefix, $user_settings, $ID_MEMBER, $boardurl;
+global $context, $modSettings, $db_prefix, $user_settings, $ID_MEMBER, $boardurl;
 
 $titulo = trim($_POST['titulo']);
 

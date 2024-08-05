@@ -148,7 +148,7 @@ function moticonup() {
 			switch(typeof f) {
 				case 'number':
         case 'string':
-          if(/^([+-]=)?\d+(\.\d+)?(px|%)?$/.test(f)) {
+          if (/^([+-]=)?\d+(\.\d+)?(px|%)?$/.test(f)) {
 					  f = p(f);
 					  break
 				  }
@@ -163,7 +163,7 @@ function moticonup() {
 			d.each(b.axis.split(''), function(a, i) {
 				var e = i == 'x' ? 'Left' : 'Top', h = e.toLowerCase(), c = 'scroll' + e, l = q[c], m = k.max(q, i);
 
-				if(s) {
+				if (s) {
 					g[c] = s[h] + (u ? 0 : l - r.offset()[h]);
 
 					if (b.margin) {
@@ -760,7 +760,7 @@ function add_comment(id, nro) {
         $('#return_agregar_comentario').fadeIn('fast');
         $('#editorCW').val('');
 
-        if($('#no_comentarios')) {
+        if ($('#no_comentarios')) {
           $('#no_comentarios').fadeOut('fast');
         }
       }
@@ -1400,7 +1400,7 @@ function loginSeguridad() {
     data: 'nick=' + encodeURIComponent($(el['nick']).val()) + '&pass=' + encodeURIComponent($(el['pass']).val()),
     success: function(h) {
       // Datos incorrectos
-      if(h.charAt(0) == 0) {
+      if (h.charAt(0) == 0) {
         $(el['cargando']).css('display', 'none');
         $(el['error']).html(h.substring(3)).fadeIn('fast');
         $(el['nick']).focus();

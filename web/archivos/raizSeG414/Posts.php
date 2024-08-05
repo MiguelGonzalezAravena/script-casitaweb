@@ -13,7 +13,7 @@ function Posts() {
 
   if (empty($context['id-post'])) {
     post_error();
-  } elseif ($context['eliminado']) {
+  } else if ($context['eliminado']) {
     post_error($context['titulo']);
   }
 

@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-global $db_prefix, $scripturl, $func, $context, $modSettings, $user_settings, $user_info, $tranfer1;
+global $db_prefix, $scripturl, $context, $modSettings, $user_settings, $user_info, $tranfer1;
 
 $databasetit = isset($_POST['subject']) ? seguridad($_POST['subject']) : '';
 $databasepost = isset($_POST['message']) ? seguridad($_POST['message']) : '';

@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-global $context, $ID_MEMBER, $db_prefix, $user_info, $func;
+global $context, $ID_MEMBER, $db_prefix, $user_info;
 
 $ID_TOPIC2 = isset($_POST['id']) ? seguridad($_POST['id']) : '';
 $tipo = isset($_POST['tipo']) ? seguridad($_POST['tipo']) : '';

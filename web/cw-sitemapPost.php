@@ -1,7 +1,4 @@
 <?php
-require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-global $context, $db_prefix, $modSettings, $user_info;
-
 header('Content-type: text/xml');
 
 function date_iso8601($timestamp = '') {
@@ -35,7 +32,8 @@ echo '
     <priority>1.0</priority>
   </url>';
 
-// TO-DO: ¿Agregar require_once aquí?
+require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
+global $context, $db_prefix, $modSettings, $user_info;
 
 $request = db_query("
   SELECT m.ID_TOPIC, m.posterTime , b.description, m.subject
@@ -48,7 +46,7 @@ while ($row = mysqli_fetch_assoc($request)) {
   $context['sitemap']['topic'][] = array(
     'id' => $row['ID_TOPIC'],
     'description' => $row['description'],
-    'subject' => html_entity_decode($row['subject']),
+    'subject' => $row['subject'],
     'time' => date_iso8601($row['posterTime']),
   );
 }
@@ -66,6 +64,6 @@ foreach ($context['sitemap']['topic'] as $topic) {
 }
 
 echo '
-</urlset>';
+  </urlset>';
 
 ?>

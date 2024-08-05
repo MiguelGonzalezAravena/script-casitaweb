@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-global $tranfer1, $context, $func, $db_prefix, $user_info, $user_settings, $ID_MEMBER;
+global $tranfer1, $context, $db_prefix, $user_info, $user_settings, $ID_MEMBER;
 
 ignore_user_abort(true);
 @set_time_limit(300);

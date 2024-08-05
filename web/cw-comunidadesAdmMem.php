@@ -56,7 +56,7 @@ if ($context['permisoCom'] == 1 || $context['permisoCom'] == 3) {
       SET rango = $rangoCambiar
       WHERE id = $cdavvbv
       LIMIT 1", __FILE__, __LINE__);
-  } elseif ($context['permisoCom'] == 1 && ($rangoCambiar == 0 || $rangoCambiar == 1 || $rangoCambiar == 2 || $rangoCambiar == 3 || $rangoCambiar == 5)) {
+  } else if ($context['permisoCom'] == 1 && ($rangoCambiar == 0 || $rangoCambiar == 1 || $rangoCambiar == 2 || $rangoCambiar == 3 || $rangoCambiar == 5)) {
     db_query("
       UPDATE {$db_prefix}comunidades_miembros
       SET rango = $rangoCambiar

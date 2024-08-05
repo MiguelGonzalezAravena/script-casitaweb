@@ -136,10 +136,10 @@ function checkSession($type = 'post', $from_action = '', $is_fatal = true) {
   if ($type == 'post' && (!isset($_POST['sc']) || $_POST['sc'] != $sc))
     $error = 'smf304';
   // How about $_GET['sesc']?
-  elseif ($type == 'get' && (!isset($_GET['sesc']) || $_GET['sesc'] != $sc))
+  else if ($type == 'get' && (!isset($_GET['sesc']) || $_GET['sesc'] != $sc))
     $error = 'smf305';
   // Or can it be in either?
-  elseif ($type == 'request' && (!isset($_GET['sesc']) || $_GET['sesc'] != $sc) && (!isset($_POST['sc']) || $_POST['sc'] != $sc))
+  else if ($type == 'request' && (!isset($_GET['sesc']) || $_GET['sesc'] != $sc) && (!isset($_POST['sc']) || $_POST['sc'] != $sc))
     $error = 'smf305';
 
   // Verify that they aren't changing user agents on us - that could be bad.
@@ -188,14 +188,18 @@ function checkSession($type = 'post', $from_action = '', $is_fatal = true) {
     $log_error = true;
   }
 
-  if (strtolower($_SERVER['HTTP_USER_AGENT']) == 'hacker')
+  if (strtolower($_SERVER['HTTP_USER_AGENT']) == 'hacker') {
     fatal_error('No podes estar aca.', false);
-  if (!isset($error))
+  }
+
+  if (!isset($error)) {
     return '';
-  elseif ($is_fatal)
+  } else if ($is_fatal) {
     fatal_lang_error($error, isset($log_error));
-  else
+  } else {
     return $error;
+  }
+
   trigger_error(base64_decode('d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv'), E_USER_ERROR);
 }
 
@@ -211,67 +215,73 @@ function checkSubmitOnce($action, $is_fatal = true) {
       $context['form_sequence_number'] = mt_rand(1, 16000000);
   }
   // Check whether the submitted number can be found in the session.
-  elseif ($action == 'check') {
-    if (!isset($_REQUEST['seqnum']))
+  else if ($action == 'check') {
+    if (!isset($_REQUEST['seqnum'])) {
       return true;
-    elseif (!in_array($_REQUEST['seqnum'], $_SESSION['forms'])) {
+    } else if (!in_array($_REQUEST['seqnum'], $_SESSION['forms'])) {
       $_SESSION['forms'][] = (int) $_REQUEST['seqnum'];
       return true;
-    }
-    elseif ($is_fatal)
+    } else if ($is_fatal) {
       fatal_lang_error('error_form_already_submitted', false);
-    else
+    } else {
       return false;
+    }
   }
   // Don't check, just free the stack number.
-  elseif ($action == 'free' && isset($_REQUEST['seqnum']) && in_array($_REQUEST['seqnum'], $_SESSION['forms']))
+  else if ($action == 'free' && isset($_REQUEST['seqnum']) && in_array($_REQUEST['seqnum'], $_SESSION['forms'])) {
     $_SESSION['forms'] = array_diff($_SESSION['forms'], array($_REQUEST['seqnum']));
-  elseif ($action != 'free')
+  } else if ($action != 'free') {
     trigger_error("checkSubmitOnce(): Invalid action '" . $action . "'", E_USER_WARNING);
+  }
 }
 
 // Check the user's permissions.
-function allowedTo($permission, $boards = null)
-{
+function allowedTo($permission, $boards = null) {
   global $user_info, $db_prefix, $modSettings, $ID_MEMBER;
 
-  if (empty($permission))
+  if (empty($permission)) {
     return true;
+  }
 
   // You're never allowed to do something if your data hasn't been loaded yet!
-  if (empty($user_info))
+  if (empty($user_info)) {
     return false;
+  }
 
   // Administrators are supermen :P.
-  if ($user_info['is_admin'])
+  if ($user_info['is_admin']) {
     return true;
+  }
 
   // Are we checking the _current_ board, or some other boards?
   if ($boards === null) {
     // Check if they can do it.
-    if (!is_array($permission) && in_array($permission, $user_info['permissions']))
+    if (!is_array($permission) && in_array($permission, $user_info['permissions'])) {
       return true;
     // Search for any of a list of permissions.
-    elseif (is_array($permission) && count(array_intersect($permission, $user_info['permissions'])) != 0)
+    } else if (is_array($permission) && count(array_intersect($permission, $user_info['permissions'])) != 0) {
       return true;
     // You aren't allowed, by default.
-    else
+    } else {
       return false;
+    }
   }
-  elseif (!is_array($boards))
+  else if (!is_array($boards)) {
     $boards = array($boards);
+  }
 
   // Determine which permission mode is still acceptable.
   if (empty($modSettings['permission_enable_by_board']) && !in_array('moderate_board', $user_info['permissions'])) {
     // Make an array of the permission.
     $temp = is_array($permission) ? $permission : array($permission);
 
-    if (in_array('post_reply_own', $temp) || in_array('post_reply_any', $temp))
+    if (in_array('post_reply_own', $temp) || in_array('post_reply_any', $temp)) {
       $max_allowable_mode = 3;
-    elseif (in_array('post_new', $temp))
+    } else if (in_array('post_new', $temp)) { 
       $max_allowable_mode = 2;
-    elseif (in_array('poll_post', $temp))
+    } else if (in_array('poll_post', $temp)) {
       $max_allowable_mode = 0;
+    }
   }
 
   $request = db_query("

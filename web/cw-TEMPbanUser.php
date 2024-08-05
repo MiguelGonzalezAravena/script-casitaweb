@@ -59,7 +59,7 @@ if (!$name) {
         if ($mod <> $ID_MEMBER) {
           $claveeeennJS3 = 'this.form.clave.value';
           $claveeeennJS1 = 'clave,';
-          $claveeeennJS2 = 'if(clave == \'\'){ $(\'#MostrarError2\').show();  return false;} else $(\'#MostrarError2\').hide();';
+          $claveeeennJS2 = 'if (clave == \'\'){ $(\'#MostrarError2\').show();  return false;} else $(\'#MostrarError2\').hide();';
           $claveeeenn = '<tr><th align="right" class="size11">Clave:</th><td align="left"><input type="text" onfocus="foco(this);" onblur="no_foco(this);" maxlength="6" style="width:55px;" name="clave" value="" size="50" /><div id="MostrarError2" class="capsprotBAJO">Falta la clave.</div></td></tr>';
         } else {
           $claveeeennJS3 = '';
@@ -76,7 +76,7 @@ if (!$name) {
 
       echo '
         <script type="text/javascript">
-          function chekkk('.$claveeeennJS1.'reason) { '.$claveeeennJS2.' if(reason == \'\'){ $(\'#MostrarError1\').show();  return false;} else $(\'#MostrarError1\').hide(); }
+          function chekkk('.$claveeeennJS1.'reason) { '.$claveeeennJS2.' if (reason == \'\'){ $(\'#MostrarError1\').show();  return false;} else $(\'#MostrarError1\').hide(); }
         </script>
         <form action="' . $boardurl . '/web/cw-BanEditAgre-seg-4454.php" method="post" accept-charset="' . $context['character_set'] . '">
           <table border="0" align="center" cellspacing="1" cellpadding="4" class="citacuerpo" width="400px">';

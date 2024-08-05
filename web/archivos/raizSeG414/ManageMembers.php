@@ -54,9 +54,8 @@ function ViewMembers()
 }
 
 // View all members.
-function ViewMemberlist()
-{
-  global $txt, $scripturl, $db_prefix, $context, $modSettings, $sourcedir;
+function ViewMemberlist() {
+  global $txt, $scripturl, $db_prefix, $context, $modSettings, $sourcedir, $boardurl;
 
   $context['sub_action'] = $_REQUEST['sa'];
 
@@ -76,19 +75,22 @@ function ViewMemberlist()
       FROM {$db_prefix}membergroups
       WHERE ID_GROUP != 3
       ORDER BY minPosts, IF(ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
+
     while ($row = mysqli_fetch_assoc($request)) {
-      if ($row['minPosts'] == -1)
+      if ($row['minPosts'] == -1) {
         $context['membergroups'][] = array(
           'id' => $row['ID_GROUP'],
           'name' => $row['groupName'],
           'can_be_additional' => true
         );
-      else
+      } else {
         $context['postgroups'][] = array(
           'id' => $row['ID_GROUP'],
           'name' => $row['groupName']
         );
+      }
     }
+
     mysqli_free_result($request);
 
     $params = array(
@@ -152,6 +154,7 @@ function ViewMemberlist()
         'type' => 'string'
       )
     );
+
     $range_trans = array(
       '--' => '<',
       '-' => '<=',
@@ -164,19 +167,22 @@ function ViewMemberlist()
 
     // Loop through every field of the form.
     $query_parts = array();
+
     foreach ($params as $param_name => $param_info) {
       // Not filled in?
-      if (!isset($_POST[$param_name]) || $_POST[$param_name] == '')
+      if (!isset($_POST[$param_name]) || $_POST[$param_name] == '') {
         continue;
+      }
 
       // Make sure numeric values are really numeric.
-      if (in_array($param_info['type'], array('int', 'age')))
+      if (in_array($param_info['type'], array('int', 'age'))) {
         $_POST[$param_name] = (int) $_POST[$param_name];
       // Date values have to match the specified format.
-      elseif ($param_info['type'] == 'date') {
+      } else if ($param_info['type'] == 'date') {
         // Check if this date format is valid.
-        if (preg_match('/^\d{4}-\d{1,2}-\d{1,2}$/', $_POST[$param_name]) == 0)
+        if (preg_match('/^\d{4}-\d{1,2}-\d{1,2}$/', $_POST[$param_name]) == 0) {
           continue;
+        }
 
         $_POST[$param_name] = strtotime($_POST[$param_name]);
       }
@@ -184,8 +190,9 @@ function ViewMemberlist()
       // Those values that are in some kind of range (<, <=, =, >=, >).
       if (!empty($param_info['range'])) {
         // Default to '=', just in case...
-        if (empty($range_trans[$_POST['types'][$param_name]]))
+        if (empty($range_trans[$_POST['types'][$param_name]])) {
           $_POST['types'][$param_name] = '=';
+        }
 
         // Handle special case 'age'.
         if ($param_info['type'] == 'age') {
@@ -193,25 +200,29 @@ function ViewMemberlist()
           $datearray = getdate(forum_time());
           $upperlimit = sprintf('%04d-%02d-%02d', $datearray['year'] - $_POST[$param_name], $datearray['mon'], $datearray['mday']);
           $lowerlimit = sprintf('%04d-%02d-%02d', $datearray['year'] - $_POST[$param_name] - 1, $datearray['mon'], $datearray['mday']);
-          if (in_array($_POST['types'][$param_name], array('-', '--', '=')))
+
+          if (in_array($_POST['types'][$param_name], array('-', '--', '='))) {
             $query_parts[] = "{$param_info['db_fields'][0]} > '" . ($_POST['types'][$param_name] == '--' ? $upperlimit : $lowerlimit) . "'";
+          }
+
           if (in_array($_POST['types'][$param_name], array('+', '++', '='))) {
             $query_parts[] = "{$param_info['db_fields'][0]} <= '" . ($_POST['types'][$param_name] == '++' ? $lowerlimit : $upperlimit) . "'";
 
             // Make sure that members that didn't set their birth year are not queried.
             $query_parts[] = "{$param_info['db_fields'][0]} > '0000-12-31'";
           }
-        }
-        elseif ($param_info['type'] == 'date' && $_POST['types'][$param_name] == '=')
+        } else if ($param_info['type'] == 'date' && $_POST['types'][$param_name] == '=') {
           $query_parts[] = $param_info['db_fields'][0] . ' > ' . $_POST[$param_name] . ' AND ' . $param_info['db_fields'][0] . ' < ' . ($_POST[$param_name] + 86400);
-        else
+        } else {
           $query_parts[] = $param_info['db_fields'][0] . ' ' . $range_trans[$_POST['types'][$param_name]] . ' ' . $_POST[$param_name];
+        }
       }
       // Checkboxes.
-      elseif ($param_info['type'] == 'checkbox') {
+      else if ($param_info['type'] == 'checkbox') {
         // Each checkbox or no checkbox at all is checked -> ignore.
-        if (!is_array($_POST[$param_name]) || count($_POST[$param_name]) == 0 || count($_POST[$param_name]) == count($param_info['values']))
+        if (!is_array($_POST[$param_name]) || count($_POST[$param_name]) == 0 || count($_POST[$param_name]) == count($param_info['values'])) {
           continue;
+        }
 
         $query_parts[] = "{$param_info['db_fields'][0]} IN ('" . implode("', '", $_POST[$param_name]) . "')";
       } else {
@@ -226,21 +237,26 @@ function ViewMemberlist()
     $mg_query_parts = array();
 
     // Primary membergroups, but only if at least was was not selected.
-    if (!empty($_POST['membergroups'][1]) && count($context['membergroups']) != count($_POST['membergroups'][1]))
+    if (!empty($_POST['membergroups'][1]) && count($context['membergroups']) != count($_POST['membergroups'][1])) {
       $mg_query_parts[] = 'ID_GROUP IN (' . implode(', ', $_POST['membergroups'][1]) . ')';
+    }
 
     // Additional membergroups (these are only relevant if not all primary groups where selected!).
-    if (!empty($_POST['membergroups'][2]) && (empty($_POST['membergroups'][1]) || count($context['membergroups']) != count($_POST['membergroups'][1])))
-      foreach ($_POST['membergroups'][2] as $mg)
+    if (!empty($_POST['membergroups'][2]) && (empty($_POST['membergroups'][1]) || count($context['membergroups']) != count($_POST['membergroups'][1]))) {
+      foreach ($_POST['membergroups'][2] as $mg) {
         $mg_query_parts[] = 'FIND_IN_SET(' . (int) $mg . ', additionalGroups)';
+      }
+    }
 
     // Combine the one or two membergroup parts into one query part linked with an OR.
-    if (!empty($mg_query_parts))
+    if (!empty($mg_query_parts)) {
       $query_parts[] = '(' . implode(' OR ', $mg_query_parts) . ')';
+    }
 
     // Get all selected post count related membergroups.
-    if (!empty($_POST['postgroups']) && count($_POST['postgroups']) != count($context['postgroups']))
+    if (!empty($_POST['postgroups']) && count($_POST['postgroups']) != count($context['postgroups'])) {
       $query_parts[] = 'ID_POST_GROUP IN (' . implode(', ', $_POST['postgroups']) . ')';
+    }
 
     // Construct the where part of the query.
     $where = empty($query_parts) ? '1' : implode('
@@ -248,8 +264,9 @@ function ViewMemberlist()
   }
   // If the query information was already packed in the URL, decode it.
   // !!! Change this.
-  elseif ($context['sub_action'] == 'query')
+  else if ($context['sub_action'] == 'query') {
     $where = base64_decode(strtr($_REQUEST['params'], array(' ' => '+')));
+  }
 
   // Construct the additional URL part with the query info in it.
   $context['params_url'] = $context['sub_action'] == 'query' ? ';sa=query;params=' . base64_encode($where) : '';
@@ -272,15 +289,17 @@ function ViewMemberlist()
   );
 
   // Default sort column to 'memberName' if the current one is unknown or not set.
-  if (!isset($_REQUEST['sort']) || !isset($context['columns'][$_REQUEST['sort']]))
+  if (!isset($_REQUEST['sort']) || !isset($context['columns'][$_REQUEST['sort']])) {
     $_REQUEST['sort'] = 'memberName';
+  }
+
   $context['sort_by'] = $_REQUEST['sort'];
   $context['sort_direction'] = !isset($_REQUEST['desc']) ? 'down' : 'up';
 
   // Calculate the number of results.
-  if (empty($where) or $where == '1')
+  if (empty($where) or $where == '1') {
     $num_members = $modSettings['totalMembers'];
-  else {
+  } else {
     $request = db_query("
       SELECT COUNT(*)
       FROM {$db_prefix}members
@@ -299,22 +318,27 @@ function ViewMemberlist()
     WHERE $where" : '') . "
     ORDER BY $_REQUEST[sort]" . (!isset($_REQUEST['desc']) ? '' : ' DESC') . "
     LIMIT $context[start], $modSettings[defaultMaxMembers]", __FILE__, __LINE__);
+
   while ($row = mysqli_fetch_assoc($request)) {
     // Calculate number of days since last online.
-    if (empty($row['lastLogin']))
+    if (empty($row['lastLogin'])) {
       $difference = $txt['never'];
-    else {
+    } else {
       // Today or some time ago?
       $difference = jeffsdatediff($row['lastLogin']);
-      if (empty($difference))
+
+      if (empty($difference)) {
         $difference = $txt['viewmembers_today'];
-      elseif ($difference == 1)
+      } else if ($difference == 1) {
         $difference .= ' ' . $txt['viewmembers_day_ago'];
-      else
+      } else {
         $difference .= ' ' . $txt['viewmembers_days_ago'];
+      }
     }
-    if ($row['is_activated'] % 10 != 1)
+
+    if ($row['is_activated'] % 10 != 1) {
       $difference = '<i title="' . $txt['not_activated'] . '">' . $difference . '</i>';
+    }
 
     $context['members'][] = array(
       'id' => $row['ID_MEMBER'],
@@ -325,8 +349,8 @@ function ViewMemberlist()
       'last_active' => $difference,
       'is_activated' => $row['is_activated'] % 10 == 1,
       'posts' => $row['topics'],
-      'href' => '/perfil/' . $row['realName'],
-      'link' => '<a href="/perfil/' . $row['realName'] . '">' . $row['realName'] . '</a>'
+      'href' => $boardurl . '/perfil/' . $row['realName'],
+      'link' => '<a href="' . $boardurl . '/perfil/' . $row['realName'] . '">' . $row['realName'] . '</a>'
     );
   }
   mysqli_free_result($request);

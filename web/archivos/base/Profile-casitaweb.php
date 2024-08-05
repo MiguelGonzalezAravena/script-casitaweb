@@ -40,17 +40,17 @@ function partearriba($sasdde, $lugar) {
     $amist = '';
     $Comu = '';
     $apaa = '';
-  } elseif ($lugar == 'apariencia') {
+  } else if ($lugar == 'apariencia') {
     $muro = '';
     $amist = '';
     $Comu = '';
     $apaa = ' class="activado" ';
-  } elseif ($lugar == 'comunidades') {
+  } else if ($lugar == 'comunidades') {
     $muro = '';
     $amist = '';
     $Comu = ' class="activado" ';
     $apaa = '';
-  } elseif ($lugar == 'lista-de-amigos') {
+  } else if ($lugar == 'lista-de-amigos') {
     $muro = '';
     $amist = ' class="activado" ';
     $Comu = '';
@@ -225,7 +225,7 @@ function template_summary() {
           <p align="right" style="font-size: 10px; margin: 0px; padding: 0px; width: 250px;">
             <a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/lista-de-amigos/">1 amigo</a>
           </p>';
-      } elseif (!empty($bbvxc) >= 2) {
+      } else if (!empty($bbvxc) >= 2) {
         echo '
           <p align="right" style="font-size: 10px; margin: 0px; padding: 0px;">
             <a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/lista-de-amigos/">' . $bbvxc . ' amigos</a>
@@ -726,7 +726,7 @@ function template_summary() {
 
               if (empty($PagAct)) {
                 echo '<a style="color: #D35F2C;" href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/muro;jsAP=' . $ivvd . '#cto_' . $ivvd . '">' . $leerTXT . '</a>';
-              } elseif (!empty($PagAct)) {
+              } else if (!empty($PagAct)) {
                 echo '<a style="color: #D35F2C;" href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/muro-pag-' . $PagAct . ';jsAP=' . $ivvd . '#cto_' . $ivvd . '">' . $leerTXT . '</a>';
               }
             }

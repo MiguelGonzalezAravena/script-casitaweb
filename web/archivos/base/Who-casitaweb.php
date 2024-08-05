@@ -75,7 +75,7 @@ function template_main() {
         }
 
         if (!empty($datu['avatar'])) {
-          $context['user']['avatar']['image'] = '<img src="' . $datu['avatar'] . '"' . (isset($context['user']['avatar']['width']) ? ' width="' . $context['user']['avatar']['width'] . '"' : '') . ' onload="if(this.height > 100) {this.height = 100}" alt="" class="avatar-box" onerror="error_avatar(this)" border="0" />';
+          $context['user']['avatar']['image'] = '<img src="' . $datu['avatar'] . '"' . (isset($context['user']['avatar']['width']) ? ' width="' . $context['user']['avatar']['width'] . '"' : '') . ' onload="if (this.height > 100) {this.height = 100}" alt="" class="avatar-box" onerror="error_avatar(this)" border="0" />';
         }
 
         echo '<td valign="top">';

@@ -600,7 +600,6 @@ function template_intro() {
             </div>';
         }
       } else if ($_GET['miembros'] == 8) {
-        // TO-DO: Avanzar
         if (!$context['user']['is_guest'] && !$context['permisoCom']) {
           echo '
             <div style="margin-bottom: 8px; float: left;">
@@ -1519,7 +1518,7 @@ function template_ctema() {
 
 // Editar tema
 function template_etema() {
-  global $tranfer1, $func, $ID_MEMBER, $sourcedir, $modSettings, $context, $db_prefix, $boardurl;
+  global $tranfer1, $ID_MEMBER, $sourcedir, $modSettings, $context, $db_prefix, $boardurl;
 
   if (!$ID_MEMBER) {
     fatal_error('Funcionalidad exclusiva de usuarios registrados.');

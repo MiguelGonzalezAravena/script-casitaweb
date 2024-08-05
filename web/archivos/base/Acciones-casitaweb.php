@@ -759,7 +759,7 @@ function template_tyc3() {
       }
 
       function focus_code(noselect) {
-        if(!noselect) {
+        if (!noselect) {
           document.getElementById(\'codigo\').focus();
         }
 
@@ -877,7 +877,7 @@ function template_vr2965() {
   $page = isset($_GET['pag']) ? (int) $_GET['pag'] : 1;
   $width_column_1 = '461px';
 
-  if(!$context['allow_admin']) {
+  if (!$context['allow_admin']) {
     die('No tienes los permisos necesarios para realizar esta acci&oacute;n.');
   }
 
@@ -1230,7 +1230,7 @@ function template_vr2965() {
 function template_denuncias() {
   global $tranfer1, $context, $db_prefix, $boardurl;
 
-  if(!$context['allow_admin']) {
+  if (!$context['allow_admin']) {
     die('No tienes los permisos necesarios para realizar esta acci&oacute;n.');
   }
 

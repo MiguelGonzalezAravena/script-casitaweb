@@ -10,24 +10,33 @@ function DisplayStats() {
   if (!empty($_REQUEST['expand'])) {
     $month = (int) substr($_REQUEST['expand'], 4);
     $year = (int) substr($_REQUEST['expand'], 0, 4);
-    if ($year > 1900 && $year < 2200 && $month >= 1 && $month <= 12)
+
+    if ($year > 1900 && $year < 2200 && $month >= 1 && $month <= 12) {
       $_SESSION['expanded_stats'][$year][] = $month;
-  } elseif (!empty($_REQUEST['collapse'])) {
+    }
+  } else if (!empty($_REQUEST['collapse'])) {
     $month = (int) substr($_REQUEST['collapse'], 4);
     $year = (int) substr($_REQUEST['collapse'], 0, 4);
-    if (!empty($_SESSION['expanded_stats'][$year]))
+
+    if (!empty($_SESSION['expanded_stats'][$year])) {
       $_SESSION['expanded_stats'][$year] = array_diff($_SESSION['expanded_stats'][$year], array($month));
+    }
   }
+
   if (isset($_REQUEST['xml'])) {
-    if (!empty($_REQUEST['collapse']))
+    if (!empty($_REQUEST['collapse'])) {
       obExit(false);
+    }
 
     $context['sub_template'] = 'stats';
+
     getDailyStats("YEAR(date) = $year AND MONTH(date) = $month");
+
     $context['monthly'][$year . sprintf('%02d', $month)]['date'] = array(
       'month' => sprintf('%02d', $month),
       'year' => $year,
     );
+
     return;
   }
 

@@ -176,7 +176,7 @@ function AddMembergroup()
       setPermissionLevel($_POST['level'], $ID_GROUP, 'null');
     }
     // Copy the permissions!
-    elseif ($_POST['perm_type'] == 'copy') {
+    else if ($_POST['perm_type'] == 'copy') {
       $_POST['copyperm'] = (int) $_POST['copyperm'];
 
       // Don't allow copying of a real priviledged person!
@@ -187,36 +187,44 @@ function AddMembergroup()
         SELECT permission, addDeny
         FROM {$db_prefix}permissions
         WHERE ID_GROUP = $_POST[copyperm]", __FILE__, __LINE__);
+
       $setString = '';
+
       while ($row = mysqli_fetch_assoc($request)) {
-        if (empty($context['illegal_permissions']) || !in_array($row['permission'], $context['illegal_permissions']))
+        if (empty($context['illegal_permissions']) || !in_array($row['permission'], $context['illegal_permissions'])) {
           $setString .= "
             ($ID_GROUP, '$row[permission]', $row[addDeny]),";
+        }
       }
+
       mysqli_free_result($request);
 
-      if (!empty($setString))
+      if (!empty($setString)) {
         db_query("
-          INSERT INTO {$db_prefix}permissions
-            (ID_GROUP, permission, addDeny)
+          INSERT INTO {$db_prefix}permissions (ID_GROUP, permission, addDeny)
           VALUES" . substr($setString, 0, -1), __FILE__, __LINE__);
+      }
 
       $request = db_query("
         SELECT ID_BOARD, permission, addDeny
         FROM {$db_prefix}board_permissions
         WHERE ID_GROUP = $_POST[copyperm]" . (empty($modSettings['permission_enable_by_board']) ? '
           AND ID_BOARD = 0' : ''), __FILE__, __LINE__);
+
       $setString = '';
-      while ($row = mysqli_fetch_assoc($request))
+
+      while ($row = mysqli_fetch_assoc($request)) {
         $setString .= "
           ($ID_GROUP, $row[ID_BOARD], '$row[permission]', $row[addDeny]),";
+      }
+
       mysqli_free_result($request);
 
-      if (!empty($setString))
+      if (!empty($setString)) {
         db_query("
-          INSERT INTO {$db_prefix}board_permissions
-            (ID_GROUP, ID_BOARD, permission, addDeny)
+          INSERT INTO {$db_prefix}board_permissions (ID_GROUP, ID_BOARD, permission, addDeny)
           VALUES" . substr($setString, 0, -1), __FILE__, __LINE__);
+      }
 
       // Also get some membergroup information if we're not copying from guests...
       if ($_POST['copyperm'] > 0) {
@@ -321,7 +329,7 @@ function EditMembergroup()
     header("Location: $boardurl/index.php?' . $urlSep . '=membergroups");
   }
   // A form was submitted with the new membergroup settings.
-  elseif (isset($_POST['submit'])) {
+  else if (isset($_POST['submit'])) {
     checkSession();
     $_POST['max_messages'] = isset($_POST['max_messages']) ? (int) $_POST['max_messages'] : 0;
     $_POST['min_posts'] = isset($_POST['min_posts']) && $_POST['post_group'] == '1' && $_REQUEST['group'] > 3 ? abs($_POST['min_posts']) : ($_REQUEST['group'] == 4 ? 0 : -1);
@@ -431,7 +439,7 @@ function EditMembergroup()
 // Display members of a group, and allow adding of members to a group. Silly function name though ;)
 function MembergroupMembers()
 {
-  global $txt, $scripturl, $db_prefix, $context, $modSettings, $sourcedir, $func, $urlSep;
+  global $txt, $scripturl, $db_prefix, $context, $modSettings, $sourcedir, $urlSep;
 
   $_REQUEST['group'] = (int) $_REQUEST['group'];
 
@@ -463,7 +471,7 @@ function MembergroupMembers()
     removeMembersFromGroups($_REQUEST['rem'], $_REQUEST['group']);
   }
   // Must be adding new members to the group...
-  elseif (isset($_REQUEST['add']) && !empty($_REQUEST['toAdd']) && $context['group']['assignable']) {
+  else if (isset($_REQUEST['add']) && !empty($_REQUEST['toAdd']) && $context['group']['assignable']) {
     checkSession();
 
     // Get all the members to be added... taking into account names can be quoted ;)

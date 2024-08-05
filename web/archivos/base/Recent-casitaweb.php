@@ -417,7 +417,7 @@ function template_main() {
   foreach ($context['top_starters'] as $poster) {
     echo '
       <font style="font-size: 11px">
-        <b>' . $dasda4++ . ' - </b>
+        <b>' . $dasda4++ . '.</b>
         <a href="' . $boardurl . '/perfil/' . $poster['realName'] . '" title="' . $poster['realName'] . '">' . $poster['realName'] . '</a>
         (' . $poster['cuenta'] . ')
       </font><br />';
@@ -495,7 +495,6 @@ function mensajes() {
     $shas = '';
   }
 
-  // TO-DO: Verificar dónde se setea esto
   $limit = $modSettings['catcoment'];
   $limit = 25;
   $request = db_query("

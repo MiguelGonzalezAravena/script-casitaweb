@@ -288,8 +288,8 @@ function sendpm($titulo, $mensaje, $para, $sis) {
   }
 }
 
-function mimespecialchars($string, $with_charset = true, $hotmail_fix = false, $line_break = "\r\n")
-{
+// TO-DO: Cambiar función deprecada mimespecialchars
+function mimespecialchars($string, $with_charset = true, $hotmail_fix = false, $line_break = "\r\n") {
   global $context;
 
   $charset = $context['character_set'];
@@ -311,9 +311,9 @@ function mimespecialchars($string, $with_charset = true, $hotmail_fix = false, $
       $fixchar = create_function('$n', '
         if ($n < 128)
           return chr($n);
-        elseif ($n < 2048)
+         ($n < 2048)
           return chr(192 | $n >> 6) . chr(128 | $n & 63);
-        elseif ($n < 65536)
+        else if ($n < 65536)
           return chr(224 | $n >> 12) . chr(128 | $n >> 6 & 63) . chr(128 | $n & 63);
         else
           return chr(240 | $n >> 18) . chr(128 | $n >> 12 & 63) . chr(128 | $n >> 6 & 63) . chr(128 | $n & 63);');
@@ -333,25 +333,26 @@ function mimespecialchars($string, $with_charset = true, $hotmail_fix = false, $
     $entityConvert = create_function('$c', '
       if (strlen($c) === 1 && ord($c{0}) <= 0x7F)
         return $c;
-      elseif (strlen($c) === 2 && ord($c{0}) >= 0xC0 && ord($c{0}) <= 0xDF)
+       (strlen($c) === 2 && ord($c{0}) >= 0xC0 && ord($c{0}) <= 0xDF)
         return "&#" . (((ord($c{0}) ^ 0xC0) << 6) + (ord($c{1}) ^ 0x80)) . ";";
-      elseif (strlen($c) === 3 && ord($c{0}) >= 0xE0 && ord($c{0}) <= 0xEF)
+      else if (strlen($c) === 3 && ord($c{0}) >= 0xE0 && ord($c{0}) <= 0xEF)
         return "&#" . (((ord($c{0}) ^ 0xE0) << 12) + ((ord($c{1}) ^ 0x80) << 6) + (ord($c{2}) ^ 0x80)) . ";";
-      elseif (strlen($c) === 4 && ord($c{0}) >= 0xF0 && ord($c{0}) <= 0xF7)
+      else if (strlen($c) === 4 && ord($c{0}) >= 0xF0 && ord($c{0}) <= 0xF7)
         return "&#" . (((ord($c{0}) ^ 0xF0) << 18) + ((ord($c{1}) ^ 0x80) << 12) + ((ord($c{2}) ^ 0x80) << 6) + (ord($c{3}) ^ 0x80)) . ";";
       else
         return "";');
 
     // Convert all 'special' characters to HTML entities.
     return array($charset, preg_replace('~([\x80-' . ($context['server']['complex_preg_chars'] ? '\x{10FFFF}' : pack('C*', 0xF7, 0xBF, 0xBF, 0xBF)) . '])~eu', '$entityConvert(\'\1\')', $string), '7bit');
-  } elseif (!$hotmail_fix && preg_match('~([^\x09\x0A\x0D\x20-\x7F])~', $string) === 1) {
+  } else if (!$hotmail_fix && preg_match('~([^\x09\x0A\x0D\x20-\x7F])~', $string) === 1) {
     // Base64 encode.
     $string = base64_encode($string);
 
-    if ($with_charset)
+    if ($with_charset) {
       $string = '=?' . $charset . '?B?' . $string . '?=';
-    else
+    } else {
       $string = chunk_split($string, 76, $line_break);
+    }
 
     return array($charset, $string, 'base64');
   }

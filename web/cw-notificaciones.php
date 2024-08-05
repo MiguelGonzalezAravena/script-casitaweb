@@ -12,7 +12,7 @@ if ($user_settings['notificacionMonitor'] > 10) {
     SET notificacionMonitor = notificacionMonitor - 10
     WHERE ID_MEMBER = '{$user_settings['ID_MEMBER']}'
     LIMIT 1", __FILE__, __LINE__); 
-} else if($user_settings['notificacionMonitor'] > 0) {
+} else if ($user_settings['notificacionMonitor'] > 0) {
   db_query("
     UPDATE {$db_prefix}members
     SET notificacionMonitor = notificacionMonitor - '{$user_settings['notificacionMonitor']}'

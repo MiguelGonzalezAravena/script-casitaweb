@@ -22,7 +22,7 @@ $rows = mysqli_num_rows($request);
 
 if (empty($rows)) {
   die('0: El usuario no existe.');
-} elseif ($user === $user_settings['ID_MEMBER']) {
+} else if ($user === $ID_MEMBER) {
   die('0: No puedes borrarte como amigo.');
 }
 

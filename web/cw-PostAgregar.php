@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
-global $func, $context, $db_prefix, $modSettings, $user_settings, $user_info;
+global $context, $db_prefix, $modSettings, $user_settings, $user_info;
 
 $aa45s1dsasd = isset($_POST['anuncio']) ? (int) $_POST['anuncio'] : 0;
 $categorias = isset($_POST['categorias']) ? (int) $_POST['categorias'] : 0;

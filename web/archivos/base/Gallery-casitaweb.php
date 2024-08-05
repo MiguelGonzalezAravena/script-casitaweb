@@ -225,14 +225,23 @@ function template_view_picture() {
 
   $cantidad = 1;
 
-  echo "
-    <script type=\"text/javascript\">
-      function errorrojo2(causa){ if(causa == ''){ document.getElementById('errors').innerHTML='<font class=\"size10\" style=\"color: red;\">Es necesaria la causa de la eliminaci&oacute;n.</font>'; return false;}}
-      function errorrojo(cuerpo_comment){ if(cuerpo_comment == ''){ document.getElementById('error').innerHTML='<br /><font class=\"size10\" style=\"color: red;\">No has escrito ning&uacute;n comentario.</font>'; return false;}}
-    </script>";
-
   echo '
-      <a name="inicio"></a>
+    <script type="text/javascript">
+      function errorrojo2(causa) {
+        if (causa == \'\') {
+          document.getElementById(\'errors\').innerHTML = \'<font class="size10" style="color: red;">Es necesaria la causa de la eliminaci&oacute;n.</font>\';
+          return false;
+        }
+      }
+
+      function errorrojo(cuerpo_comment) {
+        if (cuerpo_comment == \'\') {
+          document.getElementById(\'error\').innerHTML = \'<br /><font class="size10" style="color: red;">No has escrito ning&uacute;n comentario.</font>\';
+          return false;
+        }
+      }
+    </script>
+    <a name="inicio"></a>
     <div>';
 
   menuser($context['gallery_pic']['ID_MEMBER']);
@@ -720,7 +729,7 @@ function template_add_picture() {
           return false;
         }
 
-        if(filename == \'\') {
+        if (filename == \'\') {
           alert(\'No has agregado ning\\xfan enlace de imagen.\');
           return false;
         }

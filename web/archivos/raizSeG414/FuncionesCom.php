@@ -202,10 +202,10 @@ function paginacion($total, $pp, $st, $url) {
       if ($st == 0) {
         $first_page = 0;
         $last_page = 10;
-      } elseif ($current_page >= 5 && $current_page <= ($pages - 5)) {
+      } else if ($current_page >= 5 && $current_page <= ($pages - 5)) {
         $first_page = $current_page - 5;
         $last_page = $current_page + 5;
-      } elseif ($current_page < 5) {
+      } else if ($current_page < 5) {
         $first_page = 0;
         $last_page = $current_page + 5 + (5 - $current_page);
       } else {
@@ -570,7 +570,7 @@ function textaer($dd = '') {
 }
 
 function sidebar($id) {
-  global $tranfer1, $func, $ID_MEMBER, $no_avatar, $context, $db_prefix, $boardurl;
+  global $tranfer1, $ID_MEMBER, $no_avatar, $context, $db_prefix, $boardurl;
 
   $request = db_query("
     SELECT c.nombre, c.url, c.imagen, c.id, c.articulos, c.usuarios, c.paprobar
@@ -794,7 +794,7 @@ function bloqueado($id) {
 
     if (($user_info['is_admin'] || $user_info['is_mods'])) {
       $context['ComUeliminado'] = '<div class="noesta" style="margin-bottom: 8px; width: 922px;">Esta comunidad est&aacute; eliminada.</div>';
-    } elseif (!$bloquear_porr) {
+    } else if (!$bloquear_porr) {
       $error = '
         <b style="color: red;">Esta comunidad est&aacute; eliminada.</b>
         <br />
