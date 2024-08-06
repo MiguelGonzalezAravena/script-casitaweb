@@ -93,10 +93,10 @@ function template_main() {
         $idN = isset($idN) ? $idN : '';
 
         if (empty($idN)) {
-          echo '<div class="noesta">' . $usuario . ' no esta en la lista de baneados.</div>';
+          echo '<div class="noesta">' . $usuario . ' no est&aacute; en la lista de baneados.</div>';
         }
       } else {
-        echo '<div class="noesta">Debes escrbirir el nick del usuario a buscar.</div>';
+        echo '<div class="noesta">Debes escribir el nick del usuario a buscar.</div>';
       }
     }
 
