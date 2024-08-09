@@ -17,7 +17,7 @@ function template_main() {
         }
       </script>';
 
-    $usuario = isset($_GET['usuario']) ? $_GET['usuario'] : '';
+    $usuario = isset($_GET['usuario']) ? seguridad($_GET['usuario']) : '';
     $dasdasd = isset($_GET['si']) ? seguridad($_GET['si']) : '';
 
     echo '

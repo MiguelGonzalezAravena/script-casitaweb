@@ -71,11 +71,15 @@ function template_admin() {
 
   require_once($sourcedir . '/IpModLog.php');
 
-  $dat = explode(' : ', $glee[$context['user']['name']]);
-  $dataMOstrar = '
-    <div class="noesta-am" style="width: 922px; margin-bottom: 8px;">
-      &Uacute;ltima IP registrada en la moderaci&oacute;n fue ' . $dat[0] . ' y hace ' . hace($dat[1]) . ' que se registr&oacute;. Tu IP actual es: ' . $_SERVER['REMOTE_ADDR'] . '
-    </div>';
+  $dataMOstrar = '';
+
+  if (in_array($context['user']['name'], $glee)) {
+    $dat = explode(' : ', $glee[$context['user']['name']]);
+    $dataMOstrar .= '
+      <div class="noesta-am" style="width: 922px; margin-bottom: 8px;">
+        &Uacute;ltima IP registrada en la moderaci&oacute;n fue ' . $dat[0] . ' y hace ' . hace($dat[1]) . ' que se registr&oacute;. Tu IP actual es: ' . $_SERVER['REMOTE_ADDR'] . '
+      </div>';
+  }
 
   $dataMOstrar2 = '
     <div class="noesta-am" style="width: 922px; margin-bottom: 8px;">
