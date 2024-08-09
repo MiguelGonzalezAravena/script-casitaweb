@@ -1674,85 +1674,85 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
      * tag: the tag's name - should be lowercase!
      *
      * type: one of...
-     * 	- (missing): [tag]parsed content[/tag]
-     * 	- unparsed_equals: [tag=xyz]parsed content[/tag]
-     * 	- parsed_equals: [tag=parsed data]parsed content[/tag]
-     * 	- unparsed_content: [tag]unparsed content[/tag]
-     * 	- closed: [tag], [tag/], [tag /]
-     * 	- unparsed_commas: [tag=1,2,3]parsed content[/tag]
-     * 	- unparsed_commas_content: [tag=1,2,3]unparsed content[/tag]
-     * 	- unparsed_equals_content: [tag=...]unparsed content[/tag]
+     *   - (missing): [tag]parsed content[/tag]
+     *   - unparsed_equals: [tag=xyz]parsed content[/tag]
+     *   - parsed_equals: [tag=parsed data]parsed content[/tag]
+     *   - unparsed_content: [tag]unparsed content[/tag]
+     *   - closed: [tag], [tag/], [tag /]
+     *   - unparsed_commas: [tag=1,2,3]parsed content[/tag]
+     *   - unparsed_commas_content: [tag=1,2,3]unparsed content[/tag]
+     *   - unparsed_equals_content: [tag=...]unparsed content[/tag]
      *
      * parameters: an optional array of parameters, for the form
-     * 	[tag abc=123]content[/tag].  The array is an associative array
-     * 	where the keys are the parameter names, and the values are an
-     * 	array which may contain the following:
-     * 	- match: a regular expression to validate and match the value.
-     * 	- quoted: true if the value should be quoted.
-     * 	- validate: callback to evaluate on the data, which is $data.
-     * 	- value: a string in which to replace $1 with the data.
-     * 		either it or validate may be used, not both.
-     * 	- optional: true if the parameter is optional.
+     *   [tag abc=123]content[/tag].  The array is an associative array
+     *   where the keys are the parameter names, and the values are an
+     *   array which may contain the following:
+     *   - match: a regular expression to validate and match the value.
+     *   - quoted: true if the value should be quoted.
+     *   - validate: callback to evaluate on the data, which is $data.
+     *   - value: a string in which to replace $1 with the data.
+     *     either it or validate may be used, not both.
+     *   - optional: true if the parameter is optional.
      *
      * test: a regular expression to test immediately after the tag's
-     * 	'=', ' ' or ']'.  Typically, should have a \] at the end.
-     * 	Optional.
+     *   '=', ' ' or ']'.  Typically, should have a \] at the end.
+     *   Optional.
      *
      * content: only available for unparsed_content, closed,
-     * 	unparsed_commas_content, and unparsed_equals_content.
-     * 	$1 is replaced with the content of the tag.  Parameters
-     * 	are replaced in the form {param}.  For unparsed_commas_content,
-     * 	$2, $3, ..., $n are replaced.
+     *   unparsed_commas_content, and unparsed_equals_content.
+     *   $1 is replaced with the content of the tag.  Parameters
+     *   are replaced in the form {param}.  For unparsed_commas_content,
+     *   $2, $3, ..., $n are replaced.
      *
      * before: only when content is not used, to go before any
-     * 	content.  For unparsed_equals, $1 is replaced with the value.
-     * 	For unparsed_commas, $1, $2, ..., $n are replaced.
+     *   content.  For unparsed_equals, $1 is replaced with the value.
+     *   For unparsed_commas, $1, $2, ..., $n are replaced.
      *
      * after: similar to before in every way, except that it is used
-     * 	when the tag is closed.
+     *   when the tag is closed.
      *
      * disabled_content: used in place of content when the tag is
-     * 	disabled.  For closed, default is '', otherwise it is '$1' if
-     * 	block_level is false, '<div>$1</div>' elsewise.
+     *   disabled.  For closed, default is '', otherwise it is '$1' if
+     *   block_level is false, '<div>$1</div>' elsewise.
      *
      * disabled_before: used in place of before when disabled.  Defaults
-     * 	to '<div>' if block_level, '' if not.
+     *   to '<div>' if block_level, '' if not.
      *
      * disabled_after: used in place of after when disabled.  Defaults
-     * 	to '</div>' if block_level, '' if not.
+     *   to '</div>' if block_level, '' if not.
      *
      * block_level: set to true the tag is a "block level" tag, similar
-     * 	to HTML.  Block level tags cannot be nested inside tags that are
-     * 	not block level, and will not be implicitly closed as easily.
-     * 	One break following a block level tag may also be removed.
+     *   to HTML.  Block level tags cannot be nested inside tags that are
+     *   not block level, and will not be implicitly closed as easily.
+     *   One break following a block level tag may also be removed.
      *
      * trim: if set, and 'inside' whitespace after the begin tag will be
-     * 	removed.  If set to 'outside', whitespace after the end tag will
-     * 	meet the same fate.
+     *   removed.  If set to 'outside', whitespace after the end tag will
+     *   meet the same fate.
      *
      * validate: except when type is missing or 'closed', a callback to
-     * 	validate the data as $data.  Depending on the tag's type, $data
-     * 	may be a string or an array of strings (corresponding to the
-     * 	replacement.)
+     *   validate the data as $data.  Depending on the tag's type, $data
+     *   may be a string or an array of strings (corresponding to the
+     *   replacement.)
      *
      * quoted: when type is 'unparsed_equals' or 'parsed_equals' only,
-     * 	may be not set, 'optional', or 'required' corresponding to if
-     * 	the content may be quoted.  This allows the parser to read
-     * 	[tag="abc]def[esdf]"] properly.
+     *   may be not set, 'optional', or 'required' corresponding to if
+     *   the content may be quoted.  This allows the parser to read
+     *   [tag="abc]def[esdf]"] properly.
      *
      * require_parents: an array of tag names, or not set.  If set, the
-     * 	enclosing tag *must* be one of the listed tags, or parsing won't
-     * 	occur.
+     *   enclosing tag *must* be one of the listed tags, or parsing won't
+     *   occur.
      *
      * require_children: similar to require_parents, if set children
-     * 	won't be parsed if they are not in the list.
+     *   won't be parsed if they are not in the list.
      *
      * disallow_children: similar to, but very different from,
-     * 	require_children, if it is set the listed tags will not be
-     * 	parsed inside the tag.
+     *   require_children, if it is set the listed tags will not be
+     *   parsed inside the tag.
      *
      * parsed_tags_allowed: an array restricting what BBC can be in the
-     * 	parsed_equals parameter, if desired.
+     *   parsed_equals parameter, if desired.
      */
 
     $codes = array(
@@ -1907,18 +1907,18 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 
       /*
        * array(
-       * 	'tag' => 'flash',
-       * 	'type' => 'unparsed_commas_content',
-       * 	'test' => '\d+,\d+\]',
-       * 	'content' => ($context['browser']['is_ie'] && !$context['browser']['is_mac_ie'] ? '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="$2" height="$3"><param name="movie" value="$1" /><param name="play" value="true" /><param name="loop" value="true" /><param name="quality" value="high" /><param name="AllowScriptAccess" value="never" /><embed src="$1" width="$2" height="$3" play="true" loop="true" quality="high" AllowScriptAccess="never" /><noembed><a href="$1" target="_blank" rel="noopener noreferrer" class="bbc_link bbc_flash_disabled new_win">$1</a></noembed></object>' : '<embed type="application/x-shockwave-flash" src="$1" width="$2" height="$3" play="true" loop="true" quality="high" AllowScriptAccess="never" /noembed><a href="$1" target="_blank" rel="noopener noreferrer" class="bbc_link bbc_flash_disabled new_win">$1</a></noembed>'),
-       * 	'validate' => function(&$tag, &$data, $disabled)
-       * 	{
-       * 		if (isset($disabled['url']))
-       * 			$tag['content'] = '$1';
-       * 		elseif (strpos($data[0], 'http://') !== 0 && strpos($data[0], 'https://') !== 0)
-       * 			$data[0] = 'http://' . $data[0];
-       * 	},
-       * 	'disabled_content' => '<a href="$1" target="_blank" rel="noopener noreferrer" class="bbc_link bbc_flash_disabled new_win">$1</a>',
+       *   'tag' => 'flash',
+       *   'type' => 'unparsed_commas_content',
+       *   'test' => '\d+,\d+\]',
+       *   'content' => ($context['browser']['is_ie'] && !$context['browser']['is_mac_ie'] ? '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="$2" height="$3"><param name="movie" value="$1" /><param name="play" value="true" /><param name="loop" value="true" /><param name="quality" value="high" /><param name="AllowScriptAccess" value="never" /><embed src="$1" width="$2" height="$3" play="true" loop="true" quality="high" AllowScriptAccess="never" /><noembed><a href="$1" target="_blank" rel="noopener noreferrer" class="bbc_link bbc_flash_disabled new_win">$1</a></noembed></object>' : '<embed type="application/x-shockwave-flash" src="$1" width="$2" height="$3" play="true" loop="true" quality="high" AllowScriptAccess="never" /noembed><a href="$1" target="_blank" rel="noopener noreferrer" class="bbc_link bbc_flash_disabled new_win">$1</a></noembed>'),
+       *   'validate' => function(&$tag, &$data, $disabled)
+       *   {
+       *     if (isset($disabled['url']))
+       *       $tag['content'] = '$1';
+       *     elseif (strpos($data[0], 'http://') !== 0 && strpos($data[0], 'https://') !== 0)
+       *       $data[0] = 'http://' . $data[0];
+       *   },
+       *   'disabled_content' => '<a href="$1" target="_blank" rel="noopener noreferrer" class="bbc_link bbc_flash_disabled new_win">$1</a>',
        * ),
        */
       array(
@@ -1953,11 +1953,11 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 
       /*
        * array(
-       * 	'tag' => 'glow',
-       * 	'type' => 'unparsed_commas',
-       * 	'test' => '[#0-9a-zA-Z\-]{3,12},([012]\d{1,2}|\d{1,2})(,[^]]+)?\]',
-       * 	'before' => $context['browser']['is_ie'] ? '<table border="0" cellpadding="0" cellspacing="0" style="display: inline; vertical-align: middle; font: inherit;"><tr><td style="filter: Glow(color=$1, strength=$2); font: inherit;">' : '<span style="text-shadow: $1 1px 1px 1px">',
-       * 	'after' => $context['browser']['is_ie'] ? '</td></tr></table> ' : '</span>',
+       *   'tag' => 'glow',
+       *   'type' => 'unparsed_commas',
+       *   'test' => '[#0-9a-zA-Z\-]{3,12},([012]\d{1,2}|\d{1,2})(,[^]]+)?\]',
+       *   'before' => $context['browser']['is_ie'] ? '<table border="0" cellpadding="0" cellspacing="0" style="display: inline; vertical-align: middle; font: inherit;"><tr><td style="filter: Glow(color=$1, strength=$2); font: inherit;">' : '<span style="text-shadow: $1 1px 1px 1px">',
+       *   'after' => $context['browser']['is_ie'] ? '</td></tr></table> ' : '</span>',
        * ),
        */
       array(
@@ -2172,36 +2172,36 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 
       /*
        * array(
-       * 	'tag' => 'shadow',
-       * 	'type' => 'unparsed_commas',
-       * 	'test' => '[#0-9a-zA-Z\-]{3,12},(left|right|top|bottom|[0123]\d{0,2})\]',
-       * 	'before' => $context['browser']['is_ie'] ? '<span style="display: inline-block; filter: Shadow(color=$1, direction=$2); height: 1.2em;">' : '<span style="text-shadow: $1 $2">',
-       * 	'after' => '</span>',
-       * 	'validate' => $context['browser']['is_ie'] ? function(&$tag, &$data, $disabled)
-       * 	{
-       * 		if ($data[1] == 'left')
-       * 			$data[1] = 270;
-       * 		elseif ($data[1] == 'right')
-       * 			$data[1] = 90;
-       * 		elseif ($data[1] == 'top')
-       * 			$data[1] = 0;
-       * 		elseif ($data[1] == 'bottom')
-       * 			$data[1] = 180;
-       * 		else
-       * 			$data[1] = (int) $data[1];
-       * 	} : function(&$tag, &$data, $disabled)
-       * 	{
-       * 		if ($data[1] == 'top' || (is_numeric($data[1]) && $data[1] < 50))
-       * 			$data[1] = '0 -2px 1px';
-       * 		elseif ($data[1] == 'right' || (is_numeric($data[1]) && $data[1] < 100))
-       * 			$data[1] = '2px 0 1px';
-       * 		elseif ($data[1] == 'bottom' || (is_numeric($data[1]) && $data[1] < 190))
-       * 			$data[1] = '0 2px 1px';
-       * 		elseif ($data[1] == 'left' || (is_numeric($data[1]) && $data[1] < 280))
-       * 			$data[1] = '-2px 0 1px';
-       * 		else
-       * 			$data[1] = '1px 1px 1px';
-       * 	},
+       *   'tag' => 'shadow',
+       *   'type' => 'unparsed_commas',
+       *   'test' => '[#0-9a-zA-Z\-]{3,12},(left|right|top|bottom|[0123]\d{0,2})\]',
+       *   'before' => $context['browser']['is_ie'] ? '<span style="display: inline-block; filter: Shadow(color=$1, direction=$2); height: 1.2em;">' : '<span style="text-shadow: $1 $2">',
+       *   'after' => '</span>',
+       *   'validate' => $context['browser']['is_ie'] ? function(&$tag, &$data, $disabled)
+       *   {
+       *     if ($data[1] == 'left')
+       *       $data[1] = 270;
+       *     elseif ($data[1] == 'right')
+       *       $data[1] = 90;
+       *     elseif ($data[1] == 'top')
+       *       $data[1] = 0;
+       *     elseif ($data[1] == 'bottom')
+       *       $data[1] = 180;
+       *     else
+       *       $data[1] = (int) $data[1];
+       *   } : function(&$tag, &$data, $disabled)
+       *   {
+       *     if ($data[1] == 'top' || (is_numeric($data[1]) && $data[1] < 50))
+       *       $data[1] = '0 -2px 1px';
+       *     elseif ($data[1] == 'right' || (is_numeric($data[1]) && $data[1] < 100))
+       *       $data[1] = '2px 0 1px';
+       *     elseif ($data[1] == 'bottom' || (is_numeric($data[1]) && $data[1] < 190))
+       *       $data[1] = '0 2px 1px';
+       *     elseif ($data[1] == 'left' || (is_numeric($data[1]) && $data[1] < 280))
+       *       $data[1] = '-2px 0 1px';
+       *     else
+       *       $data[1] = '1px 1px 1px';
+       *   },
        * ),
        */
       array(

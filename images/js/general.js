@@ -59,26 +59,26 @@ function empty(a) {
 
 // Segundo packer
 function loadcargando(s) {
-	if (s == 1) {
-		$('#cargando_boxy').fadeIn('fast');
-	} else {
-		$('#cargando_boxy').hide();
-	}
+  if (s == 1) {
+    $('#cargando_boxy').fadeIn('fast');
+  } else {
+    $('#cargando_boxy').hide();
+  }
 }
 
 function cerrarBox() {
-	$('.boxy-wrapper').remove();
-	return;
+  $('.boxy-wrapper').remove();
+  return;
 }
 
 function irAconectarse() {
-	if (!$('.hdLoglink').hasClass('opened')) {
-		servicenavlogin();
-	}
+  if (!$('.hdLoglink').hasClass('opened')) {
+    servicenavlogin();
+  }
 
-	$('#nickname').focus();
+  $('#nickname').focus();
 
-	ira_CasitaWebNET();
+  ira_CasitaWebNET();
 }
 
 // PopUp emoticones
@@ -89,165 +89,165 @@ function moticonup() {
 // Desplazamiento (scroll) por jQuery
 ;
 (function(d) {
-	var k = d.scrollTo = function(a, i, e) {
-		d(window).scrollTo(a, i, e);
-	};
+  var k = d.scrollTo = function(a, i, e) {
+    d(window).scrollTo(a, i, e);
+  };
 
-	k.defaults =  {
-		axis: 'xy',
+  k.defaults =  {
+    axis: 'xy',
     duration: parseFloat(d.fn.jquery) >= 1.3 ? 0 : 1
-	};
+  };
 
-	k.window = function(a) {
-		return d(window)._scrollable();
-	};
+  k.window = function(a) {
+    return d(window)._scrollable();
+  };
 
-	d.fn._scrollable = function() {
-		return this.map(function() {
+  d.fn._scrollable = function() {
+    return this.map(function() {
       var a = this, i = !a.nodeName || d.inArray(a.nodeName.toLowerCase(), ['iframe', '#document', 'html', 'body']) != -1;
 
-			if (!i) {
+      if (!i) {
         return a;
       }
 
-			var e = (a.contentWindow || a).document || a.ownerDocument || a;
+      var e = (a.contentWindow || a).document || a.ownerDocument || a;
 
-			return d.browser.safari || e.compatMode == 'BackCompat' ? e.body : e.documentElement;
-		});
-	};
+      return d.browser.safari || e.compatMode == 'BackCompat' ? e.body : e.documentElement;
+    });
+  };
 
-	d.fn.scrollTo = function(n, j, b) {
-		if (typeof j=='object') {
-			b = j;
-			j = 0;
-		}
-
-		if (typeof b == 'function') {
-      b = {
-			  onAfter: b
-		  };
+  d.fn.scrollTo = function(n, j, b) {
+    if (typeof j=='object') {
+      b = j;
+      j = 0;
     }
 
-		if (n == 'max') {
+    if (typeof b == 'function') {
+      b = {
+        onAfter: b
+      };
+    }
+
+    if (n == 'max') {
       n = 9e9;
     }
 
-		b = d.extend({}, k.defaults, b);
-		j = j || b.speed || b.duration;
-		b.queue = b.queue && b.axis.length > 1;
+    b = d.extend({}, k.defaults, b);
+    j = j || b.speed || b.duration;
+    b.queue = b.queue && b.axis.length > 1;
 
-		if (b.queue) {
+    if (b.queue) {
       j /= 2;
     }
 
-		b.offset = p(b.offset);
-		b.over = p(b.over);
+    b.offset = p(b.offset);
+    b.over = p(b.over);
 
-		return this._scrollable().each(function() {
-			var q = this, r = d(q), f = n, s, g = {}, u = r.is('html,body');
+    return this._scrollable().each(function() {
+      var q = this, r = d(q), f = n, s, g = {}, u = r.is('html,body');
 
-			switch(typeof f) {
-				case 'number':
+      switch(typeof f) {
+        case 'number':
         case 'string':
           if (/^([+-]=)?\d+(\.\d+)?(px|%)?$/.test(f)) {
-					  f = p(f);
-					  break
-				  }
+            f = p(f);
+            break
+          }
 
-  				f = d(f, this);
-				case 'object':
+          f = d(f, this);
+        case 'object':
           if (f.is || f.style) {
             s = (f = d(f)).offset()
           }
-			}
+      }
 
-			d.each(b.axis.split(''), function(a, i) {
-				var e = i == 'x' ? 'Left' : 'Top', h = e.toLowerCase(), c = 'scroll' + e, l = q[c], m = k.max(q, i);
+      d.each(b.axis.split(''), function(a, i) {
+        var e = i == 'x' ? 'Left' : 'Top', h = e.toLowerCase(), c = 'scroll' + e, l = q[c], m = k.max(q, i);
 
-				if (s) {
-					g[c] = s[h] + (u ? 0 : l - r.offset()[h]);
+        if (s) {
+          g[c] = s[h] + (u ? 0 : l - r.offset()[h]);
 
-					if (b.margin) {
-						g[c] -= parseInt(f.css('margin' + e)) || 0;
-						g[c] -= parseInt(f.css('border' + e + 'Width')) || 0;
-					}
+          if (b.margin) {
+            g[c] -= parseInt(f.css('margin' + e)) || 0;
+            g[c] -= parseInt(f.css('border' + e + 'Width')) || 0;
+          }
 
-					g[c] += b.offset[h] || 0;
+          g[c] += b.offset[h] || 0;
 
-					if (b.over[h]) {
+          if (b.over[h]) {
             g[c] += f[i == 'x' ? 'width' : 'height']() * b.over[h];
           }
-				} else {
-					var o = f[h];
-					g[c] = o.slice && o.slice(-1) == '%' ? parseFloat(o) / 100 * m : o;
-				}
+        } else {
+          var o = f[h];
+          g[c] = o.slice && o.slice(-1) == '%' ? parseFloat(o) / 100 * m : o;
+        }
 
-				if (/^\d+$/.test(g[c])) {
+        if (/^\d+$/.test(g[c])) {
           g[c] = g[c] <= 0 ? 0 : Math.min(g[c], m);
         }
 
-				if (!a && b.queue) {
-					if (l != g[c]) {
+        if (!a && b.queue) {
+          if (l != g[c]) {
             t(b.onAfterFirst);
           }
 
-					delete g[c];
-				}
-			});
+          delete g[c];
+        }
+      });
 
-			t(b.onAfter);
+      t(b.onAfter);
 
-			function t(a) {
-				r.animate(g, j, b.easing, a && function() {
-					a.call(this, n, b);
-				});
-			}
-		}).end();
-	};
+      function t(a) {
+        r.animate(g, j, b.easing, a && function() {
+          a.call(this, n, b);
+        });
+      }
+    }).end();
+  };
 
-	k.max = function(a, i) {
-		var e = i == 'x' ? 'Width' : 'Height', h = 'scroll' + e;
+  k.max = function(a, i) {
+    var e = i == 'x' ? 'Width' : 'Height', h = 'scroll' + e;
 
-		if (!d(a).is('html,body'))
+    if (!d(a).is('html,body'))
       return a[h] - d(a)[e.toLowerCase()]();
 
-		var c = 'client' + e, l = a.ownerDocument.documentElement, m = a.ownerDocument.body;
+    var c = 'client' + e, l = a.ownerDocument.documentElement, m = a.ownerDocument.body;
 
-		return Math.max(l[h], m[h]) - Math.min(l[c], m[c]);
-	};
+    return Math.max(l[h], m[h]) - Math.min(l[c], m[c]);
+  };
 
-	function p(a) {
-		return typeof a == 'object' ? a : { top: a, left: a };
-	}
+  function p(a) {
+    return typeof a == 'object' ? a : { top: a, left: a };
+  }
 })(jQuery);
 
 function ira_CasitaWebNET() {
-	$('#top').scrollTo(0, 800, { queue: true });
-	return false;
+  $('#top').scrollTo(0, 800, { queue: true });
+  return false;
 }
 
 // Replace emoticones
 function replaceText(a, b) {
-	if (typeof(b.caretPos) != 'undefined' && b.createTextRange) {
-		var c = b.caretPos;
-		c.text = c.text.charAt(c.text.length - 1) == ' ' ? a + ' ' : a;
-		c.select();
-	} else if (typeof(b.selectionStart) != 'undefined') {
-		var d = b.value.substr(0, b.selectionStart);
-		var e = b.value.substr(b.selectionEnd);
-		var f = b.scrollTop;
-		b.value = d + a + e;
+  if (typeof(b.caretPos) != 'undefined' && b.createTextRange) {
+    var c = b.caretPos;
+    c.text = c.text.charAt(c.text.length - 1) == ' ' ? a + ' ' : a;
+    c.select();
+  } else if (typeof(b.selectionStart) != 'undefined') {
+    var d = b.value.substr(0, b.selectionStart);
+    var e = b.value.substr(b.selectionEnd);
+    var f = b.scrollTop;
+    b.value = d + a + e;
 
-		if (b.setSelectionRange) {
-			b.focus();
-			b.setSelectionRange(d.length + a.length, d.length + a.length);
-		}
+    if (b.setSelectionRange) {
+      b.focus();
+      b.setSelectionRange(d.length + a.length, d.length + a.length);
+    }
 
-		b.scrollTop = f;
-	} else {
-		b.value += a;
-		b.focus(b.value.length - 1);
-	}
+    b.scrollTop = f;
+  } else {
+    b.value += a;
+    b.focus(b.value.length - 1);
+  }
 }
 
 function crearVyoutube(u) {
@@ -565,7 +565,7 @@ function pagComunidad(id, pag) {
     success: function(h) {
       $('#cargandoBoxy').css('display', 'none');
       $('#cargandoBoxyc').css('display', 'block');
-      $('#contenidoPG').html(h.substring(0));	
+      $('#contenidoPG').html(h.substring(0));  
     },
     error: function() {
       Boxy.alert('Error, volver a intentar...', null, { title: 'Alerta' });
@@ -586,7 +586,7 @@ function pagComunidad2(id, pag) {
     success: function(h) {
       $('#cargandoBoxy').css('display', 'none');
       $('#cargandoBoxyc').css('display', 'block');
-      $('#contenidoPG').html(h.substring(0));	
+      $('#contenidoPG').html(h.substring(0));  
     },
     error: function() {
       Boxy.alert('Error, volver a intentar...', null, { title: 'Alerta' });
@@ -789,7 +789,7 @@ function add_comment_img(id, nro) {
     data: 'editorCW=' + encodeURIComponent($('#editorCW').val()) + '&id=' + id + '&psecion=' + nro,
     success: function(h) {
       $('#gif_cargando_add_comment').css('display', 'none');
-      if (h.charAt(0) == 0) {			
+      if (h.charAt(0) == 0) {      
         $('.msg_add_comment').html(h.substring(3));
         $('.msg_add_comment').addClass('noesta');
         $('.msg_add_comment').fadeIn('fast');
@@ -918,7 +918,7 @@ function del_coment_post(id, post) {
         }
 
         $('#cmt_' + id).hide();
-      }					
+      }          
     },
     error: function() {
       Boxy.alert('Error, volver a intentar...', null, { title: 'Alerta' });
@@ -1096,7 +1096,7 @@ function add_muro(id) {
         if ($('#si_muro')) {
           $('#si_muro').fadeIn('fast');
         }
-      }	
+      }  
     },
     error: function() {
       $('#gif_cargando_add_muro').remove();
@@ -1143,13 +1143,13 @@ function errorrojos(q) {
 
 // Sleep
 function sleep(a) {
-	var b = new Date().getTime();
+  var b = new Date().getTime();
 
-	for (var i=0; i < 1e7; i++) {
-		if ((new Date().getTime() - b) > a) {
-			break;
-		}
-	}
+  for (var i=0; i < 1e7; i++) {
+    if ((new Date().getTime() - b) > a) {
+      break;
+    }
+  }
 }
 
 var com = {
@@ -1178,7 +1178,7 @@ var com = {
           $('#msg_crear_shortname').html(this.crear_shortname_check_cache[i][2]).removeClass('ok').addClass('error');
         }
 
-        return;			
+        return;      
       }
     }
 
@@ -1464,7 +1464,7 @@ function NOTget() {
   $.ajax({
     type: 'GET',
     url: boardUrl + '/web/cw-notificaciones.php',
-    success: function(h) {		  
+    success: function(h) {      
       $('#NOT_cargando').css({'display': 'none'});
       $('#notificaciones_cuerpo').css({'display': 'block'});
       $('#notificaciones_cuerpo').html(h.substring(0));
