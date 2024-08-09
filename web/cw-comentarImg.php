@@ -24,13 +24,8 @@ if ($posterTime > time() - 25) {
 
 $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
 $comentario = isset($_POST['editorCW']) ? seguridad($_POST['editorCW']) : '';
+$comment = censorText($comentario);
 $sdasd = isset($_POST['psecion']) ? (int) $_POST['psecion'] : '';
-$comment = htmlspecialchars(stripslashes($comentario), ENT_QUOTES);
-$comment = str_replace(array('"', '<', '>', '  '), array('&quot;', '&lt;', '&gt;', ' &nbsp;'), $comment);
-$comment = preg_replace('~\[hide\](.+?)\[\/hide\]~i', '&nbsp;', $comment);
-$comment = preg_replace(array('~\n?\[hide.*?\].+?\[/hide\]\n?~is', '~^\n~', '~\[/hide\]~'), '&nbsp;', $comment);
-$comment = preg_replace('~<br(?: /)?' . '>~i', "\n", $comment);
-$comment = censorText($comment);
 $commentdate = time();
 $realName = $user_settings['realName'];
 
@@ -63,6 +58,7 @@ $request = db_query("
   LIMIT 1", __FILE__, __LINE__);
 
 $ignorado = mysqli_num_rows($request);
+
 if ($ignorado) {
   die('0: No puedes comentar esta imagen.');
 }
@@ -98,6 +94,7 @@ mysqli_free_result($request);
 
 if ($ID_MEMBER != $lmemdsa) {
   $url = $boardurl . '/imagenes/ver/' . $id_pic . '#cmt_' . $context['id_coment'];
+
   db_query("
     INSERT INTO {$db_prefix}notificaciones (url, que, a_quien, por_quien, extra)
     VALUES ('$url', 2, $lmemdsa, $ID_MEMBER, $id_pic)", __FILE__, __LINE__);
