@@ -8,42 +8,42 @@ if (empty($context['ajax'])) {
 }
 
 if (($user_info['is_admin'] || $user_info['is_mods'])) {
-?>
-<script type="text/javascript">
-  // Enviar anuncio
-  function EnviarAnuncio() {
-    $('#cargandoBoxyc').css('display','none');
-    $('#cargandoBoxy').css('display','block');
-    $.ajax({
-      type: 'POST',
-      url: '<?php echo $boardurl; ?>/web/cw-Anunciar.php',
-      cache: false,
-      data: 'anuncio=' +  encodeURIComponent($('#anuncio').val()),
-      success: function(h) {
-        $('#cargandoBoxy').css('display','none');
-        $('#cargandoBoxyc').css('display','block');
-        $('#contentv').remove();
-        $('#resultado').removeClass('noesta');
-        $('#resultado').addClass('noesta-ve');
-        $('#resultado').html(h.substring(3)).fadeIn('fast');
-        $('#mensaje-top').html('Cambios guardados...');
-      },
-      error: function() {
-        Boxy.alert("Error, volver a intentar...", null, { title: 'Alerta' });
+  echo '
+    <script type="text/javascript">
+      // Enviar anuncio
+      function EnviarAnuncio() {
+        $(\'#cargandoBoxyc\').css(\'display\', \'none\');
+        $(\'#cargandoBoxy\').css(\'display\', \'block\');
+        $.ajax({
+          type: \'POST\',
+          url: \'' . $boardurl . '/web/cw-Anunciar.php\',
+          cache: false,
+          data: \'anuncio=\' +  encodeURIComponent($(\'#anuncio\').val()),
+          success: function(h) {
+            $(\'#cargandoBoxy\').css(\'display\', \'none\');
+            $(\'#cargandoBoxyc\').css(\'display\', \'block\');
+            $(\'#contentv\').remove();
+            $(\'#resultado\').removeClass(\'noesta\');
+            $(\'#resultado\').addClass(\'noesta-ve\');
+            $(\'#resultado\').html(h.substring(3)).fadeIn(\'fast\');
+            $(\'#mensaje-top\').html(\'Cambios guardados...\');
+          },
+          error: function() {
+            Boxy.alert(\'Error, volver a intentar...\', null, { title: \'Alerta\' });
+          }
+        });
       }
-    });
-  }
-</script>
-<?php 
-echo '
-  <div style="width: 300px;" align="center">
-    <div id="resultado" style="display: none;"></div>
-    <div id="contentv">
-      <strong class="size9">S&oacute;lo acepta BBCode</strong><br />
-      <input onfocus="foco(this);" onblur="no_foco(this);" maxlength="600" id="anuncio" style="width: 98%;" value="' . nohtml($modSettings['news']) . '" /><br />
-      <input class="login" value="Guardar cambios" onclick="EnviarAnuncio();" type="button" />
-    </div>
-  </div>';
+    </script>
+    <div style="width: 300px;" align="center">
+      <div id="resultado" style="display: none;"></div>
+      <div id="contentv">
+        <strong class="size9">S&oacute;lo acepta BBCode</strong>
+        <br />
+        <input onfocus="foco(this);" onblur="no_foco(this);" maxlength="600" id="anuncio" style="width: 98%;" value="' . $modSettings['news'] . '" />
+        <br />
+        <input class="login" value="Guardar cambios" onclick="EnviarAnuncio();" type="button" />
+      </div>
+    </div>';
 }
 
 ?>
