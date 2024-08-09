@@ -2,6 +2,7 @@
 
 $mbname = base64_decode('Q2FzaXRhV2ViIQ==');
 $webmaster_email = 'soporte@casitaweb.net';
+// TO-DO: Modificar ruta según corresponda
 $helpurl = 'http://localhost/casitaweb/sub-147s/ayuda';
 
 $maintenance = 0;
@@ -37,12 +38,15 @@ $cookiename = 'casitaweb';
 $language = 'english';
 $errordb = $mtitle . '<br /><span style="font-size: 9px; color: #CCCCCC;">#01274</span>';
 $db_error_send = base64_decode('MQ==');
+// TO-DO: Modificar ruta según corresponda
 $boardurl = 'http://localhost/casitaweb';
 $no_avatar = $boardurl . '/avatar.gif';
 $boarddir = 'C:\\wamp64\\www\\casitaweb';
 $themedir = $boarddir . '\\web\\archivos\\base';
 $sourcedir = $boarddir . '\\web\\archivos\\raizSeG414';
 $tranfer1 = $boardurl . '/images';
+$recaptcha_private = base64_decode('NkxkQjNTRXFBQUFBQUpja3RmcFR6bk9yc2tBU0NUaHEzUFRmc3dWZA==');
+$recaptcha_public = base64_decode('NkxkQjNTRXFBQUFBQUVnV3RBU0ZHN1Y5V09FMHZnYmpVc2RBdW9CUw==');
 
 $internetNO = '
   <!--[if lt IE 7.]>

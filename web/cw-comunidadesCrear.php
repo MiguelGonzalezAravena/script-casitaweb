@@ -34,7 +34,7 @@ $cat = isset($_POST['categoria']) ? seguridad($_POST['categoria']) : '';
  */
 
 if (!$user_settings['ID_GROUP']) {
-  if ($user_settings['ID_POST_GROUP'] == 4) { 
+  if ($user_settings['ID_POST_GROUP'] == 4 || $user_settings['ID_POST_GROUP'] == 0) { 
     // ID: 4 - Turista
     $cantidadcom = 1;
   } else if ($user_settings['ID_POST_GROUP'] == 5) {
@@ -119,7 +119,7 @@ if (!preg_match('~[^a-zA-Z0-9\-]~', stripslashes($url)) == 0) {
   }
 }
 
-if (!$cat || $cat == '-1') {
+if (!$cat || $cat == -1) {
   fatal_error('Debes elegir una categor&iacute;a');
 }
 

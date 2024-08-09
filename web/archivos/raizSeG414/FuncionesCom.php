@@ -276,11 +276,8 @@ function permisios($id) {
       AND id_com = $id
       LIMIT 1", __FILE__, __LINE__);
 
-    while ($row = mysqli_fetch_assoc($rs44)) {
-      $rango = $row['rango'];
-    }
-
-    $rango = isset($rango) ? $rango : '';
+    $row = mysqli_fetch_assoc($rs44);
+    $rango = isset($row['rango']) ? $row['rango'] : '';
 
     if ($rango == 1) {
       $context['permisoCom'] = 1;
@@ -323,7 +320,7 @@ function miembro($id) {
 }
 
 function eaprobacion($id_com) {
-  global $context, $db_prefix, $user_settings;
+  global $context, $db_prefix, $ID_MEMBER;
 
   // TO-DO: Quitar condición !$context['allow_admin'] &&
   if (!$context['user']['is_guest']) {
@@ -331,13 +328,12 @@ function eaprobacion($id_com) {
       SELECT id_user
       FROM {$db_prefix}comunidades_miembros
       WHERE id_com = $id_com
-      AND id_user = '{$user_settings['ID_MEMBER']}'
-      AND aprobado = 0
-      LIMIT 1", __FILE__, __LINE__);
+      AND id_user = $ID_MEMBER
+      AND aprobado = 0", __FILE__, __LINE__);
 
     $rows = mysqli_num_rows($request);
 
-    return ($rows > 0 ? true : false);
+    return $rows == 1;
   }
 }
 
@@ -460,7 +456,7 @@ function baneadoo($id) {
     AND id_user = $ID_MEMBER
     AND ban = 1
     AND aprobado = 1
-    LIMIT 1", __FILE__, __LINE__);
+    LIMIT 2", __FILE__, __LINE__);
 
   while ($row = mysqli_fetch_assoc($rs44)) {
     $ban_razon = $row['ban_razon'];
@@ -477,7 +473,7 @@ function baneadoo($id) {
         ban_expirate = '',
         ban_por = ''
         WHERE id = $idor
-        LIMIT 1", __FILE__, __LINE__);
+        LIMIT 3", __FILE__, __LINE__);
     } else {
       arriba();
 

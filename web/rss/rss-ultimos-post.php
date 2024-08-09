@@ -7,7 +7,7 @@ echo '<?xml version="1.0" encoding="UTF-8" ?>
 require_once(dirname(dirname(dirname(__FILE__))) . '/funcion-seg-1547.php');
 global $tranfer1, $db_prefix, $context, $user_info, $mbname, $boardurl;
 
-$shorturl = str_replace('http://', '', $boardurl);
+$shorturl = str_replace(array('http://', 'https://'), '', $boardurl);
 
 echo '
   <channel>

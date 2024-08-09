@@ -25,11 +25,11 @@ function BoardDisplay() {
   }
 
   $request = db_query("
-    SELECT ID_BOARD, ID_PARENT, childLevel, name, description, numTopics, numPosts
-    FROM {$db_prefix}boards
+    SELECT b.ID_BOARD, b.ID_PARENT, b.childLevel, b.name, b.description, b.numTopics, b.numPosts
+    FROM {$db_prefix}boards AS b
     WHERE {$user_info['query_see_board']}
     $shas
-    ORDER BY boardOrder", __FILE__, __LINE__);
+    ORDER BY b.boardOrder", __FILE__, __LINE__);
 
   while ($row = mysqli_fetch_assoc($request)) {
     $context['sitemap']['board'][$row['ID_BOARD']] = array(

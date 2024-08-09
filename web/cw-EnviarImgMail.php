@@ -72,16 +72,24 @@ $emailse = array($_POST['r_email'], $_POST['r_email1'], $_POST['r_email2'], $_PO
 
 $_POST['comment'] = trim(nohtml2(nohtml(censorText($_POST['comment']))));
 
-captcha(2);
+// Validar recaptcha
+$recaptcha_response = isset($_POST['g-recaptcha-response']) ? seguridad($_POST['g-recaptcha-response']) : '';
+$challenge = recaptcha_validation($recaptcha_response);
+
+if (!$challenge) {
+  fatal_error('Lo sentimos, no pudimos verificar que eres un humano. Por favor, int&eacute;ntalo de nuevo.');
+}
+
+$enlace = $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'];
 
 sendmail(
   $emailse,
   $_POST['titulo'],
   sprintf('Este mensaje ha sido enviado desde ' . $boardurl . ':') . "\n\n" .
   sprintf($_POST['comment']) . "\n\n" . 
-  sprintf('Enlace: <a href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '">' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '</a>')
+  sprintf('Enlace: <a href="' . $enlace . '">' . $enlace . '</a>')
 );
 
-header('Location: ' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE']);
+header('Location: ' . $enlace);
 
 ?>

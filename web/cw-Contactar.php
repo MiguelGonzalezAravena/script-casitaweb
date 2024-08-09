@@ -28,7 +28,13 @@ if (empty($_POST['comentario'])) {
   fatal_error('Debes agregar el comentario.');
 }
 
-captcha(2);
+// Validar recaptcha
+$recaptcha_response = isset($_POST['g-recaptcha-response']) ? seguridad($_POST['g-recaptcha-response']) : '';
+$challenge = recaptcha_validation($recaptcha_response);
+
+if (!$challenge) {
+  fatal_error('Lo sentimos, no pudimos verificar que eres un humano. Por favor, int&eacute;ntalo de nuevo.');
+}
 
 if (empty($_SERVER['REMOTE_ADDR'])) {
   fatal_error('S&oacute;lo personas con una direcci&oacute;n IP pueden contactarse con ' . $mbname . '.');

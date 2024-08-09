@@ -2,6 +2,9 @@
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
 global $txt, $modSettings, $db_prefix, $user_info, $no_avatar, $sourcedir;
 
+if (session_id() == '') {
+  session_start();
+}
 
 $nombre = isset($_POST['nombre']) ? seguridad($_POST['nombre']) : '';
 $nick = isset($_POST['user']) ? seguridad($_POST['user']) : '';
@@ -118,7 +121,17 @@ if (isset($_POST['birthdate']) && !empty($_POST['birthdate'])) {
 
 $cumple = seguridad($_POST['birthdate']);
 
-captcha('2');
+// reCaptcha challenge
+$recaptcha_response = isset($_POST['g-recaptcha-response']) ? seguridad($_POST['g-recaptcha-response']) : '';
+$challenge = recaptcha_validation($recaptcha_response);
+
+if (!$challenge) {
+  // var_dump($recaptcha_response);
+  // var_dump($challenge);
+  fatal_error('Lo sentimos, no pudimos verificar que eres un humano. Por favor, int&eacute;ntalo de nuevo.');
+}
+// var_dump($_SESSION['numeroxxx']);
+// captcha(2);
 
 if (empty($_POST['regagree']) || $_POST['regagree'] !== 'on') {
   fatal_error('Debes aceptar los T&eacute;rminos de uso y condiciones.');

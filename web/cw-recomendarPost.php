@@ -83,7 +83,13 @@ if (strlen($comentario) >= 700) {
   die('0: El comentario no puede tener 700 o m&aacute; letras.');
 }
 
-captcha(3);
+// Validar recaptcha
+$recaptcha_response = isset($_POST['g-recaptcha-response']) ? seguridad($_POST['g-recaptcha-response']) : '';
+$challenge = recaptcha_validation($recaptcha_response);
+
+if (!$challenge) {
+  fatal_error('Lo sentimos, no pudimos verificar que eres un humano. Por favor, int&eacute;ntalo de nuevo.');
+}
 
 $emailse = array($_POST['r_email'], $_POST['r_email1'], $_POST['r_email2'], $_POST['r_email3'], $_POST['r_email4'], $_POST['r_email5']);
 

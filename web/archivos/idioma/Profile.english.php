@@ -178,7 +178,7 @@ $txt['activate_changed_email'] = 'Has cambiado tu direcci&#243;n email. Para val
 $txt[394] = 'No se pudo enviar el email de recordatorio.';
 $txt[395] = 'Enviar email a';
 $txt[396] = 'para preguntar por la contrase&ntilde;a';
-$txt[669] = 'Recordatorio de Contrase&ntilde;a';
+$txt[669] = 'Recordatorio de contrase&ntilde;a';
 
 $txt['smf100'] = 'nick/e-mail';
 
@@ -186,7 +186,7 @@ $txt['smf100'] = 'nick/e-mail';
 $txt['reminder_subject'] = 'Nueva contrase&#241;a para ' . $context['forum_name'];
 $txt['reminder_mail'] = 'Se ha enviado este mensaje porque se ha aplicado la funci&#243;n "Recuperar mi contrase&#241;a" en tu cuenta. Para establecer una nueva contrase&#241;a haz clic en el siguiente enlace';
 $txt['reminder_sent'] = 'Se te ha enviado un mensaje a tu direcci&#243;on email. Haz clic en el enlace de dicho mensaje para establecer una nueva contrase&#241;a.';
-$txt['reminder_set_password'] = 'Establecer Contrase&#241;a';
+$txt['reminder_set_password'] = 'Establecer contrase&#241;a';
 $txt['reminder_password_set'] = 'Contrase&#241;a establecida correctamente';
 $txt['reminder_error'] = '%s fall&#243; la respuesta a la pregunta secreta al intentar cambiar la contrase&#241;a olvidada.';
 

@@ -110,23 +110,30 @@ function updateStats($type, $parameter1 = null, $parameter2 = null) {
       $changes = array(
         'memberlist_updated' => time(),
       );
+
       if (!empty($modSettings['registration_method']) && $modSettings['registration_method'] == 2) {
-        $result = db_query("SELECT COUNT(*), MAX(ID_MEMBER)
-        FROM {$db_prefix}members
-        WHERE is_activated = 1", __FILE__, __LINE__);
+        $result = db_query("
+          SELECT COUNT(*), MAX(ID_MEMBER)
+          FROM {$db_prefix}members
+          WHERE is_activated = 1", __FILE__, __LINE__);
+
         list($changes['totalMembers'], $changes['latestMember']) = mysqli_fetch_row($result);
         mysqli_free_result($result);
+
         $result = db_query("
-        SELECT realName
-        FROM {$db_prefix}members
-        WHERE ID_MEMBER = " . (int) $changes['latestMember'] . '
-        LIMIT 1', __FILE__, __LINE__);
+          SELECT realName
+          FROM {$db_prefix}members
+          WHERE ID_MEMBER = " . (int) $changes['latestMember'] . '
+          LIMIT 1', __FILE__, __LINE__);
+
         list($changes['latestRealName']) = mysqli_fetch_row($result);
         mysqli_free_result($result);
+
         $result = db_query("
-        SELECT COUNT(*)
-        FROM {$db_prefix}members
-        WHERE is_activated IN (3, 4)", __FILE__, __LINE__);
+          SELECT COUNT(*)
+          FROM {$db_prefix}members
+          WHERE is_activated IN (3, 4)", __FILE__, __LINE__);
+
         list($changes['unapprovedMembers']) = mysqli_fetch_row($result);
         mysqli_free_result($result);
       } else if ($parameter1 !== null && $parameter1 !== false) {

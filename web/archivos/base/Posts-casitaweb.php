@@ -232,10 +232,6 @@ function template_main() {
 
         mysqli_free_result($request);
       }
-
-      if (!$titulosssss) {
-        echo 'No hay posts relacionados.';
-      }
     } else {
       echo 'No hay posts relacionados.';
     }

@@ -1,6 +1,6 @@
 <?php
 function template_main() {
-  global $context, $settings, $tranfer1, $options, $txt, $scripturl, $boardurl;
+  global $context, $settings, $tranfer1, $options, $txt, $scripturl, $boardurl, $recaptcha_public;
 
   if ($context['user']['is_guest']) {
     echo '
@@ -17,7 +17,7 @@ function template_main() {
           <table border="0" width="363" cellspacing="0" cellpadding="4" class="windowbg">
             <tr align="left">
               <td colspan="2" class="smalltext" style="padding: 2ex;">
-                Con esta funci&oacute;n vas a poder recuperar la contrase&ntilde;a de tu cuenta, te llegar&aacute; un e-mail con los pasos a seguir.
+                Con esta funci&oacute;n vas a poder recuperar la contrase&ntilde;a de tu cuenta, te llegar&aacute; un correo con los pasos a seguir.
               </td>
             </tr>
             <tr align="left">
@@ -29,12 +29,9 @@ function template_main() {
             </tr>
             <tr align="left">
               <td width="40%" align="center">
-                <b class="size11">C&oacute;digo de la imagen:</b>
-                <br />';
-
-    captcha(1);
-
-    echo '
+                <b class="size11">Verificaci&oacute;n de seguridad:</b>
+                <br />
+                <div class="g-recaptcha" data-sitekey="' . $recaptcha_public . '"></div>
               </td>
             </tr>
             <tr>
@@ -45,7 +42,8 @@ function template_main() {
           </table>
           <input type="hidden" name="sc" value="' . $context['session_id'] . '" />
         </form>
-      </div>';
+      </div>
+      <script src="https://www.google.com/recaptcha/api.js" async defer></script>';
   } else {
     fatal_error('Ya iniciaste sesi&oacute;n con tu usuario.');
   }
@@ -55,7 +53,8 @@ function template_sent() {
   global $context, $settings, $options, $tranfer1, $scripturl;
 
   if ($context['user']['is_guest']) {
-    fatal_error('Se te ha enviado un mensaje a tu e-mail. Haz clic en el enlace de dicho correo para establecer una nueva contrase&ntilde;a.', false, 'E-mail enviado');
+    $context['error-web-page'] = false;
+    fatal_error('Se te ha enviado un mensaje a tu correo. Haz clic en el enlace de dicho correo para establecer una nueva contrase&ntilde;a.');
   } else {
     fatal_error('Ya iniciaste sesi&oacute;n con tu usuario.');
   }

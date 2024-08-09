@@ -93,8 +93,9 @@ if ($muro != '' || $quehago != '') {
               </div>';
             // FIN
           }
+
           $url = $boardurl . '/perfil/' . $nombremem . '/muro;ccIDmuro=' . $ivvd;
-          notificacionAGREGAR($idmem, '3', '', $url);
+          notificacionAGREGAR($idmem, 3, 0, $url);
 
           $_SESSION['ultima_accionTIME'] = time();
           die();

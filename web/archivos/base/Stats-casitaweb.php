@@ -71,20 +71,41 @@ function template_main() {
 <div class="box_300" align="left" style="float:left;">
 <div class="box_title" style="width: 300px;"><div class="box_txt box_300-34">10 Usuarios que m&aacute;s comentan</div>
 <div class="box_rss"><div class="icon_img"><img alt="" src="<?php echo $tranfer1; ?>/blank.gif" style="width: 16px; height: 16px;" border="0" /></div></div></div><div class="windowbg" style="width: 292px; padding: 4px;">
-<?php $order = array();
-  $r = db_query("SELECT count(id_user) as Rows, id_user FROM {$db_prefix}comentarios GROUP BY id_user ORDER BY Rows DESC LIMIT 30", __FILE__, __LINE__);
+<?php
+  $order = array();
+  $r = db_query("
+    SELECT id_user, COUNT(id_user) AS \"Rows\"
+    FROM {$db_prefix}comentarios
+    GROUP BY id_user
+    ORDER BY COUNT(id_user) DESC
+    LIMIT 30", __FILE__, __LINE__);
+
   while ($row = mysqli_fetch_assoc($r)) {
-    $r2 = db_query("SELECT count(ID_MEMBER) as Rowsd, ID_MEMBER FROM {$db_prefix}gallery_comment WHERE ID_MEMBER={$row['id_user']}
-GROUP BY ID_MEMBER ORDER BY Rowsd DESC LIMIT 10", __FILE__, __LINE__);
+    $r2 = db_query("
+      SELECT ID_MEMBER, COUNT(ID_MEMBER) AS \"Rowsd\"
+      FROM {$db_prefix}gallery_comment
+      WHERE ID_MEMBER = {$row['id_user']}
+      GROUP BY ID_MEMBER
+      ORDER BY Rowsd DESC
+      LIMIT 10", __FILE__, __LINE__);
+
     while ($row2 = mysqli_fetch_assoc($r2)) {
-      $sers = db_query("SELECT ID_MEMBER,realName FROM {$db_prefix}members WHERE ID_MEMBER='{$row2['ID_MEMBER']}' LIMIT 10", __FILE__, __LINE__);
+      $sers = db_query("
+        SELECT ID_MEMBER, realName
+        FROM {$db_prefix}members
+        WHERE ID_MEMBER = {$row2['ID_MEMBER']}
+        LIMIT 10", __FILE__, __LINE__);
+
       while ($grup = mysqli_fetch_assoc($sers)) {
         $order[$grup['realName']] = ($row2['Rowsd'] + $row['Rows']);
       }
     }
   }
+
   arsort($order);
+
   $e = 1;
+
   while ((list($i, $Valor) = each($order)) && $e <= 10) { ?>
 
 <span class="size11"><b><?php echo $e++; ?></b> - <a href="<?php echo $boardurl; ?>/perfil/<?php echo $i; ?>" title="<?php echo $i; ?>"><?php echo $i; ?></a> (<?php echo $Valor; ?> com)</span><br/>

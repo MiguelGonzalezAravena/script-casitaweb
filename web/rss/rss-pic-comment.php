@@ -13,7 +13,7 @@ echo '<?xml version="1.0" encoding="UTF-8" ?>
 require_once(dirname(dirname(dirname(__FILE__))) . '/funcion-seg-1547.php');
 global $tranfer1, $db_prefix, $context, $mbname, $boardurl;
 
-$shorturl = str_replace('http://', '', $boardurl);
+$shorturl = str_replace(array('http://', 'https://'), '', $boardurl);
 
 $comment_pic = db_query("
   SELECT c.comment, img.title, mem.realName, c.ID_COMMENT, img.ID_PICTURE

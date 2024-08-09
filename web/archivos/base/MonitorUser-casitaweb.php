@@ -1,7 +1,7 @@
 <?php
 
 function template_main() {
-  global $context, $db_prefix, $tranfer1, $user_settings, $no_avatar, $boardurl;
+  global $context, $db_prefix, $tranfer1, $user_settings, $no_avatar, $boardurl, $ID_MEMBER;
 
   echo '
     <div style="width: 794px; float: left;">

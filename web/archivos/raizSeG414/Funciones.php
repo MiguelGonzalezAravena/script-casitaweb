@@ -186,8 +186,8 @@ function notificacionQUE($que = '', $url = '', $extra = '', $boton = '') {
   }
 }
 
-function notificacionAGREGAR($us, $q, $f = 0, $urlExtra = '') {
-  global $user_settings, $db_prefix, $boardurl;
+function notificacionAGREGAR($us, $q, $f = '0', $urlExtra = '') {
+  global $user_settings, $db_prefix, $boardurl, $ID_MEMBER;
 
   if (empty($urlExtra)) {
     $aURL = str_replace('http://', '', $boardurl);
@@ -197,11 +197,12 @@ function notificacionAGREGAR($us, $q, $f = 0, $urlExtra = '') {
     $urlFinal = $urlExtra;
   }
 
-  if ($us <> $user_settings['ID_MEMBER']) {
+  if ($us != $ID_MEMBER) {
     $date = time();
+
     db_query("
-      INSERT INTO {$db_prefix}notificaciones (url, que, a_quien, por_quien, extra)
-      VALUES ('$urlFinal', $q, $us, {$user_settings['ID_MEMBER']}, $f)", __FILE__, __LINE__);
+      INSERT INTO {$db_prefix}notificaciones (url, que, a_quien, por_quien, extra, leido)
+      VALUES ('$urlFinal', $q, $us, $ID_MEMBER, $f, 0)", __FILE__, __LINE__);
 
     db_query("
       UPDATE {$db_prefix}members
@@ -431,7 +432,7 @@ function menuser($user) {
   $request = db_query("
     SELECT ID_MEMBER
     FROM {$db_prefix}messages
-    WHERE ID_MEMBER = '{$user}'
+    WHERE ID_MEMBER = $user
     $shas", __FILE__, __LINE__);
 
   $context['postuser'] = mysqli_num_rows($request);
@@ -476,8 +477,8 @@ function menuser($user) {
       <div class="windowbg" style="width: 130px; padding: 4px;overflow: hidden;">
         <center>';
 
-  $idgrup = $context['ID_POST_GROUP'];
-  $idgrup2 = $context['ID_GROUP'];
+  $idgrup = $context['ID_POST_GROUP'] != 0 ? $context['ID_POST_GROUP'] : 4;
+  $idgrup2 = $context['ID_GROUP'] != 0 ? $context['ID_GROUP'] : 4;
 
   $userse2 = db_query("
     SELECT groupName, ID_GROUP
@@ -858,14 +859,14 @@ function captcha($ds, $c = '') {
   global $tranfer1, $boardurl;
 
   if ($ds == 1) {
-    $_SESSION['numeroxxx'] = isset($_SESSION['numeroxxx']) ? $_SESSION['numeroxxx'] : '';
+    $_SESSION['numeroxxx'] = isset($_SESSION['numeroxxx']) ? $_SESSION['numeroxxx'] : -1;
 
     if ($_SESSION['numeroxxx'] < 1) {    
       $_SESSION['numeroxxx'] = '';
       unset($_SESSION['numeroxxx']);
 
       $aleatorio = mt_rand(1000, 9999);
-      $_SESSION['numeroxxx'] = (int) trim($aleatorio);
+      $_SESSION['numeroxxx'] = strval($aleatorio);
     }
 
     if (empty($c)) {
@@ -882,15 +883,16 @@ function captcha($ds, $c = '') {
         </table>';
     }
   } else {
-    $sas1 = (int) trim($_SESSION['numeroxxx']);
-    $sas2 = (int) trim($_POST['code']);
+    $sas1 = $_SESSION['numeroxxx'];
+    $sas2 = isset($_POST['code']) ? seguridad($_POST['code']) : '';
 
     if ($sas1 == $sas2) {
       $_SESSION['numeroxxx'] = '';
       unset($_SESSION['numeroxxx']);
     } else {
       if ($ds == 2) {
-        fatal_error('C&oacute;digo de imagen no v&aacute;lido.');
+        var_dump($_SESSION);
+        fatal_error('C&oacute;digo de imagen no v&aacute;lido.|sas1:' . $_SESSION['numeroxxx'] . '|sas2:' . $sas2);
       } else {
         die('0: C&oacute;digo de imagen no v&aacute;lido.' . $sas1 . '-' . $sas2);
       }
@@ -1775,7 +1777,15 @@ function generateProfileURL($id) {
   return $boardurl . '/perfil/' . $nick;
 }
 
+function recaptcha_validation($response) {
+  global $recaptcha_private;
 
+  $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . $recaptcha_private . '&response=' . $response;
+  $result = file_get_contents($recaptcha_url);
+  $decode = json_decode($result);
+
+  return $decode->success;
+}
 
 /*
 function flood() {}

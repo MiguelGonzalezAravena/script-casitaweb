@@ -12,7 +12,7 @@ echo '<?xml version="1.0" encoding="UTF-8" ?>
 require_once(dirname(dirname(dirname(__FILE__))) . '/funcion-seg-1547.php');
 global $tranfer1, $db_prefix, $user_info, $context, $mbname, $boardurl;
 
-$shorturl = str_replace('http://', '', $boardurl);
+$shorturl = str_replace(array('http://', 'https://'), '', $boardurl);
 
 $request = db_query("
   SELECT id_post

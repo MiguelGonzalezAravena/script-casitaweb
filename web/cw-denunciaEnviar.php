@@ -23,7 +23,7 @@ timeforComent();
 
 switch ($tipo) {
   case 'imagen':
-    if ($razon == 'Imagen ya agregada' || $razon == 'Se hace Spam' || $razon == 'Contiene Pornografia' || $razon == 'Es Gore o asqueroso' || $razon == 'No cumple con el protocolo' || $razon == 'Otra razon (especificar)') {
+    if ($razon == 'Imagen ya agregada' || $razon == 'Se hace spam' || $razon == 'Contiene pornografia' || $razon == 'Es gore o asqueroso' || $razon == 'No cumple con el protocolo' || $razon == 'Otra razon (especificar)') {
       $request = db_query("
         SELECT ID_PICTURE, title, ID_MEMBER
         FROM {$db_prefix}gallery_pic
@@ -65,7 +65,7 @@ switch ($tipo) {
     }
     break;
   case 'post':
-    if ($razon == 'Re-post' || $razon == 'Se hace Spam' || $razon == 'Tiene enlaces muertos' || $razon == 'Es Racista o irrespetuoso' || $razon == 'Contiene informacion personal' || $razon == 'Contiene Pornografia' || $razon == 'Es Gore o asqueroso' || $razon == 'Esta mal la fuente' || $razon == 'Post demasiado pobre' || $razon == 'El Titulo esta en mayuscula' || $razon == 'Pide contrasena y no esta' || $razon == 'No cumple con el protocolo' || $razon == 'Otra razon (especificar)') {
+    if ($razon == 'Re-post' || $razon == 'Se hace spam' || $razon == 'Tiene enlaces muertos' || $razon == 'Es racista o irrespetuoso' || $razon == 'Contiene informacion personal' || $razon == 'Contiene pornografia' || $razon == 'Es gore o asqueroso' || $razon == 'Esta mal la fuente' || $razon == 'Post demasiado pobre' || $razon == 'El titulo esta en mayuscula' || $razon == 'Pide contrasena y no esta' || $razon == 'No cumple con el protocolo' || $razon == 'Otra razon (especificar)') {
       $request = db_query("
         SELECT subject, ID_TOPIC, ID_MEMBER, ID_BOARD
         FROM {$db_prefix}messages
@@ -111,7 +111,7 @@ switch ($tipo) {
     }
     break;
   case 'user':
-    if ($razon == 'Hace Spam' || $razon == 'Es Racista o irrespetuoso' || $razon == 'Publica informacion personal' || $razon == 'Publica Pornografia' || $razon == 'No cumple con el protocolo' || $razon == 'Otra razon (especificar)') {
+    if ($razon == 'Hace spam' || $razon == 'Es racista o irrespetuoso' || $razon == 'Publica informacion personal' || $razon == 'Publica pornografia' || $razon == 'No cumple con el protocolo' || $razon == 'Otra razon (especificar)') {
       $request = db_query("
         SELECT realName, ID_MEMBER
         FROM {$db_prefix}members
@@ -132,7 +132,7 @@ switch ($tipo) {
         SELECT id_user
         FROM {$db_prefix}denuncias
         WHERE id_user = $ID_MEMBER
-        AND id_post = $ID_TOPIC2
+        AND id_post = $ddssss
         AND tipo = 3
         LIMIT 1", __FILE__, __LINE__);
 
@@ -146,7 +146,7 @@ switch ($tipo) {
 
       db_query("
         INSERT INTO {$db_prefix}denuncias (id_post, id_user, razon, comentario, name_post, tipo, tiempo)
-        VALUES ($ID_TOPIC2, $ID_MEMBER, '$razon', '$comentario', '$rdasdasdasd', 3, $tiempo)", __FILE__, __LINE__);
+        VALUES ($ddssss, $ID_MEMBER, '$razon', '$comentario', '$rdasdasdasd', 3, $tiempo)", __FILE__, __LINE__);
     } else {
       die('0: Hubo un error con la raz&oacute;n.');
     }

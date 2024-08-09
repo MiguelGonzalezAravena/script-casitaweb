@@ -344,7 +344,7 @@ function template_tyc999() {
 }
 
 function template_tyc666() {
-  global $tranfer1, $context, $settings, $db_prefix, $options, $sourcedir, $ID_MEMBER, $txt, $modSettings, $scripturl;
+  global $tranfer1, $context, $settings, $db_prefix, $options, $sourcedir, $ID_MEMBER, $txt, $modSettings, $scripturl, $boardurl;
 
   require ($sourcedir . '/Hear-Buscador.php');
   hearBuscador('0', 't');
@@ -499,8 +499,9 @@ function template_tyc666() {
   }
 }
 
+// Recomendar imagen
 function template_tyc12() {
-  global $tranfer1, $txt, $db_prefix, $context, $scripturl, $sourcedir;
+  global $tranfer1, $txt, $db_prefix, $context, $scripturl, $sourcedir, $boardurl, $recaptcha_public;
 
   $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
@@ -577,26 +578,25 @@ Saludos!
 ' . $context['user']['name'] . '</textarea>
               <br />
               <br />
-              <b style="font-size: 11px;">C&oacute;digo de la imagen:</b>
-              <br />';
-
-  captcha(1);
-
-  echo '
-            <br />
-            <input onclick="return showr_email(this.form.comment.value);" type="submit" class="login" name="send" value="Recomendar imagen" />
-            <br />
-            <a href="' . $boardurl . '/imagenes/ver/' . (int) $id . '" title="&#171; Volver a la imagen" target="_self">&#171; Volver a la imagen</a>
-            <input type="hidden" name="id" value="' . (int) $id . '" />
-          </form>
-        </center>
+              <b style="font-size: 11px;">Verificaci&oacute;n de seguridad:</b>
+              <br />
+              <div class="g-recaptcha" data-sitekey="' . $recaptcha_public . '"></div>
+              <br />
+              <input onclick="return showr_email(this.form.comment.value);" type="submit" class="login" name="send" value="Recomendar imagen" />
+              <br />
+              <a href="' . $boardurl . '/imagenes/ver/' . $id . '" title="&#171; Volver a la imagen" target="_self">&#171; Volver a la imagen</a>
+              <input type="hidden" name="id" value="' . $id . '" />
+            </form>
+          </center>
         </div>
       </div>
-    </div>';
+    </div>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>';
 }
 
+// Contacto
 function template_tyc6() {
-  global $tranfer1, $context, $boardurl;
+  global $tranfer1, $context, $boardurl, $recaptcha_public;
 
   $ok = isset($_GET['ok']) ? $_GET['ok'] : '';
 
@@ -677,12 +677,9 @@ function template_tyc6() {
                 <textarea onfocus="foco(this);" onblur="no_foco(this);" name="comentario" style="width: 249px;" cols="40" rows="5" tabindex="7"></textarea>
                 <label id="comentario"></label>
                 <br />
-                <b class="size11">* C&oacute;digo de la imagen</b>
-                <br />';
-
-    captcha(1);
-
-    echo '
+                <b class="size11">* Verificaci&oacute;n de seguridad:</b>
+                <br />
+                <div class="g-recaptcha" data-sitekey="' . $recaptcha_public . '"></div>
                 <label id="visual_verification_code"></label>
                 <br />
                 <font class="size11" style="color: red;">* Campos obligatorios</font>
@@ -694,7 +691,8 @@ function template_tyc6() {
             </div>
           </div>
         </form>
-      </div>';
+      </div>
+      <script src="https://www.google.com/recaptcha/api.js" async defer></script>';
   }
 }
 
@@ -922,7 +920,7 @@ function template_vr2965() {
 
     while ($row = mysqli_fetch_array($request)) {
       echo '
-        <b class="size11">Titulo:</b>
+        <b class="size11">T&iacute;tulo:</b>
         <span title="' . censorText($row['titulo']) . '">' . censorText($row['titulo']) . '</span>
         -
         <span class="size11">
@@ -1460,7 +1458,7 @@ function template_quickreply_box() {
   global $tranfer1, $db_prefix, $context, $txt;
 
   echo '
-    <b class="size11">Titulo:</b>
+    <b class="size11">T&iacute;tulo:</b>
     <br />
     <input name="titulo" tabindex="1" size="60" maxlength="60" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
     <br />
@@ -1476,15 +1474,15 @@ function template_quickreply_box() {
 
   while ($row = mysqli_fetch_assoc($existe)) {
     echo '
-      <span style="cursor: pointer;" onclick="replaceText(\' ', $row['code'], '\', document.forms.agregarp.texto); return false;">
-        <img class="png" src="' . $tranfer1 . '/emoticones/' . $row['filename'] . '" align="bottom" alt="" title="', $row['description'], '" />
+      <span style="cursor: pointer;" onclick="replaceText(\' ' . $row['code'] . '\', document.forms.agregarp.texto); return false;">
+        <img class="png" src="' . $tranfer1 . '/emoticones/' . $row['filename'] . '" align="bottom" alt="" title="' . $row['description'] . '" />
       </span> ';
   }
 
   mysqli_free_result($existe);
 
   if (!empty($context['smileys']['popup'])) {
-    echo '<a href="javascript:moticonup()">[', $txt['more_smileys'], ']</a>';
+    echo '<a href="javascript:moticonup()">[' . $txt['more_smileys'] . ']</a>';
   }
 
   echo '

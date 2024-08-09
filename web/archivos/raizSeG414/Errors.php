@@ -175,7 +175,7 @@ function fatal_error($error, $log = false, $title = null, $botn = null) {
 
       $datosmem2 = db_query("
         SELECT b.description, p.subject
-        FROM {$db_prefix}messages AS p,{$db_prefix}boards AS b
+        FROM {$db_prefix}messages AS p, {$db_prefix}boards AS b
         WHERE p.ID_TOPIC = $topic
         AND b.ID_BOARD = p.ID_BOARD
         LIMIT 1", __FILE__, __LINE__);

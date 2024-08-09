@@ -70,21 +70,17 @@ Saludos,
 ' . $user_settings['memberName'] . '</textarea>
       <br /><br />
       <font class="size11">
-        <b>C&oacute;digo de la imagen:</b>
+        <b>Verificaci&oacute;n de seguridad:</b>
       </font>
       <br />
-      <div style="width: 127px;">
-        <div style="float: left;">
-          <img src="' . $boardurl . '/web/captcha/index.php?id=' . captcha(1, 1) . '" alt="" style="margin-bottom: 2px;" />
-        </div>
-        <div style="float: right;">
-          <input size="10" type="text" onfocus="foco(this);" onblur="no_foco(this);" style="text-transform: uppercase; text-align: center;" maxlength="4" id="code" name="code" />
-        </div>
+      <div style="width: 307px;">
+        <div class="g-recaptcha" data-sitekey="' . $recaptcha_public . '"></div>
         <div class="clearfix"></div>
       </div>
       <br />
       <input onclick="recomendarPost(\'' . $_GET['id'] . '\');" type="submit" class="login" name="send" value="Recomendar post" />
     </div>
-  </div>';
+  </div>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>';
 
 ?>

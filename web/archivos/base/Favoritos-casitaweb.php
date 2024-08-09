@@ -35,7 +35,10 @@ function template_intro() {
     $request = db_query("
       SELECT f.id, m.subject, c.description, m.ID_TOPIC, m.posterName, m.puntos
       FROM {$db_prefix}messages AS m, {$db_prefix}bookmarks AS f, {$db_prefix}boards AS c
-      WHERE f.ID_MEMBER='$myser' AND f.tipo=0 AND m.ID_TOPIC=f.ID_TOPIC AND c.ID_BOARD=m.ID_BOARD
+      WHERE f.ID_MEMBER = $myser
+      AND f.tipo = 0
+      AND m.ID_TOPIC = f.ID_TOPIC
+      AND c.ID_BOARD = m.ID_BOARD
       ORDER BY f.id DESC
       LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
 
@@ -68,7 +71,7 @@ function template_intro() {
       echo '
         </div>
         <div style="clear: left;"></div>
-        <div class="noesta" style="width:922px;">No tienes ning&uacute;n post favorito.</div>';
+        <div class="noesta" style="width: 922px;">No tienes ning&uacute;n post favorito.</div>';
     } else {
       echo '
         <table class="linksList" style="width: 757px;">

@@ -1073,8 +1073,8 @@ function template_crearcomunidad() {
 
   arriba('CrearCom');
 
-  if (!$user_settings['ID_GROUP']) {
-    if ($user_settings['ID_POST_GROUP'] == 4) {
+  if (!$user_settings['ID_GROUP'] || $user_settings['ID_GROUP'] == 0) {
+    if ($user_settings['ID_POST_GROUP'] == 4 || $user_settings['ID_POST_GROUP'] == 0) {
       $cantidadcom = 1;
     } else if ($user_settings['ID_POST_GROUP'] == 5) {
       $cantidadcom = 2;
@@ -1478,8 +1478,8 @@ function template_ctema() {
           <div class="windowbg" style="width: 550px; padding: 4px;">
             <form name="add_comunidad" id="nuevocoment" method="post" action="' . $boardurl . '/web/cw-comunidadesCrearTema.php">
               <div class="form-container">
-                <label for="uname">Titulo:</label>
-                <input style="width:540px;" onfocus="foco(this);" onblur="no_foco(this);" class="c_input" value="" name="titulo" tabindex="1" datatype="text" dataname="Titulo" type="text" />
+                <label for="uname">T&iacute;tulo:</label>
+                <input style="width: 540px;" onfocus="foco(this);" onblur="no_foco(this);" class="c_input" value="" name="titulo" tabindex="1" datatype="text" dataname="Titulo" type="text" />
                 <div class="clearBoth"></div>
                 <div class="data">
                   <label for="uname">Cuerpo:</label>
@@ -1538,19 +1538,18 @@ function template_etema() {
     WHERE a.id = $id
     AND a.eliminado = 0
     AND a.id_com = c.id
-    AND c.categoria = ca.url
+    AND c.categoria = ca.id
     LIMIT 1", __FILE__, __LINE__);
 
-  while ($row = mysqli_fetch_assoc($rs)) {
-    $titulo = nohtml(nohtml2($row['titulo']));
-    $cuerpo = nohtml(nohtml2($row['cuerpo']));
-    $idc = $row['id_com'];
-    $stiky = $row['stiky'];
-    $nocoment = $row['nocoment'];
-    $id_user = $row['id_user'];
+  $row = mysqli_fetch_assoc($rs);
+  $titulo = isset($row['titulo']) ? $row['titulo'] : '';
+  $cuerpo = isset($row['cuerpo']) ? $row['cuerpo'] : '';
+  $idc = isset($row['id_com']) ? $row['id_com'] : '';
+  $stiky = isset($row['stiky']) ? $row['stiky'] : '';
+  $nocoment = isset($row['nocoment']) ? $row['nocoment'] : '';
+  $id_user = isset($row['id_user']) ? $row['id_user'] : '';
 
-    arriba('EditarTema', $boardurl . '/comunidades/categoria/' . $row['urlCat'], $row['nombreCat'], $boardurl . '/comunidades/' . $row['url'] . '/', '' . nohtml(nohtml2($row['nombre'])), $boardurl . '/comunidades/' . $row['url'] . '/' . $row['id'] . '/' . urls($titulo) . '.html', $titulo);
-  }
+  arriba('EditarTema', $boardurl . '/comunidades/categoria/' . $row['urlCat'], $row['nombreCat'], $boardurl . '/comunidades/' . $row['url'] . '/', $row['nombre'], $boardurl . '/comunidades/' . $row['url'] . '/' . $row['id'] . '/' . urls($titulo) . '.html', $titulo);
 
   if (!$titulo) {
     fatal_error('No puedes editar este tema.');
@@ -1559,7 +1558,7 @@ function template_etema() {
   permisios($idc);
   acces($idc);
 
-  if (in_array($context['permisoCom'], [1, 2, 3] || $id_user == $ID_MEMBER)) {
+  if (in_array($context['permisoCom'], [1, 2, 3]) || $id_user == $ID_MEMBER) {
     if (in_array($context['puedo'], [1, 3])) {
       echo '
         <div style="width: 354px; float: left; margin-right: 8px;">
@@ -1593,7 +1592,7 @@ function template_etema() {
             <div class="windowbg" style="width: 550px; padding: 4px;">
               <form name="add_comunidad" id="nuevocoment" method="post" action="' . $boardurl . '/web/cw-comunidadesEditarTema.php">
                 <div class="form-container">
-                  <label for="uname">Titulo:</label>
+                  <label for="uname">T&iacute;tulo:</label>
                   <input style="width: 540px;" onfocus="foco(this);" onblur="no_foco(this);" class="c_input" value="' . $titulo . '" name="titulo" tabindex="1" datatype="text" dataname="Titulo" type="text" />
                   <div class="clearBoth"></div>
                   <div class="data">

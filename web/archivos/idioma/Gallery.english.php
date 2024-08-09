@@ -37,7 +37,7 @@ $txt['gallery_who_viewpicture'] = ' estan viendo esta imagen.';
 $txt['gallery_who_members'] = 'Usuarios';
 $txt['gallery_who_hidden'] = 'Visitantes';
 
-$txt['gallery_form_title'] = 'Titulo:';
+$txt['gallery_form_title'] = 'T&iacute;tulo:';
 $txt['gallery_form_description'] = 'Descripci&oacute;n:';
 $txt['gallery_form_icon'] = 'Icono de la Galer&iacute;a';
 

@@ -8,10 +8,6 @@ if ($user_info['is_guest']) {
 
 require_once($sourcedir . '/FuncionesCom.php');
 
-if (eaprobacion($ddddsaaat)) {
-  fatal_error('Esperando aprobaci&oacute;n de Administrador.');
-}
-
 $id = isset($_GET['id']) ? seguridad($_GET['id']) : '';
 
 if (empty($id)) {
@@ -26,15 +22,18 @@ $request = db_query("
   LIMIT 1", __FILE__, __LINE__);
 
 $row = mysqli_fetch_assoc($request);
-$dasdasd = $row['id'];
-$dasdasd = isset($dasdasd) ? $dasdasd : '';
+$dasdasd = isset($row['id']) ? $row['id'] : '';
 
 if (empty($dasdasd)) {
   fatal_error('Debes seleccionar una comunidad.');
 }
 
+if (eaprobacion($dasdasd)) {
+  fatal_error('Esperando aprobaci&oacute;n de Administrador.');
+}
+
 baneadoo($dasdasd);
-permisios($id_comvv);
+permisios($dasdasd);
 
 if ($context['permisoCom'] == 1) {
   $request = db_query("

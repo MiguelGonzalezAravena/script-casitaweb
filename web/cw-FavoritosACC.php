@@ -6,13 +6,6 @@ $tipo = $_GET['tipo'];
 $tip = $tipo == 'imagen' ? 'imagen' : 'posts';
 $myser = $ID_MEMBER;
 $idcc = ($tip == 'posts' ? 0 : ($tip == 'imagen' ? 1 : 0));
-
-if (!$user_info['is_admin']) {
-  $shas = ' AND p.ID_BOARD <> 142';
-} else {
-  $shas = '';
-}
-
 $topicw = ($idcc == 0 ? (int) $_GET['post'] : ($idcc == 1 ? (int) $_GET['kjas'] : 0));
 $topic = $topicw != 0 ? 'topic' : '';
 
@@ -69,7 +62,6 @@ if ($topic != 'topic') {
       SELECT ID_TOPIC, ID_MEMBER
       FROM {$db_prefix}messages
       WHERE ID_TOPIC = $topicw
-      $shas
       AND ID_MEMBER = $myser", __FILE__, __LINE__);
 
     $rows = mysqli_num_rows($request);
@@ -114,7 +106,6 @@ if ($topic != 'topic') {
       FROM {$db_prefix}messages AS p, {$db_prefix}boards AS b
       WHERE p.ID_TOPIC = $topicw
       AND b.ID_BOARD = p.ID_BOARD
-      $shas
       LIMIT 1", __FILE__, __LINE__);
 
     $row = mysqli_fetch_assoc($request);

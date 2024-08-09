@@ -1,3 +1,4 @@
+// TO-DO: Modificar ruta según corresponda
 var boardUrl = 'http://localhost/casitaweb';
 
 // Primer packer
@@ -333,7 +334,7 @@ function chgsec(obj) {
 function reacTemas(id) {
   $.ajax({
     type: 'GET',
-    url: '/web/cw-comunidadesReacTem.php',
+    url: boardUrl + '/web/cw-comunidadesReacTem.php',
     data: 'id=' + id,
     success: function(h) {
       if (h.charAt(0) == 0) {
@@ -666,7 +667,7 @@ function recomendarPost(id) {
     type: 'POST',
     url: boardUrl + '/web/cw-recomendarPost.php',
     cache: false,
-    data: 'post=' + id + '&r_email=' + encodeURIComponent($('.r_email').val()) + '&r_email1=' + encodeURIComponent($('.r_email1').val()) + '&r_email2=' + encodeURIComponent($('.r_email2').val()) + '&r_email3=' + encodeURIComponent($('.r_email3').val()) + '&r_email4=' + encodeURIComponent($('.r_email4').val()) + '&r_email5=' + encodeURIComponent($('.r_email5').val()) + '&titulo=' + encodeURIComponent($('#titulo').val()) + '&comment=' + encodeURIComponent($('#comment').val()) + '&code=' + encodeURIComponent($('#code').val()),
+    data: 'post=' + id + '&r_email=' + encodeURIComponent($('.r_email').val()) + '&r_email1=' + encodeURIComponent($('.r_email1').val()) + '&r_email2=' + encodeURIComponent($('.r_email2').val()) + '&r_email3=' + encodeURIComponent($('.r_email3').val()) + '&r_email4=' + encodeURIComponent($('.r_email4').val()) + '&r_email5=' + encodeURIComponent($('.r_email5').val()) + '&titulo=' + encodeURIComponent($('#titulo').val()) + '&comment=' + encodeURIComponent($('#comment').val()) + '&g-recaptcha-response=' + encodeURIComponent(grecaptcha.getResponse()),
     success: function(h) {
       $('#cargandoBoxy').css('display', 'none');
       $('#cargandoBoxyc').css('display', 'block');

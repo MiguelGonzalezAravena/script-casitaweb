@@ -15,7 +15,7 @@ if ($user_info['is_admin'] || $user_info['is_mods']) {
           </div>
         </div>
         <div style="width: 914px; padding: 4px;" class="windowbg">
-          <b class="size11">Titulo:</b>
+          <b class="size11">T&iacute;tulo:</b>
           <br />
           <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="titulo" value="" tabindex="1" style="width: 907px;" maxlength="60" />
           <br />

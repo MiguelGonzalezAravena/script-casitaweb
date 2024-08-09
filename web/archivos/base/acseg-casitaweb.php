@@ -242,9 +242,9 @@ function template_tyc12() {
   }
 }
 
-// Recomendar
+// Recomendar web
 function template_tyc() {
-  global $tranfer1, $context, $mbname, $boardurl;
+  global $tranfer1, $context, $mbname, $boardurl, $recaptcha_public;
 
   echo '
     <script type="text/javascript">
@@ -305,23 +305,21 @@ function template_tyc() {
 Saludos!
 
 ' . $context['user']['name'] . '</textarea>
-                <br />
-                <br />
-                <font class="size11">
-                  <strong>C&oacute;digo de la imagen:</strong>
-                </font>
-                <br />';
-
-  captcha(1);
-
-  echo '
-            <br />
-            <input onclick="return showr_email(this.form.comment.value);" type="submit" class="login" name="send" value="Recomendar ' . $mbname . '" />
-          </form>
-        </center>
+              <br />
+              <br />
+              <font class="size11">
+                <strong>Verificaci&oacute;n de seguridad:</strong>
+              </font>
+              <br />
+              <div class="g-recaptcha" data-sitekey="' . $recaptcha_public . '"></div>
+              <br />
+              <input onclick="return showr_email(this.form.comment.value);" type="submit" class="login" name="send" value="Recomendar ' . $mbname . '" />
+            </form>
+          </center>
         </div>
       </div>
-    </div>';
+    </div>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>';
 }
 
 // Enlázanos
@@ -524,7 +522,7 @@ function template_tyc3() {
   if (!$modSettings['requireAgreement'] || !$modSettings['terminos']) {
     fatal_error('Los T&eacute;rminos y Condiciones no est&aacute;n habilitados.', false);
   } else {
-    $shorturl = str_replace('http://', '', $boardurl);
+    $shorturl = str_replace(array('http://', 'https://'), '', $boardurl);
     // $modSettings['terminos']
     echo '
       <div>

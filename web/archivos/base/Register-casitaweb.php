@@ -1,6 +1,6 @@
 <?php
 function template_before() {
-  global $context, $settings, $options, $scripturl, $txt, $modSettings, $no_avatar, $tranfer1, $boardurl, $mbname;
+  global $context, $settings, $options, $scripturl, $txt, $modSettings, $no_avatar, $tranfer1, $boardurl, $mbname, $recaptcha_public;
 
   $VarJS1 = '
     if (!document.forms.creator.regagree.checked) {
@@ -406,49 +406,46 @@ function template_before() {
   }
 
   echo '
-                </select>
-                <span id="MostrarError8" class="capsprot">Selecciona el d&iacute;a.</span>
-                <span id="MostrarError9" class="capsprot">Selecciona el mes.</span>
-                <span id="MostrarError10" class="capsprot">Selecciona el a&ntilde;o.</span>
-              </td>
-            </tr>
-            <tr>
-              <td align="right" width="40%">
-                <font class="size11"><b>Avatar:</b></font>
-              </td>
-              <td>
-                <input tabindex="12" type="text" onfocus="foco(this);" onblur="no_foco(this);" name="avatar" size="30" value="' . $no_avatar . '" />
-              </td>
-            </tr>
-            <tr>
-              <td align="right" width="40%">
-                <font class="size11">
-                  <b>Sitio Web / Blog:</b>
-                </font>
-              </td>
-              <td>
-                <input tabindex="13" type="text" onfocus="foco(this);" onblur="no_foco(this);" name="url" size="30" value="http://" />
-              </td>
-            </tr>
-            <tr>
-              <td align="right" width="40%">
-                <font class="size11">
-                  <b>Mensaje personal:</b>
-                </font>
-              </td>
-              <td>
-                <input tabindex="14" type="text" onfocus="foco(this);" onblur="no_foco(this);" name="personalText" size="30" maxlength="21" value="" />
-              </td>
-            </tr>
-            <tr>
-              <td width="40%" align="right" valign="top">
-                <font class="size11">* <b>C&oacute;digo de la imagen:</b>
-              </td>
-              <td>';
-
-  captcha(1);
-
-  echo '
+                  </select>
+                  <span id="MostrarError8" class="capsprot">Selecciona el d&iacute;a.</span>
+                  <span id="MostrarError9" class="capsprot">Selecciona el mes.</span>
+                  <span id="MostrarError10" class="capsprot">Selecciona el a&ntilde;o.</span>
+                </td>
+              </tr>
+              <tr>
+                <td align="right" width="40%">
+                  <font class="size11"><b>Avatar:</b></font>
+                </td>
+                <td>
+                  <input tabindex="12" type="text" onfocus="foco(this);" onblur="no_foco(this);" name="avatar" size="30" value="' . $no_avatar . '" />
+                </td>
+              </tr>
+              <tr>
+                <td align="right" width="40%">
+                  <font class="size11">
+                    <b>Sitio Web / Blog:</b>
+                  </font>
+                </td>
+                <td>
+                  <input tabindex="13" type="text" onfocus="foco(this);" onblur="no_foco(this);" name="url" size="30" value="http://" />
+                </td>
+              </tr>
+              <tr>
+                <td align="right" width="40%">
+                  <font class="size11">
+                    <b>Mensaje personal:</b>
+                  </font>
+                </td>
+                <td>
+                  <input tabindex="14" type="text" onfocus="foco(this);" onblur="no_foco(this);" name="personalText" size="30" maxlength="21" value="" />
+                </td>
+              </tr>
+              <tr>
+                <td width="40%" align="right" valign="top">
+                  <font class="size11">* <b>Verificaci&oacute;n de seguridad:</b>
+                </td>
+                <td>
+                  <div class="g-recaptcha" data-sitekey="' . $recaptcha_public . '"></div>
                   <div id="MostrarError12" class="capsprotBAJO" style="width: 168px">Escribe el c&oacute;digo.</div>
                 </td>
               </tr>
@@ -464,7 +461,8 @@ function template_before() {
           </form>
         </div>
       </div>
-    </div>';
+    </div>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>';
 }
 
 ?>

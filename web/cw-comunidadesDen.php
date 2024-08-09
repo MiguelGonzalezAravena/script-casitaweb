@@ -60,8 +60,8 @@ if (!$context['user']['is_guest'] && !$context['permisoCom']) {
   }
 
   db_query("
-    INSERT INTO {$db_prefix}denuncias (comentario, razon, name_post, id_post, id_user, tipo, tiempo)
-    VALUES ('$comentario', '$razon', '$url', $Esta, $ID_MEMBER, 5, " . time() . ')', __FILE__, __LINE__);
+    INSERT INTO {$db_prefix}denuncias (comentario, razon, name_post, id_post, id_user, tipo)
+    VALUES ('$comentario', '$razon', '$url', $Esta, $ID_MEMBER, 5)", __FILE__, __LINE__);
 }
 
 fatal_error('Tu denuncia fue enviada correctamente<br />Un moderador del sitio la verificar&aacute; en breve, Gracias', false, 'Denuncia enviada');

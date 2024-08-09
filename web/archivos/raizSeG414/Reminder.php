@@ -47,7 +47,13 @@ function RemindMail() {
 
   mysqli_free_result($request);
 
-  captcha(2);
+  // Validar recaptcha
+  $recaptcha_response = isset($_POST['g-recaptcha-response']) ? seguridad($_POST['g-recaptcha-response']) : '';
+  $challenge = recaptcha_validation($recaptcha_response);
+
+  if (!$challenge) {
+    fatal_error('Lo sentimos, no pudimos verificar que eres un humano. Por favor, int&eacute;ntalo de nuevo.');
+  }
 
   $row['emailAddress'] = trim($row['emailAddress']);
 
@@ -64,27 +70,27 @@ function RemindMail() {
     )
   );
 
-  require_once ($sourcedir . '/Subs-Post.php');
+  require_once($sourcedir . '/Subs-Post.php');
 
   // TO-DO: Probar funcionalidad sendmail
   $enlace = $boardurl . '/recuperar-pass/user-' . $row['ID_MEMBER'] . '/id-' . $password;
 
   sendmail(
     $row['emailAddress'],
-    'Recuperar mi contrase&ntilde;a',
+    html_entity_decode('Recuperar mi contrase&ntilde;a'),
     sprintf(
       'Se ha enviado este mensaje porque se ha aplicado la funci&oacute;n "Recuperar mi contrase&ntilde;a" en tu cuenta.' .
-      'Para establecer una nueva contrase&ntilde;a, haz clic en el siguiente enlace:' .
+      '&nbsp;Para establecer una nueva contrase&ntilde;a, haz clic en el siguiente enlace:' .
       "\n"
     ) .
     sprintf('<a href="' . $enlace . '">' . $enlace . '</a>')
   );
 
-  $context += array(
-    'page_title' => &$txt[194],
-    'sub_template' => 'sent',
-    'description' => &$txt['reminder_sent']
-  );
+  if ($context['user']['is_guest']) {
+    fatal_error('Se te ha enviado un mensaje a tu correo. Haz clic en el enlace de dicho correo para establecer una nueva contrase&ntilde;a.');
+  } else {
+    fatal_error('Ya iniciaste sesi&oacute;n con tu usuario.');
+  }
 }
 
 function setPassword() {

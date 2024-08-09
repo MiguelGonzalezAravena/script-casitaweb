@@ -1,3 +1,4 @@
+// TO-DO: Modificar ruta según corresponda
 var boardUrl = 'http://localhost/casitaweb'
 var CROSSHAIRS_LOCATION = boardUrl + '/images/crosshairs.png';
 var HUE_SLIDER_LOCATION = boardUrl + '/images/h.png';

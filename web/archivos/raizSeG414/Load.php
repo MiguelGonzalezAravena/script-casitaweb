@@ -985,8 +985,9 @@ function loadSession() {
     // session_start();
 
     // Change it so the cache settings are a little looser than default.
-    if (!empty($modSettings['databaseSession_loose']))
+    if (!empty($modSettings['databaseSession_loose'])) {
       header('Cache-Control: private');
+    }
   }
 
   // While PHP 4.1.x should use $_SESSION, it seems to need this to do it right.

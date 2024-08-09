@@ -113,6 +113,8 @@ if ($user_info['is_admin'] || $user_info['is_mods']) {
   } else {
     $colorsticky = '';
   }
+} else {
+  $principal = 0;
 }
 
 // TO-DO: Mejorar incrementable, ya que tabla usa ID_MESSAGE como autoincrementable
@@ -132,7 +134,8 @@ $str = "
   INSERT INTO {$db_prefix}messages (ID_TOPIC, ID_BOARD, ID_MEMBER, subject, body, posterName, posterEmail, posterTime, hiddenOption, color, anuncio, posterIP, smileysEnabled, sticky, visitas)
   VALUES ($ID_TOPIC, $categorias, $ID_MEMBER, SUBSTRING('$titulo', 1, 70), SUBSTRING('$post', 1, 65534), SUBSTRING('$realName', 1, 255), SUBSTRING('$emailAddress', 1, 255), " . time() . ", $privado, '$colorsticky', $anuncio, SUBSTRING('$ip', 1, 255), $nocom, $principal, 1)";
 
-  // var_dump($str);
+// var_dump($str);
+
 db_query("
   INSERT INTO {$db_prefix}messages (ID_TOPIC, ID_BOARD, ID_MEMBER, subject, body, posterName, posterEmail, posterTime, hiddenOption, color, anuncio, posterIP, smileysEnabled, sticky, visitas)
   VALUES ($ID_TOPIC, $categorias, $ID_MEMBER, SUBSTRING('$titulo', 1, 70), SUBSTRING('$post', 1, 65534), SUBSTRING('$realName', 1, 255), SUBSTRING('$emailAddress', 1, 255), " . time() . ", $privado, '$colorsticky', $anuncio, SUBSTRING('$ip', 1, 255), $nocom, $principal, 1)", __FILE__, __LINE__);

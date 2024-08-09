@@ -61,7 +61,13 @@ if (strlen($_POST['comment']) >= 700) {
   fatal_error('El comentario no puede tener 700 o m&aacute; letras.');
 }
 
-captcha(2);
+// Validar recaptcha
+$recaptcha_response = isset($_POST['g-recaptcha-response']) ? seguridad($_POST['g-recaptcha-response']) : '';
+$challenge = recaptcha_validation($recaptcha_response);
+
+if (!$challenge) {
+  fatal_error('Lo sentimos, no pudimos verificar que eres un humano. Por favor, int&eacute;ntalo de nuevo.');
+}
 
 require_once($sourcedir . '/Subs-Post.php');
 
@@ -70,7 +76,7 @@ sendmail(
   $titulo,
   sprintf('Un persona te recomienda este sitio: ' . $boardurl . ', y dice:') . "\n\n" .
   sprintf($_POST['comment']) . "\n\n" .
-  'Sitio Web: <a href="' . $boardurl . '/">' . $boardurl . '/</a>'
+  'Sitio web: <a href="' . $boardurl . '/">' . $boardurl . '/</a>'
 );
 
 fatal_error('Muchas gracias por recomendar <b>' . $mbname . '</b>.', false, '&iexcl;&iexcl;&iexcl;Gracias!!!');
