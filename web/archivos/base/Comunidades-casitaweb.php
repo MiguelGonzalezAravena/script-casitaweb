@@ -1392,7 +1392,7 @@ function template_crearcomunidad() {
 
 // Crear tema
 function template_ctema() {
-  global $tranfer1, $ID_MEMBER, $sourcedir, $modSettings, $context, $db_prefix, $boardurl;
+  global $tranfer1, $ID_MEMBER, $sourcedir, $modSettings, $context, $db_prefix, $boardurl, $recaptcha_public;
 
   if (!$ID_MEMBER) {
     fatal_error('Funcionalidad exclusiva de usuarios registrados.');
@@ -1491,6 +1491,9 @@ function template_ctema() {
                 </div>
                 <div class="clearBoth"></div>
                 <br />
+                <label for="recaptcha">Verificaci&oacute;n de seguridad:</label>
+                <div class="g-recaptcha" data-sitekey="' . $recaptcha_public . '"></div>
+                <br />
                 <fieldset style="width: 200px;">
                   <legend>
                     <span class="tit_lab">Opciones</span>
@@ -1510,7 +1513,8 @@ function template_ctema() {
             </form>
           </div>
         </div>
-      </div>';
+      </div>
+      <script src="https://www.google.com/recaptcha/api.js" async defer></script>';
   } else {
     fatal_error('No puedes crear nuevos temas.');
   }

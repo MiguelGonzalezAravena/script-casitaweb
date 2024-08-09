@@ -130,6 +130,14 @@ $ip = !empty($user_settings['memberIP']) ? $user_settings['memberIP'] : '127.0.0
 $realName = $user_settings['realName'];
 $emailAddress = $user_settings['emailAddress'];
 
+// Validar recaptcha
+$recaptcha_response = isset($_POST['g-recaptcha-response']) ? seguridad($_POST['g-recaptcha-response']) : '';
+$challenge = recaptcha_validation($recaptcha_response);
+
+if (!$challenge) {
+  fatal_error('Lo sentimos, no pudimos verificar que eres un humano. Por favor, int&eacute;ntalo de nuevo.');
+}
+
 $str = "
   INSERT INTO {$db_prefix}messages (ID_TOPIC, ID_BOARD, ID_MEMBER, subject, body, posterName, posterEmail, posterTime, hiddenOption, color, anuncio, posterIP, smileysEnabled, sticky, visitas)
   VALUES ($ID_TOPIC, $categorias, $ID_MEMBER, SUBSTRING('$titulo', 1, 70), SUBSTRING('$post', 1, 65534), SUBSTRING('$realName', 1, 255), SUBSTRING('$emailAddress', 1, 255), " . time() . ", $privado, '$colorsticky', $anuncio, SUBSTRING('$ip', 1, 255), $nocom, $principal, 1)";

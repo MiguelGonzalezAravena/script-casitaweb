@@ -8,7 +8,6 @@ function template_main() {
   $txt['comentarios'] = 'comentarios';
   $txt['mensajes'] = 'post';
   $post = (int) $context['id-post'];
-
   
   // var_dump($user_settings);
   // POSTS

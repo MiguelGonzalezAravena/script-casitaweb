@@ -7,11 +7,8 @@ ignore_user_abort(true);
 
 $ID_TOPIC = isset($_POST['id']) ? (int) $_POST['id'] : 0;
 $comentario = isset($_POST['editorCW']) ? seguridad($_POST['editorCW']) : '';
-$sdasd = isset($_POST['psecion']) ? (int) $_POST['psecion'] : '';
-$comentario = htmlspecialchars(stripslashes($comentario), ENT_QUOTES);
-$comentario = str_replace(array('"', '<', '>', '  '), array('&quot;', '&lt;', '&gt;', ' &nbsp;'), $comentario);
-$comentario = preg_replace('~<br(?: /)?' . '>~i', "\n", $comentario);
 $comentario = censorText($comentario);
+$sdasd = isset($_POST['psecion']) ? (int) $_POST['psecion'] : '';
 $realName = $user_settings['realName'];
 
 if ($user_info['is_guest']) {

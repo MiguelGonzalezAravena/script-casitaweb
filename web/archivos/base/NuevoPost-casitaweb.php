@@ -1,7 +1,7 @@
 <?php
 
 function template_main() {
-  global $context, $user_settings, $txt, $db_prefix, $modSettings, $tranfer1, $boardurl;
+  global $context, $user_settings, $txt, $db_prefix, $modSettings, $tranfer1, $boardurl, $recaptcha_public;
 
   if ($context['allow_admin']) {
     echo '
@@ -248,6 +248,9 @@ function template_main() {
 
   echo '
     <br />
+    <b class="size11">Verificaci&oacute;n de seguridad:</b>
+    <div class="g-recaptcha" data-sitekey="' . $recaptcha_public . '"></div>
+    <br />
     <font class="size11">
       <b>Opciones:</b>
     </font>';
@@ -291,7 +294,8 @@ function template_main() {
         <br />
         </div>
       </div>
-    </form>';
+    </form>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>';
 }
 
 ?>

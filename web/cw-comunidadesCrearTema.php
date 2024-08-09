@@ -113,6 +113,14 @@ if ($context['puedo'] == 1 || $context['puedo'] == 3) {
     fatal_error('El contenido del tema no puede tener m&aacute;s de <b>' . $modSettings['max_messageLength'] . ' letras</b>.');
   }
 
+  // Validar recaptcha
+  $recaptcha_response = isset($_POST['g-recaptcha-response']) ? seguridad($_POST['g-recaptcha-response']) : '';
+  $challenge = recaptcha_validation($recaptcha_response);
+
+  if (!$challenge) {
+    fatal_error('Lo sentimos, no pudimos verificar que eres un humano. Por favor, int&eacute;ntalo de nuevo.');
+  }
+
   db_query("
     INSERT INTO {$db_prefix}comunidades_articulos (id_user, id_com, titulo, cuerpo, nocoment, stiky, UserName, categoria) 
     VALUES ($ID_MEMBER, $id_comunidad, SUBSTRING('$titulo', 1, 100), SUBSTRING('$cuerpo', 1, 60000), $nocoment, $stiky, '{$user_settings['realName']}', $id_categoria)", __FILE__, __LINE__);
