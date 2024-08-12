@@ -1906,13 +1906,11 @@ function template_perfil() {
   $Dfa = db_query("
     SELECT a_quien
     FROM {$db_prefix}infop
-    WHERE id_user = {$context['member']['id']}", __FILE__, __LINE__);
+    WHERE id_user = {$context['member']['id']}
+    LIMIT 1", __FILE__, __LINE__);
 
-  while ($das343 = mysqli_fetch_array($Dfa)) {
-    $quien = $das343['a_quien'];
-  }
-
-  $quien = isset($quien) ? $quien : 0;
+  $das343 = mysqli_fetch_assoc($Dfa);
+  $quien = isset($das343['a_quien']) ? $das343['a_quien'] : 0;
 
   echo '
     <tr>
@@ -2359,7 +2357,7 @@ function apariencia($user) {
     }
   }
 
-  $dataquien = $mddd['a_quien'];
+  $dataquien = isset($mddd['a_quien']) ? $mddd['a_quien'] : '';
 
   mysqli_free_result($refoagr);
 }

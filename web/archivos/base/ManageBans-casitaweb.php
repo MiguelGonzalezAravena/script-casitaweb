@@ -137,6 +137,7 @@ function template_main() {
     while ($ban = mysqli_fetch_array($bdsee)) {
       $ban['ban_time'] = hace($ban['ban_time']);
       $ban['expires'] = $ban['expire_time'] === null ? $txt['never'] : ($ban['expire_time'] < time() ? '<span style="color: red">' . $txt['ban_expired'] . '</span>' : (int) ceil(($ban['expire_time'] - time()) / (60 * 60 * 24)) . '&nbsp;d&iacute;a(s)');
+      $ban['notes'] = (int) $ban['notes'];
 
       $request352 = db_query("
         SELECT realName

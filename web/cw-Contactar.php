@@ -2,10 +2,13 @@
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
 global $sourcedir, $user_settings, $mbname, $webmaster_email;
 
-$_POST['nombre'] = trim($_POST['nombre']);
-$_POST['email'] = trim($_POST['email']);
-$_POST['motivo'] = trim($_POST['motivo']);
-$_POST['comentario'] = trim($_POST['comentario']);
+$_POST['nombre'] = isset($_POST['nombre']) ? seguridad($_POST['nombre']) : '';
+$_POST['email'] = isset($_POST['email']) ? seguridad($_POST['email']) : '';
+$_POST['empresa'] = isset($_POST['empresa']) ? seguridad($_POST['empresa']) : '';
+$_POST['tel'] = isset($_POST['tel']) ? seguridad($_POST['tel']) : '';
+$_POST['hc'] = isset($_POST['hc']) ? seguridad($_POST['hc']) : '';
+$_POST['motivo'] = isset($_POST['motivo']) ? seguridad($_POST['motivo']) : '';
+$_POST['comentario'] = isset($_POST['comentario']) ? seguridad($_POST['comentario']) : '';
 
 if (empty($_POST['nombre'])) {
   fatal_error('Debes agregar tu nombre y apellido.');
@@ -16,12 +19,13 @@ if (empty($_POST['email'])) {
 }
 
 if ($_POST['email']) {
-  if (preg_match('~^[0-9A-Za-z=_+\-/][0-9A-Za-z=_\'+\-/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$~', stripslashes($_POST['email'])) == 0)
+  if (preg_match('~^[0-9A-Za-z=_+\-/][0-9A-Za-z=_\'+\-/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$~', stripslashes($_POST['email'])) == 0) {
     fatal_error('Tu correo electr&oacute;nico est&aacute; mal escrito, por favor rev&iacute;salo.', false);
+  }
 }
 
 if (empty($_POST['motivo'])) {
-  fatal_error('Debes agregar el motivo.');
+  fatal_error('Debes seleccionar el motivo.');
 }
 
 if (empty($_POST['comentario'])) {
@@ -44,20 +48,20 @@ require_once($sourcedir . '/Subs-Post.php');
 
 sendmail(
   $webmaster_email,
-  un_htmlspecialchars($_POST['nombre']) . ' te contact&oacute;',
-  sprintf('Nombre: ' . un_htmlspecialchars($_POST['nombre']) . '') . "\n" .
-  sprintf('Correo: ' . $_POST['email'] . '') . "\n" .
-  sprintf('Empresa: ' . $_POST['empresa'] . '') . "\n" .
-  sprintf('Tel&eacute;fono: ' . $_POST['tel'] . '') . "\n" .
-  sprintf('Horario de contacto: ' . $_POST['hc'] . '') . "\n" .
-  sprintf('Motivo: ' . $_POST['motivo'] . '') . "\n" .
-  sprintf('IP: ' . $_SERVER['REMOTE_ADDR'] . '') . "\n\n" .
+  $_POST['nombre'] . ' te contact&oacute;',
+  sprintf('Nombre: ' . $_POST['nombre']) . "\n" .
+  sprintf('Correo: ' . $_POST['email']) . "\n" .
+  sprintf('Empresa: ' . $_POST['empresa']) . "\n" .
+  sprintf('Tel&eacute;fono: ' . $_POST['tel']) . "\n" .
+  sprintf('Horario de contacto: ' . $_POST['hc']) . "\n" .
+  sprintf('Motivo: ' . $_POST['motivo']) . "\n" .
+  sprintf('IP: ' . $_SERVER['REMOTE_ADDR']) . "\n\n" .
   sprintf('Comentario:') . "\n" .
-  sprintf(nohtml($_POST['comentario'])) . "\n\n" .
+  sprintf($_POST['comentario']) . "\n\n" .
   sprintf('----------') . "\n" .
   sprintf('Inici&oacute; sesi&oacute;n como: ' . $user_settings['realName'])
 );
 
-fatal_error('Mensaje enviado correctamente', false, 'OK');
+fatal_error('Mensaje enviado correctamente.', false, '&iexcl;Gracias por tu contacto!');
 
 ?>
