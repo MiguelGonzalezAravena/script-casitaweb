@@ -102,6 +102,8 @@ if ($c > 5) {
 
 if ($user_info['is_admin']) {
   $anuncio = $aa45s1dsasd == 0 || $aa45s1dsasd == 1 ? $aa45s1dsasd : 0;
+} else {
+  $anuncio = 0;
 }
 
 if ($user_settings['posts'] >= 500) {

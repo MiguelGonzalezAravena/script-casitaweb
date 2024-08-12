@@ -18,11 +18,11 @@ if (empty($topic)) {
 }
 
 if ($user_settings['posts'] < $amount) {
-  die('0: ' . $txt['shop_dont_have_much'] . '');
+  die('0: No tienes los puntos necesarios.');
 }
 
 if ($amount < 1) {
-  die('0: ' . $txt['shop_invalid_send_amount']);
+  die('0: Selecciona una cantidad de puntos v&aacute;lida.');
 }
 
 if ($topic) {

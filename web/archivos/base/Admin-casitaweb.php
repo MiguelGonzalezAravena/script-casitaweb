@@ -13,9 +13,9 @@ function template_admin_above() {
 
     foreach ($section['areas'] as $i => $area) {
       if ($i == $context['admin_area']) {
-        echo '<td valign="top" class="maintab_active_back camptcha">', $area, '</td>';
+        echo '<td valign="top" class="maintab_active_back camptcha">' . $area . '</td>';
       } else {
-        echo '<td valign="top" class="maintab_back camptcha">', $area, '</td>';
+        echo '<td valign="top" class="maintab_back camptcha">' . $area . '</td>';
       }
     }
 
@@ -38,12 +38,12 @@ function template_admin_above() {
         if (!empty($tab['is_selected'])) {
           echo '
             <td valign="top" class="maintab_active_back">
-              <a href="', $tab['href'], '">', $tab['title'], '</a>
+              <a href="' . $tab['href'] . '">' . $tab['title'] . '</a>
             </td>';
         } else {
           echo '
             <td valign="top" class="maintab_back">
-              <a href="', $tab['href'], '">', $tab['title'], '</a>
+              <a href="' . $tab['href'] . '">' . $tab['title'] . '</a>
             </td>';
         }
       }
@@ -86,7 +86,7 @@ function template_admin() {
       Actualizando IP...
     </div>';
 
-  if ($glee[$context['user']['name']]) {
+  if (in_array($context['user']['name'], $glee)) {
     if (!$dat[1]) {
       logipADM();
 
@@ -112,7 +112,7 @@ function template_admin() {
     <div class="box_757">
       <div class="box_title" style="width: 920px;">
         <div class="box_txt box_757-34">
-          <center>', $txt[208], '</center>
+          <center>' . $txt[208] . '</center>
         </div>
         <div class="box_rss">
           <img alt="" src="' . $tranfer1 . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
@@ -325,7 +325,7 @@ function template_modify_settings() {
               </td>
             </tr>
           </table>
-          <input type="hidden" name="sc" value="', $context['session_id'], '" />
+          <input type="hidden" name="sc" value="' . $context['session_id'] . '" />
         </div>
       </div>
     </form>';
@@ -335,7 +335,7 @@ function template_edit_censored() {
   global $tranfer1, $context, $settings, $options, $scripturl, $txt, $modSettings, $boardurl;
 
   echo '
-    <form action="' . $boardurl . '/moderacion/web/censor/" method="post" accept-charset="', $context['character_set'], '">
+    <form action="' . $boardurl . '/moderacion/web/censor/" method="post" accept-charset="' . $context['character_set'] . '">
       <div class="box_757" style="float: left; margin-bottom: 8px;">
         <div class="box_title" style="width: 752px;">
           <div class="box_txt box_757-34">
@@ -352,14 +352,15 @@ function template_edit_censored() {
                 <table width="100%">
                   <tr>
                     <td colspan="2" align="center">
-                      ', $txt[136], '<br />';
+                      ' . $txt[136] . '
+                      <br />';
 
   foreach ($context['censored_words'] as $vulgar => $proper) {
     echo '
       <div style="margin-top: 1ex;">
-        <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="censor_vulgar[]" value="', $vulgar, '" size="20" />
+        <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="censor_vulgar[]" value="' . $vulgar . '" size="20" />
         =>
-        <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="censor_proper[]" value="', $proper, '" size="20" />
+        <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="censor_proper[]" value="' . $proper . '" size="20" />
       </div>';
   }
 
@@ -373,7 +374,7 @@ function template_edit_censored() {
                 </noscript>
                 <div id="moreCensoredWords"></div>
                 <div style="margin-top: 1ex; display: none;" id="moreCensoredWords_link">
-                  <a href="#;" onclick="addNewWord(); return false;">', $txt['censor_clickadd'], '</a>
+                  <a href="#;" onclick="addNewWord(); return false;">' . $txt['censor_clickadd'] . '</a>
                 </div>
                 <script type="text/javascript">
                   <!-- // -->
@@ -405,18 +406,18 @@ function template_edit_censored() {
             </tr>
             <tr>
               <th width="50%" align="right">
-                <label for="censorWholeWord_check">', $txt['smf231'], ':</label>
+                <label for="censorWholeWord_check">' . $txt['smf231'] . ':</label>
               </th>
               <td align="left">
-                <input type="checkbox" name="censorWholeWord" value="1" id="censorWholeWord_check"', empty($modSettings['censorWholeWord']) ? '' : ' checked="checked"', ' class="check" />
+                <input type="checkbox" name="censorWholeWord" value="1" id="censorWholeWord_check"' . (empty($modSettings['censorWholeWord']) ? '' : ' checked="checked"') . ' class="check" />
               </td>
             </tr>
             <tr>
               <th align="right">
-                <label for="censorIgnoreCase_check">', $txt['censor_case'], ':</label>
+                <label for="censorIgnoreCase_check">' . $txt['censor_case'] . ':</label>
               </th>
               <td align="left">
-                <input type="checkbox" name="censorIgnoreCase" value="1" id="censorIgnoreCase_check"', empty($modSettings['censorIgnoreCase']) ? '' : ' checked="checked"', ' class="check" />
+                <input type="checkbox" name="censorIgnoreCase" value="1" id="censorIgnoreCase_check"' . (empty($modSettings['censorIgnoreCase']) ? '' : ' checked="checked"') . ' class="check" />
               </td>
             </tr>
             <tr>
@@ -431,7 +432,7 @@ function template_edit_censored() {
     <br />';
 
   echo '
-          <input type="hidden" name="sc" value="', $context['session_id'], '" />
+          <input type="hidden" name="sc" value="' . $context['session_id'] . '" />
         </div>
       </div>
     </form>';
@@ -458,44 +459,44 @@ function template_edit_bbc_settings() {
       //]]>
     </script>
 
-    <form action="' . $boardurl . '/moderacion/web/bbc/" method="post" accept-charset="', $context['character_set'], '" name="bbcForm" id="bbcForm" onsubmit="toggleBBCDisabled(false);">
+    <form action="' . $boardurl . '/moderacion/web/bbc/" method="post" accept-charset="' . $context['character_set'] . '" name="bbcForm" id="bbcForm" onsubmit="toggleBBCDisabled(false);">
       <table border="0" cellspacing="0" cellpadding="4" align="center" width="80%" class="tborder">
         <tr class="titlebg">
-          <td colspan="2">', $txt['manageposts_bbc_settings_title'], '</td>
+          <td colspan="2">' . $txt['manageposts_bbc_settings_title'] . '</td>
         </tr>
         <tr class="windowbg2">
           <th width="50%" align="right">
-            <label for="enableBBC_check">', $txt['enableBBC'], '</label>
+            <label for="enableBBC_check">' . $txt['enableBBC'] . '</label>
             <span style="font-weight: normal;"></span>:
           </th>
           <td>
-            <input type="checkbox" name="enableBBC" id="enableBBC_check"', empty($modSettings['enableBBC']) ? '' : ' checked="checked"', ' onchange="toggleBBCDisabled(!this.checked);" class="check" />
+            <input type="checkbox" name="enableBBC" id="enableBBC_check"' . (empty($modSettings['enableBBC']) ? '' : ' checked="checked"') . ' onchange="toggleBBCDisabled(!this.checked);" class="check" />
           </td>
         </tr>
         <tr class="windowbg2">
           <th width="50%" align="right">
-            <label for="enablePostHTML_check">', $txt['enablePostHTML'], '</label>
+            <label for="enablePostHTML_check">' . $txt['enablePostHTML'] . '</label>
             <span style="font-weight: normal;"></span>:
           </th>
           <td>
-            <input type="checkbox" name="enablePostHTML" id="enablePostHTML_check"', empty($modSettings['enablePostHTML']) ? '' : ' checked="checked"', ' class="check" />
+            <input type="checkbox" name="enablePostHTML" id="enablePostHTML_check"' . (empty($modSettings['enablePostHTML']) ? '' : ' checked="checked"') . ' class="check" />
           </td>
         </tr>
         <tr class="windowbg2">
           <th width="50%" align="right">
-            <label for="autoLinkUrls_check">', $txt['autoLinkUrls'], '</label>:
+            <label for="autoLinkUrls_check">' . $txt['autoLinkUrls'] . '</label>:
           </th>
           <td>
-            <input type="checkbox" name="autoLinkUrls" id="autoLinkUrls_check"', empty($modSettings['autoLinkUrls']) ? '' : ' checked="checked"', ' class="check" />
+            <input type="checkbox" name="autoLinkUrls" id="autoLinkUrls_check"' . (empty($modSettings['autoLinkUrls']) ? '' : ' checked="checked"') . ' class="check" />
           </td>
         </tr>
         <tr class="windowbg2">
           <td align="right" colspan="2">
-            <input class="login" type="submit" name="save_settings" value="', $txt['manageposts_settings_submit'], '" />
+            <input class="login" type="submit" name="save_settings" value="' . $txt['manageposts_settings_submit'] . '" />
           </td>
         </tr>
       </table>
-      <input type="hidden" name="sc" value="', $context['session_id'], '" />
+      <input type="hidden" name="sc" value="' . $context['session_id'] . '" />
     </form>';
 
   if (empty($modSettings['enableBBC'])) {
