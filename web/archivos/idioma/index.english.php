@@ -507,6 +507,6 @@ $txt['error_while_submitting'] = 'Hubo un error mientras se enviaba este mensaje
 
 $txt['pm_short'] = 'Mis Mensajes';
 $txt['hello_member_ndt'] = 'Hola';
-
+$txt['find_members'] = 'Buscar usuarios';
 
 ?>

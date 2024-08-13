@@ -70,6 +70,7 @@ function template_admin() {
   }
 
   require_once($sourcedir . '/IpModLog.php');
+  $glee = isset($glee) ? $glee : [];
 
   $dataMOstrar = '';
 
@@ -149,70 +150,93 @@ function template_admin() {
         <b class="size12">Sobre el ban:</b>
         <br />
         <table style="margin: 0px; padding: 0px;" width="100%" align="center" valign="top">
-        <tr valign="top">
-          <td valign="top" style="border: 1px solid #7C7C7C; background: #D0D0D0;" width="200px">Motivos</td>
-          <td valign="top" style="border: 1px solid #7C7C7C; background:#D0D0D0;" width="200px">Cantidad de d&iacute;as</td>
-          <td valign="top" style="border: 1px solid #7C7C7C; background: #D0D0D0;" width="200px">Captura de pantalla</td>
-        </tr>
-        <tr valign="top">
-          <td valign="top" style="border: 1px solid #7C7C7C;">Spam en comentarios y MP.</td>
-          <td valign="top" style="border: 1px solid #7C7C7C;">
-            * 15 d&iacute;as p/usuario conocido. Caso contrario, de por vida.<br />
-            * Usuario recurrente, de por vida.
-          </td>
-          <td valign="top" style="border: 1px solid #7C7C7C;">No es necesario.</td>
-        </tr>
-        <tr valign="top">
-          <td valign="top" style="border: 1px solid #7C7C7C;">
-            Insultos o Comentarios fuera de lugar (<span title="adj. y s. Que siente odio u hostilidad hacia los extranjeros." alt="adj. y s. Que siente odio u hostilidad hacia los extranjeros." style="color:#FF9400;">Xen&oacute;fobos</span>, Discriminatorios, etc).
-          </td>
-          <td valign="top" style="border: 1px solid #7C7C7C;">
-            * 5 d&iacute;as p/usuario conocido. Caso contrario, de por vida.<br />
-            * Usuario recurrente, de por vida.
-          </td>
-          <td valign="top" style="border: 1px solid #7C7C7C;">S&iacute; es necesario.</td>
-        </tr>
-        <tr valign="top">
-          <td valign="top" style="border: 1px solid #7C7C7C;">Insultos/Ataques/Burlas entre Usuarios en comentarios, MP o Muro.</td><td style="border: 1px solid #7C7C7C;">* 10 d&iacute;as p/usuario<br />Caso contrario, de por vida.<br />* Usuario recurrente, de por vida.</td><td valign="top" style="border: 1px solid #7C7C7C;">Si es necesario.-</td></tr>
-        <tr valign="top">
-          <td valign="top" style="border: 1px solid #7C7C7C;">Suma dudosa de Puntos.</td>
-          <td valign="top" style="border: 1px solid #7C7C7C;">
-            * 30 d&iacute;as.<br />
-            * Definitivo, en caso de haber sido suspendido y recurre en igual falta.
-          </td>
-          <td valign="top" style="border: 1px solid #7C7C7C;">S&iacute; es necesario.</td>
-        </tr>
-        <tr valign="top">
-          <td valign="top" style="border: 1px solid #7C7C7C;">IP Clonada.</td>
-          <td style="border: 1px solid #7C7C7C;">
-            * 10 d&iacute;as.<br />
-            * Definitivo, en caso de haber sido suspendido y recurre en igual falta.
-          </td>
-          <td style="border:1px solid #7C7C7C;">No es necesario.</td>
-        </tr>
-      </table>
-      * Si un usuario es suspendido por un <b>MOD</b> ese usuario <b>DEBE</b> cumplir la pena.<br />
-      * Si un <b>MOD</b> levanta la suspensi&oacute;n de un usuario sin consulta previa al que lo realiz&oacute;, se le deshabilitar&aacute; de <b>' . $mbname . '</b> tarde o temprano.<br />
-      * <b>JAM&Aacute;S</b> deber&aacute;n banearse entre <b>MOD&#8217;s</b>, el que lo haga deber&aacute; atenerse a la decisi&oacute;n que tome el resto de sus compa&ntilde;eros.
-      <div class="hrs"></div>
-      <b class="size12">Puntos importantes:</b>
-      <br />
-      <span class="size11" style="color: green;">
-        * Cuando se elimina un post y la causa es RePost, agregar el ID del post principal (No es necesario agregar enlace completo, con ID solo ya est&aacute;).<br />
-        * Cuando en un post est&aacute; roto el enlace, fijarse si se puede reparar. Si no se puede, eliminar post.<br />
-        * S&oacute;lo los posts en la categor&iacute;a Noticias requieren fuente.
-      </span>
-      <br />
-      <div class="hrs"></div>
-      <b class="size12">Protocolo para moderadores:</b>
-      <br />
-      <span class="size11">
-        * Un moderador es un usuario com&uacute;n con mayores privilegios los cuales implican mayor responsabilidad.<br />
-        * Un error de uno es un error de todos.<br />
-        * Los usuarios no postean para nosotros, nosotros moderamos para ellos.<br />
-        * Hacer un post puede llevar mucho tiempo y dedicaci&oacute;n y <b>DEBE SER</b> igualmente proporcional al tiempo para evaluar si un post debe ser borrado o editado.<br />
-        * Un moderador <b>NO PUEDE</b> insultar, maltratar, trollear, ni burlarse de los dem&aacute;s usuarios. Si nosotros lo hacemos, lo estamos permitiendo.<br />
-        * No se pueden desuspender usuarios que suspendi&oacute; otro moderador salvo que el moderador que suspendi&oacute; les de el permiso y llegen a un acuerdo en com&uacute;n.</span>
+          <tr valign="top">
+            <td valign="top" style="border: 1px solid #7C7C7C; background: #D0D0D0;" width="200px">Motivos</td>
+            <td valign="top" style="border: 1px solid #7C7C7C; background: #D0D0D0;" width="200px">Cantidad de d&iacute;as</td>
+            <td valign="top" style="border: 1px solid #7C7C7C; background: #D0D0D0;" width="200px">Captura de pantalla</td>
+          </tr>
+          <tr valign="top">
+            <td valign="top" style="border: 1px solid #7C7C7C;">Spam en comentarios y MP.</td>
+            <td valign="top" style="border: 1px solid #7C7C7C;">
+              * 15 d&iacute;as p/usuario conocido. Caso contrario, de por vida.
+              <br />
+              * Usuario recurrente, de por vida.
+            </td>
+            <td valign="top" style="border: 1px solid #7C7C7C;">No es necesario.</td>
+          </tr>
+          <tr valign="top">
+            <td valign="top" style="border: 1px solid #7C7C7C;">
+              Insultos o Comentarios fuera de lugar (<span title="adj. y s. Que siente odio u hostilidad hacia los extranjeros." alt="adj. y s. Que siente odio u hostilidad hacia los extranjeros." style="color:#FF9400;">Xen&oacute;fobos</span>, Discriminatorios, etc).
+            </td>
+            <td valign="top" style="border: 1px solid #7C7C7C;">
+              * 5 d&iacute;as p/usuario conocido. Caso contrario, de por vida.
+              <br />
+              * Usuario recurrente, de por vida.
+            </td>
+            <td valign="top" style="border: 1px solid #7C7C7C;">S&iacute; es necesario.</td>
+          </tr>
+          <tr valign="top">
+            <td valign="top" style="border: 1px solid #7C7C7C;">Insultos/Ataques/Burlas entre Usuarios en comentarios, MP o Muro.</td>
+            <td style="border: 1px solid #7C7C7C;">
+              * 10 d&iacute;as p/usuario
+              <br />
+              Caso contrario, de por vida.
+              <br />
+              * Usuario recurrente, de por vida.
+            </td>
+            <td valign="top" style="border: 1px solid #7C7C7C;">Si es necesario.</td>
+          </tr>
+          <tr valign="top">
+            <td valign="top" style="border: 1px solid #7C7C7C;">Suma dudosa de Puntos.</td>
+            <td valign="top" style="border: 1px solid #7C7C7C;">
+              * 30 d&iacute;as.
+              <br />
+              * Definitivo, en caso de haber sido suspendido y recurre en igual falta.
+            </td>
+            <td valign="top" style="border: 1px solid #7C7C7C;">S&iacute; es necesario.</td>
+          </tr>
+          <tr valign="top">
+            <td valign="top" style="border: 1px solid #7C7C7C;">IP Clonada.</td>
+            <td style="border: 1px solid #7C7C7C;">
+              * 10 d&iacute;as.
+              <br />
+              * Definitivo, en caso de haber sido suspendido y recurre en igual falta.
+            </td>
+            <td style="border:1px solid #7C7C7C;">No es necesario.</td>
+          </tr>
+        </table>
+        * Si un usuario es suspendido por un <b>MOD</b> ese usuario <b>DEBE</b> cumplir la pena.
+        <br />
+        * Si un <b>MOD</b> levanta la suspensi&oacute;n de un usuario sin consulta previa al que lo realiz&oacute;, se le deshabilitar&aacute; de <b>' . $mbname . '</b> tarde o temprano.
+        <br />
+        * <b>JAM&Aacute;S</b> deber&aacute;n banearse entre <b>MOD&#8217;s</b>, el que lo haga deber&aacute; atenerse a la decisi&oacute;n que tome el resto de sus compa&ntilde;eros.
+        <div class="hrs"></div>
+        <b class="size12">Puntos importantes:</b>
+        <br />
+        <span class="size11" style="color: green;">
+          * Cuando se elimina un post y la causa es RePost, agregar el ID del post principal (No es necesario agregar enlace completo, con ID solo ya est&aacute;).
+          <br />
+          * Cuando en un post est&aacute; roto el enlace, fijarse si se puede reparar. Si no se puede, eliminar post.
+          <br />
+          * S&oacute;lo los posts en la categor&iacute;a Noticias requieren fuente.
+        </span>
+        <br />
+        <div class="hrs"></div>
+        <b class="size12">Protocolo para moderadores:</b>
+        <br />
+        <span class="size11">
+          * Un moderador es un usuario com&uacute;n con mayores privilegios los cuales implican mayor responsabilidad.
+          <br />
+          * Un error de uno es un error de todos.
+          <br />
+          * Los usuarios no postean para nosotros, nosotros moderamos para ellos.
+          <br />
+          * Hacer un post puede llevar mucho tiempo y dedicaci&oacute;n y <b>DEBE SER</b> igualmente proporcional al tiempo para evaluar si un post debe ser borrado o editado.
+          <br />
+          * Un moderador <b>NO PUEDE</b> insultar, maltratar, trollear, ni burlarse de los dem&aacute;s usuarios. Si nosotros lo hacemos, lo estamos permitiendo.
+          <br />
+          * No se pueden desuspender usuarios que suspendi&oacute; otro moderador salvo que el moderador que suspendi&oacute; les de el permiso y llegen a un acuerdo en com&uacute;n.
+        </span>
         <div class="hrs"></div>
         <center>
           <b class="size16">NOSOTROS DAMOS EL EJEMPLO, QUE SEA EL MEJOR.</b>
@@ -224,6 +248,7 @@ function template_admin() {
           <br />
           <span class="size11">
             <img alt="" src="' . $tranfer1 . '/rangos/padre.gif" title="Administrador" /> ' . implode(' <img alt="" src="' . $tranfer1 . '/rangos/padre.gif" title="Administrador" /> ', $context['administrators']);
+
   foreach ($context['moderadores'] as $mod) {
     echo '
       <img lt="" src="' . $tranfer1 . '/rangos/hermano_mayor.gif" title="Moderador/a" />

@@ -9,53 +9,49 @@ if (empty($context['ajax'])) {
   die('Error de ajax.');
 }
 
-// TO-DO: Colocar javascript en un echo
-?>
-<script type="text/javascript">
-  // Eliminar baneo
-  function EliminarBan(id, a) {
-    if (a == 1) {
-      if ($('#clave').val() == '') {
-        $('#clave').focus();
-        return false;
-      }
-    }
-
-    $('#cargandoBoxyc').css('display', 'none');
-    $('#cargandoBoxy').css('display', 'block');
-
-    $.ajax({
-      type: 'POST',
-      url: '<?php echo $boardurl; ?>/web/cw-EliminarBan.php',
-      cache: false,
-      data: 'is=' + id + '&clave=' + encodeURIComponent($('#clave').val()),
-      success: function(h) {
-        $('#cargandoBoxy').css('display', 'none');
-        $('#cargandoBoxyc').css('display', 'block');
-        $('#contentv').remove();
-        $('#resultado').css('display', 'block');
-
-        if (h.charAt(0) == 0) {
-          // Datos incorrectos
-          $('#resultado').addClass('noesta');
-          $('#resultado').html(h.substring(3)).fadeIn('fast');
-        } else if (h.charAt(0) == 1) {
-          // OK
-          $('#resultado').removeClass('noesta');
-          $('#ban_' + id).remove();
-          $('#resultado').addClass('noesta-ve');
-          $('#resultado').html(h.substring(3)).fadeIn('fast');
-        }
-      },
-      error: function() {
-        Boxy.alert("Error, volver a intentar...", null, {title: 'Alerta'});
-      }
-    });
-  }
-</script>
-
-<?php
 echo '
+  <script type="text/javascript">
+    // Eliminar baneo
+    function EliminarBan(id, a) {
+      if (a == 1) {
+        if ($(\'#clave\').val() == \'\') {
+          $(\'#clave\').focus();
+          return false;
+        }
+      }
+
+      $(\'#cargandoBoxyc\').css(\'display\', \'none\');
+      $(\'#cargandoBoxy\').css(\'display\', \'block\');
+
+      $.ajax({
+        type: \'POST\',
+        url: \'' . $boardurl . '/web/cw-EliminarBan.php\',
+        cache: false,
+        data: \'is=\' + id + \'&clave=\' + encodeURIComponent($(\'#clave\').val()),
+        success: function(h) {
+          $(\'#cargandoBoxy\').css(\'display\', \'none\');
+          $(\'#cargandoBoxyc\').css(\'display\', \'block\');
+          $(\'#contentv\').remove();
+          $(\'#resultado\').css(\'display\', \'block\');
+
+          if (h.charAt(0) == 0) {
+            // Datos incorrectos
+            $(\'#resultado\').addClass(\'noesta\');
+            $(\'#resultado\').html(h.substring(3)).fadeIn(\'fast\');
+          } else if (h.charAt(0) == 1) {
+            // OK
+            $(\'#resultado\').removeClass(\'noesta\');
+            $(\'#ban_\' + id).remove();
+            $(\'#resultado\').addClass(\'noesta-ve\');
+            $(\'#resultado\').html(h.substring(3)).fadeIn(\'fast\');
+          }
+        },
+        error: function() {
+          Boxy.alert(\'Error, volver a intentar...\', null, { title: \'Alerta\' });
+        }
+      });
+    }
+  </script>
   <div style="width: 300px;" align="center">
     <div id="resultado" style="display: none;"></div>
       <div id="contentv">';
@@ -84,12 +80,13 @@ if (($user_info['is_admin'] || $user_info['is_mods'])) {
       <form onsubmit="EliminarBan(\'' . $id . '\', 0); return false;" method="post" accept-charset="' . $context['character_set'] . '">
         <strong>&#191;Est&aacute;s seguro que deseas desbanear a este usuario?</strong>
         <br />
-        <input class="login" value="Si, estoy seguro" type="submit" />';
+        <input class="login" value="S&iacute;, estoy seguro" type="submit" />';
   } else {
     echo '
       <form onsubmit="EliminarBan(\'' . $id . '\', 1); return false;" method="post" accept-charset="' . $context['character_set'] . '">
         Para poder desbanear este usuario es necesario una clave. La clave la sabe s&oacute;lo el moderador que lo bane&oacute;.
-        <br /><br />
+        <br />
+        <br />
         <strong>Clave:</strong>
         <div style="margin-bottom: 5px">
           <input value="" type="text" onfocus="foco(this);" onblur="no_foco(this);" name="clave" id="clave" />

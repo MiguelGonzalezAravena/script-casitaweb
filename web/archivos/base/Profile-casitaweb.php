@@ -18,7 +18,7 @@ function partearriba($sasdde, $lugar) {
       <div style="border-bottom: #C8C8C8 solid 1px; width: 541px; padding-bottom: 8px; margin-bottom: 2px;">
         <strong style="font-size: 20px; color:#D35F2C;" title="' . $context['member']['name'] . '">' . $context['member']['name'] . '</strong>
         <span style="font-size: 13px;">
-          ' . nohtml2($row['muro']) . '.
+          ' . $row['muro'] . '.
           <span style="color: #C0C0C0; font-size: 11px;">' . hace($row['fecha']) . '</span>
         </span>
       </div>';
@@ -35,34 +35,12 @@ function partearriba($sasdde, $lugar) {
       </div>';
   }
 
-  if ($lugar == 'muro') {
-    $muro = ' class="activado" ';
-    $amist = '';
-    $Comu = '';
-    $apaa = '';
-  } else if ($lugar == 'apariencia') {
-    $muro = '';
-    $amist = '';
-    $Comu = '';
-    $apaa = ' class="activado" ';
-  } else if ($lugar == 'comunidades') {
-    $muro = '';
-    $amist = '';
-    $Comu = ' class="activado" ';
-    $apaa = '';
-  } else if ($lugar == 'lista-de-amigos') {
-    $muro = '';
-    $amist = ' class="activado" ';
-    $Comu = '';
-    $apaa = '';
-  }
-
   echo '
     <div class="botnes" style="clear: both; height: 32px; width: 541px;">
-      <a href="' . $boardurl . '/perfil/' . $sasdde . '/muro/" title="Muro"' . $muro . '>Muro</a></li>
-      <a href="' . $boardurl . '/perfil/' . $sasdde . '/apariencia/" title="Apariencia"' . $apaa . '>Apariencia</a>
-      <a href="' . $boardurl . '/perfil/' . $sasdde . '/comunidades/" title="Comunidades"' . $Comu . '>Comunidades</a>
-      <a href="' . $boardurl . '/perfil/' . $sasdde . '/lista-de-amigos/" title="Amistades"' . $amist . '>Amistades</a>
+      <a href="' . $boardurl . '/perfil/' . $sasdde . '/muro/" title="Muro"' . ($lugar == 'muro' ? ' class="activado"' : '') . '>Muro</a></li>
+      <a href="' . $boardurl . '/perfil/' . $sasdde . '/apariencia/" title="Apariencia"' . ($lugar == 'apariencia' ? ' class="activado"' : '') . '>Apariencia</a>
+      <a href="' . $boardurl . '/perfil/' . $sasdde . '/comunidades/" title="Comunidades"' . ($lugar == 'comunidades' ? ' class="activado"' : '') . '>Comunidades</a>
+      <a href="' . $boardurl . '/perfil/' . $sasdde . '/lista-de-amigos/" title="Amistades"' . ($lugar == 'lista-de-amigos' ? ' class="activado"' : '') . '>Amistades</a>
       <div class="clearBoth"></div>
     </div>';
 }
@@ -625,7 +603,7 @@ function template_summary() {
           LIMIT $RegistrosAEmpezar, $RegistrosAMostrar", __FILE__, __LINE__);
 
         while ($mostrarmuros1 = mysqli_fetch_array($mostrarmuros)) {
-          $mensaje = nohtml2($mostrarmuros1['muro']);
+          $mensaje = $mostrarmuros1['muro'];
           $ivvd = $mostrarmuros1['id'];
           $yata = hace($mostrarmuros1['fecha']);
           $cmntarioss = $mostrarmuros1['ccos'];
@@ -700,7 +678,7 @@ function template_summary() {
             while ($mostrarcmtarios1 = mysqli_fetch_array($mostrarcmtarios)) {
               $sdddd = $mostrarcmtarios1['id'];
               $haces = hace($mostrarcmtarios1['fecha']);
-              $mensaje2 = moticon(nohtml2(nohtml($mostrarcmtarios1['muro'])), true);
+              $mensaje2 = moticon($mostrarcmtarios1['muro'], true);
               $nombremem = getUsername($mostrarcmtarios1['de']);
               $avatar = getAvatar($mostrarcmtarios1['de']);
 
@@ -795,7 +773,7 @@ function template_summary() {
         LIMIT 1", __FILE__, __LINE__);
 
       while ($mostrarmuros1 = mysqli_fetch_array($mostrarmuros)) {
-        $mensaje = nohtml2($mostrarmuros1['muro']);
+        $mensaje = $mostrarmuros1['muro'];
         $ivvd = $mostrarmuros1['id'];
         $yata = timeformat($mostrarmuros1['fecha']);
         $cmntarioss = $mostrarmuros1['ccos'];
@@ -859,7 +837,7 @@ function template_summary() {
 
           $sdddd = $mostrarcmtarios1['id'];
           $haces = hace($mostrarcmtarios1['fecha']);
-          $mensaje2 = moticon(nohtml2(nohtml($mostrarcmtarios1['muro'])), true);
+          $mensaje2 = moticon($mostrarcmtarios1['muro'], true);
 
           $datosmem = db_query("
             SELECT ID_MEMBER, realName, avatar
@@ -1316,7 +1294,7 @@ function template_summary() {
     LIMIT 10", __FILE__, __LINE__);
 
   while ($row = mysqli_fetch_assoc($request)) {
-    $context['rownombre'] = nohtml(nohtml2($row['nombre']));
+    $context['rownombre'] = $row['nombre'];
 
     if ($row['UserName'] == $context['member']['name']) {
       $enlazar[] = '

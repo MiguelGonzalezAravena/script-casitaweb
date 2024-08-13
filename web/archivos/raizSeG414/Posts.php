@@ -123,51 +123,78 @@ function post_error($titulo = '') {
     $dc = (count($tit) - 1);
 
     for ($i = 1; $i <= $dc; ++$i) {
-      $n[] = "palabra='" . str_replace("'", '', $tit[$i]) . "'";
+      $n[] = "palabra = '" . str_replace("'", '', $tit[$i]) . "'";
     }
 
     $ff = join(' OR ', $n);
-    $select = db_query("SELECT id_post FROM {$db_prefix}tags WHERE $ff GROUP BY id_post ORDER BY id_post DESC LIMIT 10", __FILE__, __LINE__);
+
+    $select = db_query("
+      SELECT id_post
+      FROM {$db_prefix}tags
+      WHERE $ff
+      GROUP BY id_post
+      ORDER BY id_post DESC
+      LIMIT 10", __FILE__, __LINE__);
+
 
     while ($row24 = mysqli_fetch_assoc($select)) {
       $request = db_query("
         SELECT m.ID_TOPIC, m.subject, b.description, m.posterTime, m.posterName
         FROM {$db_prefix}messages AS m
-        INNER JOIN {$db_prefix}boards AS b ON m.ID_TOPIC = '{$row24['id_post']}'
+        INNER JOIN {$db_prefix}boards AS b ON m.ID_TOPIC = {$row24['id_post']}
         AND m.ID_BOARD = b.ID_BOARD
         AND m.eliminado = 0
         ORDER BY m.ID_TOPIC DESC
         LIMIT 1", __FILE__, __LINE__);
 
       while ($row = mysqli_fetch_assoc($request)) {
-        echo '<tr><td style="text-align:left;"><a rel="dc:relation" class="categoriaPost ' . $row['description'] . '" href="/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . urls($row['subject']) . '.html" title="' . $row['subject'] . '">' . $row['subject'] . '</a></td>
-<td title="' . $row['posterName'] . '"><a href="' . $boardurl . '/perfil/' . $row['posterName'] . '">' . $row['posterName'] . '</a></td>
-<td title="' . timeformat($row['posterTime']) . '">' . hace($row['posterTime'], true) . '</td></tr>';
+        echo '
+          <tr>
+            <td style="text-align: left;">
+              <a rel="dc:relation" class="categoriaPost ' . $row['description'] . '" href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . urls($row['subject']) . '.html" title="' . $row['subject'] . '">' . $row['subject'] . '</a>
+            </td>
+            <td title="' . $row['posterName'] . '">
+              <a href="' . $boardurl . '/perfil/' . $row['posterName'] . '">' . $row['posterName'] . '</a>
+            </td>
+            <td title="' . timeformat($row['posterTime']) . '">' . hace($row['posterTime'], true) . '</td>
+          </tr>';
       }
+
       mysqli_free_result($request);
     }
+
     mysqli_free_result($select);
   } else {
     $request3 = db_query("
-      SELECT m.ID_TOPIC,m.subject,b.description, m.posterTime, m.posterName
-      FROM ({$db_prefix}messages as m,{$db_prefix}boards as b)
-      WHERE m.ID_BOARD=b.ID_BOARD
+      SELECT m.ID_TOPIC, m.subject, b.description, m.posterTime, m.posterName
+      FROM {$db_prefix}messages AS m, {$db_prefix}boards AS b
+      WHERE m.ID_BOARD = b.ID_BOARD
       ORDER BY m.ID_TOPIC DESC
       LIMIT 10", __FILE__, __LINE__);
 
     while ($row44 = mysqli_fetch_assoc($request3)) {
-      echo '<tr><td style="text-align:left;"><a rel="dc:relation" class="categoriaPost ' . $row44['description'] . '" href="/post/' . $row44['ID_TOPIC'] . '/' . $row44['description'] . '/' . urls($row44['subject']) . '.html" title="' . $row44['subject'] . '">' . $row44['subject'] . '</a></td>
-<td title="' . $row44['posterName'] . '"><a href="' . $boardurl . '/perfil/' . $row44['posterName'] . '">' . $row44['posterName'] . '</a></td>
-<td title="' . timeformat($row44['posterTime']) . '">' . hace($row44['posterTime'], true) . '</td></tr>';
+      echo '
+        <tr>
+          <td style="text-align: left;">
+            <a rel="dc:relation" class="categoriaPost ' . $row44['description'] . '" href="' . $boardurl . '/post/' . $row44['ID_TOPIC'] . '/' . $row44['description'] . '/' . urls($row44['subject']) . '.html" title="' . $row44['subject'] . '">' . $row44['subject'] . '</a>
+          </td>
+          <td title="' . $row44['posterName'] . '">
+            <a href="' . $boardurl . '/perfil/' . $row44['posterName'] . '">' . $row44['posterName'] . '</a>
+          </td>
+          <td title="' . timeformat($row44['posterTime']) . '">' . hace($row44['posterTime'], true) . '</td>
+        </tr>';
     }
 
     mysqli_free_result($request3);
   }
 
-  echo '</tbody></table>
+  echo '
+      </tbody>
+    </table>
+    <span style="display: none; font-size: 0.5px;">' . $titulo . ' rapidshare megaupload mediafire casitaweb calamaro actualidad 2008 2007 2009 2010 2011 2012 1999 1992 1998 msn musica peliculas descarga directa ya si vuelve polvora mojada temporal millones litros lagrimas remolino de semillas tierras floreser autos ofrender lleves mar pido 1 2 3 4 5 6 7 8 9 0 parlantes computadora descargas programas softwares www zip js php web casita web rel nofollow alive_link serenata guitarra bateria ofertas</span>';
 
-<span style="display:none;font-size:0.5px;">' . $titulo . ' rapidshare megaupload mediafire casitaweb calamaro actualidad 2008 2007 2009 2010 2011 2012 1999 1992 1998 msn musica peliculas descarga directa ya si vuelve polvora mojada temporal millones litros lagrimas remolino de semillas tierras floreser autos ofrender lleves mar pido 1 2 3 4 5 6 7 8 9 0 parlantes computadora descargas programas softwares www zip js php web casita web rel nofollow alive_link serenata guitarra bateria ofertas</span>';
   echo template_main_below();
+
   die();
 }
 

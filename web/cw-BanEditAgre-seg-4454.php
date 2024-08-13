@@ -49,14 +49,11 @@ if (($user_info['is_admin'] || $user_info['is_mods'])) {
         die('0: No puedes banearte a ti mismo.');
       }
 
-      if ($ID_MEMBER <> $notes) {
+      if ($ID_MEMBER != $notes) {
         if ($_POST['clave'] !== $clavsss) {
           die('0: Debes ingresar la clave correctamente.');
         }
       }
-
-      $nullo = 'NULL';
-      $expirate = $_POST['expiration'] ? 'expire_time = ' . ($_POST['expire_date'] * 86400 + time()) . ',' : 'expire_time = ' . $nullo . ',';
 
       db_query("
         UPDATE {$db_prefix}ban_groups
@@ -65,7 +62,7 @@ if (($user_info['is_admin'] || $user_info['is_mods'])) {
           editado_por = $ID_MEMBER,
           ip = '$memberIP',
           email = '$emailAddress',
-          $expirate
+          " . (isset($_POST['expiration']) ? 'expire_time = ' . ($_POST['expire_date'] * 86400 + time()) . ',' : 'expire_time = NULL,') . "
           clave = '$clave_usuario'
         WHERE ID_BAN_GROUP = '$id'
         LIMIT 1", __FILE__, __LINE__);
@@ -74,8 +71,9 @@ if (($user_info['is_admin'] || $user_info['is_mods'])) {
 
       db_query("
         DELETE FROM {$db_prefix}log_online
-        WHERE ID_MEMBER ='$IssD_MEMBER'
+        WHERE ID_MEMBER = '$IssD_MEMBER'
         LIMIT 1", __FILE__, __LINE__);
+
       die('1: Baneo modificado correctamente.');
     } else {
       $request352 = db_query("
@@ -131,12 +129,9 @@ if (($user_info['is_admin'] || $user_info['is_mods'])) {
         die('0: Este usuario ya est&aacute; en la lista de baneados.<br /><b><a href="' . $boardurl . '/moderacion/edit-user/ban/buscar&usuario=' . $name . '&si=bloke">B&uacute;scalo</a></b>');
       }
 
-      $expirate = $_POST['expiration'] ? ($_POST['expire_date'] * 86400 + time()) . ',' : '';
-      $Sexpirate = $_POST['expiration'] ? ' expire_time,' : '';
-
       db_query("
-        INSERT INTO {$db_prefix}ban_groups (name, ban_time, $Sexpirate reason, notes, clave, ip, email)
-        VALUES (SUBSTRING('$name', 1, 20), " . time() . ", $expirate SUBSTRING('$razon', 1, 255), SUBSTRING('$ID_MEMBER', 1, 150), '$clave_usuario', '$memberIP','$emailAddress')", __FILE__, __LINE__);
+        INSERT INTO {$db_prefix}ban_groups (name, ban_time, reason, notes, clave, ip, email" . (isset($_POST['expiration']) ? ', expire_time' : '') . ")
+        VALUES (SUBSTRING('$name', 1, 20), " . time() . ", SUBSTRING('$razon', 1, 255), SUBSTRING('$ID_MEMBER', 1, 150), '$clave_usuario', '$memberIP', '$emailAddress'" . (isset($_POST['expiration']) ? ', ' . ($_POST['expire_date'] * 86400 + time()) : '') . ")", __FILE__, __LINE__);
 
       db_query("
         DELETE FROM {$db_prefix}log_online
