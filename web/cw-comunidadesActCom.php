@@ -30,7 +30,7 @@ if ($user_info['is_guest']) {
     echo '<div class="noesta-am">No existen comentarios.</div>';
   } else {
     while ($row = mysqli_fetch_assoc($rs2)) {
-      $ddddsxx = nohtml(nohtml2($row['titulo']));
+      $ddddsxx = $row['titulo'];
       $ddaa = $row['titulo'];
       echo '
         <font class="size11">

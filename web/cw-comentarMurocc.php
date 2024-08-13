@@ -41,7 +41,14 @@ if (empty($DeQuien)) {
   die('0: Debes seleccionar un comentario del muro.');
 }
 
-$ignorado = mysqli_num_rows(db_query("SELECT id_user FROM ({$db_prefix}pm_admitir) WHERE id_user='$DeQuien' AND quien='{$user_settings[ID_MEMBER]}' LIMIT 1", __FILE__, __LINE__));
+$request = db_query("
+  SELECT id_user
+  FROM {$db_prefix}pm_admitir
+  WHERE id_user = '$DeQuien'
+  AND quien = $ID_MEMBER
+  LIMIT 1", __FILE__, __LINE__);
+
+$ignorado = mysqli_num_rows($request);
 if ($ignorado) {
   die('0: No puedes comentar este muro.');
 }
@@ -92,7 +99,7 @@ if ($user_settings['ID_MEMBER'] == $DeQuien || ($user_info['is_admin'] || $user_
 
 echo '
     <br />
-    ' . moticon(censorText(nohtml2(nohtml($_POST['quediche']))), true) . '
+    ' . moticon(censorText($_POST['quediche']), true) . '
     </div>
   </div>
   <div class="noestaGR" id="SETcto2_' . $dds . '" style="display: none; width: 416px; margin-bottom: 3px;"></div>';

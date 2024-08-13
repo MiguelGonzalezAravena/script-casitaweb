@@ -69,10 +69,10 @@ if (empty($buscar)) {
       echo '
         <tr id="div_' . $row['id'] . '">
           <td>
-            <img alt="" src="' . $helpurl . '/imagenes/articulo.png" title="' . nohtml(nohtml2($row['titulo'])) . '" />
+            <img alt="" src="' . $helpurl . '/imagenes/articulo.png" title="' . $row['titulo'] . '" />
           </td>
           <td style="text-align: left;">
-            <a title="' . nohtml(nohtml2($row['titulo'])) . '" href="' . $helpurl . '/articulo/' . $row['id'] . '" class="titlePost">' . nohtml(nohtml2($row['titulo'])) . '</a>
+            <a title="' . $row['titulo'] . '" href="' . $helpurl . '/articulo/' . $row['id'] . '" class="titlePost">' . $row['titulo'] . '</a>
           </td>
           <td title="' . timeformat($row['fecha']) . '">' . timeformat($row['fecha']) . '</td>
           <td title="' . $row['vieron'] . '">' . $row['vieron'] . '</td>

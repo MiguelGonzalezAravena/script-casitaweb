@@ -28,8 +28,8 @@ $casd = db("
   LIMIT 10", __FILE__, __LINE__);
 
 while ($row = mysqli_fetch_assoc($casd)) {
-  $row['contenido'] = censorText(nohtml2($row['contenido']));
-  $row['titulo'] = censorText(nohtml2($row['titulo']));
+  $row['contenido'] = censorText($row['contenido']);
+  $row['titulo'] = censorText($row['titulo']);
   $row['contenido'] = str_replace('http://link.casitaweb.net/index.php?l=', '', $row['contenido']);
   echo '
     <item>

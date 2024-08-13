@@ -70,8 +70,8 @@ while ($row = mysqli_fetch_assoc($request2)) {
   $hora2 = date(H, $row['fecha']);
   $min2 = date(i, $row['fecha']);
   $dasd = $row['id'];
-  $comene = parse_bbc(nohtml(nohtml2($row['comentario'])));
-  $comene2 = nohtml(nohtml2($row['comentario']));
+  $comene = parse_bbc($row['comentario']);
+  $comene2 = $row['comentario'];
 
   echo '
     <div class="coment-user" id="' . $caste2++ . '">

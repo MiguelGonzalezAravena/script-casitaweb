@@ -53,7 +53,7 @@ if ($muro != '' || $quehago != '') {
           } else {
             $mensaje = censorText($muro);
             $yata = hace(time());
-            $mensaje = nohtml2(moticon($mensaje, true));
+            $mensaje = moticon($mensaje, true);
             $filtrado = str_replace("\n", '<br />', $mensaje);
             $nombremem = getUsername($idmem);
 

@@ -185,8 +185,6 @@ function template_intro() {
       LIMIT 5", __FILE__, __LINE__);
 
     while ($row = mysqli_fetch_assoc($request)) {
-      $row['nombre'] = nohtml(nohtml2($row['nombre']));
-
       echo '
         <div class="comunidad_tema">
           <div>
@@ -1417,7 +1415,7 @@ function template_ctema() {
     LIMIT 1", __FILE__, __LINE__);
 
   $row = mysqli_fetch_assoc($request);
-  $cat = seguridad(nohtml($row['nombre']));
+  $cat = $row['nombre'];
   $rango = $row['rango'];
   $id_comunidad = $row['id'];
 
@@ -2086,7 +2084,6 @@ function template_tops() {
     LIMIT 10", __FILE__, __LINE__);
 
   $uno = 1;
-  $row['titulo'] = nohtml2(nohtml($row['titulo']));
 
   while ($row = mysqli_fetch_assoc($rs)) {
 

@@ -136,7 +136,6 @@ for ($i = 0; $i < $c; ++$i) {
   $asserr = mysqli_fetch_assoc($lvccct);
   $idse = $asserr['id'];
   $idse = isset($idse) ? $idse : '';
-  $a[$i] = nohtml($a[$i]);
 
   if (!empty($idse)) {
     db_query("

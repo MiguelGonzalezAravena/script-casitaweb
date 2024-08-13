@@ -163,7 +163,7 @@ function fatal_error($error, $log = false, $title = null, $botn = null) {
     }
 
     if ($botn == '900') {
-      $context['boton'] = '<input class="login" style="font-size: 11px;" type="submit" title="Ir a la comunidad" value="Ir a la comunidad" onclick="location.href=\'' . $boardurl . '/comunidades/'.nohtml($_GET['id']).'\'" /> <input class="login" style="font-size: 11px;" type="submit" title="Ir al centro de comunidades" value="Ir al centro de comunidades" onclick="location.href=\'' . $boardurl . '/comunidades/\'" />';
+      $context['boton'] = '<input class="login" style="font-size: 11px;" type="submit" title="Ir a la comunidad" value="Ir a la comunidad" onclick="location.href=\'' . $boardurl . '/comunidades/' . $_GET['id'] . '\'" /> <input class="login" style="font-size: 11px;" type="submit" title="Ir al centro de comunidades" value="Ir al centro de comunidades" onclick="location.href=\'' . $boardurl . '/comunidades/\'" />';
     }
 
     if ($botn == '901') {

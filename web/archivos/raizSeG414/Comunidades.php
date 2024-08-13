@@ -50,13 +50,13 @@ function Comunidades() {
 
     while ($row = mysqli_fetch_assoc($rs)) {
       $context['COMediTidvb'] = $row['id'];
-      $context['COMediTnombre'] = nohtml(nohtml2($row['nombre']));
-      $context['COMediTdescripcion'] = nohtml(nohtml2($row['descripcion']));
+      $context['COMediTnombre'] = $row['nombre'];
+      $context['COMediTdescripcion'] = $row['descripcion'];
       $context['COMediTacceso'] = $row['acceso'];
       $context['COMediTpermiso'] = $row['permiso'];
       $context['COMediTurl'] = $row['url'];
       $context['COMediTaprobar'] = $row['aprobar'];
-      $context['COMediTimagen'] = nohtml(nohtml2($row['imagen']));
+      $context['COMediTimagen'] = $row['imagen'];
       $context['COMediTcategoria'] = $row['categoria'];
       $context['COMediTnombreCat'] = $row['nombreCat'];
       $context['COMediTurlCat'] = $row['urlCat'];
@@ -107,7 +107,7 @@ function Comunidades() {
       $context['coMeliminado'] = $row['eliminado'];
       $context['coMurl'] = $row['url'];
       $context['coMrealName'] = $row['realName'];
-      $context['coMimg'] = nohtml($row['avatar']);
+      $context['coMimg'] = $row['avatar'];
       $context['coMvbvbvki'] = $row['id_user'];
       $context['coMvisitas'] = $row['visitas'];
       $context['coMcreado'] = hace($row['creado']);
@@ -165,15 +165,15 @@ function Comunidades() {
         LIMIT 1", __FILE__, __LINE__);
 
       while ($row = mysqli_fetch_assoc($rs)) {
-        $context['nombrecat'] = nohtml(nohtml2($row['nom2']));
+        $context['nombrecat'] = $row['nom2'];
         $context['url2222'] = $row['url2'];
         $context['ivvvaar'] = $row['bloquear'];
         $context['ddddsaaat'] = $row['id'];
         $context['UserName'] = $row['UserName'];
-        $context['descecat'] = nohtml($row['descripcion']);
+        $context['descecat'] = $row['descripcion'];
         $context['fecha'] = timeformat($row['fecha_inicio']);
-        $context['cat'] = nohtml($row['nombre']);
-        $context['caturl'] = nohtml($row['url']);
+        $context['cat'] = $row['nombre'];
+        $context['caturl'] = $row['url'];
       }
 
       $context['ddddsaaat'] = isset($context['ddddsaaat']) ? $context['ddddsaaat'] : '';

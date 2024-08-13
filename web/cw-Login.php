@@ -124,7 +124,7 @@ $request = db_query("
   LIMIT 1", __FILE__, __LINE__);
 
 while ($row = mysqli_fetch_assoc($request)) {
-  $rason = nohtml1(nohtml($row['reason']));
+  $rason = $row['reason'];
   $ban_time = hace($row['ban_time']);
   $Sxpirate = $row['expire_time'];
   $rehabilitacion = $row['expire_time'] === null ? 'Indefinido' : ($row['expire_time'] < time() ? '' : '' . (int) ceil(($row['expire_time'] - time()) / (60 * 60 * 24)) . '&nbsp;d&iacute;a(s)');

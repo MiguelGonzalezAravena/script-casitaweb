@@ -73,7 +73,7 @@ function template_tyc17() {
       while ($row = mysqli_fetch_assoc($notas)) {
         $context['posts'][] = array(
           'id' => $row['id'],
-          'titulo' => nohtml($row['titulo']),
+          'titulo' => $row['titulo'],
           'fechac' => timeformat($row['fecha_creado'])
         );
       }
@@ -84,11 +84,11 @@ function template_tyc17() {
         echo '
           <tr>
             <td style="text-align: left;">
-              <a title="' . $post['titulo'] . '" href="#" onclick="Boxy.load("' . $boardurl . '/web/cw-TEMPeditarNota.php?id=' . $post['id'] . '", { title: "' . nohtml($post['titulo']) . '" });">' . $post['titulo'] . '</a>
+              <a title="' . $post['titulo'] . '" href="#" onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPeditarNota.php?id=' . $post['id'] . '\', { title: \'' . $post['titulo'] . '\' });">' . $post['titulo'] . '</a>
             </td>
             <td title="' . $post['fechac'] . '">' . $post['fechac'] . '</td>
             <td>
-              <img alt="" title="Eliminar nota" style="width: 16px; height: 16px; cursor: pointer;" class="png" src="' . $tranfer1 . '/comunidades/eliminar.png" onclick="Boxy.confirm(\'&iquest;Estas seguro que desea eliminar esta nota?\', function() { location.href = \'' . $boardurl . '/web/cw-EliminarNota.php?id=' . $post['id'] . '\' }, { title: \'Eliminar nota\' }); return false;" />
+              <img alt="" title="Eliminar nota" style="width: 16px; height: 16px; cursor: pointer;" class="png" src="' . $tranfer1 . '/comunidades/eliminar.png" onclick="Boxy.confirm(\'&iquest;Est&aacute;s seguro que deseas eliminar esta nota?\', function() { location.href = \'' . $boardurl . '/web/cw-EliminarNota.php?id=' . $post['id'] . '\' }, { title: \'Eliminar nota\' }); return false;" />
             </td>
           </tr>';
       }

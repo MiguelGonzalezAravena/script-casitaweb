@@ -85,7 +85,7 @@ echo '
 
 while ($questions = mysqli_fetch_assoc($qlist)) {
   $questions['titulo'] = strlen($questions['titulo']) > 45 ? substr($questions['titulo'], 0, 42) . '...' : $questions['titulo'];
-  $question = censorText(nohtml2($questions['titulo']));
+  $question = censorText($questions['titulo']);
   $dateadded = $questions['fecha'];
 
   echo '
@@ -118,7 +118,7 @@ echo '
 
 while ($questions = mysqli_fetch_assoc($qlist)) {
   $questions['titulo'] = strlen($questions['titulo']) > 45 ? substr($questions['titulo'], 0, 42) . '...' : $questions['titulo'];
-  $question = censorText(nohtml2($questions['titulo']));
+  $question = censorText($questions['titulo']);
   $viewed = $questions['vieron'] == 1 ? '1  visita' : $questions['vieron'] . ' visitas';
 
   echo '

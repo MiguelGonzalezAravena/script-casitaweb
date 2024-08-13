@@ -22,8 +22,8 @@ if (empty($id)) {
 
   $row = mysqli_fetch_assoc($notas);
   $id2 = isset($row['id']) ? $row['id'] : '';
-  $titulo = nohtml($row['titulo']);
-  $contenido = nohtml($row['contenido']);
+  $titulo = $row['titulo'];
+  $contenido = $row['contenido'];
 
   mysqli_free_result($notas);
 

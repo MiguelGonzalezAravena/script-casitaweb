@@ -115,7 +115,7 @@ if ($context['permisoCom'] == 1 || $context['permisoCom'] == 3) {
           <br />
           Por: ' . $ban_por . '
           <br />
-          Raz&oacute;n: ' . nohtml(nohtml2($ban_razon)) . '
+          Raz&oacute;n: ' . $ban_razon . '
           <br />
           Expira: ' . $ban_expirate . '
         </div>

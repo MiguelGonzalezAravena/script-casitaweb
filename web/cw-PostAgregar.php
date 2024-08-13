@@ -162,7 +162,6 @@ for ($i = 0; $i < $c; ++$i) {
 
   $asserr = mysqli_fetch_assoc($lvccct);
   $idse = isset($asserr['ID_TAG']) ? $asserr['ID_TAG'] : '';
-  $a[$i] = nohtml($a[$i]);
 
   if (!empty($idse)) {
     db_query("

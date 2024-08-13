@@ -25,7 +25,7 @@ $request = db_query("
   LIMIT 1", __FILE__, __LINE__);
 
 $row = mysqli_fetch_assoc($request);
-$cat = seguridad(nohtml($row['nombre']));
+$cat = seguridad($row['nombre']);
 $rango = $row['rango'];
 $url = $row['url'];
 $id_comunidad = $row['id'];

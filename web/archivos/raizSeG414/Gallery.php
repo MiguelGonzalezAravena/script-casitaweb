@@ -102,7 +102,7 @@ function ViewPicture() {
     LIMIT 1", __FILE__, __LINE__);
 
   $row = mysqli_fetch_assoc($dbresult);
-  $title = nohtml2(nohtml($row['title']));
+  $title = $row['title'];
 
   $context['gallery_pic'] = array(
     'ID_PICTURE' => $row['ID_PICTURE'],
@@ -110,7 +110,7 @@ function ViewPicture() {
     'views' => $row['views'],
     'puntos' => $row['puntos'],
     'title' => $title,
-    'filename' => nohtml2(nohtml($row['filename'])),
+    'filename' => $row['filename'],
     'date' => $row['date']
   );
 

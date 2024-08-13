@@ -822,12 +822,12 @@ function template_edit_picture() {
             <form method="POST" enctype="multipart/form-data" name="forma2" id="forma2" action="' . $boardurl . '/web/cw-imgEditar.php">
               <center>
                 <b class="size11">' . $txt['gallery_form_title'] . '</b><br />
-                <input onfocus="foco(this);" onblur="no_foco(this);" tabindex="1" size="60" maxlength="54" type="text" onfocus="foco(this);" onblur="no_foco(this);" name="title" id="title" value="' . nohtml2(nohtml($context['gallery_pic']['title'])) . '" />
+                <input onfocus="foco(this);" onblur="no_foco(this);" tabindex="1" size="60" maxlength="54" type="text" onfocus="foco(this);" onblur="no_foco(this);" name="title" id="title" value="' . $context['gallery_pic']['title'] . '" />
                 <br />
                 <br />
                 <b class="size11">URL de la imagen:</b>
                 <br />
-                <input onfocus="foco(this);" onblur="no_foco(this);" type="text" onfocus="foco(this);" onblur="no_foco(this);" tabindex="2" size="60" name="filename" value="' . nohtml2(nohtml($context['gallery_pic']['filename'])) . '" />
+                <input onfocus="foco(this);" onblur="no_foco(this);" type="text" onfocus="foco(this);" onblur="no_foco(this);" tabindex="2" size="60" name="filename" value="' . $context['gallery_pic']['filename'] . '" />
                 <div class="hrs"></div>
                 <div class="noesta">* Si la imagen contiene pornograf&iacute;a o es morboso, se borrar&aacute;.</div>
                 <br />

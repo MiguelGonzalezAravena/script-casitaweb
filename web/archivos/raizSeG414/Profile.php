@@ -433,8 +433,8 @@ function summary($memID) {
     while ($row = mysqli_fetch_assoc($dbresult)) {
       $context['img'][] = array(
         'id' => $row['ID_PICTURE'],
-        'title' => nohtml2(nohtml($row['title'])),
-        'filename' => nohtml2(nohtml($row['filename']))
+        'title' => $row['title'],
+        'filename' => $row['filename']
       );
     }
 

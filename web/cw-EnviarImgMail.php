@@ -70,7 +70,7 @@ if (empty($_POST['r_email'])) {
 
 $emailse = array($_POST['r_email'], $_POST['r_email1'], $_POST['r_email2'], $_POST['r_email3'], $_POST['r_email4'], $_POST['r_email5']);
 
-$_POST['comment'] = trim(nohtml2(nohtml(censorText($_POST['comment']))));
+$_POST['comment'] = trim(censorText($_POST['comment']));
 
 // Validar recaptcha
 $recaptcha_response = isset($_POST['g-recaptcha-response']) ? seguridad($_POST['g-recaptcha-response']) : '';

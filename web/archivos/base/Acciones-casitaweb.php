@@ -1335,9 +1335,9 @@ function template_denuncias() {
         $imagen = 'class="categoriaPost ' . $den1['descripcion'] . '"';
       } else if ($den1['tipo'] == 3) {
         $imagen = 'class="categoriaPost UsersNOCAT"';
-        $link = $boardurl . '/perfil/' . nohtml(nohtml2($den1['name_post']));
+        $link = $boardurl . '/perfil/' . $den1['name_post'];
       } else if ($den1['tipo'] == 5) {
-        $link = $boardurl . '/comunidades/' . nohtml(nohtml2($den1['name_post']));
+        $link = $boardurl . '/comunidades/' . $den1['name_post'];
         $imagen = 'class="categoriaPost comunidadesNOCAT"';
       }
 
@@ -1348,7 +1348,7 @@ function template_denuncias() {
           <div style="margin-right: 4px;">
             <div style="float: left;">
               <div style="float: left;">
-                <a href="' . $link . '" ' . $imagen . ' title="' . nohtml(nohtml2($den1['name_post'])) . '">' . nohtml(nohtml2($den1['name_post'])) . '</a>
+                <a href="' . $link . '" ' . $imagen . ' title="' . $den1['name_post'] . '">' . $den1['name_post'] . '</a>
               </div>
               <div style="float: left;"> - (' . $den1['cont'] . ' denuncias)</div>
             </div>';
@@ -1384,7 +1384,7 @@ function template_denuncias() {
         ORDER BY den.id_denuncia DESC", __FILE__, __LINE__);
 
       while ($den2 = mysqli_fetch_assoc($reques2)) {
-        $comentario = nohtml(nohtml2($den2['comentario']));
+        $comentario = $den2['comentario'];
         $den2['razon'] = str_replace('razon', 'raz&oacute;n', str_replace('contrasena', 'contrase&ntilde;a', str_replace('Esta', 'Esta&aacute;', str_replace('mayuscula', 'Esta&may&uacute;scula', str_replace('informacion', 'informaci&oacute;n', $den2['razon'])))));
 
         echo '

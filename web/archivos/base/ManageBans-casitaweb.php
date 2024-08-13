@@ -82,7 +82,7 @@ function template_main() {
           echo '
                   <br />
                   Raz&oacute;n:
-                  <b style="color: red;">' . nohtml1(nohtml($ban['reason'])) . '</b>
+                  <b style="color: red;">' . $ban['reason'] . '</b>
                   <br />
                   Expira: ', $ban['expires'], '
                 </td>
@@ -169,7 +169,7 @@ function template_main() {
       echo '
             <br />
             Raz&oacute;n:
-            <b style="color: red;">' . nohtml1(nohtml($ban['reason'])) . '</b>
+            <b style="color: red;">' . $ban['reason'] . '</b>
             <br />
             Expira: ', $ban['expires'], '
           </td>

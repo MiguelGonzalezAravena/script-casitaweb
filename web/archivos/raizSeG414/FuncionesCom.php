@@ -131,7 +131,7 @@ function arriba($da = '', $a1 = '', $a2 = '', $a3 = '', $a4 = '', $a5 = '', $a6 
       $categoria = $row['cnam'];
       $url = $row['url'];
       $urlIDDD = $row['id'];
-      $row['nombre'] = nohtml($row['nombre']);
+      $row['nombre'] = $row['nombre'];
 
       if (!$_GET['miembros']) {
         $resultado = $comunidades . '
@@ -481,7 +481,7 @@ function baneadoo($id) {
         <center>
           <b style="color:red;">Tu cuenta en esta comunidad se encuentra baneada.</b>
           <br />
-          <b>Raz&oacute;n:</b> ' . nohtml(nohtml2($ban_razon)) . '
+          <b>Raz&oacute;n:</b> ' . $ban_razon . '
           <br />
           <b>Por:</b> ' . $ban_por . '
           <br />
@@ -575,9 +575,9 @@ function sidebar($id) {
     AND c.categoria = b.id", __FILE__, __LINE__);
 
   while ($row = mysqli_fetch_assoc($request)) {
-    $cat = nohtml2(nohtml($row['nombre']));
-    $img = nohtml($row['imagen']);
-    $caturl = nohtml($row['url']);
+    $cat = $row['nombre'];
+    $img = $row['imagen'];
+    $caturl = $row['url'];
     $temas = $row['articulos'];
     $id_comunidad = $row['id'];
   }
@@ -794,7 +794,7 @@ function bloqueado($id) {
       $error = '
         <b style="color: red;">Esta comunidad est&aacute; eliminada.</b>
         <br />
-        <b>Raz&oacute;n:</b> ' . nohtml(nohtml2($razon)) . '
+        <b>Raz&oacute;n:</b> ' . $razon . '
         <br />
         <b>Por:</b> ' . $bloquear_porr;
 
@@ -965,7 +965,7 @@ function resultados($tipo) {
           }
 
           echo '
-                <a title="' . nohtml(nohtml2($nombre)) . '" href="' . $boardurl . '/comunidades/' . $url . '" class="titlePost">' . nohtml(nohtml2($nombre)) . '</a>
+                <a title="' . $nombre . '" href="' . $boardurl . '/comunidades/' . $url . '" class="titlePost">' . $nombre . '</a>
               </td>
               <td title="' . $fecha_inicio . '">' . $fecha_inicio . '</td>
               <td>' . $articulos . '</td>
@@ -1134,7 +1134,7 @@ function resultados($tipo) {
                 <img title="' . $nombCat . '" src="' . $tranfer1 . '/comunidades/categorias/' . $categoria . '.png" alt="" />
               </td>
               <td style="text-align: left;">
-                <a title="' . nohtml(nohtml2($nombre)) . '" href="' . $boardurl . '/comunidades/' . $url . '/' . $id . '/' . urls($nombre) . '.html" class="titlePost">' . nohtml(nohtml2($nombre)) . '</a>
+                <a title="' . $nombre . '" href="' . $boardurl . '/comunidades/' . $url . '/' . $id . '/' . urls($nombre) . '.html" class="titlePost">' . $nombre . '</a>
               </td>
               <td title="' . $fecha_inicio . '">' . $fecha_inicio . '</td>
               <td style="color: green;">' . $articulos . '</td>
