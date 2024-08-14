@@ -30,9 +30,9 @@ $usuario = isset($_GET['autor']) ? encodeurl($_GET['autor']) : '';
 $usuario = empty($usuario) || $usuario == '-1' ? '' : $usuario;
 
 if ($_GET['buscador_tipo'] == 'g') {
-  header("Location: $boardurl/buscargoogle.php?cof=FORID%3A9&cx=015978274333592990658:r0qy7erzrbw&ie=UTF-8&sa=Buscar&q=$t");
+  header('Location: ' . $boardurl . '/buscargoogle.php?cof=FORID%3A9&cx=015978274333592990658:r0qy7erzrbw&ie=UTF-8&sa=Buscar&q=' . $t);
 } else {
-  header("Location: $boardurl/buscador/&q=$t$a&autor=$usuario&orden=$sort&categoria=$categoria");
+  header('Location: ' . $boardurl . '/buscador/&q=' . $t . $a . '&autor=' . $usuario . '&orden=' . $sort . '&categoria=' . $categoria);
 }
 
 ?>

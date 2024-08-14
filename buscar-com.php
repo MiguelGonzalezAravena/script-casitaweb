@@ -27,9 +27,9 @@ $categoria = $_GET['categoria'];
 $usuario = encodeurl($_GET['autor']);
 
 if ($_GET['buscador_tipo'] == 'c') {
-  header("Location: $boardurl/comunidades/buscar/&q=$t&autor=$usuario&orden=$sort&categoria=$categoria&buscador_tipo=c");
+  header('Location: ' . $boardurl . '/comunidades/buscar/&q=' . $t . '&autor=' . $usuario . '&orden=' . $sort . '&categoria=' . $categoria . '&buscador_tipo=c');
 } else {
-  header("Location: $boardurl/comunidades/buscar/&q=$t&autor=$usuario&orden=$sort&categoria=$categoria&buscador_tipo=t");
+  header('Location: ' . $boardurl . '/comunidades/buscar/&q=' . $t . '&autor=' . $usuario . '&orden=' . $sort . '&categoria=' . $categoria . '&buscador_tipo=t');
 }
 
 ?>

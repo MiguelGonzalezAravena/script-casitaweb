@@ -138,9 +138,8 @@ function MembergroupIndex()
 }
 
 // Add a membergroup.
-function AddMembergroup()
-{
-  global $db_prefix, $context, $txt, $sourcedir, $modSettings, $urlSep, $boardurl;
+function AddMembergroup() {
+  global $db_prefix, $context, $txt, $sourcedir, $modSettings, $urlSep, $boardurl, $scripturl;
 
   // A form was submitted, we can start adding.
   if (!empty($_POST['group_name'])) {
@@ -261,7 +260,7 @@ function AddMembergroup()
         WHERE ID_BOARD IN (" . implode(', ', $_POST['boardaccess']) . ')
         LIMIT ' . count($_POST['boardaccess']), __FILE__, __LINE__);
 
-    header("Location: $boardurl/index.php?' . $urlSep . '=membergroups;sa=edit;group={$ID_GROUP}");
+    header('Location: ' . $scripturl . '?' . $urlSep . '=membergroups;sa=edit;group=' . $ID_GROUP);
     exit();
     die();
   }
@@ -300,14 +299,13 @@ function AddMembergroup()
   mysqli_free_result($result);
 }
 
-function DeleteMembergroup()
-{
-  global $sourcedir, $boardurl, $urlSep;
+function DeleteMembergroup() {
+  global $sourcedir, $boardurl, $scripturl, $urlSep;
 
   checkSession('get');
   require ($sourcedir . '/Subs-Members.php');
   deleteMembergroups((int) $_REQUEST['group']);
-  header("Location: $boardurl/index.php?' . $urlSep . '=membergroups");
+  header('Location: ' . $scripturl . '?' . $urlSep . '=membergroups');
 }
 
 function EditMembergroup()
@@ -326,7 +324,7 @@ function EditMembergroup()
     require ($sourcedir . '/Subs-Members.php');
     deleteMembergroups($_REQUEST['group']);
 
-    header("Location: $boardurl/index.php?' . $urlSep . '=membergroups");
+    header('Location: ' . $scripturl . '?' . $urlSep . '=membergroups');
   }
   // A form was submitted with the new membergroup settings.
   else if (isset($_POST['submit'])) {
@@ -388,7 +386,7 @@ function EditMembergroup()
     }
 
     updateStats('postgroups');
-    header("Location: $boardurl/index.php?' . $urlSep . '=membergroups");
+    header('Location: ' . $scripturl . '?' . $urlSep . '=membergroups');
   }
 
   $request = db_query("

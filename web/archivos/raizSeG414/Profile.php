@@ -338,7 +338,7 @@ function saveProfileChanges(&$profile_vars, &$post_errors, $memID) {
       }
 
       updateStats('member', false);
-      header("Location: /perfil/{$old_profile['memberName']}");
+      header('Location: ' . $boardurl . '/perfil/' . $old_profile['memberName']);
 
       exit;
       die();

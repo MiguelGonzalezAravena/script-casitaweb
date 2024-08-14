@@ -32,7 +32,7 @@ if ($nick == $nick1) {
 } else if ($nick == $nick5) {
   $idUSER = '149797';
 } else {
-  header("Location: $url");
+  header('Location: ' . $url);
 }
 
 $tituloedit = strtr(htmlspecialchars($_POST['titulo']), array("\r" => '', "\n" => '', "\t" => ''));
@@ -51,35 +51,35 @@ $anuncio = 0;
 $principal = 0;
 
 if (empty($titulo)) {
-  header("Location: $url");
+  header('Location: ' . $url);
 }
 
 if (empty($post)) {
-  header("Location: $url");
+  header('Location: ' . $url);
 }
 
 if (empty($categorias)) {
-  header("Location: $url");
+  header('Location: ' . $url);
 }
 
 if (empty($tags)) {
-  header("Location: $url");
+  header('Location: ' . $url);
 }
 
 if (strlen($_POST['titulo']) < 3) {
-  header("Location: $url");
+  header('Location: ' . $url);
 }
 
 if (strlen($_POST['titulo']) >= 61) {
-  header("Location: $url");
+  header('Location: ' . $url);
 }
 
 if (strlen($_POST['contenido']) <= 60) {
-  header("Location: $url");
+  header('Location: ' . $url);
 }
 
 if (strlen($_POST['contenido']) > $modSettings['max_messageLength']) {
-  header("Location: $url");
+  header('Location: ' . $url);
 }
 
 $context['contadorsss'] = mysqli_num_rows(db_query("
@@ -89,7 +89,7 @@ $context['contadorsss'] = mysqli_num_rows(db_query("
   LIMIT 1", __FILE__, __LINE__));
 
 if (empty($context['contadorsss'])) {
-  header("Location: $url");
+  header('Location: ' . $url);
 }
 
 // Tags
@@ -99,7 +99,7 @@ $a = explode(',', $Nn);
 $c = sizeof($a);
 
 if ($c < 4) {
-  header("Location: $url");
+  header('Location: ' . $url);
 }
 
 if ($c > 5) {

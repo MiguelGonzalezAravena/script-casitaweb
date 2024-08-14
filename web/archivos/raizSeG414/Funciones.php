@@ -1364,8 +1364,8 @@ function salir() {
 function cw_header() {
   global $tranfer1;
 
-  // header("Cache-Control: must-revalidate");
-  // header("Expires: ".gmdate ("D, d M Y H:i:s", time() + 60*60*24*30)." GMT");
+  // header('Cache-Control: must-revalidate');
+  // header('Expires: ' . gmdate("D, d M Y H:i:s", time() + 60 * 60 * 24 * 30) . ' GMT');
   echo '
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es">
