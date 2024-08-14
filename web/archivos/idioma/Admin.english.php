@@ -121,7 +121,7 @@ $txt['viewmembers_day_ago'] = 'd&iacute;a';
 $txt['viewmembers_days_ago'] = 'd&iacute;as';
 
 $txt['display_name'] = 'Nombre a mostrar';
-$txt['email_address'] = 'Direcci&oacute;n Email';
+$txt['email_address'] = 'Correo';
 $txt['ip_address'] = 'Direcci&oacute;n IP';
 $txt['member_id'] = 'ID';
 
@@ -198,7 +198,7 @@ $txt['ban_log'] = 'Log de restricciones de acceso';
 $txt['ban_log_description'] = 'El log de accesos prohibidos muestra todos los intentos de ingreso a la web por los usuarios a los que se les restringi&oacute; el acceso. (\'restricci&oacute;n completa\' y \'no&nbsp;puede&nbsp;registrarse\' solamente).';
 $txt['ban_log_no_entries'] = 'No hay entradas del log de restricciones de acceso';
 $txt['ban_log_ip'] = 'IP';
-$txt['ban_log_email'] = 'Direcci&oacute;n Email';
+$txt['ban_log_email'] = 'Correo';
 $txt['ban_log_member'] = 'Usuario';
 $txt['ban_log_date'] = 'Fecha';
 $txt['ban_log_remove_all'] = 'Eliminar Todos';

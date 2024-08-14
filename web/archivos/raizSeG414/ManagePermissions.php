@@ -4,8 +4,7 @@ if (!defined('CasitaWeb!-PorRigo')) {
   die(base64_decode('d3d3LmNhc2l0YXdlYi5uZXQgLSByaWdv'));
 }
 
-function ModifyPermissions()
-{
+function ModifyPermissions() {
   global $txt, $scripturl, $context, $urlSep;
 
   adminIndex('edit_permissions');
@@ -41,6 +40,7 @@ function ModifyPermissions()
       'href' => $scripturl . '?' . $urlSep . '=permissions',
       'is_selected' => in_array($_REQUEST['sa'], array('modify', 'index')) && empty($_REQUEST['boardid']),
     );
+
     $context['admin_tabs']['tabs']['board_permissions'] = array(
       'title' => $txt['permissions_boards'],
       'description' => $txt['permission_by_board_desc'],
@@ -63,8 +63,7 @@ function ModifyPermissions()
   $subActions[$_REQUEST['sa']][0]();
 }
 
-function PermissionIndex()
-{
+function PermissionIndex() {
   global $db_prefix, $txt, $scripturl, $context, $settings, $modSettings, $tranfer1, $urlSep;
 
   $context['page_title'] = $txt['permissions_title'];
@@ -318,20 +317,20 @@ function PermissionByBoard()
   }
 
   $request = db_query("
-    SELECT b.ID_BOARD, b.name, COUNT(mods.ID_MEMBER) AS moderators, b.memberGroups, b.permission_mode, b.childLevel
+    SELECT b.ID_BOARD, b.name, b.memberGroups, b.permission_mode, b.childLevel
     FROM {$db_prefix}boards AS b
-      LEFT JOIN {$db_prefix}categories AS c ON (c.ID_CAT = b.ID_CAT)
-      LEFT JOIN {$db_prefix}moderators AS mods ON (mods.ID_BOARD = b.ID_BOARD)
-    GROUP BY ID_BOARD
-    ORDER BY boardOrder", __FILE__, __LINE__);
+    GROUP BY b.ID_BOARD
+    ORDER BY b.boardOrder", __FILE__, __LINE__);
+
   $context['boards'] = array();
+
   while ($row = mysqli_fetch_assoc($request)) {
     $row['memberGroups'] = explode(',', $row['memberGroups']);
+
     $context['boards'][$row['ID_BOARD']] = array(
       'id' => $row['ID_BOARD'],
       'child_level' => $row['childLevel'],
       'name' => $row['name'],
-      'num_moderators' => $row['moderators'],
       'public' => in_array(0, $row['memberGroups']) || in_array(-1, $row['memberGroups']),
       'membergroups' => $row['memberGroups'],
       'use_local_permissions' => !empty($modSettings['permission_enable_by_board']) && $row['permission_mode'] == 1,
@@ -339,13 +338,13 @@ function PermissionByBoard()
       // 'groups' => $board_groups
     );
   }
+
   mysqli_free_result($request);
 
   $context['sub_template'] = 'by_board';
 }
 
-function SetQuickGroups()
-{
+function SetQuickGroups() {
   global $db_prefix, $context, $urlSep;
 
   checkSession();
@@ -353,29 +352,36 @@ function SetQuickGroups()
   loadIllegalPermissions();
 
   // Make sure only one of the quick options was selected.
-  if ((!empty($_POST['predefined']) && ((isset($_POST['copy_from']) && $_POST['copy_from'] != 'empty') || !empty($_POST['permissions']))) || (!empty($_POST['copy_from']) && $_POST['copy_from'] != 'empty' && !empty($_POST['permissions'])))
+  if ((!empty($_POST['predefined']) && ((isset($_POST['copy_from']) && $_POST['copy_from'] != 'empty') || !empty($_POST['permissions']))) || (!empty($_POST['copy_from']) && $_POST['copy_from'] != 'empty' && !empty($_POST['permissions']))) {
     fatal_lang_error('permissions_only_one_option', false);
+  }
 
-  if (empty($_POST['group']) || !is_array($_POST['group']))
+  if (empty($_POST['group']) || !is_array($_POST['group'])) {
     $_POST['group'] = array();
+  }
 
   // Only accept numeric values for selected membergroups.
-  foreach ($_POST['group'] as $id => $group_id)
+  foreach ($_POST['group'] as $id => $group_id) {
     $_POST['group'][$id] = (int) $group_id;
+  }
+
   $_POST['group'] = array_unique($_POST['group']);
 
-  if (empty($_REQUEST['boardid']))
+  if (empty($_REQUEST['boardid'])) {
     $_REQUEST['boardid'] = 0;
-  else
+  } else {
     $_REQUEST['boardid'] = (int) $_REQUEST['boardid'];
+  }
 
   if (isset($_POST['access'])) {
-    foreach ($_POST['access'] as $k => $v)
+    foreach ($_POST['access'] as $k => $v) {
       $_POST['access'][$k] = (int) $v;
+    }
+
     $access = implode(',', $_POST['access']);
-  }
-  else
+  } else {
     $access = '';
+  }
 
   db_query("
     UPDATE {$db_prefix}boards
@@ -384,27 +390,31 @@ function SetQuickGroups()
     LIMIT 1", __FILE__, __LINE__);
 
   // No groups where selected.
-  if (empty($_POST['group']))
+  if (empty($_POST['group'])) {
     redirectexit($urlSep . '=permissions;boardid=' . $_REQUEST['boardid']);
+  }
 
   // Set a predefined permission profile.
   if (!empty($_POST['predefined'])) {
     // Make sure it's a predefined permission set we expect.
-    if (!in_array($_POST['predefined'], array('restrict', 'standard', 'moderator', 'maintenance')))
+    if (!in_array($_POST['predefined'], array('restrict', 'standard', 'moderator', 'maintenance'))) {
       redirectexit($urlSep . '=permissions;boardid=' . $_REQUEST['boardid']);
+    }
 
     foreach ($_POST['group'] as $group_id) {
-      if (!empty($_REQUEST['boardid']))
+      if (!empty($_REQUEST['boardid'])) {
         setPermissionLevel($_POST['predefined'], $group_id, $_REQUEST['boardid']);
-      else
+      } else {
         setPermissionLevel($_POST['predefined'], $group_id);
+      }
     }
   }
   // Set the permissions of the selected groups to that of their permissions in a different board.
   else if (isset($_POST['from_board']) && $_POST['from_board'] != 'empty') {
     // Just checking the input.
-    if (!is_numeric($_POST['from_board']))
+    if (!is_numeric($_POST['from_board'])) {
       redirectexit($urlSep . '=permissions;boardid=' . $_REQUEST['boardid']);
+    }
 
     // Fetch all the board permissions for these groups.
     $request = db_query("
@@ -414,21 +424,23 @@ function SetQuickGroups()
         AND ID_GROUP IN (" . implode(',', $_POST['group']) . ')', __FILE__, __LINE__);
 
     $target_perms = array();
-    while ($row = mysqli_fetch_assoc($request))
+
+    while ($row = mysqli_fetch_assoc($request)) {
       $target_perms[] = "('$row[permission]', $row[ID_GROUP], $_REQUEST[boardid], $row[addDeny])";
+    }
+
     mysqli_free_result($request);
 
     // Delete the previous global board permissions...
     db_query("
       DELETE FROM {$db_prefix}board_permissions
       WHERE ID_GROUP IN (" . implode(', ', $_POST['group']) . ")
-        AND ID_BOARD = $_REQUEST[boardid]", __FILE__, __LINE__);
+      AND ID_BOARD = $_REQUEST[boardid]", __FILE__, __LINE__);
 
     // And insert the copied permissions.
     if (!empty($target_perms)) {
       db_query("
-        INSERT IGNORE INTO {$db_prefix}board_permissions
-          (permission, ID_GROUP, ID_BOARD, addDeny)
+        INSERT IGNORE INTO {$db_prefix}board_permissions (permission, ID_GROUP, ID_BOARD, addDeny)
         VALUES " . implode(',', $target_perms), __FILE__, __LINE__);
     }
   }

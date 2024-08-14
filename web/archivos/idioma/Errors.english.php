@@ -42,6 +42,7 @@ $txt['smf272'] = 'No se encontraron los mensajes';
 $txt['smf273'] = 'No se pudo insertar el post';
 $txt['smf289'] = 'Has seleccionado el nombre de usuario de un moderador. Por favor selecciona otro nombre de usuario';
 $txt['smf304'] = 'Falla al enviar el formulario. La sesi&oacute;n ha expirado.';
+$txt['smf305'] = 'Falla al validar la sesi&oacute;n. Por favor intenta nuevamente.';
 $txt['error_long_messagesmf305'] = 'Falla al validar la sesi&oacute;n. Por favor intenta nuevamente.';
 $txt['smf306'] = 'Referencia inv&aacute;lida<br /> Por Favor elimine las coockies y vuelva a ingresar, Gracias.-';
 

@@ -154,7 +154,7 @@ function template_summary() {
       $request352 = db_query("
         SELECT realName
         FROM {$db_prefix}members
-        WHERE ID_MEMBER = {$context['notes']}", __FILE__, __LINE__);
+        WHERE ID_MEMBER = '{$context['notes']}'", __FILE__, __LINE__);
 
       $row = mysqli_fetch_assoc($request352);
       $moderator = isset($row['realName']) ? $row['realName'] : '';
@@ -967,9 +967,10 @@ function template_summary() {
       }
 
       $request = db_query("
-        SELECT p.url, p.nombre, m.titulo, p.categoria, m.id
+        SELECT p.url, p.nombre, m.titulo, c.url AS categoria, m.id
         FROM {$db_prefix}comunidades_articulos AS m
         INNER JOIN {$db_prefix}comunidades AS p ON m.id_user = {$context['member']['id']}
+        INNER JOIN {$db_prefix}comunidades_categorias AS c ON c.id = p.categoria
         AND m.eliminado = 0
         AND m.id_com = p.id
         AND p.bloquear = 0
@@ -1224,9 +1225,10 @@ function template_summary() {
     echo '<div style="margin-bottom: 10px;">';
 
     $request = db_query("
-      SELECT p.url, p.nombre, m.titulo, p.categoria, m.id
+      SELECT p.url, p.nombre, m.titulo, c.url AS categoria, m.id
       FROM {$db_prefix}comunidades_articulos AS m
       INNER JOIN {$db_prefix}comunidades AS p ON m.id_user = {$context['member']['id']}
+      INNER JOIN {$db_prefix}comunidades_categorias AS c ON c.id = p.categoria
       AND m.eliminado = 0
       AND m.id_com = p.id
       AND p.bloquear = 0

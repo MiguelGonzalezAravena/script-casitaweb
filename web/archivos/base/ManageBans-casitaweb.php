@@ -22,12 +22,12 @@ function template_main() {
 
     echo '
       <div style="padding: 8px; background-color: #F4F4F4; border: 1px solid #CCCCCC;">
-        <div style="float: right;">
+        <div style="float: left;">
           <div style="float: left;">
             <input title="Busca usuario" onfocus="foco(this);" onblur="no_foco(this);" id="usuario" size="30" type="text" value="' . $usuario . '" />
           </div>
-          <div style="float: left;">
-            <input onclick="enviarFORMbaneados();" class="pointer" type="button" name="si" value="Buscar"/>
+          <div style="float: left; padding-left: 2px">
+            <input onclick="enviarFORMbaneados();" class="login" type="button" name="si" value="Buscar"/>
           </div>
         </div>
         <div class="clearfix"></div>
@@ -39,60 +39,72 @@ function template_main() {
         $resultado = db_query("
           SELECT name, notes, ban_time, clave, ID_BAN_GROUP, reason, expire_time
           FROM {$db_prefix}ban_groups
-          WHERE name = '$usuario'
-          LIMIT 1", __FILE__, __LINE__);
+          WHERE name = '$usuario'", __FILE__, __LINE__);
 
-        while ($ban = mysqli_fetch_array($resultado)) {
-          echo '<table border="0"  style="width: 922px; margin: 0px; padding: 0px;">';
+        $rows = mysqli_num_rows($resultado);
 
-          $ban['ban_time'] = hace($ban['ban_time']);
-          $idN = $ban['ID_BAN_GROUP'];
-          $ban['expires'] = $ban['expire_time'] === null ? $txt['never'] : ($ban['expire_time'] < time() ? '<span style="color: red">' . $txt['ban_expired'] . '</span>' : (int) ceil(($ban['expire_time'] - time()) / (60 * 60 * 24)) . '&nbsp;d&iacute;a(s)');
-
-          $request352 = db_query("
-            SELECT realName
-            FROM {$db_prefix}members
-            WHERE ID_MEMBER = {$ban['notes']}
-            LIMIT 1", __FILE__, __LINE__);
-
-          $row = mysqli_fetch_assoc($request352);
-          $nameesss = $row['realName'];
-
+        if ($rows > 0) {
           echo '
-            <tr style="margin: 0px; padding: 0px;" class="fondoplano" id="ban_' . $idN . '">
-              <td align="left" class="size11" valign="top">
-                Usuario:
-                <b>
-                  <a href="' . $boardurl . '/perfil/' . $ban['name'] . '">' . $ban['name'] . '</a>
-                </b>
-                Suspendido por:
-                <b>
-                  <a href="' . $boardurl . '/perfil/' . $nameesss . '" target="_blank">' . $nameesss . '</a>
-                </b>
-                <b>' . $ban['ban_time'] . '</b>
-                |
-                <b class="pointer" onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPbanUser.php?sa=edit;bg=' . $idN . "', { title : 'Editar ban de ", $ban['name'], '\'});" style="color:green;">Editar</b>
-                |
-                <b class="pointer" onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPeliminarBan.php?id=' . $idN . '\', { title : \'Eliminar ban\'});" style="color: red;">Eliminar</b>';
+            <table class="linksList size11" border="0" style="width: 922px; margin: 0px; padding: 0px;">
+              <thead>
+                <tr>
+                  <th>Usuario</th>
+                  <th>Moderador</th>
+                  <th>Raz&oacute;n</th>
+                  <th>Fecha</th>
+                  <th>Expiraci&oacute;n</th>
+                  <th>Clave</th>
+                  <th>Opciones</th>
+                </tr>
+              </thead>
+              <tbody>';
 
-          if ($context['user']['id'] == $ban['notes'] || $context['user']['is_admin']) {
-            echo ' | <b>Clave:</b> ' . $ban['clave'];
+          while ($ban = mysqli_fetch_array($resultado)) {
+            echo '
+              ';
+
+            $ban['ban_time'] = hace($ban['ban_time']);
+            $idN = $ban['ID_BAN_GROUP'];
+            $ban['expires'] = $ban['expire_time'] === null ? $txt['never'] : ($ban['expire_time'] < time() ? '<span style="color: red">' . $txt['ban_expired'] . '</span>' : (int) ceil(($ban['expire_time'] - time()) / (60 * 60 * 24)) . '&nbsp;d&iacute;a(s)');
+
+            $request352 = db_query("
+              SELECT realName
+              FROM {$db_prefix}members
+              WHERE ID_MEMBER = '{$ban['notes']}'
+              LIMIT 1", __FILE__, __LINE__);
+
+            $row = mysqli_fetch_assoc($request352);
+            $moderator = isset($row['realName']) ? $row['realName'] : '';
+
+            echo '
+              <tr style="margin: 0px; padding: 0px;" class="fondoplano" id="ban_' . $idN . '">
+                <td align="left" class="size11" valign="top">
+                  <a href="' . $boardurl . '/perfil/' . $ban['name'] . '">' . $ban['name'] . '</a>
+                </td>
+                <td align="left" class="size11" valign="top">
+                  ' . ($moderator == '' ? ' - ' : '<a href="' . $boardurl . '/perfil/' . $moderator . '" target="_blank">' . $moderator . '</a>') . '
+                </td>
+                <td align="left" class="size11" valign="top" style="text-align: left">
+                  ' . $ban['reason'] . '
+                </td>
+                <td align="left" class="size8" valign="top">
+                  ' . $ban['ban_time'] . '
+                </td>
+                <td align="left" class="size8" valign="top">
+                  ' . $ban['expires'] . '
+                </td>
+                <td align="left" class="size11" valign="top">
+                  ' . ($context['user']['id'] == $ban['notes'] || $context['user']['is_admin'] ? $ban['clave'] : 'Oculta') . '
+                </td>
+                <td align="left" class="size11" valign="top" style="width: 100px">
+                  <input style="width: 30px; font-size: 10px" class="login" onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPbanUser.php?sa=edit;bg=' . $idN . '\', { title : \'Editar ban de ' . $ban['name'] . '\' });" value="Editar" />
+                  <input style="width: 38px; font-size: 10px" class="login" onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPeliminarBan.php?id=' . $idN . '\', { title : \'Eliminar ban de ' . $ban['name'] . '\' });" value="Eliminar" />
+                </td>
+              </tr>';
           }
 
-          echo '
-                  <br />
-                  Raz&oacute;n:
-                  <b style="color: red;">' . $ban['reason'] . '</b>
-                  <br />
-                  Expira: ', $ban['expires'], '
-                </td>
-              </tr>
-            </table>';
-        }
-
-        $idN = isset($idN) ? $idN : '';
-
-        if (empty($idN)) {
+          echo '</table>';
+        } else {
           echo '<div class="noesta">' . $usuario . ' no est&aacute; en la lista de baneados.</div>';
         }
       } else {
@@ -102,7 +114,20 @@ function template_main() {
 
     echo '</div>';
   } else {
-    echo '<table border="0" style="width: 922px; margin: 0px; padding: 0px;">';
+    echo '
+      <table class="linksList size11" border="0" style="width: 922px; margin: 0px; padding: 0px;">
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Moderador</th>
+            <th>Raz&oacute;n</th>
+            <th>Fecha</th>
+            <th>Expiraci&oacute;n</th>
+            <th>Clave</th>
+            <th>Opciones</th>
+          </tr>
+        </thead>
+        <tbody>';
 
     $RegistrosAMostrar = 15;
 
@@ -148,35 +173,35 @@ function template_main() {
       $moderator = isset($row['realName']) ? $row['realName'] : '';
 
       echo '
-        <tr style="margin: 0px; padding: 0px;" class="fondoplano" id="ban_' . $ban['ID_BAN_GROUP'] . '">
+        <tr style="margin: 0px; padding: 0px; text-align: left;" class="fondoplano" id="ban_' . $ban['ID_BAN_GROUP'] . '">
           <td align="left" class="size11" valign="top">
-            Usuario:
-            <b>
-              <a href="' . $boardurl . '/perfil/', $ban['name'], '">', $ban['name'], '</a>
-            </b>
-            Suspendido por:
-            ' . ($moderator == '' ? ' - ' : '<b><a href="' . $boardurl . '/perfil/' . $moderator . '" target="_blank">' . $moderator . '</a></b>') . '
-            <b>' . $ban['ban_time'] . '</b>
-            |
-            <b onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPbanUser.php?sa=edit;bg=' . $ban['ID_BAN_GROUP'] . '\', { title : \'Editar Ban\' });" class="pointer" style="color: green;">Editar</b>
-            |
-            <b onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPeliminarBan.php?id=' . $ban['ID_BAN_GROUP'] . '\', { title : \'Eliminar ban\' });" class="pointer"  style="color: red;">Eliminar</b>';
-
-      if ($context['user']['id'] == $ban['notes'] || $context['user']['is_admin']) {
-        echo ' | <b>Clave:</b> ' . $ban['clave'];
-      }
-
-      echo '
-            <br />
-            Raz&oacute;n:
-            <b style="color: red;">' . $ban['reason'] . '</b>
-            <br />
-            Expira: ', $ban['expires'], '
+            <a href="' . $boardurl . '/perfil/' . $ban['name'] . '">' . $ban['name'] . '</a>
+          </td>
+          <td align="left" class="size11" valign="top">
+            ' . ($moderator == '' ? ' - ' : '<a href="' . $boardurl . '/perfil/' . $moderator . '" target="_blank">' . $moderator . '</a>') . '
+          </td>
+          <td align="left" class="size11" valign="top" style="text-align: left">
+            ' . $ban['reason'] . '
+          </td>
+          <td align="left" class="size8" valign="top">
+            ' . $ban['ban_time'] . '
+          </td>
+          <td align="left" class="size8" valign="top">
+            ' . $ban['expires'] . '
+          </td>
+          <td align="left" class="size11" valign="top">
+            ' . ($context['user']['id'] == $ban['notes'] || $context['user']['is_admin'] ? $ban['clave'] : 'Oculta') . '
+          </td>
+          <td align="left" class="size11" valign="top" style="width: 100px">
+            <input style="width: 30px; font-size: 10px" class="login" onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPbanUser.php?sa=edit;bg=' . $ban['ID_BAN_GROUP'] . '\', { title : \'Editar ban\' });" value="Editar" />
+            <input style="width: 38px; font-size: 10px" class="login" onclick="Boxy.load(\'' . $boardurl . '/web/cw-TEMPeliminarBan.php?id=' . $ban['ID_BAN_GROUP'] . '\', { title : \'Eliminar ban\' });" value="Eliminar" />
           </td>
         </tr>';
     }
 
-    echo '</table>';
+    echo '
+        </tbody>
+      </table>';
 
     if (!empty($NroRegistros)) {
       if ($PagAct > $PagUlt) {

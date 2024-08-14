@@ -5,19 +5,24 @@ function template_view_members() {
   $sort = isset($_GET['desc'])? '' : 'desc';
 
   echo '
-    <table border="0" width="100%" cellspacing="1" cellpadding="4" class="windowbg" align="center">
-      <tr class="titlebg">';
+    <table border="0" width="100%" cellspacing="1" cellpadding="4" class="linksList size11" align="center">
+      <thead>
+        <tr>';
 
   foreach ($context['columns'] as $key => $value) {
     echo '
-      <td valign="top">
+      <th valign="top" style="width: 150px">
         <strong>
           <a href="' . $scripturl . '?' . $urlSep . '=viewmembers;sort=' . $key . ';' . $sort . '">' . $value['label'] . '</a>
         </strong>
-      </td>';
+      </th>';
   }
 
-  echo '</tr>';
+  echo '
+      <th valign="top">Opciones</th>
+      </tr>
+    </thead>
+    <tbody>';
 
   if (empty($context['members'])) {
     echo '
@@ -35,7 +40,7 @@ function template_view_members() {
             ' . $member['id'] . '
           </td>
           <td>
-            <a href="' . $member['href'] . '">' . $member['name'] . '</a> - <a style="color: red;" class="size11" href="' . $boardurl . '/moderacion/edit-user/perfil/' . $member['id'] . '">Administrar</a>
+            <a href="' . $member['href'] . '">' . $member['name'] . '</a>
           </td>
           <td>
             <a href="mailto:' . $member['email'] . '">' . $member['email'] . '</a>
@@ -46,12 +51,17 @@ function template_view_members() {
           <td align="center">
             ' . ((int) $member['last_active']) . '
           </td>
-          <td  align="center">' . $member['posts'] . '</td>
+          <td align="center">' . $member['posts'] . '</td>
+          <td>
+            <input class="login size11" style="width: 60px" onclick="location.href = \'' . $boardurl . '/moderacion/edit-user/perfil/' . $member['id'] . '\';" value="Administrar" />
+          </td>
         </tr>';
     }
   }
 
-  echo '</table>';
+  echo '
+      </tbody>
+    </table>';
 }
 
 function template_search_members() {
