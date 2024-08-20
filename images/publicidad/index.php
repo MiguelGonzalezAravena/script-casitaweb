@@ -1,4 +1,5 @@
 <?php
-header("Location: http://casitaweb.net/");
-echo'www.casitaweb.net - rigo';
+require_once(dirname(dirname(dirname(__FILE__))) . '/config-seg-cw1983.php');
+header('Location: ' . $boardurl);
+
 ?>

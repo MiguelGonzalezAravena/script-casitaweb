@@ -82,7 +82,7 @@ jQuery.extend(Boxy, {
   WRAPPER: '' +
     '<table cellspacing="0" cellpadding="0" border="0" class="boxy-wrapper">' +
       '<tr>' +
-        '<td class="top-lasdeft"></td>' +
+        '<td class="top-left"></td>' +
         '<td class="top"></td>' +
         '<td class="top-right"></td>' +
       '</tr>' +
@@ -578,7 +578,7 @@ Boxy.prototype = {
       var self = this;
       var tb = jQuery('<div class="title-bar"></div>').html('<h2>' + this.options.title + '</h2>');
       if (this.options.closeable) {
-        tb.append('<span class="pointer cerrar" onclick="cerrarBox(); return false;" id="cargandoBoxyc">[x]</span><span class="cerrar" id="cargandoBoxy" style="display: none;"><img alt=" src="/casitaweb/images/icons/cargando.gif" style="width: 16px; height: 16px;" border="0" /></span>');
+        tb.append('<span class="pointer cerrar" onclick="cerrarBox(); return false;" id="cargandoBoxyc">[x]</span><span class="cerrar" id="cargandoBoxy" style="display: none;"><img alt=" src="{{boardUrl}}/images/icons/cargando.gif" style="width: 16px; height: 16px;" border="0" /></span>');
       }
       if (this.options.draggable) {
         tb[0].onselectstart = function () {

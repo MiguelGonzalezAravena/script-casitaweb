@@ -1,7 +1,4 @@
-// TO-DO: Modificar ruta según corresponda
-var boardUrl = 'http://localhost/casitaweb';
-
-// Primer packer
+var boardUrl = '{{boardUrl}}';
 var clientPC = navigator.userAgent.toLowerCase();
 var clientVer = parseInt(navigator.appVersion);
 var is_ie = (clientPC.indexOf('msie') != -1 && clientPC.indexOf('opera') == -1);

@@ -1,5 +1,4 @@
-// TO-DO: Modificar ruta según corresponda
-var boardUrl = 'http://localhost/casitaweb'
+var boardUrl = '{{boardUrl}}';
 var CROSSHAIRS_LOCATION = boardUrl + '/images/crosshairs.png';
 var HUE_SLIDER_LOCATION = boardUrl + '/images/h.png';
 var HUE_SLIDER_ARROWS_LOCATION = boardUrl + '/images/position.png';
