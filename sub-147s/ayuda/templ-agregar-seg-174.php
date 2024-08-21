@@ -19,7 +19,7 @@ if ($user_info['is_admin'] || $user_info['is_mods']) {
           <br />
           <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="titulo" value="" tabindex="1" style="width: 907px;" maxlength="60" />
           <br />
-          <b class="size11">Mensaje del articulo:</b>
+          <b class="size11">Mensaje del art&iacute;culo:</b>
           <textarea onfocus="foco(this);" onblur="no_foco(this);" style="height: 300px; width: 907px;" id="markItUp" name="contenido" class="markItUpEditor" tabindex="2"></textarea>
           <b class="size11">Categor&iacute;a:</b>
           <br />

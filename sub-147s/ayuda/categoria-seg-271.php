@@ -50,7 +50,7 @@ while ($yet = mysqli_fetch_assoc($catss)) {
 
 if (empty($qid)) {
   echo '
-    <b class="noesta">Esta categor&iacute;a no tiene articulos.</b>
+    <b class="noesta">Esta categor&iacute;a no tiene art&iacute;culos.</b>
     <hr />';
 }
 

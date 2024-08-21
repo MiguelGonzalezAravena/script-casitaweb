@@ -31,7 +31,7 @@ if ($user_info['is_admin'] || $user_info['is_mods']) {
       <div class="box_buscador">
         <div class="box_title" style="width: 922px;">
           <div class="box_txt box_buscadort">
-            <center>Agregar articulo</center>
+            <center>Agregar art&iacute;culo</center>
           </div>
           <div class="box_rss">
             <img alt="" src="' . $helpurl . '/imagenes/espacio.gif" style="width: 14px; height: 12px;" border="0" />

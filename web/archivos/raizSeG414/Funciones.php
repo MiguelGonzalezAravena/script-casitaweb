@@ -733,7 +733,7 @@ function ditaruser() {
       <div class="MenuCascada">
         <div style="width: 138px;">';
 
-  if ($getid) {
+  if ($getid != $ID_MEMBER) {
     echo '
       <div>
         <a href="' . $boardurl . '/moderacion/edit-user/perfil/'.$getid.'">Editar el perfil</a>

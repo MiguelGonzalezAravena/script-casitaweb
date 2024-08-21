@@ -12,7 +12,7 @@ echo '
   <link rel="alternate" type="application/atom+xml" title="' . $mbname . ' Ayuda - RSS" href="' . $helpurl . '/rss/" />
   <link rel="shortcut icon" href="' . $tranfer1 . '/favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" type="text/css" href="' . $helpurl . '/imagenes/css-cw-ayuda.css" />
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" type="text/javascript"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" type="text/javascript"></script>
   <script type="text/javascript" src="' . $helpurl . '/imagenes/js.js"></script>
 </head>
 <body>
@@ -44,7 +44,7 @@ echo '
 
           </ul>
           <ul class="servicenav">
-            ' . ($user_info['is_admin'] || $user_info['is_mods'] ? '<li><a href="' . $helpurl . '/agregar/">Agregar articulo</a></li>' : '') . '
+            ' . ($user_info['is_admin'] || $user_info['is_mods'] ? '<li><a href="' . $helpurl . '/agregar/">Agregar art&iacute;culo</a></li>' : '') . '
             <li>
               <a href="' . $boardurl . '/" title="' . $mbname . '">' . $mbname . '</a>
             </li>

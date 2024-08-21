@@ -2,7 +2,7 @@
 require_once(dirname(__FILE__) . '/cw-conexion-seg-0011.php');
 global $context, $modSettings, $db_prefix, $user_settings, $ID_MEMBER, $boardurl;
 
-$titulo = trim($_POST['titulo']);
+$titulo = isset($_POST['titulo']) ? trim($_POST['titulo']) : '';
 
 if (empty($ID_MEMBER)) {
   die('Funcionalidad exclusiva de usuarios registrados.');
@@ -19,10 +19,8 @@ if (strlen($titulo) >= 61) {
   fatal_error('El t&iacute;tulo no puede tener m&aacute;s de 60 letras.');
 }
 
-$titulos = strtr(htmlspecialchars($titulo), array("\r" => '', "\n" => '', "\t" => ''));
-$titulos = addcslashes($titulos, '"');
-$$titulos = censorText($titulos);
-$contenido = trim($_POST['contenido']);
+$titulos = seguridad($titulo);
+$contenido = isset($_POST['contenido']) ? trim($_POST['contenido']) : '';
 
 if (empty($contenido)) {
   fatal_error('Debes escribir la nota.');
@@ -32,17 +30,11 @@ if (strlen($contenido) > $modSettings['max_messageLength']) {
   fatal_error('La nota no puede tener m&aacute;s de ' . $modSettings['max_messageLength'] . ' letras.');
 }
 
-$contenidos = htmlspecialchars(stripslashes($contenido), ENT_QUOTES);
-$contenidos = str_replace(array('"', '<', '>', '  '), array('&quot;', '&lt;', '&gt;', ' &nbsp;'), $contenidos);
-$contenidos = preg_replace('~<br(?: /)?' . '>~i', "\n", $contenidos);
-$contenidos = censorText($contenidos);
-$fecha = time();
+$contenidos = seguridad($contenido);
 
-// TO-DO: Crear tabla notas
-// TO-DO: Eliminar campo fecha_creado en INSERT
 db_query("
-  INSERT INTO {$db_prefix}notas (id_user, titulo, contenido, fecha_creado)
-  VALUES ($ID_MEMBER, '$titulos', '$contenidos', '$fecha')", __FILE__, __LINE__);
+  INSERT INTO {$db_prefix}notas (id_user, titulo, contenido)
+  VALUES ($ID_MEMBER, '$titulos', '$contenidos')", __FILE__, __LINE__);
 
 $_SESSION['ultima_accionTIME'] = $fecha;
 

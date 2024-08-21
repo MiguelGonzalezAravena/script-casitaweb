@@ -54,13 +54,9 @@ echo '
 if ($context['allow_admin']) {
   echo '
     |
-    <a href="' . $helpurl . '/editar/' . $qid . '">
-      <u>Editar</u>
-    </a>
+    <a href="' . $helpurl . '/editar/' . $qid . '"><u>Editar</u></a>
     |
-    <a onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas eliminar este art&iacute;culo?\')) return false;" href="' . $helpurl . '/eliminar/' . $qid . '" >
-      <u>Eliminar</u>
-    </a>';
+    <a onclick="if (!confirm(\'\xbfEst&aacute;s seguro que deseas eliminar este art&iacute;culo?\')) return false;" href="' . $helpurl . '/eliminar/' . $qid . '" ><u>Eliminar</u></a>';
 }
 
 echo '
@@ -71,7 +67,7 @@ echo '
   </div>';
 
 if (empty($qid)) {
-  falta('El articulo no existe.');
+  falta('El art&iacute;culo no existe.');
 }
 
 require_once(dirname(__FILE__) . '/footer-seg-145747dd.php');
