@@ -1362,21 +1362,21 @@ function salir() {
 }
 
 function cw_header() {
-  global $tranfer1;
+  global $tranfer1, $boardurl;
 
   // header('Cache-Control: must-revalidate');
   // header('Expires: ' . gmdate("D, d M Y H:i:s", time() + 60 * 60 * 24 * 30) . ' GMT');
   echo '
-    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-    <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es">
-    <!--2008/2010 casitaweb.net/por rigo-->
-    <head profile="http://purl.org/NET/erdf/profile">
-      <link rel="schema.dc" href="http://purl.org/dc/elements/1.1/" />
-      <link rel="schema.foaf" href="http://xmlns.com/foaf/0.1/" />
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="https://www.w3.org/1999/xhtml" lang="es" xml:lang="es">
+    <!--2008/' . date('Y') . ' casitaweb.net/por rigo-->
+    <head profile="https://iandavis.com/2012/erdf/profile.html">
+      <link rel="schema.dc" href="https://www.dublincore.org/specifications/dublin-core/dcmi-terms/" />
+      <link rel="schema.foaf" href="http://xmlns.com/foaf/spec/" />
       <meta name="verify-v1" content="HTXLHK/cBp/LYfs9+fLwj1UOxfq+/iFsv1DZjB6zWZU=" />
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-      <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-      <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+      <link rel="icon" href="' . $boardurl . '/favicon.ico" type="image/x-icon" />
+      <link rel="shortcut icon" href="' . $boardurl . '/favicon.ico" type="image/x-icon" />
       <link rel="apple-touch-icon" href="' . $tranfer1 . '/apple-touch-icon.png" />
       <meta name="robots" content="All" />
       <meta name="revisit-after" content="1 days" />';

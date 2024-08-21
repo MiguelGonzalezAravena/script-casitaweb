@@ -16,7 +16,6 @@ function template_main_above() {
 
   echo '
     <link rel="stylesheet" type="text/css" href="' . $tranfer1 . '/estilo.php" />
-    <script type="text/javascript">var urlWEb = "' . $boardurl . '";</script>
     <script type="text/javascript" src="' . $tranfer1 . '/js/index.php"></script>';
 
   if (isset($context['id-post']) && intval($context['id-post'])) {
